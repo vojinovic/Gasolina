@@ -2,15 +2,15 @@
   "countries": [
     {
       "name": "Serbia",
-      "flag": "🇷🇸",
-      "petrol95": 1.60,
-      "diesel": 1.68,
+      "flag": "\ud83c\uddf7\ud83c\uddf8",
+      "petrol95": 1.6,
+      "diesel": 1.69,
       "lpg": 0.85,
-      "updated": "2026-05-07"
+      "updated": "2026-05-07 14:54"
     },
     {
       "name": "Croatia",
-      "flag": "🇭🇷",
+      "flag": "\ud83c\udded\ud83c\uddf7",
       "petrol95": 1.61,
       "diesel": 1.58,
       "lpg": 0.82,
@@ -18,7 +18,7 @@
     },
     {
       "name": "Bosnia and Herzegovina",
-      "flag": "🇧🇦",
+      "flag": "\ud83c\udde7\ud83c\udde6",
       "petrol95": 1.49,
       "diesel": 1.52,
       "lpg": 0.79,
