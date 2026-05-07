@@ -2,11 +2,11 @@
 Gasolina fuel price scraper.
 Sources:
   - Serbia:     nafta.hr (per-fuel tables, NIS row)
-  - Montenegro: nafta.hr (single combined table)
+  - Croatia:    cijenegoriva.hr (median of INA prices)
   - BiH:        goriva.ba (national average from 300+ stations)
+  - Montenegro: nafta.hr (single combined table)
   - Slovenia:   nafta.hr (single combined table, EUR-only)
   - Macedonia:  nafta.hr (4-column table: fuel/MKD/EUR/RSD)
-  - Croatia:    cijenegoriva.hr (median of INA prices)
 """
 
 import json
@@ -69,7 +69,6 @@ def get_company_row(table, company_name):
 
 
 def find_row_in_single_table(soup, fuel_keywords, eur_col=1, local_col=2):
-    """Generic: find row by fuel name, return (col1, col2) parsed as floats."""
     for table in soup.find_all("table"):
         for row in table.find_all("tr"):
             cells = row.find_all(["td", "th"])
@@ -108,18 +107,46 @@ def scrape_serbia():
     }
 
 
-def scrape_montenegro():
-    soup = fetch_soup("https://nafta.hr/sr/cene-goriva-crna-gora/")
-    petrol = find_row_in_single_table(soup, ["BMB 95"])
-    diesel = find_row_in_single_table(soup, ["Eurodizel"])
-    if not petrol or not diesel:
-        raise RuntimeError(f"Montenegro: petrol={petrol}, diesel={diesel}")
-    p_eur, _ = petrol; d_eur, _ = diesel
+def scrape_croatia():
+    """cijenegoriva.hr: lists prices per company under each fuel <h2>.
+    We walk h2 sections, locate the INA card, then read its 'Medijan' price.
+    """
+    soup = fetch_soup("https://cijenegoriva.hr/")
+
+    def median_under_section(section_keyword: str, company: str = "INA"):
+        for h2 in soup.find_all("h2"):
+            if section_keyword.lower() not in h2.get_text(strip=True).lower():
+                continue
+            for sib in h2.find_all_next():
+                if sib.name == "h2" and sib is not h2:
+                    break
+                if sib.name == "h3" and company.lower() in sib.get_text(strip=True).lower():
+                    block_text = ""
+                    for after in sib.find_all_next():
+                        if after.name in ("h2", "h3"):
+                            break
+                        block_text += " " + after.get_text(" ", strip=True)
+                    m = re.search(r"medijan[^0-9]*([0-9]+[.,][0-9]+)", block_text, re.IGNORECASE)
+                    if m:
+                        try:
+                            return float(m.group(1).replace(",", "."))
+                        except ValueError:
+                            pass
+            break
+        return None
+
+    petrol_eur = median_under_section("Eurosuper 95")
+    diesel_eur = median_under_section("Eurodizel")
+    lpg_eur    = median_under_section("Autoplin")
+
+    if not all([petrol_eur, diesel_eur, lpg_eur]):
+        raise RuntimeError(f"Croatia: petrol={petrol_eur}, diesel={diesel_eur}, lpg={lpg_eur}")
+
     return {
-        "name": "Montenegro", "flag": "🇲🇪", "currency": "EUR", "fx_rate_eur": 1.0,
-        "petrol95": {"local": p_eur, "eur": p_eur},
-        "diesel":   {"local": d_eur, "eur": d_eur},
-        "lpg":      None,
+        "name": "Croatia", "flag": "🇭🇷", "currency": "EUR", "fx_rate_eur": 1.0,
+        "petrol95": {"local": petrol_eur, "eur": petrol_eur},
+        "diesel":   {"local": diesel_eur, "eur": diesel_eur},
+        "lpg":      {"local": lpg_eur,    "eur": lpg_eur},
         "updated":  now_utc(),
     }
 
@@ -145,9 +172,24 @@ def scrape_bosnia():
     }
 
 
+def scrape_montenegro():
+    soup = fetch_soup("https://nafta.hr/sr/cene-goriva-crna-gora/")
+    petrol = find_row_in_single_table(soup, ["BMB 95"])
+    diesel = find_row_in_single_table(soup, ["Eurodizel"])
+    if not petrol or not diesel:
+        raise RuntimeError(f"Montenegro: petrol={petrol}, diesel={diesel}")
+    p_eur, _ = petrol; d_eur, _ = diesel
+    return {
+        "name": "Montenegro", "flag": "🇲🇪", "currency": "EUR", "fx_rate_eur": 1.0,
+        "petrol95": {"local": p_eur, "eur": p_eur},
+        "diesel":   {"local": d_eur, "eur": d_eur},
+        "lpg":      None,
+        "updated":  now_utc(),
+    }
+
+
 def scrape_slovenia():
     soup = fetch_soup("https://nafta.hr/sr/cene-goriva-slovenija/")
-    # Slovenia table: GORIVO | CENA | PROMENA. EUR is in 'CENA' column (index 1).
     petrol = find_row_in_single_table(soup, ["BMB 95", "Benzin BMB 95"], eur_col=1, local_col=1)
     diesel = find_row_in_single_table(soup, ["Dizel"], eur_col=1, local_col=1)
     lpg    = find_row_in_single_table(soup, ["Auto gas", "TNG", "auto plin"], eur_col=1, local_col=1)
@@ -165,7 +207,6 @@ def scrape_slovenia():
 
 def scrape_macedonia():
     soup = fetch_soup("https://nafta.hr/sr/cene-goriva-makedonija/")
-    # Table: Gorivo | MKD | EUR | DIN. local=MKD (col 1), eur=EUR (col 2).
     petrol = find_row_in_single_table(soup, ["Eurosuper 95", "BMB 95"], eur_col=2, local_col=1)
     diesel = find_row_in_single_table(soup, ["Dizel"], eur_col=2, local_col=1)
     lpg    = find_row_in_single_table(soup, ["Autoplin", "TNG"], eur_col=2, local_col=1)
@@ -178,57 +219,6 @@ def scrape_macedonia():
         "petrol95": {"local": p_loc, "eur": p_eur},
         "diesel":   {"local": d_loc, "eur": d_eur},
         "lpg":      {"local": l_loc, "eur": l_eur},
-        "updated":  now_utc(),
-    }
-
-
-def scrape_croatia():
-    """cijenegoriva.hr lists prices by company. We take INA medians for each fuel."""
-    soup = fetch_soup("https://cijenegoriva.hr/")
-    text = soup.get_text("\n", strip=True)
-
-    def median_for(section_keyword, company_keyword="INA"):
-        # Find section heading, then within it find INA block, then 'Medijan' followed by a price.
-        # Strategy: scan lines, track current section, find first INA Medijan after section header.
-        lines = text.split("\n")
-        in_section = False
-        in_company = False
-        for i, line in enumerate(lines):
-            low = line.lower().strip()
-            # Section change
-            if low.startswith("eurosuper 95") or low.startswith("eurosuper 100") \
-               or low.startswith("eurodizel") or low.startswith("plavi dizel") \
-               or low.startswith("lož ulje") or low.startswith("autoplin"):
-                in_section = (section_keyword.lower() in low)
-                in_company = False
-                continue
-            if not in_section:
-                continue
-            if company_keyword.lower() in low:
-                in_company = True
-                continue
-            if in_company and low == "medijan":
-                # next line is the price
-                if i + 1 < len(lines):
-                    try:
-                        return to_float(lines[i + 1])
-                    except Exception:
-                        pass
-                in_company = False
-        return None
-
-    petrol_eur = median_for("Eurosuper 95")
-    diesel_eur = median_for("Eurodizel")
-    lpg_eur    = median_for("Autoplin")
-
-    if not all([petrol_eur, diesel_eur, lpg_eur]):
-        raise RuntimeError(f"Croatia: petrol={petrol_eur}, diesel={diesel_eur}, lpg={lpg_eur}")
-
-    return {
-        "name": "Croatia", "flag": "🇭🇷", "currency": "EUR", "fx_rate_eur": 1.0,
-        "petrol95": {"local": petrol_eur, "eur": petrol_eur},
-        "diesel":   {"local": diesel_eur, "eur": diesel_eur},
-        "lpg":      {"local": lpg_eur,    "eur": lpg_eur},
         "updated":  now_utc(),
     }
 
