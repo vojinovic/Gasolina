@@ -17,7 +17,23 @@
         "local": 108.4,
         "eur": 0.92
       },
-      "updated": "2026-05-07 15:49 UTC"
+      "updated": "2026-05-07 15:54 UTC"
+    },
+    {
+      "name": "Montenegro",
+      "flag": "🇲🇪",
+      "currency": "EUR",
+      "fx_rate_eur": 1.0,
+      "petrol95": {
+        "local": 1.61,
+        "eur": 1.61
+      },
+      "diesel": {
+        "local": 1.71,
+        "eur": 1.71
+      },
+      "lpg": null,
+      "updated": "2026-05-07 15:54 UTC"
     }
   ]
 }
