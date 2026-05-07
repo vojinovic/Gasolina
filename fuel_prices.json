@@ -17,7 +17,7 @@
         "local": 108.4,
         "eur": 0.92
       },
-      "updated": "2026-05-07 15:54 UTC"
+      "updated": "2026-05-07 15:58 UTC"
     },
     {
       "name": "Montenegro",
@@ -33,7 +33,26 @@
         "eur": 1.71
       },
       "lpg": null,
-      "updated": "2026-05-07 15:54 UTC"
+      "updated": "2026-05-07 15:58 UTC"
+    },
+    {
+      "name": "Bosnia and Herzegovina",
+      "flag": "🇧🇦",
+      "currency": "BAM",
+      "fx_rate_eur": 1.95583,
+      "petrol95": {
+        "local": 2.44,
+        "eur": 1.25
+      },
+      "diesel": {
+        "local": 2.47,
+        "eur": 1.26
+      },
+      "lpg": {
+        "local": 1.35,
+        "eur": 0.69
+      },
+      "updated": "2026-05-07 15:58 UTC"
     }
   ]
 }
