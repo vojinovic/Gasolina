@@ -15,148 +15,153 @@
       min-height: 100vh;
     }
     .container { max-width: 1280px; margin: 0 auto; }
-    h1 {
-      font-size: 42px;
-      margin: 0 0 4px;
-      letter-spacing: -0.5px;
-    }
-    .subtitle {
-      color: #94a3b8;
-      margin: 0 0 8px;
-      font-size: 18px;
-    }
-    .meta {
-      color: #64748b;
-      margin: 0 0 24px;
-      font-size: 13px;
-    }
+    h1 { font-size: 42px; margin: 0 0 4px; letter-spacing: -0.5px; }
+    .subtitle { color: #94a3b8; margin: 0 0 8px; font-size: 18px; }
+    .meta { color: #64748b; margin: 0 0 24px; font-size: 13px; }
 
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      align-items: center;
-      margin-bottom: 28px;
-    }
-
-    .toggle {
+    /* Top tabs */
+    .tabs {
       display: inline-flex;
       gap: 0;
       background: #1e293b;
       border-radius: 999px;
       padding: 4px;
+      margin-bottom: 24px;
+    }
+    .tabs button {
+      background: transparent; color: #94a3b8; border: 0;
+      padding: 10px 22px; border-radius: 999px; cursor: pointer;
+      font-size: 14px; font-weight: 600; transition: all 0.15s;
+    }
+    .tabs button.active { background: #38bdf8; color: #0f172a; }
+
+    .controls {
+      display: flex; flex-wrap: wrap; gap: 16px;
+      align-items: center; margin-bottom: 28px;
+    }
+    .toggle {
+      display: inline-flex; gap: 0;
+      background: #1e293b; border-radius: 999px; padding: 4px;
     }
     .toggle button {
-      background: transparent;
-      color: #94a3b8;
-      border: 0;
-      padding: 8px 18px;
-      border-radius: 999px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      transition: all 0.15s;
+      background: transparent; color: #94a3b8; border: 0;
+      padding: 8px 18px; border-radius: 999px; cursor: pointer;
+      font-size: 14px; font-weight: 600; transition: all 0.15s;
     }
-    .toggle button.active {
-      background: #38bdf8;
-      color: #0f172a;
-    }
-
+    .toggle button.active { background: #38bdf8; color: #0f172a; }
     .sort-wrap {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color: #94a3b8;
-      font-size: 14px;
+      display: inline-flex; align-items: center; gap: 10px;
+      color: #94a3b8; font-size: 14px;
     }
-    .sort-wrap select {
-      background: #1e293b;
-      color: white;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 14px;
-      cursor: pointer;
+    .sort-wrap select, .calc-input select, .calc-input input {
+      background: #1e293b; color: white;
+      border: 1px solid #334155; border-radius: 8px;
+      padding: 8px 12px; font-size: 14px; cursor: pointer;
     }
-    .sort-wrap select:hover { border-color: #475569; }
 
+    /* Cards (price view) */
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 20px;
     }
     .card {
-      background: #1e293b;
-      border-radius: 16px;
-      padding: 24px;
-      border: 1px solid #334155;
-      transition: transform 0.15s, border-color 0.15s;
-      position: relative;
+      background: #1e293b; border-radius: 16px; padding: 24px;
+      border: 1px solid #334155; transition: all 0.15s;
     }
     .card:hover { transform: translateY(-2px); border-color: #475569; }
-    .country {
-      font-size: 24px;
-      margin-bottom: 4px;
-      font-weight: 700;
-    }
-    .currency-info {
-      font-size: 12px;
-      color: #64748b;
-      margin-bottom: 20px;
-    }
+    .country { font-size: 24px; margin-bottom: 4px; font-weight: 700; }
+    .currency-info { font-size: 12px; color: #64748b; margin-bottom: 20px; }
     .price-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      font-size: 17px;
-      gap: 12px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 14px; font-size: 17px; gap: 12px;
     }
-    .fuel-name {
-      color: #cbd5e1;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .fuel-price {
-      font-weight: 600;
-      font-variant-numeric: tabular-nums;
-      text-align: right;
-    }
-    .fuel-price .secondary {
-      font-size: 12px;
-      color: #64748b;
-      font-weight: 400;
-      margin-left: 6px;
-    }
-    .green  { color: #22c55e; }
+    .fuel-name { color: #cbd5e1; display: flex; align-items: center; gap: 6px; }
+    .fuel-price { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+    .fuel-price .secondary { font-size: 12px; color: #64748b; font-weight: 400; margin-left: 6px; }
+    .green { color: #22c55e; }
     .yellow { color: #facc15; }
-    .blue   { color: #38bdf8; }
-
+    .blue { color: #38bdf8; }
     .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      vertical-align: middle;
+      display: inline-block; padding: 2px 8px; border-radius: 999px;
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle;
     }
     .badge-best { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.4); }
     .badge-worst { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
-
     .updated {
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid #334155;
-      color: #64748b;
-      font-size: 12px;
+      margin-top: 20px; padding-top: 16px;
+      border-top: 1px solid #334155; color: #64748b; font-size: 12px;
     }
+
+    /* Calculator */
+    .calc-form {
+      background: #1e293b; border: 1px solid #334155; border-radius: 16px;
+      padding: 24px; margin-bottom: 28px;
+    }
+    .calc-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .calc-input { display: flex; flex-direction: column; gap: 6px; }
+    .calc-input label { color: #94a3b8; font-size: 13px; }
+    .calc-input select, .calc-input input { width: 100%; }
+    .calc-input .range-row {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .calc-input input[type="range"] {
+      flex: 1; padding: 0; cursor: pointer; background: transparent; border: 0;
+    }
+    .calc-input .val {
+      min-width: 70px; text-align: right; font-weight: 600; color: white;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .results {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      margin-bottom: 24px;
+    }
+    .result-box {
+      background: #1e293b; border: 1px solid #334155;
+      border-radius: 16px; padding: 20px;
+    }
+    .result-box.smart { border-color: rgba(34, 197, 94, 0.5); }
+    .result-box h3 {
+      margin: 0 0 4px; font-size: 14px; text-transform: uppercase;
+      letter-spacing: 0.5px; color: #94a3b8; font-weight: 600;
+    }
+    .result-box .total {
+      font-size: 32px; font-weight: 700; margin: 8px 0 16px;
+      font-variant-numeric: tabular-nums;
+    }
+    .result-box.smart .total { color: #22c55e; }
+    .result-box .step {
+      font-size: 14px; color: #cbd5e1; margin-bottom: 6px; line-height: 1.5;
+    }
+    .savings-banner {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(56, 189, 248, 0.1));
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      border-radius: 16px; padding: 20px 24px; text-align: center;
+      margin-bottom: 24px;
+    }
+    .savings-banner .label {
+      color: #94a3b8; font-size: 13px; text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 8px;
+    }
+    .savings-banner .amount {
+      font-size: 36px; font-weight: 700; color: #22c55e;
+      font-variant-numeric: tabular-nums;
+    }
+    .savings-banner .pct {
+      color: #94a3b8; font-size: 14px; margin-top: 6px;
+    }
+
     .empty {
-      text-align: center;
-      padding: 60px 20px;
-      color: #64748b;
+      text-align: center; padding: 60px 20px; color: #64748b;
+    }
+
+    @media (max-width: 720px) {
+      .results { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -166,32 +171,126 @@
     <p class="subtitle">Cene goriva na Balkanu</p>
     <p class="meta" id="meta">Učitavanje...</p>
 
-    <div class="controls">
-      <div class="toggle" role="tablist">
-        <button id="btnEur" class="active" onclick="setView('eur')">EUR</button>
-        <button id="btnLocal" onclick="setView('local')">Lokalna valuta</button>
-      </div>
-
-      <div class="sort-wrap">
-        <span>Sortiraj:</span>
-        <select id="sortSel" onchange="setSort(this.value)">
-          <option value="default">Podrazumevano</option>
-          <option value="name">Po imenu (A-Z)</option>
-          <option value="petrol95">Po benzinu 95 (jeftinije prvo)</option>
-          <option value="diesel">Po dizelu (jeftinije prvo)</option>
-          <option value="lpg">Po auto-gasu (jeftinije prvo)</option>
-        </select>
-      </div>
+    <div class="tabs" role="tablist">
+      <button id="tabPrices" class="active" onclick="setTab('prices')">Cene</button>
+      <button id="tabCalc" onclick="setTab('calc')">Kalkulator puta</button>
     </div>
 
-    <div class="cards" id="cards"></div>
+    <!-- PRICES VIEW -->
+    <section id="viewPrices">
+      <div class="controls">
+        <div class="toggle" role="tablist">
+          <button id="btnEur" class="active" onclick="setView('eur')">EUR</button>
+          <button id="btnLocal" onclick="setView('local')">Lokalna valuta</button>
+        </div>
+        <div class="sort-wrap">
+          <span>Sortiraj:</span>
+          <select id="sortSel" onchange="setSort(this.value)">
+            <option value="default">Podrazumevano</option>
+            <option value="name">Po imenu (A-Z)</option>
+            <option value="petrol95">Po benzinu 95</option>
+            <option value="diesel">Po dizelu</option>
+            <option value="lpg">Po auto-gasu</option>
+          </select>
+        </div>
+      </div>
+      <div class="cards" id="cards"></div>
+    </section>
+
+    <!-- CALCULATOR VIEW -->
+    <section id="viewCalc" style="display:none">
+      <div class="calc-form">
+        <div class="calc-grid">
+          <div class="calc-input">
+            <label for="routeSel">Ruta</label>
+            <select id="routeSel" onchange="renderCalc()"></select>
+          </div>
+          <div class="calc-input">
+            <label for="fuelSel">Vrsta goriva</label>
+            <select id="fuelSel" onchange="renderCalc()">
+              <option value="diesel">Dizel</option>
+              <option value="petrol95">Benzin 95</option>
+              <option value="lpg">Auto-gas (LPG)</option>
+            </select>
+          </div>
+          <div class="calc-input">
+            <label for="consInp">Potrošnja (L/100km)</label>
+            <div class="range-row">
+              <input id="consInp" type="range" min="3" max="15" step="0.1" value="7" oninput="renderCalc()"/>
+              <span class="val" id="consVal">7,0 L</span>
+            </div>
+          </div>
+          <div class="calc-input">
+            <label for="tankInp">Veličina rezervoara (L)</label>
+            <div class="range-row">
+              <input id="tankInp" type="range" min="30" max="100" step="1" value="50" oninput="renderCalc()"/>
+              <span class="val" id="tankVal">50 L</span>
+            </div>
+          </div>
+          <div class="calc-input">
+            <label for="startInp">Početno gorivo</label>
+            <div class="range-row">
+              <input id="startInp" type="range" min="0" max="100" step="5" value="25" oninput="renderCalc()"/>
+              <span class="val" id="startVal">25%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="calcOutput"></div>
+    </section>
   </div>
 
   <script>
+    /* ============ DATA ============ */
+    let dataCache = null;
+    let currentTab = 'prices';
     let currentView = 'eur';
     let currentSort = 'default';
-    let dataCache = null;
 
+    /* Country code → name mapping (matches scraper output) */
+    const COUNTRY_NAMES = {
+      RS: 'Serbia',
+      HR: 'Croatia',
+      BA: 'Bosnia and Herzegovina',
+      ME: 'Montenegro',
+      SI: 'Slovenia',
+      MK: 'North Macedonia',
+    };
+    const COUNTRY_FLAG = {
+      RS: '🇷🇸', HR: '🇭🇷', BA: '🇧🇦', ME: '🇲🇪', SI: '🇸🇮', MK: '🇲🇰',
+    };
+    const COUNTRY_LABEL = {
+      RS: 'Srbija', HR: 'Hrvatska', BA: 'BiH', ME: 'Crna Gora',
+      SI: 'Slovenija', MK: 'S. Makedonija',
+    };
+
+    /* Predefined routes: each has ordered list of {country, km}.
+       'km' is approx driving distance within that country. */
+    const ROUTES = [
+      { id: 'bg-bd',  label: 'Beograd → Budva (Crna Gora)',
+        legs: [{c:'RS', km:330}, {c:'ME', km:200}] },
+      { id: 'bg-sa',  label: 'Beograd → Sarajevo',
+        legs: [{c:'RS', km:140}, {c:'BA', km:150}] },
+      { id: 'bg-st',  label: 'Beograd → Split',
+        legs: [{c:'RS', km:120}, {c:'HR', km:600}] },
+      { id: 'bg-sk',  label: 'Beograd → Skopje',
+        legs: [{c:'RS', km:330}, {c:'MK', km:110}] },
+      { id: 'bg-lj',  label: 'Beograd → Ljubljana',
+        legs: [{c:'RS', km:120}, {c:'HR', km:280}, {c:'SI', km:130}] },
+      { id: 'bg-zg',  label: 'Beograd → Zagreb',
+        legs: [{c:'RS', km:130}, {c:'HR', km:270}] },
+      { id: 'ni-sk',  label: 'Niš → Skopje',
+        legs: [{c:'RS', km:120}, {c:'MK', km:110}] },
+      { id: 'zg-bg',  label: 'Zagreb → Beograd',
+        legs: [{c:'HR', km:270}, {c:'RS', km:130}] },
+      { id: 'lj-bg',  label: 'Ljubljana → Beograd',
+        legs: [{c:'SI', km:130}, {c:'HR', km:280}, {c:'RS', km:120}] },
+      { id: 'st-sa',  label: 'Split → Sarajevo',
+        legs: [{c:'HR', km:140}, {c:'BA', km:110}] },
+    ];
+
+    /* ============ HELPERS ============ */
     function fmt(value, currency) {
       if (value === null || value === undefined) return '-';
       const opts = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
@@ -199,7 +298,12 @@
       if (currency === 'EUR') return num + ' €';
       return num + ' ' + currency;
     }
-
+    function fmtEur(value) { return fmt(value, 'EUR'); }
+    function findCountry(code) {
+      if (!dataCache) return null;
+      const name = COUNTRY_NAMES[code];
+      return dataCache.countries.find(c => c.name === name) || null;
+    }
     function priceCell(fuel, country) {
       if (!fuel) return '<span style="color:#475569">-</span>';
       if (currentView === 'eur') {
@@ -208,8 +312,8 @@
       return `${fmt(fuel.local, country.currency)}<span class="secondary">${fmt(fuel.eur, 'EUR')}</span>`;
     }
 
+    /* ============ PRICES VIEW ============ */
     function computeBestWorst(countries) {
-      // For each fuel, find country with min and max EUR price (ignoring nulls).
       const fuels = ['petrol95', 'diesel', 'lpg'];
       const result = { petrol95: {}, diesel: {}, lpg: {} };
       fuels.forEach(f => {
@@ -217,27 +321,20 @@
         if (valid.length < 2) return;
         const min = valid.reduce((a, b) => a[f].eur < b[f].eur ? a : b);
         const max = valid.reduce((a, b) => a[f].eur > b[f].eur ? a : b);
-        result[f].best  = min.name;
-        result[f].worst = max.name;
+        result[f].best = min.name; result[f].worst = max.name;
       });
       return result;
     }
-
-    function badgeFor(fuelKey, country, bestWorst) {
-      const bw = bestWorst[fuelKey];
-      if (!bw) return '';
-      if (country.name === bw.best)  return ' <span class="badge badge-best">najjeftinije</span>';
-      if (country.name === bw.worst) return ' <span class="badge badge-worst">najskuplje</span>';
+    function badgeFor(fuelKey, country, bw) {
+      const x = bw[fuelKey];
+      if (!x) return '';
+      if (country.name === x.best) return ' <span class="badge badge-best">najjeftinije</span>';
+      if (country.name === x.worst) return ' <span class="badge badge-worst">najskuplje</span>';
       return '';
     }
-
     function sortCountries(countries) {
       const arr = [...countries];
-      const byEur = (key) => (a, b) => {
-        const av = a[key]?.eur ?? Infinity;
-        const bv = b[key]?.eur ?? Infinity;
-        return av - bv;
-      };
+      const byEur = (k) => (a, b) => (a[k]?.eur ?? Infinity) - (b[k]?.eur ?? Infinity);
       switch (currentSort) {
         case 'name':     return arr.sort((a, b) => a.name.localeCompare(b.name));
         case 'petrol95': return arr.sort(byEur('petrol95'));
@@ -246,17 +343,15 @@
         default:         return arr;
       }
     }
-
-    function render() {
+    function renderPrices() {
       const cards = document.getElementById('cards');
       cards.innerHTML = '';
-      if (!dataCache || !dataCache.countries || dataCache.countries.length === 0) {
+      if (!dataCache?.countries?.length) {
         cards.innerHTML = '<div class="empty">Nema podataka za prikaz.</div>';
         return;
       }
-      const bestWorst = computeBestWorst(dataCache.countries);
+      const bw = computeBestWorst(dataCache.countries);
       const sorted = sortCountries(dataCache.countries);
-
       sorted.forEach(c => {
         const card = document.createElement('div');
         card.className = 'card';
@@ -264,15 +359,15 @@
           <div class="country">${c.flag || ''} ${c.name}</div>
           <div class="currency-info">Valuta: ${c.currency}${c.fx_rate_eur && c.currency !== 'EUR' ? ` · 1 EUR ≈ ${c.fx_rate_eur} ${c.currency}` : ''}</div>
           <div class="price-row">
-            <span class="fuel-name">Benzin 95${badgeFor('petrol95', c, bestWorst)}</span>
+            <span class="fuel-name">Benzin 95${badgeFor('petrol95', c, bw)}</span>
             <span class="fuel-price green">${priceCell(c.petrol95, c)}</span>
           </div>
           <div class="price-row">
-            <span class="fuel-name">Dizel${badgeFor('diesel', c, bestWorst)}</span>
+            <span class="fuel-name">Dizel${badgeFor('diesel', c, bw)}</span>
             <span class="fuel-price yellow">${priceCell(c.diesel, c)}</span>
           </div>
           <div class="price-row">
-            <span class="fuel-name">Auto-gas${badgeFor('lpg', c, bestWorst)}</span>
+            <span class="fuel-name">Auto-gas${badgeFor('lpg', c, bw)}</span>
             <span class="fuel-price blue">${priceCell(c.lpg, c)}</span>
           </div>
           <div class="updated">Ažurirano: ${c.updated || '-'}</div>
@@ -281,18 +376,217 @@
       });
     }
 
+    /* ============ CALCULATOR ============ */
+    function getFuelEur(country, fuelKey) {
+      if (!country || !country[fuelKey]) return null;
+      return country[fuelKey].eur;
+    }
+
+    function computeTrip() {
+      const route = ROUTES.find(r => r.id === document.getElementById('routeSel').value);
+      const fuelKey = document.getElementById('fuelSel').value;
+      const cons = parseFloat(document.getElementById('consInp').value);
+      const tank = parseFloat(document.getElementById('tankInp').value);
+      const startPct = parseFloat(document.getElementById('startInp').value);
+
+      if (!route || !dataCache) return null;
+
+      const totalKm = route.legs.reduce((sum, l) => sum + l.km, 0);
+      const totalFuelNeeded = (totalKm * cons) / 100; // liters needed for the whole trip
+      const startFuel = (startPct / 100) * tank;
+      const fuelToBuy = Math.max(0, totalFuelNeeded - startFuel);
+
+      // Per-leg fuel consumption
+      const legs = route.legs.map(l => {
+        const country = findCountry(l.c);
+        return {
+          ...l,
+          country,
+          fuelOnLeg: (l.km * cons) / 100,
+          pricePerL: getFuelEur(country, fuelKey),
+          flag: COUNTRY_FLAG[l.c],
+          label: COUNTRY_LABEL[l.c],
+        };
+      });
+
+      // Naive: buy all fuel at the start country (where we begin)
+      const naiveCountry = legs[0]?.country;
+      const naivePrice = getFuelEur(naiveCountry, fuelKey);
+      const naiveCost = naivePrice ? fuelToBuy * naivePrice : null;
+
+      // Smart strategy:
+      // Goal — buy as much as possible at the cheapest available country along the way,
+      // but respecting the tank capacity. Simple greedy:
+      //   Walk legs in order, track current tank level.
+      //   At each country, if it's cheaper than any later country we'll visit,
+      //   fill up to full here. Otherwise just buy what's needed to reach the next.
+      // For the user we present a simpler narrative: "fill up in cheapest country along the way."
+      const minPriceByLeg = legs.map((_, i) =>
+        legs.slice(i).filter(l => l.pricePerL).reduce((min, l) => Math.min(min, l.pricePerL), Infinity)
+      );
+
+      let tankLevel = startFuel;
+      const plan = [];
+      let smartCost = 0;
+      let prevFillCountry = null;
+
+      for (let i = 0; i < legs.length; i++) {
+        const leg = legs[i];
+        // Drive this leg
+        const need = leg.fuelOnLeg;
+
+        // If we don't have enough, we should have refueled earlier in the cheapest country so far.
+        // Simpler model: at the start of each leg (i.e., upon entering this country),
+        // decide whether to refuel here based on whether this is the cheapest among current+remaining countries.
+        const remainingKmAfterThis = legs.slice(i + 1).reduce((s, l) => s + l.km, 0);
+        const fuelStillNeededAfterThis = (remainingKmAfterThis * cons) / 100;
+
+        // After driving this leg, do we have enough to reach the next refueling opportunity?
+        const tankAfterDrive = tankLevel - need;
+
+        // Refuel decision: refuel in this country if
+        //   (a) we cannot make it through the remaining trip without refueling, AND
+        //   (b) this country has the cheapest price among current + remaining countries.
+        const cheapestAhead = minPriceByLeg[i];
+        if (leg.pricePerL && leg.pricePerL <= cheapestAhead + 1e-6) {
+          // It's the cheapest among remaining; fill up to full before driving (or at least enough for remainder).
+          const neededTotalFromHere = need + fuelStillNeededAfterThis;
+          // Buy enough to cover the rest of the trip (capped at tank capacity).
+          const buyAmount = Math.min(tank - tankLevel, Math.max(0, neededTotalFromHere - tankLevel));
+          if (buyAmount > 0.01) {
+            smartCost += buyAmount * leg.pricePerL;
+            plan.push({
+              flag: leg.flag, label: leg.label,
+              liters: buyAmount, price: leg.pricePerL,
+              cost: buyAmount * leg.pricePerL,
+            });
+            tankLevel += buyAmount;
+            prevFillCountry = leg.label;
+          }
+        }
+
+        // Drive
+        tankLevel -= need;
+        if (tankLevel < -0.01) {
+          // Forced refuel here even if expensive (we wouldn't make it)
+          const forced = Math.min(tank, -tankLevel + 5); // small buffer
+          if (leg.pricePerL) {
+            smartCost += forced * leg.pricePerL;
+            plan.push({
+              flag: leg.flag, label: leg.label,
+              liters: forced, price: leg.pricePerL,
+              cost: forced * leg.pricePerL, forced: true,
+            });
+            tankLevel += forced;
+          }
+        }
+      }
+
+      return {
+        route, fuelKey, cons, tank, startFuel,
+        totalKm, totalFuelNeeded, fuelToBuy,
+        legs, naiveCost, naiveCountry, smartCost, plan,
+      };
+    }
+
+    function fuelLabel(key) {
+      return { diesel: 'dizel', petrol95: 'benzin 95', lpg: 'auto-gas' }[key];
+    }
+
+    function renderCalc() {
+      // Update slider labels
+      document.getElementById('consVal').textContent =
+        parseFloat(document.getElementById('consInp').value).toFixed(1).replace('.', ',') + ' L';
+      document.getElementById('tankVal').textContent =
+        document.getElementById('tankInp').value + ' L';
+      document.getElementById('startVal').textContent =
+        document.getElementById('startInp').value + '%';
+
+      const out = document.getElementById('calcOutput');
+      const t = computeTrip();
+      if (!t) { out.innerHTML = ''; return; }
+
+      const fuelText = fuelLabel(t.fuelKey);
+
+      // Build steps for smart strategy
+      let smartHtml = '';
+      if (t.plan.length === 0) {
+        smartHtml = `<div class="step">Imaš dovoljno goriva za ceo put. nema potrebe za punjenjem.</div>`;
+      } else {
+        t.plan.forEach((p, i) => {
+          smartHtml += `<div class="step">${i + 1}. ${p.flag} <strong>${p.label}</strong>: kupi <strong>${p.liters.toFixed(1).replace('.', ',')} L</strong> po ${fmtEur(p.price)} = <strong>${fmtEur(p.cost)}</strong>${p.forced ? ' <span style="color:#f87171">(prinudno)</span>' : ''}</div>`;
+        });
+      }
+
+      const naiveHtml = t.naiveCost !== null
+        ? `<div class="step">Kupi sve gorivo (${t.fuelToBuy.toFixed(1).replace('.', ',')} L) u ${COUNTRY_FLAG[t.legs[0].c]} <strong>${COUNTRY_LABEL[t.legs[0].c]}</strong> po ${fmtEur(t.legs[0].pricePerL)}</div>`
+        : `<div class="step">Nedostaju cene za izabranu zemlju polaska.</div>`;
+
+      const savings = (t.naiveCost !== null && t.smartCost > 0)
+        ? Math.max(0, t.naiveCost - t.smartCost) : 0;
+      const savingsPct = (t.naiveCost > 0) ? (savings / t.naiveCost) * 100 : 0;
+
+      out.innerHTML = `
+        ${savings > 0.5 ? `
+          <div class="savings-banner">
+            <div class="label">Pametna strategija ti štedi</div>
+            <div class="amount">${fmtEur(savings)}</div>
+            <div class="pct">${savingsPct.toFixed(0)}% jeftinije nego naivno (${fuelText})</div>
+          </div>
+        ` : ''}
+
+        <div class="results">
+          <div class="result-box smart">
+            <h3>🧠 Pametna strategija</h3>
+            <div class="total">${t.smartCost > 0 ? fmtEur(t.smartCost) : '-'}</div>
+            ${smartHtml}
+          </div>
+          <div class="result-box">
+            <h3>😴 Naivno (sve u polasku)</h3>
+            <div class="total">${t.naiveCost !== null ? fmtEur(t.naiveCost) : '-'}</div>
+            ${naiveHtml}
+          </div>
+        </div>
+
+        <div class="result-box">
+          <h3>📋 Detalji puta</h3>
+          <div class="step">Ruta: <strong>${t.route.label}</strong> (${t.totalKm} km)</div>
+          <div class="step">Potrošnja: ${t.cons.toFixed(1).replace('.', ',')} L/100km · Rezervoar: ${t.tank} L · Početno gorivo: ${(t.startFuel).toFixed(1).replace('.', ',')} L</div>
+          <div class="step">Ukupno potrebno goriva: <strong>${t.totalFuelNeeded.toFixed(1).replace('.', ',')} L</strong> · Treba kupiti: <strong>${t.fuelToBuy.toFixed(1).replace('.', ',')} L</strong></div>
+          <div class="step" style="margin-top:10px">Cene ${fuelText} po deonici:</div>
+          ${t.legs.map(l => `
+            <div class="step">${l.flag} ${l.label} (${l.km} km): ${l.pricePerL ? fmtEur(l.pricePerL) + ' / L' : '<span style="color:#f87171">cena nedostupna</span>'}</div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function populateRoutes() {
+      const sel = document.getElementById('routeSel');
+      sel.innerHTML = ROUTES.map(r => `<option value="${r.id}">${r.label}</option>`).join('');
+    }
+
+    /* ============ TAB / VIEW SWITCHING ============ */
+    function setTab(tab) {
+      currentTab = tab;
+      document.getElementById('tabPrices').classList.toggle('active', tab === 'prices');
+      document.getElementById('tabCalc').classList.toggle('active', tab === 'calc');
+      document.getElementById('viewPrices').style.display = tab === 'prices' ? '' : 'none';
+      document.getElementById('viewCalc').style.display = tab === 'calc' ? '' : 'none';
+      if (tab === 'calc') renderCalc();
+    }
     function setView(view) {
       currentView = view;
       document.getElementById('btnEur').classList.toggle('active', view === 'eur');
       document.getElementById('btnLocal').classList.toggle('active', view === 'local');
-      render();
+      renderPrices();
     }
-
     function setSort(sort) {
       currentSort = sort;
-      render();
+      renderPrices();
     }
 
+    /* ============ INIT ============ */
     async function load() {
       try {
         const res = await fetch('fuel_prices.json?cb=' + Date.now());
@@ -300,7 +594,8 @@
         const dates = dataCache.countries.map(c => c.updated).filter(Boolean);
         document.getElementById('meta').textContent =
           `${dataCache.countries.length} zemlja${dataCache.countries.length === 1 ? '' : 'e'} · poslednje ažuriranje: ${dates[0] || '-'}`;
-        render();
+        populateRoutes();
+        renderPrices();
       } catch (err) {
         document.getElementById('meta').textContent = 'Greška pri učitavanju podataka.';
         console.error(err);
