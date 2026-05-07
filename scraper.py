@@ -56,4 +56,68 @@ def get_company_row(table, company_name: str = "nis"):
             continue
         company = cells[0].get_text(strip=True).lower()
         if company_name.lower() in company:
-            return to_float(cells[1]
+            return to_float(cells[1].get_text()), to_float(cells[2].get_text())
+    return None
+
+
+def scrape_serbia() -> dict:
+    url = "https://nafta.hr/sr/cene-goriva-srbija/"
+    r = requests.get(url, headers=HEADERS, timeout=20)
+    r.raise_for_status()
+    soup = BeautifulSoup(r.text, "html.parser")
+
+    petrol_table = find_table_for_heading(soup, ["BMB 95 Benzin"])
+    diesel_table = find_table_for_heading(soup, ["Eurodizel"])
+    lpg_table    = find_table_for_heading(soup, ["Autoplin", "TNG", "auto plin"])
+
+    petrol = get_company_row(petrol_table, "nis")
+    diesel = get_company_row(diesel_table, "nis")
+    lpg    = get_company_row(lpg_table, "nis")
+
+    if not all([petrol, diesel, lpg]):
+        raise RuntimeError(
+            f"Failed to parse Serbia. petrol={petrol}, diesel={diesel}, lpg={lpg}"
+        )
+
+    p_eur, p_loc = petrol
+    d_eur, d_loc = diesel
+    l_eur, l_loc = lpg
+
+    # Implied FX rate from any one fuel (sanity check / display).
+    fx = round(p_loc / p_eur, 4) if p_eur else None
+
+    return {
+        "name": "Serbia",
+        "flag": "🇷🇸",
+        "currency": "RSD",
+        "fx_rate_eur": fx,
+        "petrol95": {"local": p_loc, "eur": p_eur},
+        "diesel":   {"local": d_loc, "eur": d_eur},
+        "lpg":      {"local": l_loc, "eur": l_eur},
+        "updated":  datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"),
+    }
+
+
+def main():
+    countries = []
+
+    try:
+        countries.append(scrape_serbia())
+        print("[ok] Serbia scraped")
+    except Exception as exc:
+        print(f"[err] Serbia: {exc}")
+        if JSON_PATH.exists():
+            old = json.loads(JSON_PATH.read_text())
+            for c in old.get("countries", []):
+                if c.get("name") == "Serbia":
+                    countries.append(c)
+                    print("[fallback] kept previous Serbia data")
+                    break
+
+    payload = {"countries": countries}
+    JSON_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False))
+    print(f"[done] wrote {JSON_PATH} with {len(countries)} country/countries")
+
+
+if __name__ == "__main__":
+    main()
