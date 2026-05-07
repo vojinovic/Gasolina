@@ -27,16 +27,24 @@
     }
     .meta {
       color: #64748b;
-      margin: 0 0 32px;
+      margin: 0 0 24px;
       font-size: 13px;
     }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
     .toggle {
       display: inline-flex;
       gap: 0;
       background: #1e293b;
       border-radius: 999px;
       padding: 4px;
-      margin-bottom: 32px;
     }
     .toggle button {
       background: transparent;
@@ -53,6 +61,25 @@
       background: #38bdf8;
       color: #0f172a;
     }
+
+    .sort-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    .sort-wrap select {
+      background: #1e293b;
+      color: white;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .sort-wrap select:hover { border-color: #475569; }
+
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -64,6 +91,7 @@
       padding: 24px;
       border: 1px solid #334155;
       transition: transform 0.15s, border-color 0.15s;
+      position: relative;
     }
     .card:hover { transform: translateY(-2px); border-color: #475569; }
     .country {
@@ -79,12 +107,22 @@
     .price-row {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
       margin-bottom: 14px;
       font-size: 17px;
+      gap: 12px;
     }
-    .fuel-name { color: #cbd5e1; }
-    .fuel-price { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .fuel-name {
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .fuel-price {
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
     .fuel-price .secondary {
       font-size: 12px;
       color: #64748b;
@@ -94,6 +132,20 @@
     .green  { color: #22c55e; }
     .yellow { color: #facc15; }
     .blue   { color: #38bdf8; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      vertical-align: middle;
+    }
+    .badge-best { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.4); }
+    .badge-worst { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+
     .updated {
       margin-top: 20px;
       padding-top: 16px;
@@ -114,9 +166,22 @@
     <p class="subtitle">Cene goriva na Balkanu</p>
     <p class="meta" id="meta">Učitavanje...</p>
 
-    <div class="toggle" role="tablist">
-      <button id="btnEur" class="active" onclick="setView('eur')">EUR</button>
-      <button id="btnLocal" onclick="setView('local')">Lokalna valuta</button>
+    <div class="controls">
+      <div class="toggle" role="tablist">
+        <button id="btnEur" class="active" onclick="setView('eur')">EUR</button>
+        <button id="btnLocal" onclick="setView('local')">Lokalna valuta</button>
+      </div>
+
+      <div class="sort-wrap">
+        <span>Sortiraj:</span>
+        <select id="sortSel" onchange="setSort(this.value)">
+          <option value="default">Podrazumevano</option>
+          <option value="name">Po imenu (A-Z)</option>
+          <option value="petrol95">Po benzinu 95 (jeftinije prvo)</option>
+          <option value="diesel">Po dizelu (jeftinije prvo)</option>
+          <option value="lpg">Po auto-gasu (jeftinije prvo)</option>
+        </select>
+      </div>
     </div>
 
     <div class="cards" id="cards"></div>
@@ -124,6 +189,7 @@
 
   <script>
     let currentView = 'eur';
+    let currentSort = 'default';
     let dataCache = null;
 
     function fmt(value, currency) {
@@ -135,11 +201,50 @@
     }
 
     function priceCell(fuel, country) {
-      if (!fuel) return '-';
+      if (!fuel) return '<span style="color:#475569">-</span>';
       if (currentView === 'eur') {
         return `${fmt(fuel.eur, 'EUR')}<span class="secondary">${fmt(fuel.local, country.currency)}</span>`;
       }
       return `${fmt(fuel.local, country.currency)}<span class="secondary">${fmt(fuel.eur, 'EUR')}</span>`;
+    }
+
+    function computeBestWorst(countries) {
+      // For each fuel, find country with min and max EUR price (ignoring nulls).
+      const fuels = ['petrol95', 'diesel', 'lpg'];
+      const result = { petrol95: {}, diesel: {}, lpg: {} };
+      fuels.forEach(f => {
+        const valid = countries.filter(c => c[f] && typeof c[f].eur === 'number');
+        if (valid.length < 2) return;
+        const min = valid.reduce((a, b) => a[f].eur < b[f].eur ? a : b);
+        const max = valid.reduce((a, b) => a[f].eur > b[f].eur ? a : b);
+        result[f].best  = min.name;
+        result[f].worst = max.name;
+      });
+      return result;
+    }
+
+    function badgeFor(fuelKey, country, bestWorst) {
+      const bw = bestWorst[fuelKey];
+      if (!bw) return '';
+      if (country.name === bw.best)  return ' <span class="badge badge-best">najjeftinije</span>';
+      if (country.name === bw.worst) return ' <span class="badge badge-worst">najskuplje</span>';
+      return '';
+    }
+
+    function sortCountries(countries) {
+      const arr = [...countries];
+      const byEur = (key) => (a, b) => {
+        const av = a[key]?.eur ?? Infinity;
+        const bv = b[key]?.eur ?? Infinity;
+        return av - bv;
+      };
+      switch (currentSort) {
+        case 'name':     return arr.sort((a, b) => a.name.localeCompare(b.name));
+        case 'petrol95': return arr.sort(byEur('petrol95'));
+        case 'diesel':   return arr.sort(byEur('diesel'));
+        case 'lpg':      return arr.sort(byEur('lpg'));
+        default:         return arr;
+      }
     }
 
     function render() {
@@ -149,22 +254,25 @@
         cards.innerHTML = '<div class="empty">Nema podataka za prikaz.</div>';
         return;
       }
-      dataCache.countries.forEach(c => {
+      const bestWorst = computeBestWorst(dataCache.countries);
+      const sorted = sortCountries(dataCache.countries);
+
+      sorted.forEach(c => {
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
           <div class="country">${c.flag || ''} ${c.name}</div>
-          <div class="currency-info">Valuta: ${c.currency} ${c.fx_rate_eur ? `· 1 EUR ≈ ${c.fx_rate_eur} ${c.currency}` : ''}</div>
+          <div class="currency-info">Valuta: ${c.currency}${c.fx_rate_eur && c.currency !== 'EUR' ? ` · 1 EUR ≈ ${c.fx_rate_eur} ${c.currency}` : ''}</div>
           <div class="price-row">
-            <span class="fuel-name">Benzin 95</span>
+            <span class="fuel-name">Benzin 95${badgeFor('petrol95', c, bestWorst)}</span>
             <span class="fuel-price green">${priceCell(c.petrol95, c)}</span>
           </div>
           <div class="price-row">
-            <span class="fuel-name">Dizel</span>
+            <span class="fuel-name">Dizel${badgeFor('diesel', c, bestWorst)}</span>
             <span class="fuel-price yellow">${priceCell(c.diesel, c)}</span>
           </div>
           <div class="price-row">
-            <span class="fuel-name">Auto-gas</span>
+            <span class="fuel-name">Auto-gas${badgeFor('lpg', c, bestWorst)}</span>
             <span class="fuel-price blue">${priceCell(c.lpg, c)}</span>
           </div>
           <div class="updated">Ažurirano: ${c.updated || '-'}</div>
@@ -177,6 +285,11 @@
       currentView = view;
       document.getElementById('btnEur').classList.toggle('active', view === 'eur');
       document.getElementById('btnLocal').classList.toggle('active', view === 'local');
+      render();
+    }
+
+    function setSort(sort) {
+      currentSort = sort;
       render();
     }
 
