@@ -1,0 +1,28 @@
+{
+  "countries": [
+    {
+      "name": "Serbia",
+      "flag": "🇷🇸",
+      "petrol95": 1.60,
+      "diesel": 1.68,
+      "lpg": 0.85,
+      "updated": "2026-05-07"
+    },
+    {
+      "name": "Croatia",
+      "flag": "🇭🇷",
+      "petrol95": 1.61,
+      "diesel": 1.58,
+      "lpg": 0.82,
+      "updated": "2026-05-07"
+    },
+    {
+      "name": "Bosnia and Herzegovina",
+      "flag": "🇧🇦",
+      "petrol95": 1.49,
+      "diesel": 1.52,
+      "lpg": 0.79,
+      "updated": "2026-05-07"
+    }
+  ]
+}
