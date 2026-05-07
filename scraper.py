@@ -1,6 +1,9 @@
 """
 Gasolina fuel price scraper.
-Source: nafta.hr (consistent format with EUR + local currency).
+Sources:
+  - Serbia:     nafta.hr (per-fuel tables, NIS row)
+  - Montenegro: nafta.hr (single combined table)
+  - BiH:        goriva.ba (national average from 300+ stations)
 """
 
 import json
@@ -21,11 +24,13 @@ HEADERS = {
 
 JSON_PATH = Path("fuel_prices.json")
 
+# Fixed currency pegs (no daily fetching needed).
+BAM_TO_EUR = 1.95583  # BAM is pegged to EUR
+
 
 # ----------------------------- helpers -----------------------------
 
 def to_float(s: str) -> float:
-    """Parse '191,00' / '1,63' / '200.1 DIN' / '1.71€' into float."""
     s = (s or "").replace("\xa0", " ").strip()
     m = re.search(r"(\d+[.,]?\d*)", s)
     if not m:
@@ -33,14 +38,13 @@ def to_float(s: str) -> float:
     return float(m.group(1).replace(",", "."))
 
 
-def fetch(url: str) -> BeautifulSoup:
+def fetch_soup(url: str) -> BeautifulSoup:
     r = requests.get(url, headers=HEADERS, timeout=20)
     r.raise_for_status()
     return BeautifulSoup(r.text, "html.parser")
 
 
 def find_table_for_heading(soup: BeautifulSoup, heading_keywords: list[str]):
-    """Find first <table> after an h2/h3 whose text matches any keyword."""
     for header in soup.find_all(["h2", "h3"]):
         title = header.get_text(strip=True).lower()
         if any(k.lower() in title for k in heading_keywords):
@@ -53,7 +57,6 @@ def find_table_for_heading(soup: BeautifulSoup, heading_keywords: list[str]):
 
 
 def get_company_row(table, company_name: str):
-    """From a per-fuel table, return (eur, local) for a given company row."""
     if table is None:
         return None
     for row in table.find_all("tr"):
@@ -67,7 +70,6 @@ def get_company_row(table, company_name: str):
 
 
 def find_row_in_single_table(soup: BeautifulSoup, fuel_keywords: list[str]):
-    """For pages with one combined table, find row by fuel name and return (eur, local)."""
     for table in soup.find_all("table"):
         for row in table.find_all("tr"):
             cells = row.find_all(["td", "th"])
@@ -85,7 +87,7 @@ def find_row_in_single_table(soup: BeautifulSoup, fuel_keywords: list[str]):
 # --------------------------- scrapers ------------------------------
 
 def scrape_serbia() -> dict:
-    soup = fetch("https://nafta.hr/sr/cene-goriva-srbija/")
+    soup = fetch_soup("https://nafta.hr/sr/cene-goriva-srbija/")
 
     petrol = get_company_row(find_table_for_heading(soup, ["BMB 95 Benzin"]), "nis")
     diesel = get_company_row(find_table_for_heading(soup, ["Eurodizel"]), "nis")
@@ -111,8 +113,7 @@ def scrape_serbia() -> dict:
 
 
 def scrape_montenegro() -> dict:
-    """Single combined table, no LPG, currency is EUR."""
-    soup = fetch("https://nafta.hr/sr/cene-goriva-crna-gora/")
+    soup = fetch_soup("https://nafta.hr/sr/cene-goriva-crna-gora/")
 
     petrol = find_row_in_single_table(soup, ["BMB 95"])
     diesel = find_row_in_single_table(soup, ["Eurodizel"])
@@ -135,11 +136,40 @@ def scrape_montenegro() -> dict:
     }
 
 
+def scrape_bosnia() -> dict:
+    """goriva.ba shows national averages as: '<fuel>\n<price>KM'."""
+    r = requests.get("https://goriva.ba/", headers=HEADERS, timeout=20)
+    r.raise_for_status()
+    text = BeautifulSoup(r.text, "html.parser").get_text(" ", strip=True)
+
+    def grab(label_pattern: str) -> float:
+        m = re.search(label_pattern + r"\s*(\d+[.,]\d+)\s*KM", text, re.IGNORECASE)
+        if not m:
+            raise ValueError(f"Could not find price for: {label_pattern}")
+        return float(m.group(1).replace(",", "."))
+
+    petrol_loc = grab(r"Benzin\s*95")
+    diesel_loc = grab(r"\bDizel\b")
+    lpg_loc    = grab(r"\bLPG\b")
+
+    return {
+        "name": "Bosnia and Herzegovina",
+        "flag": "🇧🇦",
+        "currency": "BAM",
+        "fx_rate_eur": BAM_TO_EUR,
+        "petrol95": {"local": petrol_loc, "eur": round(petrol_loc / BAM_TO_EUR, 2)},
+        "diesel":   {"local": diesel_loc, "eur": round(diesel_loc / BAM_TO_EUR, 2)},
+        "lpg":      {"local": lpg_loc,    "eur": round(lpg_loc    / BAM_TO_EUR, 2)},
+        "updated":  datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"),
+    }
+
+
 # ------------------------------ main -------------------------------
 
 SCRAPERS = [
     ("Serbia", scrape_serbia),
     ("Montenegro", scrape_montenegro),
+    ("Bosnia and Herzegovina", scrape_bosnia),
 ]
 
 
