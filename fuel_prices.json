@@ -4,20 +4,20 @@
       "name": "Serbia",
       "flag": "🇷🇸",
       "currency": "RSD",
-      "fx_rate_eur": 117.0,
+      "fx_rate_eur": 117.1779,
       "petrol95": {
         "local": 191.0,
         "eur": 1.63
       },
       "diesel": {
-        "local": 221.0,
-        "eur": 1.89
+        "local": 219.0,
+        "eur": 1.87
       },
       "lpg": {
-        "local": 56.23,
-        "eur": 0.48
+        "local": 108.4,
+        "eur": 0.92
       },
-      "updated": "2026-05-07 15:45 UTC"
+      "updated": "2026-05-07 15:49 UTC"
     }
   ]
 }
