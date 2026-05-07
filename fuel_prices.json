@@ -17,23 +17,7 @@
         "local": 108.4,
         "eur": 0.92
       },
-      "updated": "2026-05-07 15:58 UTC"
-    },
-    {
-      "name": "Montenegro",
-      "flag": "🇲🇪",
-      "currency": "EUR",
-      "fx_rate_eur": 1.0,
-      "petrol95": {
-        "local": 1.61,
-        "eur": 1.61
-      },
-      "diesel": {
-        "local": 1.71,
-        "eur": 1.71
-      },
-      "lpg": null,
-      "updated": "2026-05-07 15:58 UTC"
+      "updated": "2026-05-07 16:01 UTC"
     },
     {
       "name": "Bosnia and Herzegovina",
@@ -52,7 +36,61 @@
         "local": 1.35,
         "eur": 0.69
       },
-      "updated": "2026-05-07 15:58 UTC"
+      "updated": "2026-05-07 16:01 UTC"
+    },
+    {
+      "name": "Montenegro",
+      "flag": "🇲🇪",
+      "currency": "EUR",
+      "fx_rate_eur": 1.0,
+      "petrol95": {
+        "local": 1.61,
+        "eur": 1.61
+      },
+      "diesel": {
+        "local": 1.71,
+        "eur": 1.71
+      },
+      "lpg": null,
+      "updated": "2026-05-07 16:01 UTC"
+    },
+    {
+      "name": "Slovenia",
+      "flag": "🇸🇮",
+      "currency": "EUR",
+      "fx_rate_eur": 1.0,
+      "petrol95": {
+        "local": 1.64,
+        "eur": 1.64
+      },
+      "diesel": {
+        "local": 1.71,
+        "eur": 1.71
+      },
+      "lpg": {
+        "local": 1.04,
+        "eur": 1.04
+      },
+      "updated": "2026-05-07 16:01 UTC"
+    },
+    {
+      "name": "North Macedonia",
+      "flag": "🇲🇰",
+      "currency": "MKD",
+      "fx_rate_eur": 61.4504,
+      "petrol95": {
+        "local": 80.5,
+        "eur": 1.31
+      },
+      "diesel": {
+        "local": 94.0,
+        "eur": 1.53
+      },
+      "lpg": {
+        "local": 59.0,
+        "eur": 0.96
+      },
+      "updated": "2026-05-07 16:01 UTC"
     }
   ]
 }
