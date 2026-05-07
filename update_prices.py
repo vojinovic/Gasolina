@@ -1,14 +1,33 @@
-import json
-from datetime import datetime
+name: Update Fuel Prices
 
-with open("fuel_prices.json", "r") as file:
-    data = json.load(file)
+on:
+  workflow_dispatch:
 
-# TEST update
-data["countries"][0]["diesel"] = 1.69
-data["countries"][0]["updated"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+jobs:
+  update-prices:
+    permissions:
+      contents: write
 
-with open("fuel_prices.json", "w") as file:
-    json.dump(data, file, indent=2)
+    runs-on: ubuntu-latest
 
-print("Fuel prices updated!")
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Python script
+        run: python update_prices.py
+
+      - name: Commit updated prices
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+          git add fuel_prices.json
+          git commit -m "Auto update fuel prices" || echo "No changes"
+
+          git push
