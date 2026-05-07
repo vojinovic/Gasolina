@@ -24,11 +24,17 @@
       margin-bottom: 40px;
     }
 
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
     .card {
       background: #1e293b;
       border-radius: 16px;
       padding: 24px;
-      max-width: 500px;
+      width: 320px;
     }
 
     .country {
@@ -54,6 +60,12 @@
     .blue {
       color: #38bdf8;
     }
+
+    .updated {
+      margin-top: 20px;
+      color: #94a3b8;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -61,24 +73,50 @@
   <h1>⛽ Gasolina</h1>
   <p>Balkan Fuel Prices</p>
 
-  <div class="card">
-    <div class="country">🇷🇸 Serbia</div>
+  <div class="cards" id="cards"></div>
 
-    <div class="price-row">
-      <span>Petrol 95</span>
-      <span class="green">1.60€</span>
-    </div>
+  <script>
+    async function loadPrices() {
+      const response = await fetch('fuel_prices.json');
+      const data = await response.json();
 
-    <div class="price-row">
-      <span>Diesel</span>
-      <span class="yellow">1.68€</span>
-    </div>
+      const cardsContainer = document.getElementById('cards');
 
-    <div class="price-row">
-      <span>LPG</span>
-      <span class="blue">0.85€</span>
-    </div>
-  </div>
+      data.countries.forEach(country => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        card.innerHTML = `
+          <div class="country">
+            ${country.flag} ${country.name}
+          </div>
+
+          <div class="price-row">
+            <span>Petrol 95</span>
+            <span class="green">${country.petrol95}€</span>
+          </div>
+
+          <div class="price-row">
+            <span>Diesel</span>
+            <span class="yellow">${country.diesel}€</span>
+          </div>
+
+          <div class="price-row">
+            <span>LPG</span>
+            <span class="blue">${country.lpg}€</span>
+          </div>
+
+          <div class="updated">
+            Updated: ${country.updated}
+          </div>
+        `;
+
+        cardsContainer.appendChild(card);
+      });
+    }
+
+    loadPrices();
+  </script>
 
 </body>
 </html>
