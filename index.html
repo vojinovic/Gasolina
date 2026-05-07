@@ -1,122 +1,199 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gasolina</title>
-
+  <title>Gasolina. cene goriva na Balkanu</title>
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: 40px;
+      padding: 40px 24px;
       background: #0f172a;
       color: white;
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      min-height: 100vh;
     }
-
+    .container { max-width: 1280px; margin: 0 auto; }
     h1 {
       font-size: 42px;
-      margin-bottom: 10px;
+      margin: 0 0 4px;
+      letter-spacing: -0.5px;
     }
-
-    p {
+    .subtitle {
       color: #94a3b8;
-      margin-bottom: 40px;
+      margin: 0 0 8px;
+      font-size: 18px;
     }
-
+    .meta {
+      color: #64748b;
+      margin: 0 0 32px;
+      font-size: 13px;
+    }
+    .toggle {
+      display: inline-flex;
+      gap: 0;
+      background: #1e293b;
+      border-radius: 999px;
+      padding: 4px;
+      margin-bottom: 32px;
+    }
+    .toggle button {
+      background: transparent;
+      color: #94a3b8;
+      border: 0;
+      padding: 8px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+    .toggle button.active {
+      background: #38bdf8;
+      color: #0f172a;
+    }
     .cards {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 20px;
     }
-
     .card {
       background: #1e293b;
       border-radius: 16px;
       padding: 24px;
-      width: 320px;
+      border: 1px solid #334155;
+      transition: transform 0.15s, border-color 0.15s;
     }
-
+    .card:hover { transform: translateY(-2px); border-color: #475569; }
     .country {
-      font-size: 28px;
+      font-size: 24px;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+    .currency-info {
+      font-size: 12px;
+      color: #64748b;
       margin-bottom: 20px;
     }
-
     .price-row {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 12px;
-      font-size: 20px;
+      align-items: baseline;
+      margin-bottom: 14px;
+      font-size: 17px;
     }
-
-    .green {
-      color: #22c55e;
+    .fuel-name { color: #cbd5e1; }
+    .fuel-price { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .fuel-price .secondary {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 400;
+      margin-left: 6px;
     }
-
-    .yellow {
-      color: #facc15;
-    }
-
-    .blue {
-      color: #38bdf8;
-    }
-
+    .green  { color: #22c55e; }
+    .yellow { color: #facc15; }
+    .blue   { color: #38bdf8; }
     .updated {
       margin-top: 20px;
-      color: #94a3b8;
-      font-size: 14px;
+      padding-top: 16px;
+      border-top: 1px solid #334155;
+      color: #64748b;
+      font-size: 12px;
+    }
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #64748b;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>⛽ Gasolina</h1>
+    <p class="subtitle">Cene goriva na Balkanu</p>
+    <p class="meta" id="meta">Učitavanje...</p>
 
-  <h1>⛽ Gasolina</h1>
-  <p>Balkan Fuel Prices</p>
+    <div class="toggle" role="tablist">
+      <button id="btnEur" class="active" onclick="setView('eur')">EUR</button>
+      <button id="btnLocal" onclick="setView('local')">Lokalna valuta</button>
+    </div>
 
-  <div class="cards" id="cards"></div>
+    <div class="cards" id="cards"></div>
+  </div>
 
   <script>
-    async function loadPrices() {
-      const response = await fetch('fuel_prices.json');
-      const data = await response.json();
+    let currentView = 'eur';
+    let dataCache = null;
 
-      const cardsContainer = document.getElementById('cards');
+    function fmt(value, currency) {
+      if (value === null || value === undefined) return '-';
+      const opts = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
+      const num = Number(value).toLocaleString('sr-RS', opts);
+      if (currency === 'EUR') return num + ' €';
+      return num + ' ' + currency;
+    }
 
-      data.countries.forEach(country => {
+    function priceCell(fuel, country) {
+      if (!fuel) return '-';
+      if (currentView === 'eur') {
+        return `${fmt(fuel.eur, 'EUR')}<span class="secondary">${fmt(fuel.local, country.currency)}</span>`;
+      }
+      return `${fmt(fuel.local, country.currency)}<span class="secondary">${fmt(fuel.eur, 'EUR')}</span>`;
+    }
+
+    function render() {
+      const cards = document.getElementById('cards');
+      cards.innerHTML = '';
+      if (!dataCache || !dataCache.countries || dataCache.countries.length === 0) {
+        cards.innerHTML = '<div class="empty">Nema podataka za prikaz.</div>';
+        return;
+      }
+      dataCache.countries.forEach(c => {
         const card = document.createElement('div');
         card.className = 'card';
-
         card.innerHTML = `
-          <div class="country">
-            ${country.flag} ${country.name}
-          </div>
-
+          <div class="country">${c.flag || ''} ${c.name}</div>
+          <div class="currency-info">Valuta: ${c.currency} ${c.fx_rate_eur ? `· 1 EUR ≈ ${c.fx_rate_eur} ${c.currency}` : ''}</div>
           <div class="price-row">
-            <span>Petrol 95</span>
-            <span class="green">${country.petrol95}€</span>
+            <span class="fuel-name">Benzin 95</span>
+            <span class="fuel-price green">${priceCell(c.petrol95, c)}</span>
           </div>
-
           <div class="price-row">
-            <span>Diesel</span>
-            <span class="yellow">${country.diesel}€</span>
+            <span class="fuel-name">Dizel</span>
+            <span class="fuel-price yellow">${priceCell(c.diesel, c)}</span>
           </div>
-
           <div class="price-row">
-            <span>LPG</span>
-            <span class="blue">${country.lpg}€</span>
+            <span class="fuel-name">Auto-gas</span>
+            <span class="fuel-price blue">${priceCell(c.lpg, c)}</span>
           </div>
-
-          <div class="updated">
-            Updated: ${country.updated}
-          </div>
+          <div class="updated">Ažurirano: ${c.updated || '-'}</div>
         `;
-
-        cardsContainer.appendChild(card);
+        cards.appendChild(card);
       });
     }
 
-    loadPrices();
-  </script>
+    function setView(view) {
+      currentView = view;
+      document.getElementById('btnEur').classList.toggle('active', view === 'eur');
+      document.getElementById('btnLocal').classList.toggle('active', view === 'local');
+      render();
+    }
 
+    async function load() {
+      try {
+        const res = await fetch('fuel_prices.json?cb=' + Date.now());
+        dataCache = await res.json();
+        const dates = dataCache.countries.map(c => c.updated).filter(Boolean);
+        document.getElementById('meta').textContent =
+          `${dataCache.countries.length} zemlja${dataCache.countries.length === 1 ? '' : 'e'} · poslednje ažuriranje: ${dates[0] || '-'}`;
+        render();
+      } catch (err) {
+        document.getElementById('meta').textContent = 'Greška pri učitavanju podataka.';
+        console.error(err);
+      }
+    }
+    load();
+  </script>
 </body>
 </html>
