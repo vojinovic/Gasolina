@@ -1,8 +1,7 @@
 """
 Gasolina fuel price scraper.
-Sources:
-  - Serbia: cenagoriva.com (weekly max prices set by Ministry of Trade)
-  - FX:     Narodna banka Srbije (RSD/EUR middle rate)
+Source: nafta.hr (clean tables per fuel type with EUR + local currency).
+Strategy: read NIS Petrol row from each fuel-type table (largest market share).
 """
 
 import json
@@ -24,97 +23,37 @@ HEADERS = {
 JSON_PATH = Path("fuel_prices.json")
 
 
-def get_rsd_to_eur_rate() -> float:
-    """Fetch middle RSD->EUR rate from NBS. Falls back to a sane default."""
-    try:
-        url = "https://www.nbs.rs/kursnaListaModul/zaDevize.faces"
-        r = requests.get(url, headers=HEADERS, timeout=15)
-        r.raise_for_status()
-        # Try to find EUR row and parse the middle rate.
-        soup = BeautifulSoup(r.text, "html.parser")
-        text = soup.get_text(" ", strip=True)
-        match = re.search(r"EUR.*?(\d{2,3}[.,]\d{2,4})", text)
-        if match:
-            return float(match.group(1).replace(",", "."))
-    except Exception as exc:
-        print(f"[fx] NBS fetch failed: {exc}")
-    # Fallback. Updated periodically; keeps script working even if NBS changes.
-    return 117.0
+def to_float(s: str) -> float:
+    """Parse '191,00' or '1,63' or '1.63' into float."""
+    s = s.replace("\xa0", " ").strip()
+    m = re.search(r"(\d+[.,]?\d*)", s)
+    if not m:
+        raise ValueError(f"Cannot parse number from: {s!r}")
+    return float(m.group(1).replace(",", "."))
 
 
-def parse_price(text: str) -> float | None:
-    """Extract a number like '191,00' or '191.00' or '191' from text."""
-    if not text:
-        return None
-    match = re.search(r"(\d{2,4}[.,]\d{1,2})", text)
-    if match:
-        return float(match.group(1).replace(",", "."))
-    match = re.search(r"\b(\d{2,4})\b", text)
-    if match:
-        return float(match.group(1))
+def find_table_for_heading(soup: BeautifulSoup, heading_keywords: list[str]):
+    """Find the first <table> that follows an h2/h3 matching any of the keywords."""
+    for header in soup.find_all(["h2", "h3"]):
+        title = header.get_text(strip=True).lower()
+        if any(k.lower() in title for k in heading_keywords):
+            # Skip 'Premium' tables when looking for base fuels.
+            if "premium" in title and not any("premium" in k.lower() for k in heading_keywords):
+                continue
+            tbl = header.find_next("table")
+            if tbl:
+                return tbl
     return None
 
 
-def scrape_serbia() -> dict:
-    """Scrape current weekly max prices for Serbia from cenagoriva.com."""
-    url = "https://www.cenagoriva.com/"
-    r = requests.get(url, headers=HEADERS, timeout=20)
-    r.raise_for_status()
-    soup = BeautifulSoup(r.text, "html.parser")
-    page_text = soup.get_text(" ", strip=True)
-
-    # Find prices near each fuel keyword. Tolerant to small layout changes.
-    def find_near(label_patterns: list[str]) -> float | None:
-        for pat in label_patterns:
-            m = re.search(pat + r".{0,80}?(\d{2,4}[.,]?\d{0,2})\s*din", page_text, re.IGNORECASE)
-            if m:
-                return float(m.group(1).replace(",", "."))
+def get_company_row(table, company_name: str = "nis"):
+    """From a price table, return (eur, local) tuple for the given company."""
+    if table is None:
         return None
-
-    petrol_rsd = find_near([r"BMB\s*95", r"benzin\s*95"])
-    diesel_rsd = find_near([r"evro\s*dizel", r"evrodizel", r"\bdizel\b"])
-    lpg_rsd    = find_near([r"\bTNG\b", r"auto[-\s]?gas"])
-
-    if not all([petrol_rsd, diesel_rsd, lpg_rsd]):
-        raise RuntimeError(
-            f"Failed to parse Serbia prices. Got petrol={petrol_rsd}, "
-            f"diesel={diesel_rsd}, lpg={lpg_rsd}"
-        )
-
-    rate = get_rsd_to_eur_rate()
-    return {
-        "name": "Serbia",
-        "flag": "🇷🇸",
-        "currency": "RSD",
-        "fx_rate_eur": round(rate, 4),
-        "petrol95": {"local": petrol_rsd, "eur": round(petrol_rsd / rate, 2)},
-        "diesel":   {"local": diesel_rsd, "eur": round(diesel_rsd / rate, 2)},
-        "lpg":      {"local": lpg_rsd,    "eur": round(lpg_rsd    / rate, 2)},
-        "updated":  datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"),
-    }
-
-
-def main():
-    countries = []
-
-    try:
-        countries.append(scrape_serbia())
-        print("[ok] Serbia scraped")
-    except Exception as exc:
-        print(f"[err] Serbia: {exc}")
-        # Keep previous Serbia data if scrape fails, so site does not break.
-        if JSON_PATH.exists():
-            old = json.loads(JSON_PATH.read_text())
-            for c in old.get("countries", []):
-                if c.get("name") == "Serbia":
-                    countries.append(c)
-                    print("[fallback] kept previous Serbia data")
-                    break
-
-    payload = {"countries": countries}
-    JSON_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False))
-    print(f"[done] wrote {JSON_PATH} with {len(countries)} country/countries")
-
-
-if __name__ == "__main__":
-    main()
+    for row in table.find_all("tr"):
+        cells = row.find_all(["td", "th"])
+        if len(cells) < 3:
+            continue
+        company = cells[0].get_text(strip=True).lower()
+        if company_name.lower() in company:
+            return to_float(cells[1]
