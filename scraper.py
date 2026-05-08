@@ -263,7 +263,70 @@ def scrape_bulgaria():
         "lpg":      None,
         "updated":  now_utc(),
     }
+  
+def scrape_albania():
+    """globalpetrolprices.com - prices in ALL (Albanian Lek), updated monthly.
+    If scraping fails, falls back to last-known regulated prices.
+    """
+    # Albania uses fixed regulated prices set by Bordi i Transparencës (Transparency Board).
+    # Latest known prices (May 2026):
+    FALLBACK = {"petrol_all": 179.0, "diesel_all": 193.0, "lpg_all": 57.0}
+    ALL_TO_EUR = 100.0  # approx 1 EUR = 100 ALL (varies 98-102; close enough for display)
 
+    # Try to fetch fresh data from globalpetrolprices.com.
+    petrol = diesel = lpg = None
+    try:
+        r = requests.get(
+            "https://www.globalpetrolprices.com/Albania/gasoline_prices/",
+            headers=HEADERS, timeout=15,
+        )
+        if r.ok:
+            m = re.search(r"price of octane-95 gasoline is\s*([\d.]+)\s*Albanian Lek", r.text, re.IGNORECASE)
+            if m: petrol = float(m.group(1))
+    except Exception as exc:
+        print(f"[warn] Albania petrol fetch: {exc}")
+
+    try:
+        r = requests.get(
+            "https://www.globalpetrolprices.com/Albania/diesel_prices/",
+            headers=HEADERS, timeout=15,
+        )
+        if r.ok:
+            m = re.search(r"price of diesel is\s*([\d.]+)\s*Albanian Lek", r.text, re.IGNORECASE)
+            if m: diesel = float(m.group(1))
+    except Exception as exc:
+        print(f"[warn] Albania diesel fetch: {exc}")
+
+    try:
+        r = requests.get(
+            "https://www.globalpetrolprices.com/Albania/lpg_prices/",
+            headers=HEADERS, timeout=15,
+        )
+        if r.ok:
+            m = re.search(r"price of autogas is\s*([\d.]+)\s*Albanian Lek", r.text, re.IGNORECASE)
+            if m: lpg = float(m.group(1))
+    except Exception as exc:
+        print(f"[warn] Albania lpg fetch: {exc}")
+
+    # Use fallbacks if scraping failed
+    if petrol is None:
+        print("[fallback] Albania petrol using static value")
+        petrol = FALLBACK["petrol_all"]
+    if diesel is None:
+        print("[fallback] Albania diesel using static value")
+        diesel = FALLBACK["diesel_all"]
+    if lpg is None:
+        print("[fallback] Albania lpg using static value")
+        lpg = FALLBACK["lpg_all"]
+
+    return {
+        "name": "Albania", "flag": "🇦🇱", "currency": "ALL",
+        "fx_rate_eur": ALL_TO_EUR,
+        "petrol95": {"local": petrol, "eur": round(petrol / ALL_TO_EUR, 2)},
+        "diesel":   {"local": diesel, "eur": round(diesel / ALL_TO_EUR, 2)},
+        "lpg":      {"local": lpg,    "eur": round(lpg    / ALL_TO_EUR, 2)},
+        "updated":  now_utc(),
+    }
 
 # ------------------------------ main -------------------------------
 
@@ -276,6 +339,7 @@ SCRAPERS = [
     ("North Macedonia", scrape_macedonia),
     ("Hungary", scrape_hungary),
     ("Bulgaria", scrape_bulgaria),
+    ("Albania", scrape_albania),
 ]
 
 
