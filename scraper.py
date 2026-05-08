@@ -239,6 +239,31 @@ def scrape_hungary():
         "lpg":      {"local": l_eur, "eur": l_eur},
         "updated":  now_utc(),
     }
+  def scrape_bulgaria():
+    """fuel-prices.eu/Bulgaria/llms.txt - clean machine-readable format from EU Oil Bulletin."""
+    url = "https://www.fuel-prices.eu/Bulgaria/llms.txt"
+    r = requests.get(url, headers=HEADERS, timeout=20)
+    r.raise_for_status()
+    text = r.text
+
+    def grab(label):
+        # Lines look like: "Euro 95     €1.266      €4.79  ..."
+        m = re.search(rf"^{label}\s+€\s*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
+        if not m:
+            raise ValueError(f"Bulgaria: missing {label}")
+        return float(m.group(1).replace(",", "."))
+
+    petrol = grab(r"Euro\s*95")
+    diesel = grab(r"Diesel")
+    # No LPG in EU Oil Bulletin data.
+
+    return {
+        "name": "Bulgaria", "flag": "🇧🇬", "currency": "EUR", "fx_rate_eur": 1.0,
+        "petrol95": {"local": petrol, "eur": petrol},
+        "diesel":   {"local": diesel, "eur": diesel},
+        "lpg":      None,  # not reported by EU Oil Bulletin
+        "updated":  now_utc(),
+    }
 
 
 # ------------------------------ main -------------------------------
@@ -251,6 +276,7 @@ SCRAPERS = [
     ("Slovenia", scrape_slovenia),
     ("North Macedonia", scrape_macedonia),
     ("Hungary", scrape_hungary),
+    ("Bulgaria", scrape_bulgaria),
 ]
 
 def main():
