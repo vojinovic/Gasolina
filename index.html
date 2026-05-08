@@ -214,6 +214,13 @@
             </select>
           </div>
           <div class="calc-input">
+            <label for="returnSel">Povratak</label>
+            <select id="returnSel" onchange="renderCalc()">
+              <option value="oneway">Samo odlazak</option>
+              <option value="roundtrip" selected>Povratak (ista ruta)</option>
+            </select>
+          </div>
+          <div class="calc-input">
             <label for="consInp">Potrošnja (L/100km)</label>
             <div class="range-row">
               <input id="consInp" type="range" min="3" max="15" step="0.1" value="7" oninput="renderCalc()"/>
@@ -390,14 +397,20 @@
       const startPct = parseFloat(document.getElementById('startInp').value);
 
       if (!route || !dataCache) return null;
+      const returnMode = document.getElementById('returnSel').value;
+      const isRoundtrip = returnMode === 'roundtrip';
+      // For roundtrip, append legs in reverse so the trip plan models the return drive too.
+      const tripLegs = isRoundtrip
+        ? [...route.legs, ...route.legs.slice().reverse()]
+        : route.legs;
 
-      const totalKm = route.legs.reduce((sum, l) => sum + l.km, 0);
+      const totalKm = tripLegs.reduce((sum, l) => sum + l.km, 0);
       const totalFuelNeeded = (totalKm * cons) / 100; // liters needed for the whole trip
       const startFuel = (startPct / 100) * tank;
       const fuelToBuy = Math.max(0, totalFuelNeeded - startFuel);
 
       // Per-leg fuel consumption
-      const legs = route.legs.map(l => {
+        const legs = tripLegs.map(l => {
         const country = findCountry(l.c);
         return {
           ...l,
@@ -514,8 +527,7 @@
         smartHtml = `<div class="step">Imaš dovoljno goriva za ceo put. nema potrebe za punjenjem.</div>`;
       } else {
         t.plan.forEach((p, i) => {
-          smartHtml += `<div class="step">${i + 1}. ${p.flag} <strong>${p.label}</strong>: kupi <strong>${p.liters.toFixed(1).replace('.', ',')} L</strong> po ${fmtEur(p.price)} = <strong>${fmtEur(p.cost)}</strong>${p.forced ? ' <span style="color:#f87171">(prinudno)</span>' : ''}</div>`;
-        });
+smartHtml += `<div class="step">${i + 1}. ${p.flag} <strong>${p.label}</strong>: kupi <strong>${p.liters.toFixed(1).replace('.', ',')} L</strong> po ${fmtEur(p.price)} = <strong>${fmtEur(p.cost)}</strong></div>`;        });
       }
 
       const naiveHtml = t.naiveCost !== null
