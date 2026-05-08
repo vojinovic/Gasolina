@@ -222,6 +222,24 @@ def scrape_macedonia():
         "updated":  now_utc(),
     }
 
+def scrape_hungary():
+    """Hungary table format: Gorivo | Min EUR | Avg EUR | Max EUR. We use Avg column."""
+    soup = fetch_soup("https://nafta.hr/sr/cene-goriva-madarska/")
+    # eur_col=2 picks the Avg column. local_col same as eur_col since prices already in EUR.
+    petrol = find_row_in_single_table(soup, ["Eurosuper 95 E10", "Eurosuper 95"], eur_col=2, local_col=2)
+    diesel = find_row_in_single_table(soup, ["Dizel"], eur_col=2, local_col=2)
+    lpg    = find_row_in_single_table(soup, ["Autoplin", "LPG"], eur_col=2, local_col=2)
+    if not all([petrol, diesel, lpg]):
+        raise RuntimeError(f"Hungary: petrol={petrol}, diesel={diesel}, lpg={lpg}")
+    p_eur, _ = petrol; d_eur, _ = diesel; l_eur, _ = lpg
+    return {
+        "name": "Hungary", "flag": "🇭🇺", "currency": "EUR", "fx_rate_eur": 1.0,
+        "petrol95": {"local": p_eur, "eur": p_eur},
+        "diesel":   {"local": d_eur, "eur": d_eur},
+        "lpg":      {"local": l_eur, "eur": l_eur},
+        "updated":  now_utc(),
+    }
+
 
 # ------------------------------ main -------------------------------
 
@@ -232,8 +250,8 @@ SCRAPERS = [
     ("Montenegro", scrape_montenegro),
     ("Slovenia", scrape_slovenia),
     ("North Macedonia", scrape_macedonia),
+    ("Hungary", scrape_hungary),
 ]
-
 
 def main():
     countries = []
