@@ -7,6 +7,8 @@ Sources:
   - Montenegro: nafta.hr (single combined table)
   - Slovenia:   nafta.hr (single combined table, EUR-only)
   - Macedonia:  nafta.hr (4-column table: fuel/MKD/EUR/RSD)
+  - Hungary:    nafta.hr (Min/Avg/Max EUR table)
+  - Bulgaria:   fuel-prices.eu (EU Oil Bulletin, machine-readable)
 """
 
 import json
@@ -108,9 +110,6 @@ def scrape_serbia():
 
 
 def scrape_croatia():
-    """cijenegoriva.hr: lists prices per company under each fuel <h2>.
-    We walk h2 sections, locate the INA card, then read its 'Medijan' price.
-    """
     soup = fetch_soup("https://cijenegoriva.hr/")
 
     def median_under_section(section_keyword: str, company: str = "INA"):
@@ -222,10 +221,10 @@ def scrape_macedonia():
         "updated":  now_utc(),
     }
 
+
 def scrape_hungary():
     """Hungary table format: Gorivo | Min EUR | Avg EUR | Max EUR. We use Avg column."""
     soup = fetch_soup("https://nafta.hr/sr/cene-goriva-madarska/")
-    # eur_col=2 picks the Avg column. local_col same as eur_col since prices already in EUR.
     petrol = find_row_in_single_table(soup, ["Eurosuper 95 E10", "Eurosuper 95"], eur_col=2, local_col=2)
     diesel = find_row_in_single_table(soup, ["Dizel"], eur_col=2, local_col=2)
     lpg    = find_row_in_single_table(soup, ["Autoplin", "LPG"], eur_col=2, local_col=2)
@@ -239,7 +238,9 @@ def scrape_hungary():
         "lpg":      {"local": l_eur, "eur": l_eur},
         "updated":  now_utc(),
     }
-  def scrape_bulgaria():
+
+
+def scrape_bulgaria():
     """fuel-prices.eu/Bulgaria/llms.txt - clean machine-readable format from EU Oil Bulletin."""
     url = "https://www.fuel-prices.eu/Bulgaria/llms.txt"
     r = requests.get(url, headers=HEADERS, timeout=20)
@@ -247,7 +248,6 @@ def scrape_hungary():
     text = r.text
 
     def grab(label):
-        # Lines look like: "Euro 95     €1.266      €4.79  ..."
         m = re.search(rf"^{label}\s+€\s*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
         if not m:
             raise ValueError(f"Bulgaria: missing {label}")
@@ -255,13 +255,12 @@ def scrape_hungary():
 
     petrol = grab(r"Euro\s*95")
     diesel = grab(r"Diesel")
-    # No LPG in EU Oil Bulletin data.
 
     return {
         "name": "Bulgaria", "flag": "🇧🇬", "currency": "EUR", "fx_rate_eur": 1.0,
         "petrol95": {"local": petrol, "eur": petrol},
         "diesel":   {"local": diesel, "eur": diesel},
-        "lpg":      None,  # not reported by EU Oil Bulletin
+        "lpg":      None,
         "updated":  now_utc(),
     }
 
@@ -278,6 +277,7 @@ SCRAPERS = [
     ("Hungary", scrape_hungary),
     ("Bulgaria", scrape_bulgaria),
 ]
+
 
 def main():
     countries = []
