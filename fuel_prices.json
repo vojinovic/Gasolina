@@ -17,7 +17,7 @@
         "local": 108.4,
         "eur": 0.92
       },
-      "updated": "2026-05-08 11:35 UTC"
+      "updated": "2026-05-08 19:23 UTC"
     },
     {
       "name": "Croatia",
@@ -36,7 +36,7 @@
         "local": 0.95,
         "eur": 0.95
       },
-      "updated": "2026-05-08 11:35 UTC"
+      "updated": "2026-05-08 19:23 UTC"
     },
     {
       "name": "Bosnia and Herzegovina",
@@ -55,7 +55,7 @@
         "local": 1.35,
         "eur": 0.69
       },
-      "updated": "2026-05-08 11:35 UTC"
+      "updated": "2026-05-08 19:23 UTC"
     },
     {
       "name": "Montenegro",
@@ -71,7 +71,7 @@
         "eur": 1.71
       },
       "lpg": null,
-      "updated": "2026-05-08 11:35 UTC"
+      "updated": "2026-05-08 19:23 UTC"
     },
     {
       "name": "Slovenia",
@@ -90,7 +90,7 @@
         "local": 1.04,
         "eur": 1.04
       },
-      "updated": "2026-05-08 11:35 UTC"
+      "updated": "2026-05-08 19:23 UTC"
     },
     {
       "name": "North Macedonia",
@@ -109,7 +109,7 @@
         "local": 54.0,
         "eur": 0.88
       },
-      "updated": "2026-05-08 11:35 UTC"
+      "updated": "2026-05-08 19:23 UTC"
     },
     {
       "name": "Hungary",
@@ -128,7 +128,7 @@
         "local": 1.01,
         "eur": 1.01
       },
-      "updated": "2026-05-08 11:35 UTC"
+      "updated": "2026-05-08 19:23 UTC"
     },
     {
       "name": "Bulgaria",
@@ -144,7 +144,7 @@
         "eur": 1.757
       },
       "lpg": null,
-      "updated": "2026-05-08 11:35 UTC"
+      "updated": "2026-05-08 19:23 UTC"
     },
     {
       "name": "Albania",
@@ -163,7 +163,7 @@
         "local": 64.0,
         "eur": 0.64
       },
-      "updated": "2026-05-08 11:35 UTC"
+      "updated": "2026-05-08 19:23 UTC"
     }
   ]
 }
