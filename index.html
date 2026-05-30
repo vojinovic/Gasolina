@@ -6,13 +6,15 @@
   <title>Gasolina. cene goriva na Balkanu</title>
   <style>
     * { box-sizing: border-box; }
-    body {
+  body {
       margin: 0;
       padding: 40px 24px;
+      padding-top: max(40px, env(safe-area-inset-top));
       background: #0f172a;
       color: white;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
       min-height: 100vh;
+      -webkit-text-size-adjust: 100%;
     }
     .container { max-width: 1280px; margin: 0 auto; }
     h1 { font-size: 42px; margin: 0 0 4px; letter-spacing: -0.5px; }
@@ -160,8 +162,36 @@
       text-align: center; padding: 60px 20px; color: #64748b;
     }
 
-    @media (max-width: 720px) {
+@media (max-width: 720px) {
       .results { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 20px 14px;
+        padding-top: max(24px, env(safe-area-inset-top));
+      }
+      h1 { font-size: 32px; }
+      .subtitle { font-size: 16px; }
+      .cards { grid-template-columns: 1fr; gap: 14px; }
+      .card { padding: 18px; }
+      .calc-form { padding: 18px; }
+      .calc-grid { grid-template-columns: 1fr; gap: 14px; }
+      .controls { gap: 12px; }
+      .tabs button, .toggle button { padding: 10px 16px; }
+      .savings-banner .amount { font-size: 30px; }
+      .result-box .total { font-size: 26px; }
+      /* Thicker sliders, easier to grab with a finger */
+      .calc-input input[type="range"] { height: 28px; }
+    }
+
+    /* Remove blue tap-focus outlines, use subtle ring instead */
+    button:focus, select:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4);
+    }
+    button:focus:not(:focus-visible), select:focus:not(:focus-visible) {
+      box-shadow: none;
     }
   </style>
 </head>
