@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gasolina. cene goriva na Balkanu</title>
+  <title>Gasolina. cene goriva i granice na Balkanu</title>
   <style>
     * { box-sizing: border-box; }
-  body {
+    body {
       margin: 0;
       padding: 40px 24px;
       padding-top: max(40px, env(safe-area-inset-top));
@@ -21,14 +21,9 @@
     .subtitle { color: #94a3b8; margin: 0 0 8px; font-size: 18px; }
     .meta { color: #64748b; margin: 0 0 24px; font-size: 13px; }
 
-    /* Top tabs */
     .tabs {
-      display: inline-flex;
-      gap: 0;
-      background: #1e293b;
-      border-radius: 999px;
-      padding: 4px;
-      margin-bottom: 24px;
+      display: inline-flex; gap: 0; background: #1e293b;
+      border-radius: 999px; padding: 4px; margin-bottom: 24px; flex-wrap: wrap;
     }
     .tabs button {
       background: transparent; color: #94a3b8; border: 0;
@@ -37,36 +32,21 @@
     }
     .tabs button.active { background: #38bdf8; color: #0f172a; }
 
-    .controls {
-      display: flex; flex-wrap: wrap; gap: 16px;
-      align-items: center; margin-bottom: 28px;
-    }
-    .toggle {
-      display: inline-flex; gap: 0;
-      background: #1e293b; border-radius: 999px; padding: 4px;
-    }
+    .controls { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-bottom: 28px; }
+    .toggle { display: inline-flex; gap: 0; background: #1e293b; border-radius: 999px; padding: 4px; }
     .toggle button {
       background: transparent; color: #94a3b8; border: 0;
       padding: 8px 18px; border-radius: 999px; cursor: pointer;
       font-size: 14px; font-weight: 600; transition: all 0.15s;
     }
     .toggle button.active { background: #38bdf8; color: #0f172a; }
-    .sort-wrap {
-      display: inline-flex; align-items: center; gap: 10px;
-      color: #94a3b8; font-size: 14px;
-    }
+    .sort-wrap { display: inline-flex; align-items: center; gap: 10px; color: #94a3b8; font-size: 14px; }
     .sort-wrap select, .calc-input select, .calc-input input {
-      background: #1e293b; color: white;
-      border: 1px solid #334155; border-radius: 8px;
-      padding: 8px 12px; font-size: 14px; cursor: pointer;
+      background: #1e293b; color: white; border: 1px solid #334155;
+      border-radius: 8px; padding: 8px 12px; font-size: 14px; cursor: pointer;
     }
 
-    /* Cards (price view) */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
-    }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
     .card {
       background: #1e293b; border-radius: 16px; padding: 24px;
       border: 1px solid #334155; transition: all 0.15s;
@@ -74,103 +54,77 @@
     .card:hover { transform: translateY(-2px); border-color: #475569; }
     .country { font-size: 24px; margin-bottom: 4px; font-weight: 700; }
     .currency-info { font-size: 12px; color: #64748b; margin-bottom: 20px; }
-    .price-row {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 14px; font-size: 17px; gap: 12px;
-    }
+    .price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 17px; gap: 12px; }
     .fuel-name { color: #cbd5e1; display: flex; align-items: center; gap: 6px; }
     .fuel-price { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
     .fuel-price .secondary { font-size: 12px; color: #64748b; font-weight: 400; margin-left: 6px; }
-    .green { color: #22c55e; }
-    .yellow { color: #facc15; }
-    .blue { color: #38bdf8; }
+    .green { color: #22c55e; } .yellow { color: #facc15; } .blue { color: #38bdf8; }
     .badge {
       display: inline-block; padding: 2px 8px; border-radius: 999px;
-      font-size: 10px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle;
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle;
     }
     .badge-best { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.4); }
     .badge-worst { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .updated {
-      margin-top: 20px; padding-top: 16px;
-      border-top: 1px solid #334155; color: #64748b; font-size: 12px;
-    }
+    .updated { margin-top: 20px; padding-top: 16px; border-top: 1px solid #334155; color: #64748b; font-size: 12px; }
 
-    /* Calculator */
-    .calc-form {
-      background: #1e293b; border: 1px solid #334155; border-radius: 16px;
-      padding: 24px; margin-bottom: 28px;
-    }
-    .calc-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-    }
+    .calc-form { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 24px; margin-bottom: 28px; }
+    .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
     .calc-input { display: flex; flex-direction: column; gap: 6px; }
     .calc-input label { color: #94a3b8; font-size: 13px; }
     .calc-input select, .calc-input input { width: 100%; }
-    .calc-input .range-row {
-      display: flex; align-items: center; gap: 10px;
-    }
-    .calc-input input[type="range"] {
-      flex: 1; padding: 0; cursor: pointer; background: transparent; border: 0;
-    }
-    .calc-input .val {
-      min-width: 70px; text-align: right; font-weight: 600; color: white;
-      font-variant-numeric: tabular-nums;
-    }
+    .calc-input .range-row { display: flex; align-items: center; gap: 10px; }
+    .calc-input input[type="range"] { flex: 1; padding: 0; cursor: pointer; background: transparent; border: 0; }
+    .calc-input .val { min-width: 70px; text-align: right; font-weight: 600; color: white; font-variant-numeric: tabular-nums; }
 
-    .results {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-      margin-bottom: 24px;
-    }
-    .result-box {
-      background: #1e293b; border: 1px solid #334155;
-      border-radius: 16px; padding: 20px;
-    }
+    .results { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .result-box { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 20px; }
     .result-box.smart { border-color: rgba(34, 197, 94, 0.5); }
-    .result-box h3 {
-      margin: 0 0 4px; font-size: 14px; text-transform: uppercase;
-      letter-spacing: 0.5px; color: #94a3b8; font-weight: 600;
-    }
-    .result-box .total {
-      font-size: 32px; font-weight: 700; margin: 8px 0 16px;
-      font-variant-numeric: tabular-nums;
-    }
+    .result-box h3 { margin: 0 0 4px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 600; }
+    .result-box .total { font-size: 32px; font-weight: 700; margin: 8px 0 16px; font-variant-numeric: tabular-nums; }
     .result-box.smart .total { color: #22c55e; }
-    .result-box .step {
-      font-size: 14px; color: #cbd5e1; margin-bottom: 6px; line-height: 1.5;
-    }
+    .result-box .step { font-size: 14px; color: #cbd5e1; margin-bottom: 6px; line-height: 1.5; }
     .savings-banner {
       background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(56, 189, 248, 0.1));
-      border: 1px solid rgba(34, 197, 94, 0.4);
-      border-radius: 16px; padding: 20px 24px; text-align: center;
-      margin-bottom: 24px;
+      border: 1px solid rgba(34, 197, 94, 0.4); border-radius: 16px; padding: 20px 24px; text-align: center; margin-bottom: 24px;
     }
-    .savings-banner .label {
-      color: #94a3b8; font-size: 13px; text-transform: uppercase;
-      letter-spacing: 1px; margin-bottom: 8px;
-    }
-    .savings-banner .amount {
-      font-size: 36px; font-weight: 700; color: #22c55e;
-      font-variant-numeric: tabular-nums;
-    }
-    .savings-banner .pct {
-      color: #94a3b8; font-size: 14px; margin-top: 6px;
-    }
+    .savings-banner .label { color: #94a3b8; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .savings-banner .amount { font-size: 36px; font-weight: 700; color: #22c55e; font-variant-numeric: tabular-nums; }
+    .savings-banner .pct { color: #94a3b8; font-size: 14px; margin-top: 6px; }
 
-    .empty {
-      text-align: center; padding: 60px 20px; color: #64748b;
+    /* Borders / crossings */
+    .border-group { margin-bottom: 32px; }
+    .border-group h2 {
+      font-size: 18px; margin: 0 0 14px; color: #e2e8f0;
+      display: flex; align-items: center; gap: 8px;
     }
-
-@media (max-width: 720px) {
-      .results { grid-template-columns: 1fr; }
+    .border-note {
+      background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 12px; padding: 14px 18px; margin-bottom: 24px;
+      color: #cbd5e1; font-size: 13px; line-height: 1.6;
     }
+    .crossing-card {
+      background: #1e293b; border-radius: 14px; padding: 18px 20px;
+      border: 1px solid #334155; display: flex; flex-direction: column; gap: 12px;
+    }
+    .crossing-card:hover { border-color: #475569; }
+    .crossing-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .crossing-name { font-size: 18px; font-weight: 700; }
+    .crossing-dir { font-size: 12px; color: #64748b; margin-top: 2px; }
+    .crossing-wait { font-size: 14px; color: #94a3b8; }
+    .crossing-wait strong { color: #e2e8f0; }
+    .cam-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: #38bdf8; color: #0f172a; text-decoration: none;
+      padding: 10px 16px; border-radius: 10px; font-weight: 600; font-size: 14px;
+      transition: background 0.15s;
+    }
+    .cam-btn:hover { background: #0ea5e9; }
 
+    .empty { text-align: center; padding: 60px 20px; color: #64748b; }
+
+    @media (max-width: 720px) { .results { grid-template-columns: 1fr; } }
     @media (max-width: 600px) {
-      body {
-        padding: 20px 14px;
-        padding-top: max(24px, env(safe-area-inset-top));
-      }
+      body { padding: 20px 14px; padding-top: max(24px, env(safe-area-inset-top)); }
       h1 { font-size: 32px; }
       .subtitle { font-size: 16px; }
       .cards { grid-template-columns: 1fr; gap: 14px; }
@@ -181,32 +135,25 @@
       .tabs button, .toggle button { padding: 10px 16px; }
       .savings-banner .amount { font-size: 30px; }
       .result-box .total { font-size: 26px; }
-      /* Thicker sliders, easier to grab with a finger */
       .calc-input input[type="range"] { height: 28px; }
     }
-
-    /* Remove blue tap-focus outlines, use subtle ring instead */
-    button:focus, select:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4);
-    }
-    button:focus:not(:focus-visible), select:focus:not(:focus-visible) {
-      box-shadow: none;
-    }
+    button:focus, select:focus { outline: none; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4); }
+    button:focus:not(:focus-visible), select:focus:not(:focus-visible) { box-shadow: none; }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>⛽ Gasolina</h1>
-    <p class="subtitle">Cene goriva na Balkanu</p>
+    <p class="subtitle">Cene goriva i granice na Balkanu</p>
     <p class="meta" id="meta">Učitavanje...</p>
 
     <div class="tabs" role="tablist">
       <button id="tabPrices" class="active" onclick="setTab('prices')">Cene</button>
       <button id="tabCalc" onclick="setTab('calc')">Kalkulator puta</button>
+      <button id="tabBorders" onclick="setTab('borders')">Granice</button>
     </div>
 
-    <!-- PRICES VIEW -->
+    <!-- PRICES -->
     <section id="viewPrices">
       <div class="controls">
         <div class="toggle" role="tablist">
@@ -227,7 +174,7 @@
       <div class="cards" id="cards"></div>
     </section>
 
-    <!-- CALCULATOR VIEW -->
+    <!-- CALCULATOR -->
     <section id="viewCalc" style="display:none">
       <div class="calc-form">
         <div class="calc-grid">
@@ -273,77 +220,67 @@
           </div>
         </div>
       </div>
-
       <div id="calcOutput"></div>
+    </section>
+
+    <!-- BORDERS -->
+    <section id="viewBorders" style="display:none">
+      <div class="border-note">
+        📷 Kamere i informacije o stanju na prelazima su vlasništvo MUP-a Srbije. Klikom na "Kamera uživo" otvara se zvanična MUP stranica u novom tabu, gde možeš izabrati željeni prelaz i smer (ulaz/izlaz).
+      </div>
+      <div id="bordersContainer"></div>
     </section>
   </div>
 
   <script>
-    /* ============ DATA ============ */
     let dataCache = null;
     let currentTab = 'prices';
     let currentView = 'eur';
     let currentSort = 'default';
 
-    /* Country code → name mapping (matches scraper output) */
-const COUNTRY_NAMES = {
-      RS: 'Serbia',
-      HR: 'Croatia',
-      BA: 'Bosnia and Herzegovina',
-      ME: 'Montenegro',
-      SI: 'Slovenia',
-      MK: 'North Macedonia',
-      HU: 'Hungary',
-      BG: 'Bulgaria',
-      AL: 'Albania',
-      GR: 'Greece',
+    const COUNTRY_NAMES = {
+      RS: 'Serbia', HR: 'Croatia', BA: 'Bosnia and Herzegovina', ME: 'Montenegro',
+      SI: 'Slovenia', MK: 'North Macedonia', HU: 'Hungary', BG: 'Bulgaria', AL: 'Albania', GR: 'Greece',
     };
     const COUNTRY_FLAG = {
       RS: '🇷🇸', HR: '🇭🇷', BA: '🇧🇦', ME: '🇲🇪', SI: '🇸🇮', MK: '🇲🇰',
-      HU: '🇭🇺', BG: '🇧🇬', AL: '🇦🇱', GR: '🇬🇷',
+      HU: '🇭🇺', BG: '🇧🇬', AL: '🇦🇱', GR: '🇬🇷', RO: '🇷🇴',
     };
     const COUNTRY_LABEL = {
-      RS: 'Srbija', HR: 'Hrvatska', BA: 'BiH', ME: 'Crna Gora',
-      SI: 'Slovenija', MK: 'S. Makedonija',
-      HU: 'Mađarska', BG: 'Bugarska', AL: 'Albanija', GR: 'Grčka',
+      RS: 'Srbija', HR: 'Hrvatska', BA: 'BiH', ME: 'Crna Gora', SI: 'Slovenija',
+      MK: 'S. Makedonija', HU: 'Mađarska', BG: 'Bugarska', AL: 'Albanija', GR: 'Grčka', RO: 'Rumunija',
     };
 
-    /* Predefined routes: each has ordered list of {country, km}.
-       'km' is approx driving distance within that country. */
     const ROUTES = [
-      { id: 'bg-bd',  label: 'Beograd → Budva (Crna Gora)',
-        legs: [{c:'RS', km:330}, {c:'ME', km:200}] },
-      { id: 'bg-sa',  label: 'Beograd → Sarajevo',
-        legs: [{c:'RS', km:140}, {c:'BA', km:150}] },
-      { id: 'bg-st',  label: 'Beograd → Split',
-        legs: [{c:'RS', km:120}, {c:'HR', km:600}] },
-      { id: 'bg-sk',  label: 'Beograd → Skopje',
-        legs: [{c:'RS', km:330}, {c:'MK', km:110}] },
-      { id: 'bg-lj',  label: 'Beograd → Ljubljana',
-        legs: [{c:'RS', km:120}, {c:'HR', km:280}, {c:'SI', km:130}] },
-      { id: 'bg-zg',  label: 'Beograd → Zagreb',
-        legs: [{c:'RS', km:130}, {c:'HR', km:270}] },
-      { id: 'ni-sk',  label: 'Niš → Skopje',
-        legs: [{c:'RS', km:120}, {c:'MK', km:110}] },
-      { id: 'zg-bg',  label: 'Zagreb → Beograd',
-        legs: [{c:'HR', km:270}, {c:'RS', km:130}] },
-      { id: 'lj-bg',  label: 'Ljubljana → Beograd',
-        legs: [{c:'SI', km:130}, {c:'HR', km:280}, {c:'RS', km:120}] },
-      { id: 'st-sa',  label: 'Split → Sarajevo',
-        legs: [{c:'HR', km:140}, {c:'BA', km:110}] },
-      { id: 'bg-so',  label: 'Beograd → Solun (Grčka)',
-        legs: [{c:'RS', km:330}, {c:'MK', km:170}, {c:'GR', km:160}] },
-      { id: 'bg-sf',  label: 'Beograd → Sofija',
-        legs: [{c:'RS', km:240}, {c:'BG', km:150}] },
-      { id: 'ni-sf',  label: 'Niš → Sofija',
-        legs: [{c:'RS', km:60}, {c:'BG', km:105}] },
-      { id: 'bg-bp',  label: 'Beograd → Budimpešta',
-        legs: [{c:'RS', km:170}, {c:'HU', km:210}] },
-      { id: 'bg-ti',  label: 'Beograd → Tirana (Albanija)',
-        legs: [{c:'RS', km:330}, {c:'ME', km:200}, {c:'AL', km:300}] },
+      { id: 'bg-bd', label: 'Beograd → Budva (Crna Gora)', legs: [{c:'RS', km:330}, {c:'ME', km:200}] },
+      { id: 'bg-sa', label: 'Beograd → Sarajevo', legs: [{c:'RS', km:140}, {c:'BA', km:150}] },
+      { id: 'bg-st', label: 'Beograd → Split', legs: [{c:'RS', km:120}, {c:'HR', km:600}] },
+      { id: 'bg-sk', label: 'Beograd → Skopje', legs: [{c:'RS', km:330}, {c:'MK', km:110}] },
+      { id: 'bg-lj', label: 'Beograd → Ljubljana', legs: [{c:'RS', km:120}, {c:'HR', km:280}, {c:'SI', km:130}] },
+      { id: 'bg-zg', label: 'Beograd → Zagreb', legs: [{c:'RS', km:130}, {c:'HR', km:270}] },
+      { id: 'ni-sk', label: 'Niš → Skopje', legs: [{c:'RS', km:120}, {c:'MK', km:110}] },
+      { id: 'zg-bg', label: 'Zagreb → Beograd', legs: [{c:'HR', km:270}, {c:'RS', km:130}] },
+      { id: 'lj-bg', label: 'Ljubljana → Beograd', legs: [{c:'SI', km:130}, {c:'HR', km:280}, {c:'RS', km:120}] },
+      { id: 'st-sa', label: 'Split → Sarajevo', legs: [{c:'HR', km:140}, {c:'BA', km:110}] },
+      { id: 'bg-so', label: 'Beograd → Solun (Grčka)', legs: [{c:'RS', km:330}, {c:'MK', km:170}, {c:'GR', km:160}] },
+      { id: 'bg-sf', label: 'Beograd → Sofija', legs: [{c:'RS', km:240}, {c:'BG', km:150}] },
+      { id: 'ni-sf', label: 'Niš → Sofija', legs: [{c:'RS', km:60}, {c:'BG', km:105}] },
+      { id: 'bg-bp', label: 'Beograd → Budimpešta', legs: [{c:'RS', km:170}, {c:'HU', km:210}] },
+      { id: 'bg-ti', label: 'Beograd → Tirana (Albanija)', legs: [{c:'RS', km:330}, {c:'ME', km:200}, {c:'AL', km:300}] },
     ];
 
-    /* ============ HELPERS ============ */
+    // Official MUP border crossings grouped by neighbouring country.
+    const MUP_CAMERAS_URL = 'https://www.mup.gov.rs/wps/portal/sr/kamerе/kamerеGP';
+    const BORDER_GROUPS = [
+      { country: 'HU', crossings: ['Horgoš', 'Kelebija', 'Đala'] },
+      { country: 'HR', crossings: ['Batrovci', 'Šid'] },
+      { country: 'BA', crossings: ['Kotroman', 'Mali Zvornik', 'Sremska Rača', 'Trbušnica'] },
+      { country: 'ME', crossings: ['Gostun', 'Jabuka', 'Špiljani'] },
+      { country: 'BG', crossings: ['Gradina', 'Vrška Čuka'] },
+      { country: 'MK', crossings: ['Preševo'] },
+      { country: 'RO', crossings: ['Vatin'] },
+    ];
+
     function fmt(value, currency) {
       if (value === null || value === undefined) return '-';
       const opts = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
@@ -354,8 +291,7 @@ const COUNTRY_NAMES = {
     function fmtEur(value) { return fmt(value, 'EUR'); }
     function findCountry(code) {
       if (!dataCache) return null;
-      const name = COUNTRY_NAMES[code];
-      return dataCache.countries.find(c => c.name === name) || null;
+      return dataCache.countries.find(c => c.name === COUNTRY_NAMES[code]) || null;
     }
     function priceCell(fuel, country) {
       if (!fuel) return '<span style="color:#475569">-</span>';
@@ -365,7 +301,6 @@ const COUNTRY_NAMES = {
       return `${fmt(fuel.local, country.currency)}<span class="secondary">${fmt(fuel.eur, 'EUR')}</span>`;
     }
 
-    /* ============ PRICES VIEW ============ */
     function computeBestWorst(countries) {
       const fuels = ['petrol95', 'diesel', 'lpg'];
       const result = { petrol95: {}, diesel: {}, lpg: {} };
@@ -389,51 +324,33 @@ const COUNTRY_NAMES = {
       const arr = [...countries];
       const byEur = (k) => (a, b) => (a[k]?.eur ?? Infinity) - (b[k]?.eur ?? Infinity);
       switch (currentSort) {
-        case 'name':     return arr.sort((a, b) => a.name.localeCompare(b.name));
+        case 'name': return arr.sort((a, b) => a.name.localeCompare(b.name));
         case 'petrol95': return arr.sort(byEur('petrol95'));
-        case 'diesel':   return arr.sort(byEur('diesel'));
-        case 'lpg':      return arr.sort(byEur('lpg'));
-        default:         return arr;
+        case 'diesel': return arr.sort(byEur('diesel'));
+        case 'lpg': return arr.sort(byEur('lpg'));
+        default: return arr;
       }
     }
     function renderPrices() {
       const cards = document.getElementById('cards');
       cards.innerHTML = '';
-      if (!dataCache?.countries?.length) {
-        cards.innerHTML = '<div class="empty">Nema podataka za prikaz.</div>';
-        return;
-      }
+      if (!dataCache?.countries?.length) { cards.innerHTML = '<div class="empty">Nema podataka.</div>'; return; }
       const bw = computeBestWorst(dataCache.countries);
-      const sorted = sortCountries(dataCache.countries);
-      sorted.forEach(c => {
+      sortCountries(dataCache.countries).forEach(c => {
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
           <div class="country">${c.flag || ''} ${c.name}</div>
           <div class="currency-info">Valuta: ${c.currency}${c.fx_rate_eur && c.currency !== 'EUR' ? ` · 1 EUR ≈ ${c.fx_rate_eur} ${c.currency}` : ''}</div>
-          <div class="price-row">
-            <span class="fuel-name">Benzin 95${badgeFor('petrol95', c, bw)}</span>
-            <span class="fuel-price green">${priceCell(c.petrol95, c)}</span>
-          </div>
-          <div class="price-row">
-            <span class="fuel-name">Dizel${badgeFor('diesel', c, bw)}</span>
-            <span class="fuel-price yellow">${priceCell(c.diesel, c)}</span>
-          </div>
-          <div class="price-row">
-            <span class="fuel-name">Auto-gas${badgeFor('lpg', c, bw)}</span>
-            <span class="fuel-price blue">${priceCell(c.lpg, c)}</span>
-          </div>
-          <div class="updated">Ažurirano: ${c.updated || '-'}</div>
-        `;
+          <div class="price-row"><span class="fuel-name">Benzin 95${badgeFor('petrol95', c, bw)}</span><span class="fuel-price green">${priceCell(c.petrol95, c)}</span></div>
+          <div class="price-row"><span class="fuel-name">Dizel${badgeFor('diesel', c, bw)}</span><span class="fuel-price yellow">${priceCell(c.diesel, c)}</span></div>
+          <div class="price-row"><span class="fuel-name">Auto-gas${badgeFor('lpg', c, bw)}</span><span class="fuel-price blue">${priceCell(c.lpg, c)}</span></div>
+          <div class="updated">Ažurirano: ${c.updated || '-'}</div>`;
         cards.appendChild(card);
       });
     }
 
-    /* ============ CALCULATOR ============ */
-    function getFuelEur(country, fuelKey) {
-      if (!country || !country[fuelKey]) return null;
-      return country[fuelKey].eur;
-    }
+    function getFuelEur(country, fuelKey) { return (country && country[fuelKey]) ? country[fuelKey].eur : null; }
 
     function computeTrip() {
       const route = ROUTES.find(r => r.id === document.getElementById('routeSel').value);
@@ -441,197 +358,141 @@ const COUNTRY_NAMES = {
       const cons = parseFloat(document.getElementById('consInp').value);
       const tank = parseFloat(document.getElementById('tankInp').value);
       const startPct = parseFloat(document.getElementById('startInp').value);
-
       if (!route || !dataCache) return null;
+
       const returnMode = document.getElementById('returnSel').value;
       const isRoundtrip = returnMode === 'roundtrip';
-      // For roundtrip, append legs in reverse so the trip plan models the return drive too.
-      const tripLegs = isRoundtrip
-        ? [...route.legs, ...route.legs.slice().reverse()]
-        : route.legs;
+      const tripLegs = isRoundtrip ? [...route.legs, ...route.legs.slice().reverse()] : route.legs;
 
       const totalKm = tripLegs.reduce((sum, l) => sum + l.km, 0);
-      const totalFuelNeeded = (totalKm * cons) / 100; // liters needed for the whole trip
+      const totalFuelNeeded = (totalKm * cons) / 100;
       const startFuel = (startPct / 100) * tank;
       const fuelToBuy = Math.max(0, totalFuelNeeded - startFuel);
 
-      // Per-leg fuel consumption
-        const legs = tripLegs.map(l => {
+      const legs = tripLegs.map(l => {
         const country = findCountry(l.c);
-        return {
-          ...l,
-          country,
-          fuelOnLeg: (l.km * cons) / 100,
-          pricePerL: getFuelEur(country, fuelKey),
-          flag: COUNTRY_FLAG[l.c],
-          label: COUNTRY_LABEL[l.c],
-        };
+        return { ...l, country, fuelOnLeg: (l.km * cons) / 100, pricePerL: getFuelEur(country, fuelKey),
+                 flag: COUNTRY_FLAG[l.c], label: COUNTRY_LABEL[l.c] };
       });
 
-      // Naive: buy all fuel at the start country (where we begin)
       const naiveCountry = legs[0]?.country;
       const naivePrice = getFuelEur(naiveCountry, fuelKey);
       const naiveCost = naivePrice ? fuelToBuy * naivePrice : null;
 
-      // Smart strategy:
-      // Goal — buy as much as possible at the cheapest available country along the way,
-      // but respecting the tank capacity. Simple greedy:
-      //   Walk legs in order, track current tank level.
-      //   At each country, if it's cheaper than any later country we'll visit,
-      //   fill up to full here. Otherwise just buy what's needed to reach the next.
-      // For the user we present a simpler narrative: "fill up in cheapest country along the way."
       const minPriceByLeg = legs.map((_, i) =>
-        legs.slice(i).filter(l => l.pricePerL).reduce((min, l) => Math.min(min, l.pricePerL), Infinity)
-      );
+        legs.slice(i).filter(l => l.pricePerL).reduce((min, l) => Math.min(min, l.pricePerL), Infinity));
 
       let tankLevel = startFuel;
       const plan = [];
       let smartCost = 0;
-      let prevFillCountry = null;
 
       for (let i = 0; i < legs.length; i++) {
         const leg = legs[i];
-        // Drive this leg
         const need = leg.fuelOnLeg;
-
-        // If we don't have enough, we should have refueled earlier in the cheapest country so far.
-        // Simpler model: at the start of each leg (i.e., upon entering this country),
-        // decide whether to refuel here based on whether this is the cheapest among current+remaining countries.
         const remainingKmAfterThis = legs.slice(i + 1).reduce((s, l) => s + l.km, 0);
         const fuelStillNeededAfterThis = (remainingKmAfterThis * cons) / 100;
-
-        // After driving this leg, do we have enough to reach the next refueling opportunity?
-        const tankAfterDrive = tankLevel - need;
-
-        // Refuel decision: refuel in this country if
-        //   (a) we cannot make it through the remaining trip without refueling, AND
-        //   (b) this country has the cheapest price among current + remaining countries.
         const cheapestAhead = minPriceByLeg[i];
         if (leg.pricePerL && leg.pricePerL <= cheapestAhead + 1e-6) {
-          // It's the cheapest among remaining; fill up to full before driving (or at least enough for remainder).
           const neededTotalFromHere = need + fuelStillNeededAfterThis;
-          // Buy enough to cover the rest of the trip (capped at tank capacity).
           const buyAmount = Math.min(tank - tankLevel, Math.max(0, neededTotalFromHere - tankLevel));
           if (buyAmount > 0.01) {
             smartCost += buyAmount * leg.pricePerL;
-            plan.push({
-              flag: leg.flag, label: leg.label,
-              liters: buyAmount, price: leg.pricePerL,
-              cost: buyAmount * leg.pricePerL,
-            });
+            plan.push({ flag: leg.flag, label: leg.label, liters: buyAmount, price: leg.pricePerL, cost: buyAmount * leg.pricePerL });
             tankLevel += buyAmount;
-            prevFillCountry = leg.label;
           }
         }
-
-        // Drive
         tankLevel -= need;
         if (tankLevel < -0.01) {
-          // Forced refuel here even if expensive (we wouldn't make it)
-          const forced = Math.min(tank, -tankLevel + 5); // small buffer
+          const forced = Math.min(tank, -tankLevel + 5);
           if (leg.pricePerL) {
             smartCost += forced * leg.pricePerL;
-            plan.push({
-              flag: leg.flag, label: leg.label,
-              liters: forced, price: leg.pricePerL,
-              cost: forced * leg.pricePerL, forced: true,
-            });
+            plan.push({ flag: leg.flag, label: leg.label, liters: forced, price: leg.pricePerL, cost: forced * leg.pricePerL, forced: true });
             tankLevel += forced;
           }
         }
       }
-
-      return {
-        route, fuelKey, cons, tank, startFuel,
-        totalKm, totalFuelNeeded, fuelToBuy,
-        legs, naiveCost, naiveCountry, smartCost, plan,
-      };
+      return { route, fuelKey, cons, tank, startFuel, totalKm, totalFuelNeeded, fuelToBuy, legs, naiveCost, naiveCountry, smartCost, plan };
     }
 
-    function fuelLabel(key) {
-      return { diesel: 'dizel', petrol95: 'benzin 95', lpg: 'auto-gas' }[key];
-    }
+    function fuelLabel(key) { return { diesel: 'dizel', petrol95: 'benzin 95', lpg: 'auto-gas' }[key]; }
 
     function renderCalc() {
-      // Update slider labels
-      document.getElementById('consVal').textContent =
-        parseFloat(document.getElementById('consInp').value).toFixed(1).replace('.', ',') + ' L';
-      document.getElementById('tankVal').textContent =
-        document.getElementById('tankInp').value + ' L';
-      document.getElementById('startVal').textContent =
-        document.getElementById('startInp').value + '%';
+      document.getElementById('consVal').textContent = parseFloat(document.getElementById('consInp').value).toFixed(1).replace('.', ',') + ' L';
+      document.getElementById('tankVal').textContent = document.getElementById('tankInp').value + ' L';
+      document.getElementById('startVal').textContent = document.getElementById('startInp').value + '%';
 
       const out = document.getElementById('calcOutput');
       const t = computeTrip();
       if (!t) { out.innerHTML = ''; return; }
-
       const fuelText = fuelLabel(t.fuelKey);
 
-      // Build steps for smart strategy
       let smartHtml = '';
       if (t.plan.length === 0) {
         smartHtml = `<div class="step">Imaš dovoljno goriva za ceo put. nema potrebe za punjenjem.</div>`;
       } else {
         t.plan.forEach((p, i) => {
-smartHtml += `<div class="step">${i + 1}. ${p.flag} <strong>${p.label}</strong>: kupi <strong>${p.liters.toFixed(1).replace('.', ',')} L</strong> po ${fmtEur(p.price)} = <strong>${fmtEur(p.cost)}</strong></div>`;        });
+          smartHtml += `<div class="step">${i + 1}. ${p.flag} <strong>${p.label}</strong>: kupi <strong>${p.liters.toFixed(1).replace('.', ',')} L</strong> po ${fmtEur(p.price)} = <strong>${fmtEur(p.cost)}</strong></div>`;
+        });
       }
-
       const naiveHtml = t.naiveCost !== null
         ? `<div class="step">Kupi sve gorivo (${t.fuelToBuy.toFixed(1).replace('.', ',')} L) u ${COUNTRY_FLAG[t.legs[0].c]} <strong>${COUNTRY_LABEL[t.legs[0].c]}</strong> po ${fmtEur(t.legs[0].pricePerL)}</div>`
         : `<div class="step">Nedostaju cene za izabranu zemlju polaska.</div>`;
-
-      const savings = (t.naiveCost !== null && t.smartCost > 0)
-        ? Math.max(0, t.naiveCost - t.smartCost) : 0;
+      const savings = (t.naiveCost !== null && t.smartCost > 0) ? Math.max(0, t.naiveCost - t.smartCost) : 0;
       const savingsPct = (t.naiveCost > 0) ? (savings / t.naiveCost) * 100 : 0;
 
       out.innerHTML = `
-        ${savings > 0.5 ? `
-          <div class="savings-banner">
-            <div class="label">Pametna strategija ti štedi</div>
-            <div class="amount">${fmtEur(savings)}</div>
-            <div class="pct">${savingsPct.toFixed(0)}% jeftinije nego naivno (${fuelText})</div>
-          </div>
-        ` : ''}
-
+        ${savings > 0.5 ? `<div class="savings-banner"><div class="label">Pametna strategija ti štedi</div><div class="amount">${fmtEur(savings)}</div><div class="pct">${savingsPct.toFixed(0)}% jeftinije nego naivno (${fuelText})</div></div>` : ''}
         <div class="results">
-          <div class="result-box smart">
-            <h3>🧠 Pametna strategija</h3>
-            <div class="total">${t.smartCost > 0 ? fmtEur(t.smartCost) : '-'}</div>
-            ${smartHtml}
-          </div>
-          <div class="result-box">
-            <h3>😴 Naivno (sve u polasku)</h3>
-            <div class="total">${t.naiveCost !== null ? fmtEur(t.naiveCost) : '-'}</div>
-            ${naiveHtml}
-          </div>
+          <div class="result-box smart"><h3>🧠 Pametna strategija</h3><div class="total">${t.smartCost > 0 ? fmtEur(t.smartCost) : '-'}</div>${smartHtml}</div>
+          <div class="result-box"><h3>😴 Naivno (sve u polasku)</h3><div class="total">${t.naiveCost !== null ? fmtEur(t.naiveCost) : '-'}</div>${naiveHtml}</div>
         </div>
-
         <div class="result-box">
           <h3>📋 Detalji puta</h3>
           <div class="step">Ruta: <strong>${t.route.label}</strong> (${t.totalKm} km)</div>
           <div class="step">Potrošnja: ${t.cons.toFixed(1).replace('.', ',')} L/100km · Rezervoar: ${t.tank} L · Početno gorivo: ${(t.startFuel).toFixed(1).replace('.', ',')} L</div>
-          <div class="step">Ukupno potrebno goriva: <strong>${t.totalFuelNeeded.toFixed(1).replace('.', ',')} L</strong> · Treba kupiti: <strong>${t.fuelToBuy.toFixed(1).replace('.', ',')} L</strong></div>
+          <div class="step">Ukupno potrebno: <strong>${t.totalFuelNeeded.toFixed(1).replace('.', ',')} L</strong> · Treba kupiti: <strong>${t.fuelToBuy.toFixed(1).replace('.', ',')} L</strong></div>
           <div class="step" style="margin-top:10px">Cene ${fuelText} po deonici:</div>
-          ${t.legs.map(l => `
-            <div class="step">${l.flag} ${l.label} (${l.km} km): ${l.pricePerL ? fmtEur(l.pricePerL) + ' / L' : '<span style="color:#f87171">cena nedostupna</span>'}</div>
-          `).join('')}
-        </div>
-      `;
+          ${t.legs.map(l => `<div class="step">${l.flag} ${l.label} (${l.km} km): ${l.pricePerL ? fmtEur(l.pricePerL) + ' / L' : '<span style="color:#f87171">cena nedostupna</span>'}</div>`).join('')}
+        </div>`;
     }
 
     function populateRoutes() {
-      const sel = document.getElementById('routeSel');
-      sel.innerHTML = ROUTES.map(r => `<option value="${r.id}">${r.label}</option>`).join('');
+      document.getElementById('routeSel').innerHTML = ROUTES.map(r => `<option value="${r.id}">${r.label}</option>`).join('');
     }
 
-    /* ============ TAB / VIEW SWITCHING ============ */
+    function renderBorders() {
+      const cont = document.getElementById('bordersContainer');
+      cont.innerHTML = BORDER_GROUPS.map(group => {
+        const flag = COUNTRY_FLAG[group.country];
+        const label = COUNTRY_LABEL[group.country];
+        const cards = group.crossings.map(name => `
+          <div class="crossing-card">
+            <div class="crossing-head">
+              <div>
+                <div class="crossing-name">${name}</div>
+                <div class="crossing-dir">ka ${label} ${flag}</div>
+              </div>
+            </div>
+            <div class="crossing-wait">⏱️ Čekanje: <strong>--</strong></div>
+            <a class="cam-btn" href="${MUP_CAMERAS_URL}" target="_blank" rel="noopener noreferrer">📷 Kamera uživo →</a>
+          </div>`).join('');
+        return `<div class="border-group">
+          <h2>${flag} Granica sa: ${label}</h2>
+          <div class="cards">${cards}</div>
+        </div>`;
+      }).join('');
+    }
+
     function setTab(tab) {
       currentTab = tab;
       document.getElementById('tabPrices').classList.toggle('active', tab === 'prices');
       document.getElementById('tabCalc').classList.toggle('active', tab === 'calc');
+      document.getElementById('tabBorders').classList.toggle('active', tab === 'borders');
       document.getElementById('viewPrices').style.display = tab === 'prices' ? '' : 'none';
       document.getElementById('viewCalc').style.display = tab === 'calc' ? '' : 'none';
+      document.getElementById('viewBorders').style.display = tab === 'borders' ? '' : 'none';
       if (tab === 'calc') renderCalc();
+      if (tab === 'borders') renderBorders();
     }
     function setView(view) {
       currentView = view;
@@ -639,19 +500,15 @@ smartHtml += `<div class="step">${i + 1}. ${p.flag} <strong>${p.label}</strong>:
       document.getElementById('btnLocal').classList.toggle('active', view === 'local');
       renderPrices();
     }
-    function setSort(sort) {
-      currentSort = sort;
-      renderPrices();
-    }
+    function setSort(sort) { currentSort = sort; renderPrices(); }
 
-    /* ============ INIT ============ */
     async function load() {
       try {
         const res = await fetch('fuel_prices.json?cb=' + Date.now());
         dataCache = await res.json();
         const dates = dataCache.countries.map(c => c.updated).filter(Boolean);
         document.getElementById('meta').textContent =
-          `${dataCache.countries.length} zemlja${dataCache.countries.length === 1 ? '' : 'e'} · poslednje ažuriranje: ${dates[0] || '-'}`;
+          `${dataCache.countries.length} zemalja · poslednje ažuriranje: ${dates[0] || '-'}`;
         populateRoutes();
         renderPrices();
       } catch (err) {
