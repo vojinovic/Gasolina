@@ -364,6 +364,7 @@ SCRAPERS = [
     ("Hungary", scrape_hungary),
     ("Bulgaria", scrape_bulgaria),
     ("Albania", scrape_albania),
+    ("Greece", scrape_greece),
 ]
 
 
