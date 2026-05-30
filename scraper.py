@@ -328,6 +328,30 @@ def scrape_albania():
         "updated":  now_utc(),
     }
 
+def scrape_greece():
+    """fuel-prices.eu/Greece/llms.txt - same EU Oil Bulletin format as Bulgaria."""
+    url = "https://www.fuel-prices.eu/Greece/llms.txt"
+    r = requests.get(url, headers=HEADERS, timeout=20)
+    r.raise_for_status()
+    text = r.text
+
+    def grab(label):
+        m = re.search(rf"^{label}\s+€\s*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
+        if not m:
+            raise ValueError(f"Greece: missing {label}")
+        return float(m.group(1).replace(",", "."))
+
+    petrol = grab(r"Euro\s*95")
+    diesel = grab(r"Diesel")
+
+    return {
+        "name": "Greece", "flag": "🇬🇷", "currency": "EUR", "fx_rate_eur": 1.0,
+        "petrol95": {"local": petrol, "eur": petrol},
+        "diesel":   {"local": diesel, "eur": diesel},
+        "lpg":      None,
+        "updated":  now_utc(),
+    }
+
 # ------------------------------ main -------------------------------
 
 SCRAPERS = [
