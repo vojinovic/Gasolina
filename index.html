@@ -256,20 +256,26 @@
     let currentSort = 'default';
 
     /* Country code → name mapping (matches scraper output) */
-    const COUNTRY_NAMES = {
+const COUNTRY_NAMES = {
       RS: 'Serbia',
       HR: 'Croatia',
       BA: 'Bosnia and Herzegovina',
       ME: 'Montenegro',
       SI: 'Slovenia',
       MK: 'North Macedonia',
+      HU: 'Hungary',
+      BG: 'Bulgaria',
+      AL: 'Albania',
+      GR: 'Greece',
     };
     const COUNTRY_FLAG = {
       RS: '🇷🇸', HR: '🇭🇷', BA: '🇧🇦', ME: '🇲🇪', SI: '🇸🇮', MK: '🇲🇰',
+      HU: '🇭🇺', BG: '🇧🇬', AL: '🇦🇱', GR: '🇬🇷',
     };
     const COUNTRY_LABEL = {
       RS: 'Srbija', HR: 'Hrvatska', BA: 'BiH', ME: 'Crna Gora',
       SI: 'Slovenija', MK: 'S. Makedonija',
+      HU: 'Mađarska', BG: 'Bugarska', AL: 'Albanija', GR: 'Grčka',
     };
 
     /* Predefined routes: each has ordered list of {country, km}.
