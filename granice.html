@@ -199,121 +199,10 @@
   <div class="grid" id="grid"></div>
 </div>
 
+<script src="borders-data.js"></script>
 <script>
-/* ---------------------------------------------------------------------------
-   PODACI
-   feeds[].src  -> HLS .m3u8 (ako postoji, kartica embeduje kameru)
-   feeds[].src=null -> kartica radi u "link-out" rezimu (samo zvanicna kamera)
-   Samo Gradina ima proverene URL-ove (sa alltrafficcams izvora).
-   Za ostale prelaze namerno nije podesen src - ubacujes ga kad ga uhvatis
-   u Network tabu na zvanicnom sajtu.
-   wait{} su DEMO brojke, ovde samo da se vidi kako izgleda sloj podataka.
---------------------------------------------------------------------------- */
-const CAMERAS = [
-  {
-    id:"gradina",
-    name:"Gradina",
-    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
-    to:{cc:"BG",flag:"\uD83C\uDDE7\uD83C\uDDEC"},
-    pair:"Kalotina (BG)",
-    road:"E80",
-    provider:"AMSS / MUP",
-    official:"https://kamere.amss.org.rs/",
-    feeds:[
-      {label:"Ulaz", dir:"in",  src:"https://kamere.amss.org.rs/gradina1/gradina1.m3u8"},
-      {label:"Izlaz",dir:"out", src:"https://kamere.amss.org.rs/gradina2/gradina2.m3u8"}
-    ],
-    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:30} }
-  },
-  {
-    id:"horgos",
-    name:"Horgos",
-    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
-    to:{cc:"HU",flag:"\uD83C\uDDED\uD83C\uDDFA"},
-    pair:"Roszke (HU)",
-    road:"E75",
-    provider:"AMSS",
-    official:"https://kamere.amss.org.rs/",
-    feeds:[
-      {label:"Ulaz", dir:"in",  src:"https://kamere.amss.org.rs/horgos1/horgos1.m3u8"},
-      {label:"Izlaz",dir:"out", src:"https://kamere.amss.org.rs/horgos2/horgos2.m3u8"}
-    ],
-    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:30} }
-  },
-  {
-    id:"batrovci",
-    name:"Batrovci",
-    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
-    to:{cc:"HR",flag:"\uD83C\uDDED\uD83C\uDDF7"},
-    pair:"Bajakovo (HR)",
-    road:"E70",
-    provider:"AMSS",
-    official:"https://kamere.amss.org.rs/",
-    feeds:[
-      {label:"Ulaz", dir:"in",  src:"https://kamere.amss.org.rs/batrovci1/batrovci1.m3u8"},
-      {label:"Izlaz",dir:"out", src:"https://kamere.amss.org.rs/batrovci2/batrovci2.m3u8"}
-    ],
-    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:300} }
-  },
-  {
-    id:"presevo",
-    name:"Presevo",
-    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
-    to:{cc:"MK",flag:"\uD83C\uDDF2\uD83C\uDDF0"},
-    pair:"Tabanovce (MK)",
-    road:"E75",
-    provider:"AMSS",
-    official:"https://kamere.amss.org.rs/",
-    feeds:[
-      {label:"Ulaz", dir:"in",  src:"https://kamere.amss.org.rs/presevo1/presevo1.m3u8"},
-      {label:"Izlaz",dir:"out", src:"https://kamere.amss.org.rs/presevo2/presevo2.m3u8"}
-    ],
-    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:30} }
-  },
-  {
-    id:"sremska-raca",
-    name:"Sremska Raca",
-    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
-    to:{cc:"BA",flag:"\uD83C\uDDE7\uD83C\uDDE6"},
-    pair:"Raca (BiH)",
-    road:"E70",
-    provider:"MUP",
-    official:"https://kamere.amss.org.rs/",
-    feeds:[
-      {label:"Ulaz", dir:"in",  src:"https://kamere.mup.gov.rs:4443/SremskaRaca/sremskaraca1.m3u8"},
-      {label:"Izlaz",dir:"out", src:"https://kamere.mup.gov.rs:4443/SremskaRaca/sremskaraca2.m3u8"}
-    ],
-    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:240} }
-  },
-  {
-    id:"spiljani",
-    name:"Spiljani",
-    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
-    to:{cc:"ME",flag:"\uD83C\uDDF2\uD83C\uDDEA"},
-    pair:"Dracenovac (MNE)",
-    road:"E65/E80",
-    provider:"MUP",
-    official:"https://kamere.amss.org.rs/",
-    feeds:[
-      {label:"Ulaz", dir:"in",  src:"https://kamere.mup.gov.rs:4443/Spiljani/spiljani1.m3u8"},
-      {label:"Izlaz",dir:"out", src:"https://kamere.mup.gov.rs:4443/Spiljani/spiljani2.m3u8"}
-    ],
-    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:30} }
-  },
-  {
-    id:"gostun",
-    name:"Gostun",
-    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
-    to:{cc:"ME",flag:"\uD83C\uDDF2\uD83C\uDDEA"},
-    pair:"Dobrakovo (MNE)",
-    road:"E763",
-    provider:"AMSS",
-    official:"https://www.amss.org.rs/stanje-na-putu/strana/mapa",
-    noCamera:true,
-    feeds:[],
-    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:30} }
-  }
-];
+/* Prelazi se ucitavaju iz deljenog borders-data.js (jedan izvor istine). */
+const CAMERAS = BORDERS.CROSSINGS;
 
 /* status iz minuta */
 function waitStatus(min){
@@ -381,9 +270,9 @@ function cardHTML(c){
     <div class="chead">
       <div>
         <div class="route">
-          <span class="flag">${c.from.flag}</span> ${c.from.cc}
+          <span class="flag">${BORDERS.FLAG[c.from]}</span> ${c.from}
           <span class="arrow">\u2192</span>
-          <span class="flag">${c.to.flag}</span> ${c.to.cc}
+          <span class="flag">${BORDERS.FLAG[c.to]}</span> ${c.to}
         </div>
         <div class="cname">${c.name}</div>
         <div class="cpair">naspram ${c.pair}</div>
