@@ -455,11 +455,14 @@ async function init(){
     if(res.ok){
       const data=await res.json();
       scrapedAt=data.scraped_at||null;
-      (CAMERAS).forEach(cam=>{
-        const c=data.crossings && data.crossings[cam.id];
+      const cr=data.crossings||{};
+      CAMERAS.forEach(cam=>{
+        const c=cr[cam.id];
         if(c && c.found && c.putnicka){
           cam.wait={ putnicka:c.putnicka, teretna:c.teretna||null };
           live=true;
+        } else {
+          cam.wait=null;   // nema zvanicnog podatka -> "nema podataka", ne demo
         }
       });
     }
