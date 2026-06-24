@@ -284,6 +284,34 @@ const CAMERAS = [
       {label:"Izlaz",dir:"out", src:"https://kamere.mup.gov.rs:4443/SremskaRaca/sremskaraca2.m3u8"}
     ],
     wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:240} }
+  },
+  {
+    id:"spiljani",
+    name:"Spiljani",
+    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
+    to:{cc:"ME",flag:"\uD83C\uDDF2\uD83C\uDDEA"},
+    pair:"Dracenovac (MNE)",
+    road:"E65/E80",
+    provider:"MUP",
+    official:"https://kamere.amss.org.rs/",
+    feeds:[
+      {label:"Ulaz", dir:"in",  src:"https://kamere.mup.gov.rs:4443/Spiljani/spiljani1.m3u8"},
+      {label:"Izlaz",dir:"out", src:"https://kamere.mup.gov.rs:4443/Spiljani/spiljani2.m3u8"}
+    ],
+    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:30} }
+  },
+  {
+    id:"gostun",
+    name:"Gostun",
+    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
+    to:{cc:"ME",flag:"\uD83C\uDDF2\uD83C\uDDEA"},
+    pair:"Dobrakovo (MNE)",
+    road:"E763",
+    provider:"AMSS",
+    official:"https://www.amss.org.rs/stanje-na-putu/strana/mapa",
+    noCamera:true,
+    feeds:[],
+    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:30} }
   }
 ];
 
@@ -316,13 +344,15 @@ function waitCell(label,dirKey,w){
 
 function cardHTML(c){
   const hasVideo = c.feeds.some(f=>f.src);
+  const noCamera = c.noCamera === true;
   const tabs = c.feeds.length>1 && hasVideo
     ? `<div class="tabs" role="tablist">${c.feeds.map((f,i)=>
         `<button class="tab" role="tab" data-i="${i}" aria-selected="${i===0}">${f.label}</button>`).join("")}</div>`
     : "";
 
-  const paneInner = hasVideo
-    ? `<span class="badge">${c.provider}</span>
+  let paneInner;
+  if(hasVideo){
+    paneInner = `<span class="badge">${c.provider}</span>
        <span class="live"><span class="ld"></span>UZIVO</span>
        <video playsinline muted></video>
        <button class="poster" aria-label="Pusti kameru ${c.name}">
@@ -332,12 +362,19 @@ function cardHTML(c){
        <div class="pmsg">
          <p>Kamera trenutno nije dostupna u ovom prikazu.</p>
          <a class="btn" href="${c.official}" target="_blank" rel="noopener">Otvori zvanicnu kameru</a>
-       </div>`
-    : `<span class="badge">${c.provider}</span>
+       </div>`;
+  } else if(noCamera){
+    paneInner = `<span class="badge">samo podaci</span>
+       <div class="pmsg" style="display:flex">
+         <p>Za ovaj prelaz ne postoji zvanicna kamera. Prati vreme cekanja ispod.</p>
+       </div>`;
+  } else {
+    paneInner = `<span class="badge">${c.provider}</span>
        <div class="pmsg" style="display:flex">
          <p>Live feed jos nije podesen za ovaj prelaz.</p>
          <a class="btn" href="${c.official}" target="_blank" rel="noopener">Otvori zvanicnu kameru</a>
        </div>`;
+  }
 
   return `
   <article class="card" data-id="${c.id}">
