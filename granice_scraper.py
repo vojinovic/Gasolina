@@ -32,6 +32,8 @@ TARGETS = {
     "batrovci":     "BATROVCI",
     "presevo":      "PRESEVO",
     "sremska-raca": "SREMSKA RACA",
+    "spiljani":     "SPILJANI",
+    "gostun":       "GOSTUN",
 }
 
 
@@ -195,11 +197,29 @@ Prema poslednjim informacijama zadrzavanja putnickih vozila:
 2. Ulaz u Srbiju- oko 30 minuta.
 Izvor: Uprava granicne policije RS
 
+#### 1GP SPILJANI Srbija Crna Gora E65 E80
+Prema poslednjim informacijama Uprave granicne policije RS, zadrzavanja su:
+Na PUTNICKIM terminalima:
+1. Izlaz iz Srbije: oko 30 minuta
+2. Ulaz u Srbiju: oko 30 minuta
+Na TERETNIM terminalima:
+1. Izlaz iz Srbije- oko 30 min.
+2. Ulaz u Srbiju- oko 30 min.
+Izvor: Uprava granicne policije RS
+
+#### 1GP GOSTUN Srbija Crna Gora
+Prema poslednjim informacijama Uprave granicne policije RS, zadrzavanja su:
+Na PUTNICKIM terminalima:
+1. Izlaz iz Srbije: oko 30 minuta.
+2. Ulaz u Srbiju: oko 30 minuta
+Na TERETNIM terminalima:
+1. Izlaz iz Srbije- oko 30 min.
+2. Ulaz u Srbiju- oko 30 min.
+Izvor: Uprava granicne policije RS
+
 #### Petlja Vranje, radovi
 Zabrana za teretna vozila preko 10 t. Izvor: Putevi Srbije
 """
-
-
 def selftest():
     result = build(SELFTEST_FIXTURE)
     print(json.dumps(result, ensure_ascii=False, indent=2))
@@ -219,6 +239,8 @@ def selftest():
     check("horgos", 30, 30, 30, 30)
     check("presevo", 30, 30, 30, 30)
     check("sremska-raca", 30, 30, 240, 30)
+    check("spiljani", 30, 30, 30, 30)
+    check("gostun", 30, 30, 30, 30)
     print("\nSELFTEST:", "PASS" if ok else "FAIL")
     return 0 if ok else 1
 
