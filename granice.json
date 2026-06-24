@@ -1,0 +1,57 @@
+{
+  "scraped_at": "2026-06-24T15:59:34+00:00",
+  "source": "AMSS / Uprava granicne policije RS",
+  "crossings": {
+    "gradina": {
+      "found": false
+    },
+    "horgos": {
+      "putnicka": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "teretna": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "found": true,
+      "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75"
+    },
+    "batrovci": {
+      "putnicka": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "teretna": {
+        "izlaz": 300,
+        "ulaz": 30
+      },
+      "found": true,
+      "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70"
+    },
+    "presevo": {
+      "putnicka": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "teretna": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "found": true,
+      "amss_name": "PREŠEVO Srbija - Severna Makedonija AP E 75 M1"
+    },
+    "sremska-raca": {
+      "putnicka": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "teretna": {
+        "izlaz": 240,
+        "ulaz": 30
+      },
+      "found": true,
+      "amss_name": "SREMSKA RAČA"
+    }
+  }
+}
