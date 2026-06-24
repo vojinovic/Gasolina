@@ -159,7 +159,7 @@
 <div class="wrap">
   <div class="eyebrow"><span class="dot"></span> Gasolina / Granicni prelazi</div>
   <h1>Stanje na granici uzivo</h1>
-  <p class="lead">Pre polaska proveri kameru i vreme zadrzavanja na prelazu. Gradina je povezana sa zivim kamerama; ostali prelazi za sada vode na zvanicnu kameru dok se ne podese feedovi.</p>
+  <p class="lead">Pre polaska proveri kameru i vreme zadrzavanja na prelazu. Svih pet prelaza je povezano sa zivim kamerama (ulaz i izlaz), izvor su AMSS i MUP serveri.</p>
 
   <div class="note">
     <b>Demo prototip.</b> Vremena cekanja su ilustrativna, nisu uzivo. Kamere za Gradinu vuku se direktno sa AMSS i MUP servera, pa video mozda nece da se ucita u svakom okruzenju (zavisi od CORS i referer politike izvora). Ako se ne ucita, kartica nudi dugme ka zvanicnoj kameri.
@@ -201,9 +201,12 @@ const CAMERAS = [
     to:{cc:"HU",flag:"\uD83C\uDDED\uD83C\uDDFA"},
     pair:"Roszke (HU)",
     road:"E75",
-    provider:"AMSS / MUP",
+    provider:"AMSS",
     official:"https://kamere.amss.org.rs/",
-    feeds:[ {label:"Kamera", dir:"in", src:null} ],
+    feeds:[
+      {label:"Ulaz", dir:"in",  src:"https://kamere.amss.org.rs/horgos1/horgos1.m3u8"},
+      {label:"Izlaz",dir:"out", src:"https://kamere.amss.org.rs/horgos2/horgos2.m3u8"}
+    ],
     wait:{ in:{min:30,cat:"putnicka vozila"}, out:{min:60,cat:"teretna vozila"} }
   },
   {
@@ -213,9 +216,12 @@ const CAMERAS = [
     to:{cc:"HR",flag:"\uD83C\uDDED\uD83C\uDDF7"},
     pair:"Bajakovo (HR)",
     road:"E70",
-    provider:"AMSS / MUP",
+    provider:"AMSS",
     official:"https://kamere.amss.org.rs/",
-    feeds:[ {label:"Kamera", dir:"out", src:null} ],
+    feeds:[
+      {label:"Ulaz", dir:"in",  src:"https://kamere.amss.org.rs/batrovci1/batrovci1.m3u8"},
+      {label:"Izlaz",dir:"out", src:"https://kamere.amss.org.rs/batrovci2/batrovci2.m3u8"}
+    ],
     wait:{ in:{min:15,cat:"putnicka vozila"}, out:{min:300,cat:"teretna vozila"} }
   },
   {
@@ -225,9 +231,12 @@ const CAMERAS = [
     to:{cc:"MK",flag:"\uD83C\uDDF2\uD83C\uDDF0"},
     pair:"Tabanovce (MK)",
     road:"E75",
-    provider:"AMSS / MUP",
+    provider:"AMSS",
     official:"https://kamere.amss.org.rs/",
-    feeds:[ {label:"Kamera", dir:"in", src:null} ],
+    feeds:[
+      {label:"Ulaz", dir:"in",  src:"https://kamere.amss.org.rs/presevo1/presevo1.m3u8"},
+      {label:"Izlaz",dir:"out", src:"https://kamere.amss.org.rs/presevo2/presevo2.m3u8"}
+    ],
     wait:{ in:{min:60,cat:"teretna vozila"}, out:{min:10,cat:"putnicka vozila"} }
   },
   {
@@ -237,9 +246,12 @@ const CAMERAS = [
     to:{cc:"BA",flag:"\uD83C\uDDE7\uD83C\uDDE6"},
     pair:"Raca (BiH)",
     road:"E70",
-    provider:"AMSS / MUP",
+    provider:"MUP",
     official:"https://kamere.amss.org.rs/",
-    feeds:[ {label:"Kamera", dir:"out", src:null} ],
+    feeds:[
+      {label:"Ulaz", dir:"in",  src:"https://kamere.mup.gov.rs:4443/SremskaRaca/sremskaraca1.m3u8"},
+      {label:"Izlaz",dir:"out", src:"https://kamere.mup.gov.rs:4443/SremskaRaca/sremskaraca2.m3u8"}
+    ],
     wait:{ in:{min:30,cat:"putnicka vozila"}, out:{min:30,cat:"putnicka vozila"} }
   }
 ];
