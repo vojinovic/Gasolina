@@ -135,6 +135,8 @@
   .wmin{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:24px;margin:3px 0 1px;line-height:1}
   .wmin span{font-size:12px;color:var(--dim);font-weight:500}
   .wcat{font-size:11px;color:var(--dim)}
+  .wtruck{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:5px;display:flex;align-items:center;gap:5px}
+  .wtruck b{color:var(--text);font-weight:700}
   .wbar{height:4px;border-radius:3px;background:var(--panel-2);margin-top:8px;overflow:hidden}
   .wbar i{display:block;height:100%;border-radius:3px}
 
@@ -221,7 +223,7 @@ const CAMERAS = [
       {label:"Ulaz", dir:"in",  src:"https://kamere.amss.org.rs/gradina1/gradina1.m3u8"},
       {label:"Izlaz",dir:"out", src:"https://kamere.amss.org.rs/gradina2/gradina2.m3u8"}
     ],
-    wait:{ in:{min:20,cat:"putnicka vozila"}, out:{min:180,cat:"teretna vozila"} }
+    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:30} }
   },
   {
     id:"horgos",
@@ -236,7 +238,7 @@ const CAMERAS = [
       {label:"Ulaz", dir:"in",  src:"https://kamere.amss.org.rs/horgos1/horgos1.m3u8"},
       {label:"Izlaz",dir:"out", src:"https://kamere.amss.org.rs/horgos2/horgos2.m3u8"}
     ],
-    wait:{ in:{min:30,cat:"putnicka vozila"}, out:{min:60,cat:"teretna vozila"} }
+    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:30} }
   },
   {
     id:"batrovci",
@@ -251,7 +253,7 @@ const CAMERAS = [
       {label:"Ulaz", dir:"in",  src:"https://kamere.amss.org.rs/batrovci1/batrovci1.m3u8"},
       {label:"Izlaz",dir:"out", src:"https://kamere.amss.org.rs/batrovci2/batrovci2.m3u8"}
     ],
-    wait:{ in:{min:15,cat:"putnicka vozila"}, out:{min:300,cat:"teretna vozila"} }
+    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:300} }
   },
   {
     id:"presevo",
@@ -266,7 +268,7 @@ const CAMERAS = [
       {label:"Ulaz", dir:"in",  src:"https://kamere.amss.org.rs/presevo1/presevo1.m3u8"},
       {label:"Izlaz",dir:"out", src:"https://kamere.amss.org.rs/presevo2/presevo2.m3u8"}
     ],
-    wait:{ in:{min:60,cat:"teretna vozila"}, out:{min:10,cat:"putnicka vozila"} }
+    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:30} }
   },
   {
     id:"sremska-raca",
@@ -281,7 +283,7 @@ const CAMERAS = [
       {label:"Ulaz", dir:"in",  src:"https://kamere.mup.gov.rs:4443/SremskaRaca/sremskaraca1.m3u8"},
       {label:"Izlaz",dir:"out", src:"https://kamere.mup.gov.rs:4443/SremskaRaca/sremskaraca2.m3u8"}
     ],
-    wait:{ in:{min:30,cat:"putnicka vozila"}, out:{min:30,cat:"putnicka vozila"} }
+    wait:{ putnicka:{ulaz:30,izlaz:30}, teretna:{ulaz:30,izlaz:240} }
   }
 ];
 
@@ -294,13 +296,20 @@ function waitStatus(min){
 }
 function fmtMin(m){ if(m==null) return "-"; if(m>=60){const h=Math.floor(m/60),r=m%60; return r?`${h}h ${r}m`:`${h}h`;} return `${m} min`; }
 
-function waitCell(label,dir,w){
-  const s=waitStatus(w?w.min:null);
+function waitCell(label,dirKey,w){
+  const p = w && w.putnicka ? w.putnicka[dirKey] : null;
+  const t = w && w.teretna ? w.teretna[dirKey] : null;
+  const s = waitStatus(p);
+  const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
+  const truck = (t!=null)
+    ? `<div class="wtruck">\uD83D\uDE9B kamioni: <b>${fmtMin(t)}</b></div>`
+    : `<div class="wtruck">\uD83D\uDE9B kamioni: <b>-</b></div>`;
   return `
     <div class="wcell">
-      <div class="wlabel"><span class="dir">${dir==='in'?'\u2192':'\u2190'}</span> ${label}</div>
-      <div class="wmin" style="color:${s.c}">${fmtMin(w?w.min:null)}</div>
-      <div class="wcat">${w?w.cat:'-'} &middot; ${s.t}</div>
+      <div class="wlabel"><span class="dir">${arrow}</span> ${label}</div>
+      <div class="wmin" style="color:${s.c}">${fmtMin(p)}</div>
+      <div class="wcat">putnicka &middot; ${s.t}</div>
+      ${truck}
       <div class="wbar"><i style="width:${s.pct}%;background:${s.c}"></i></div>
     </div>`;
 }
@@ -349,8 +358,8 @@ function cardHTML(c){
     ${tabs}
 
     <div class="wait">
-      ${waitCell("Ulaz u Srbiju","in",c.wait.in)}
-      ${waitCell("Izlaz iz Srbije","out",c.wait.out)}
+      ${waitCell("Ulaz u Srbiju","ulaz",c.wait)}
+      ${waitCell("Izlaz iz Srbije","izlaz",c.wait)}
     </div>
 
     <div class="cfoot">
@@ -400,34 +409,67 @@ function playFeed(card, cam, feedIndex){
   }
 }
 
-/* ---- render + wire ---- */
+/* ---- ucitaj prave podatke pa renderuj ---- */
 const grid=document.getElementById("grid");
-grid.innerHTML=CAMERAS.map(cardHTML).join("");
 
-CAMERAS.forEach(cam=>{
-  const card=grid.querySelector(`[data-id="${cam.id}"]`);
-  const poster=card.querySelector(".poster");
-  if(poster){
-    poster.addEventListener("click",()=>playFeed(card,cam,0));
-    poster.setAttribute("tabindex","0");
-    poster.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();playFeed(card,cam,0);} });
-  }
-  card.querySelectorAll(".tab").forEach(tab=>{
-    tab.addEventListener("click",()=>{
-      card.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected","false"));
-      tab.setAttribute("aria-selected","true");
-      playFeed(card,cam,parseInt(tab.dataset.i,10));
+function wire(){
+  CAMERAS.forEach(cam=>{
+    const card=grid.querySelector(`[data-id="${cam.id}"]`);
+    if(!card) return;
+    const poster=card.querySelector(".poster");
+    if(poster){
+      poster.addEventListener("click",()=>playFeed(card,cam,0));
+      poster.setAttribute("tabindex","0");
+      poster.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();playFeed(card,cam,0);} });
+    }
+    card.querySelectorAll(".tab").forEach(tab=>{
+      tab.addEventListener("click",()=>{
+        card.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected","false"));
+        tab.setAttribute("aria-selected","true");
+        playFeed(card,cam,parseInt(tab.dataset.i,10));
+      });
     });
   });
-});
+}
 
-/* demo timestamp */
-const t=new Date();
-const hh=String(t.getHours()).padStart(2,"0"), mm=String(t.getMinutes()).padStart(2,"0");
-const stamp=document.createElement("div");
-stamp.className="updated";
-stamp.textContent=`Demo podaci o cekanju, prikaz u ${hh}:${mm}`;
-document.querySelector(".note").after(stamp);
+function setNote(live, scrapedAt){
+  const note=document.querySelector(".note");
+  if(live){
+    let when="";
+    if(scrapedAt){
+      const d=new Date(scrapedAt);
+      const hh=String(d.getHours()).padStart(2,"0"), mm=String(d.getMinutes()).padStart(2,"0");
+      const dd=String(d.getDate()).padStart(2,"0"), mo=String(d.getMonth()+1).padStart(2,"0");
+      when=` Azurirano ${dd}.${mo}. u ${hh}:${mm}.`;
+    }
+    note.innerHTML=`<b>Vreme cekanja uzivo.</b> Izvor: Uprava granicne policije RS (preko AMSS).${when} Kamere se vuku sa AMSS i MUP servera, pa video mozda nece da se ucita u svakom okruzenju. Ako ne radi, kartica nudi dugme ka zvanicnoj kameri.`;
+  } else {
+    note.innerHTML=`<b>Demo prototip.</b> Vremena cekanja su ilustrativna jer granice.json jos nije ucitan. Kamere se vuku sa AMSS i MUP servera, pa video mozda nece da se ucita u svakom okruzenju.`;
+  }
+}
+
+async function init(){
+  let live=false, scrapedAt=null;
+  try{
+    const res=await fetch("granice.json?cb="+Date.now());
+    if(res.ok){
+      const data=await res.json();
+      scrapedAt=data.scraped_at||null;
+      (CAMERAS).forEach(cam=>{
+        const c=data.crossings && data.crossings[cam.id];
+        if(c && c.found && c.putnicka){
+          cam.wait={ putnicka:c.putnicka, teretna:c.teretna||null };
+          live=true;
+        }
+      });
+    }
+  }catch(e){ /* nema fajla, ostaju demo brojke */ }
+
+  grid.innerHTML=CAMERAS.map(cardHTML).join("");
+  wire();
+  setNote(live, scrapedAt);
+}
+init();
 </script>
 </body>
 </html>
