@@ -153,9 +153,38 @@
     .live .ld{animation:none}
     .poster:hover .play{transform:none}
   }
+
+  /* Site nav (zajednicki header) */
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(13,22,32,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .topbar .inner{max-width:1180px;margin:0 auto;padding:0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+  .brand .mark{width:26px;height:26px;border-radius:7px;background:var(--fuel);display:grid;place-items:center;color:var(--ink);font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:18px}
+  .brand .bname{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;letter-spacing:.04em;text-transform:uppercase;color:var(--text)}
+  .nav{display:flex;align-items:center;gap:4px}
+  .nav a{font-size:13px;color:var(--dim);text-decoration:none;padding:7px 11px;border-radius:8px;font-weight:500}
+  .nav a:hover{color:var(--text);background:var(--panel)}
+  .nav a[aria-current="page"]{color:var(--ink);background:var(--fuel);font-weight:600}
+  @media (max-width:560px){
+    .nav a{padding:6px 8px;font-size:12px}
+    .brand .bname{font-size:18px}
+  }
 </style>
 </head>
 <body>
+<nav class="topbar">
+  <div class="inner">
+    <a class="brand" href="index.html">
+      <span class="mark">G</span>
+      <span class="bname">Gasolina</span>
+    </a>
+    <div class="nav">
+      <a href="index.html">Cene goriva</a>
+      <a href="index.html#kalkulator">Kalkulator</a>
+      <a href="granice.html" aria-current="page">Granice</a>
+    </div>
+  </div>
+</nav>
+
 <div class="wrap">
   <div class="eyebrow"><span class="dot"></span> Gasolina / Granicni prelazi</div>
   <h1>Stanje na granici uzivo</h1>
