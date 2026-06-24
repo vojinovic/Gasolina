@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gasolina - Stanje na granici uzivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js"></script>
+<style>
+  :root{
+    --ink:#0d1620;
+    --panel:#15212e;
+    --panel-2:#1b2a39;
+    --line:#26384a;
+    --text:#e9eff5;
+    --dim:#8aa0b2;
+    --faint:#5d7387;
+    --fuel:#f5a623;        /* Gasolina brend akcenat */
+    --ok:#2fbf71;
+    --warn:#f5a623;
+    --bad:#e35d4f;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 500px at 80% -10%, rgba(245,166,35,0.08), transparent 60%),
+      var(--ink);
+    color:var(--text);
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 18px 60px}
+
+  /* Header */
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--fuel);display:flex;align-items:center;gap:8px;margin-bottom:10px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--fuel);box-shadow:0 0 0 4px rgba(245,166,35,.15)}
+  h1{
+    font-family:"Barlow Condensed",sans-serif;font-weight:700;
+    font-size:clamp(30px,5vw,46px);line-height:.98;letter-spacing:.01em;
+    margin:0 0 8px;text-transform:uppercase;
+  }
+  .lead{color:var(--dim);max-width:62ch;font-size:15px;line-height:1.5;margin:0}
+
+  .note{
+    margin-top:16px;border:1px solid var(--line);border-left:3px solid var(--fuel);
+    background:var(--panel);border-radius:10px;padding:11px 14px;
+    color:var(--dim);font-size:13px;line-height:1.5;
+  }
+  .note b{color:var(--text);font-weight:600}
+
+  /* Grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;margin-top:24px}
+
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;display:flex;flex-direction:column;
+  }
+
+  /* Card head: route */
+  .chead{padding:14px 16px 12px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .route{display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint);letter-spacing:.05em}
+  .route .flag{font-size:15px;filter:saturate(1.1)}
+  .route .arrow{color:var(--fuel)}
+  .cname{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:25px;line-height:1;text-transform:uppercase;margin:6px 0 2px}
+  .cpair{font-size:12.5px;color:var(--dim)}
+  .road{
+    font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;
+    color:var(--text);border:1px solid var(--line);border-radius:6px;padding:3px 7px;white-space:nowrap;
+    background:var(--panel-2);
+  }
+
+  /* Camera pane */
+  .pane{position:relative;aspect-ratio:16/9;background:#070d13;overflow:hidden}
+  .pane video{width:100%;height:100%;object-fit:cover;display:block;background:#070d13}
+
+  .poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px),
+      radial-gradient(420px 220px at 50% 35%, rgba(245,166,35,.10), transparent 70%),
+      #0a121b;
+  }
+  .poster .play{
+    width:54px;height:54px;border-radius:50%;border:1px solid var(--line);
+    background:rgba(245,166,35,.12);display:grid;place-items:center;transition:transform .15s ease, background .15s ease;
+  }
+  .poster:hover .play{transform:scale(1.06);background:rgba(245,166,35,.2)}
+  .poster .play svg{margin-left:3px}
+  .poster .ptext{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:14px;color:var(--dim)}
+
+  .badge{
+    position:absolute;top:9px;left:9px;z-index:3;
+    font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;letter-spacing:.08em;
+    padding:3px 7px;border-radius:5px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08);color:var(--dim);
+  }
+  .live{
+    position:absolute;top:9px;right:9px;z-index:3;display:none;align-items:center;gap:5px;
+    font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--bad);
+    padding:3px 7px;border-radius:5px;background:rgba(0,0,0,.6);border:1px solid rgba(227,93,79,.4);
+  }
+  .live .ld{width:6px;height:6px;border-radius:50%;background:var(--bad);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+
+  /* error / linkout state inside pane */
+  .pmsg{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:18px;background:#0a121b}
+  .pmsg p{margin:0;color:var(--dim);font-size:13px;line-height:1.5;max-width:32ch}
+  .btn{
+    font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:14px;
+    color:var(--ink);background:var(--fuel);border:none;border-radius:8px;padding:9px 15px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;
+  }
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+  .btn:focus-visible,.poster:focus-visible,.tab:focus-visible{outline:2px solid var(--fuel);outline-offset:2px}
+
+  /* feed tabs */
+  .tabs{display:flex;gap:6px;padding:10px 12px 0}
+  .tab{
+    flex:1;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;
+    background:var(--panel-2);border:1px solid var(--line);color:var(--dim);border-radius:7px;padding:7px 6px;cursor:pointer;text-align:center;
+  }
+  .tab[aria-selected="true"]{color:var(--ink);background:var(--fuel);border-color:var(--fuel);font-weight:700}
+
+  /* wait strip */
+  .wait{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:10px}
+  .wcell{background:var(--panel);padding:11px 13px}
+  .wlabel{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:6px}
+  .wlabel .dir{color:var(--fuel)}
+  .wmin{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:24px;margin:3px 0 1px;line-height:1}
+  .wmin span{font-size:12px;color:var(--dim);font-weight:500}
+  .wcat{font-size:11px;color:var(--dim)}
+  .wbar{height:4px;border-radius:3px;background:var(--panel-2);margin-top:8px;overflow:hidden}
+  .wbar i{display:block;height:100%;border-radius:3px}
+
+  /* card foot */
+  .cfoot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 14px;border-top:1px solid var(--line)}
+  .src{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--faint);letter-spacing:.04em;line-height:1.4}
+  .link{font-size:12px;color:var(--fuel);text-decoration:none;font-weight:600;white-space:nowrap}
+  .link:hover{text-decoration:underline}
+
+  .updated{margin-top:8px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--faint);letter-spacing:.05em}
+
+  @media (max-width:560px){
+    .grid{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .live .ld{animation:none}
+    .poster:hover .play{transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow"><span class="dot"></span> Gasolina / Granicni prelazi</div>
+  <h1>Stanje na granici uzivo</h1>
+  <p class="lead">Pre polaska proveri kameru i vreme zadrzavanja na prelazu. Gradina je povezana sa zivim kamerama; ostali prelazi za sada vode na zvanicnu kameru dok se ne podese feedovi.</p>
+
+  <div class="note">
+    <b>Demo prototip.</b> Vremena cekanja su ilustrativna, nisu uzivo. Kamere za Gradinu vuku se direktno sa AMSS i MUP servera, pa video mozda nece da se ucita u svakom okruzenju (zavisi od CORS i referer politike izvora). Ako se ne ucita, kartica nudi dugme ka zvanicnoj kameri.
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+/* ---------------------------------------------------------------------------
+   PODACI
+   feeds[].src  -> HLS .m3u8 (ako postoji, kartica embeduje kameru)
+   feeds[].src=null -> kartica radi u "link-out" rezimu (samo zvanicna kamera)
+   Samo Gradina ima proverene URL-ove (sa alltrafficcams izvora).
+   Za ostale prelaze namerno nije podesen src - ubacujes ga kad ga uhvatis
+   u Network tabu na zvanicnom sajtu.
+   wait{} su DEMO brojke, ovde samo da se vidi kako izgleda sloj podataka.
+--------------------------------------------------------------------------- */
+const CAMERAS = [
+  {
+    id:"gradina",
+    name:"Gradina",
+    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
+    to:{cc:"BG",flag:"\uD83C\uDDE7\uD83C\uDDEC"},
+    pair:"Kalotina (BG)",
+    road:"E80",
+    provider:"AMSS / MUP",
+    official:"https://kamere.amss.org.rs/",
+    feeds:[
+      {label:"Ulaz", dir:"in",  src:"https://kamere.amss.org.rs/gradina1/gradina1.m3u8"},
+      {label:"Izlaz",dir:"out", src:"https://kamere.amss.org.rs/gradina2/gradina2.m3u8"}
+    ],
+    wait:{ in:{min:20,cat:"putnicka vozila"}, out:{min:180,cat:"teretna vozila"} }
+  },
+  {
+    id:"horgos",
+    name:"Horgos",
+    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
+    to:{cc:"HU",flag:"\uD83C\uDDED\uD83C\uDDFA"},
+    pair:"Roszke (HU)",
+    road:"E75",
+    provider:"AMSS / MUP",
+    official:"https://kamere.amss.org.rs/",
+    feeds:[ {label:"Kamera", dir:"in", src:null} ],
+    wait:{ in:{min:30,cat:"putnicka vozila"}, out:{min:60,cat:"teretna vozila"} }
+  },
+  {
+    id:"batrovci",
+    name:"Batrovci",
+    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
+    to:{cc:"HR",flag:"\uD83C\uDDED\uD83C\uDDF7"},
+    pair:"Bajakovo (HR)",
+    road:"E70",
+    provider:"AMSS / MUP",
+    official:"https://kamere.amss.org.rs/",
+    feeds:[ {label:"Kamera", dir:"out", src:null} ],
+    wait:{ in:{min:15,cat:"putnicka vozila"}, out:{min:300,cat:"teretna vozila"} }
+  },
+  {
+    id:"presevo",
+    name:"Presevo",
+    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
+    to:{cc:"MK",flag:"\uD83C\uDDF2\uD83C\uDDF0"},
+    pair:"Tabanovce (MK)",
+    road:"E75",
+    provider:"AMSS / MUP",
+    official:"https://kamere.amss.org.rs/",
+    feeds:[ {label:"Kamera", dir:"in", src:null} ],
+    wait:{ in:{min:60,cat:"teretna vozila"}, out:{min:10,cat:"putnicka vozila"} }
+  },
+  {
+    id:"sremska-raca",
+    name:"Sremska Raca",
+    from:{cc:"RS",flag:"\uD83C\uDDF7\uD83C\uDDF8"},
+    to:{cc:"BA",flag:"\uD83C\uDDE7\uD83C\uDDE6"},
+    pair:"Raca (BiH)",
+    road:"E70",
+    provider:"AMSS / MUP",
+    official:"https://kamere.amss.org.rs/",
+    feeds:[ {label:"Kamera", dir:"out", src:null} ],
+    wait:{ in:{min:30,cat:"putnicka vozila"}, out:{min:30,cat:"putnicka vozila"} }
+  }
+];
+
+/* status iz minuta */
+function waitStatus(min){
+  if(min==null) return {c:"var(--faint)",pct:0,t:"nema podataka"};
+  if(min<=30)  return {c:"var(--ok)",  pct:Math.max(12,min/30*40),  t:"prohodno"};
+  if(min<=90)  return {c:"var(--warn)",pct:40+(min-30)/60*30,        t:"umereno"};
+  return            {c:"var(--bad)", pct:Math.min(100,70+(min-90)/120*30), t:"velika guzva"};
+}
+function fmtMin(m){ if(m==null) return "-"; if(m>=60){const h=Math.floor(m/60),r=m%60; return r?`${h}h ${r}m`:`${h}h`;} return `${m} min`; }
+
+function waitCell(label,dir,w){
+  const s=waitStatus(w?w.min:null);
+  return `
+    <div class="wcell">
+      <div class="wlabel"><span class="dir">${dir==='in'?'\u2192':'\u2190'}</span> ${label}</div>
+      <div class="wmin" style="color:${s.c}">${fmtMin(w?w.min:null)}</div>
+      <div class="wcat">${w?w.cat:'-'} &middot; ${s.t}</div>
+      <div class="wbar"><i style="width:${s.pct}%;background:${s.c}"></i></div>
+    </div>`;
+}
+
+function cardHTML(c){
+  const hasVideo = c.feeds.some(f=>f.src);
+  const tabs = c.feeds.length>1 && hasVideo
+    ? `<div class="tabs" role="tablist">${c.feeds.map((f,i)=>
+        `<button class="tab" role="tab" data-i="${i}" aria-selected="${i===0}">${f.label}</button>`).join("")}</div>`
+    : "";
+
+  const paneInner = hasVideo
+    ? `<span class="badge">${c.provider}</span>
+       <span class="live"><span class="ld"></span>UZIVO</span>
+       <video playsinline muted></video>
+       <button class="poster" aria-label="Pusti kameru ${c.name}">
+         <span class="play"><svg width="20" height="20" viewBox="0 0 24 24" fill="var(--fuel)"><path d="M8 5v14l11-7z"/></svg></span>
+         <span class="ptext">Pusti kameru</span>
+       </button>
+       <div class="pmsg">
+         <p>Kamera trenutno nije dostupna u ovom prikazu.</p>
+         <a class="btn" href="${c.official}" target="_blank" rel="noopener">Otvori zvanicnu kameru</a>
+       </div>`
+    : `<span class="badge">${c.provider}</span>
+       <div class="pmsg" style="display:flex">
+         <p>Live feed jos nije podesen za ovaj prelaz.</p>
+         <a class="btn" href="${c.official}" target="_blank" rel="noopener">Otvori zvanicnu kameru</a>
+       </div>`;
+
+  return `
+  <article class="card" data-id="${c.id}">
+    <div class="chead">
+      <div>
+        <div class="route">
+          <span class="flag">${c.from.flag}</span> ${c.from.cc}
+          <span class="arrow">\u2192</span>
+          <span class="flag">${c.to.flag}</span> ${c.to.cc}
+        </div>
+        <div class="cname">${c.name}</div>
+        <div class="cpair">naspram ${c.pair}</div>
+      </div>
+      <div class="road">${c.road}</div>
+    </div>
+
+    <div class="pane">${paneInner}</div>
+    ${tabs}
+
+    <div class="wait">
+      ${waitCell("Ulaz u Srbiju","in",c.wait.in)}
+      ${waitCell("Izlaz iz Srbije","out",c.wait.out)}
+    </div>
+
+    <div class="cfoot">
+      <div class="src">Izvor: Uprava granicne policije RS<br>Kamera: AMSS / MUP</div>
+      <a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>
+    </div>
+  </article>`;
+}
+
+/* ---- HLS player ---- */
+function playFeed(card, cam, feedIndex){
+  const feed = cam.feeds[feedIndex];
+  if(!feed || !feed.src) return;
+  const pane = card.querySelector(".pane");
+  const video = pane.querySelector("video");
+  const poster = pane.querySelector(".poster");
+  const live = pane.querySelector(".live");
+  const pmsg = pane.querySelector(".pmsg");
+
+  if(poster) poster.style.display="none";
+  pmsg.style.display="none";
+
+  // cleanup prethodni hls
+  if(card._hls){ try{card._hls.destroy();}catch(e){} card._hls=null; }
+
+  const onOk = ()=>{ live.style.display="flex"; video.play().catch(()=>{}); };
+  const onFail = ()=>{
+    live.style.display="none";
+    pmsg.style.display="flex";
+    video.removeAttribute("src"); video.load();
+  };
+
+  if(video.canPlayType("application/vnd.apple.mpegurl")){
+    // Safari / iOS native HLS
+    video.src=feed.src;
+    video.addEventListener("loadedmetadata",onOk,{once:true});
+    video.addEventListener("error",onFail,{once:true});
+  } else if(window.Hls && Hls.isSupported()){
+    const hls=new Hls({maxBufferLength:10});
+    card._hls=hls;
+    hls.loadSource(feed.src);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED,onOk);
+    hls.on(Hls.Events.ERROR,(e,d)=>{ if(d.fatal) onFail(); });
+  } else {
+    onFail();
+  }
+}
+
+/* ---- render + wire ---- */
+const grid=document.getElementById("grid");
+grid.innerHTML=CAMERAS.map(cardHTML).join("");
+
+CAMERAS.forEach(cam=>{
+  const card=grid.querySelector(`[data-id="${cam.id}"]`);
+  const poster=card.querySelector(".poster");
+  if(poster){
+    poster.addEventListener("click",()=>playFeed(card,cam,0));
+    poster.setAttribute("tabindex","0");
+    poster.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();playFeed(card,cam,0);} });
+  }
+  card.querySelectorAll(".tab").forEach(tab=>{
+    tab.addEventListener("click",()=>{
+      card.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected","false"));
+      tab.setAttribute("aria-selected","true");
+      playFeed(card,cam,parseInt(tab.dataset.i,10));
+    });
+  });
+});
+
+/* demo timestamp */
+const t=new Date();
+const hh=String(t.getHours()).padStart(2,"0"), mm=String(t.getMinutes()).padStart(2,"0");
+const stamp=document.createElement("div");
+stamp.className="updated";
+stamp.textContent=`Demo podaci o cekanju, prikaz u ${hh}:${mm}`;
+document.querySelector(".note").after(stamp);
+</script>
+</body>
+</html>
