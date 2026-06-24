@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-06-24T15:59:34+00:00",
+  "scraped_at": "2026-06-24T18:04:02+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "crossings": {
     "gradina": {
@@ -52,6 +52,30 @@
       },
       "found": true,
       "amss_name": "SREMSKA RAČA"
+    },
+    "spiljani": {
+      "putnicka": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "teretna": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "found": true,
+      "amss_name": "ŠPILJANI Srbija Crna Gora E65 E80"
+    },
+    "gostun": {
+      "putnicka": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "teretna": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "found": true,
+      "amss_name": "GOSTUN Srbija Crna Gora"
     }
   }
 }
