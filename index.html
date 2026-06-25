@@ -490,6 +490,16 @@
       const list = routeCrossings(route);
       if (!list.length) return '';
       const rows = list.map((cx, i) => {
+        if (cx.noWait) {
+          return `
+        <div class="rb-row${i === 0 ? ' first' : ''}">
+          <div class="rb-main">
+            <div class="rb-route">${BORDERS.FLAG[cx.from]} ${cx.from} <span class="rb-arr">\u2192</span> ${BORDERS.FLAG[cx.to]} ${cx.to}</div>
+            <div class="rb-name">${cx.name} <span class="rb-road">${cx.road}</span></div>
+          </div>
+          <div class="rb-wait"><span class="rb-cat">kamera dostupna &middot; cekanje se ne prati</span></div>
+        </div>`;
+        }
         const w = borderWaits[cx.id] || cx.wait;
         const pOut = w && w.putnicka ? w.putnicka.izlaz : null;
         const tOut = w && w.teretna ? w.teretna.izlaz : null;
