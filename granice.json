@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-06-25T01:32:48+00:00",
+  "scraped_at": "2026-06-25T06:14:08+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "crossings": {
     "gradina": {
@@ -47,7 +47,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 240,
+        "izlaz": 60,
         "ulaz": 30
       },
       "found": true,
