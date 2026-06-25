@@ -140,6 +140,7 @@
   .wtruck b{color:var(--text);font-weight:700}
   .hustrip{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:10px;padding-top:9px;border-top:1px dashed var(--line)}
   .hustrip b{color:var(--text);font-weight:700}
+  .nowait{font-size:12px;color:var(--faint);line-height:1.5;margin-top:10px;padding:10px 12px;border:1px dashed var(--line);border-radius:10px}
   .wbar{height:4px;border-radius:3px;background:var(--panel-2);margin-top:8px;overflow:hidden}
   .wbar i{display:block;height:100%;border-radius:3px}
 
@@ -263,8 +264,8 @@ function cardHTML(c){
   } else {
     paneInner = `<span class="badge">${c.provider}</span>
        <div class="pmsg" style="display:flex">
-         <p>Live feed jos nije podesen za ovaj prelaz.</p>
-         <a class="btn" href="${c.official}" target="_blank" rel="noopener">Otvori zvanicnu kameru</a>
+         <p>${c.linkOnly ? 'Kamera se otvara na zvanicnom izvoru.' : 'Live feed jos nije podesen za ovaj prelaz.'}</p>
+         <a class="btn" href="${c.official}" target="_blank" rel="noopener">Otvori kameru</a>
        </div>`;
   }
 
@@ -286,14 +287,15 @@ function cardHTML(c){
     <div class="pane">${paneInner}</div>
     ${tabs}
 
+    ${c.noWait ? `<div class="nowait">Granica ${c.from}\u2013${c.to}. Vreme cekanja se ovde ne prati; iskoristi kameru iznad.</div>` : `
     <div class="wait">
       ${waitCell("Ulaz u Srbiju","ulaz",c.wait)}
       ${waitCell("Izlaz iz Srbije","izlaz",c.wait)}
     </div>
-    ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Madjarska strana: ulaz <b>${huMin(c.hu.ulaz)}</b> &middot; izlaz <b>${huMin(c.hu.izlaz)}</b></div>` : ''}
+    ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Madjarska strana: ulaz <b>${huMin(c.hu.ulaz)}</b> &middot; izlaz <b>${huMin(c.hu.izlaz)}</b></div>` : ''}`}
 
     <div class="cfoot">
-      <div class="src">Izvor: Uprava granicne policije RS<br>Kamera: AMSS / MUP</div>
+      <div class="src">${c.noWait ? `Kamera: ${c.provider}` : `Izvor: Uprava granicne policije RS<br>Kamera: AMSS / MUP`}</div>
       <a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>
     </div>
   </article>`;
