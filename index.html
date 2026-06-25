@@ -137,7 +137,8 @@
     }
     a:focus-visible, button:focus-visible, select:focus-visible { outline: 2px solid var(--fuel); outline-offset: 2px; }
     /* Granice na ruti (panel u kalkulatoru) */
-    .rb-box h3 { margin-bottom: 10px; }
+    .rb-box { border-color: rgba(245,166,35,0.45); background: linear-gradient(180deg, rgba(245,166,35,0.05), transparent 60%), var(--panel); }
+    .rb-box h3 { margin-bottom: 10px; color: var(--fuel); }
     .rb-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 0; border-top:1px solid var(--line); }
     .rb-row.first { border-top:0; }
     .rb-route { font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--faint); letter-spacing:.04em; }
@@ -500,6 +501,7 @@
 
       out.innerHTML = `
         ${savings > 0.5 ? `<div class="savings-banner"><div class="label">Pametna strategija ti štedi</div><div class="amount">${fmtEur(savings)}</div><div class="pct">${savingsPct.toFixed(0)}% jeftinije nego naivno (${fuelText})</div></div>` : ''}
+        ${bordersPanel(t.route)}
         <div class="results">
           <div class="result-box smart"><h3>🧠 Pametna strategija</h3><div class="total">${t.smartCost > 0 ? fmtEur(t.smartCost) : '-'}</div>${smartHtml}</div>
           <div class="result-box"><h3>😴 Naivno (sve u polasku)</h3><div class="total">${t.naiveCost !== null ? fmtEur(t.naiveCost) : '-'}</div>${naiveHtml}</div>
@@ -511,8 +513,7 @@
           <div class="step">Ukupno potrebno: <strong>${t.totalFuelNeeded.toFixed(1).replace('.', ',')} L</strong> · Treba kupiti: <strong>${t.fuelToBuy.toFixed(1).replace('.', ',')} L</strong></div>
           <div class="step" style="margin-top:10px">Cene ${fuelText} po deonici:</div>
           ${t.legs.map(l => `<div class="step">${l.flag} ${l.label} (${l.km} km): ${l.pricePerL ? fmtEur(l.pricePerL) + ' / L' : '<span style="color:#f87171">cena nedostupna</span>'}</div>`).join('')}
-        </div>
-        ${bordersPanel(t.route)}`;
+        </div>`;
     }
 
     function populateRoutes() {
