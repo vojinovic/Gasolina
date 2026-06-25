@@ -61,6 +61,13 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
+      id: "bogorodica", name: "Bogorodica", from: "MK", to: "GR",
+      pair: "Evzoni (GR)", road: "E75", provider: "roads.org.mk",
+      official: "https://alltrafficcams.com/live/border-crossings/north-macedonia/greece/bogorodica-evzonoi/",
+      linkOnly: true, noWait: true, feeds: [],
+      wait: null,
+    },
+    {
       id: "sremska-raca", name: "Sremska Raca", from: "RS", to: "BA",
       pair: "Raca (BiH)", road: "E70", provider: "MUP",
       official: "https://kamere.amss.org.rs/",
