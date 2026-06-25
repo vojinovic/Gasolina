@@ -431,6 +431,7 @@
       return { c: 'var(--bad)', t: 'velika guzva' };
     }
     function bMin(m) { if (m == null) return '-'; if (m >= 60) { const h = Math.floor(m/60), r = m%60; return r ? `${h}h ${r}m` : `${h}h`; } return `${m} min`; }
+    function bText(m) { if (m == null) return '-'; if (m <= 30) return 'Bez guzve'; return bMin(m); }
 
     function routeCrossings(route) {
       const seen = new Set(), out = [];
@@ -459,8 +460,8 @@
           </div>
           <div class="rb-wait">
             <span class="rb-dot" style="background:${s.c}"></span>
-            <span class="rb-min" style="color:${s.c}">${bMin(pOut)}</span>
-            <span class="rb-cat">putnicka, izlaz${tOut != null ? ' &middot; kamioni ' + bMin(tOut) : ''}</span>
+            <span class="rb-min" style="color:${s.c}">${bText(pOut)}</span>
+            <span class="rb-cat">putnicka, izlaz${tOut != null ? ' &middot; kamioni ' + bText(tOut) : ''}</span>
           </div>
         </div>`;
       }).join('');
