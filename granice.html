@@ -134,6 +134,7 @@
   .wlabel .dir{color:var(--fuel)}
   .wmin{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:24px;margin:3px 0 1px;line-height:1}
   .wmin span{font-size:12px;color:var(--dim);font-weight:500}
+  .wmin .wok{font-size:16px;color:inherit;font-weight:700;white-space:nowrap}
   .wcat{font-size:11px;color:var(--dim)}
   .wtruck{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:5px;display:flex;align-items:center;gap:5px}
   .wtruck b{color:var(--text);font-weight:700}
@@ -214,22 +215,21 @@ function waitStatus(min){
   return            {c:"var(--bad)", pct:Math.min(100,70+(min-90)/120*30), t:"velika guzva"};
 }
 function fmtMin(m){ if(m==null) return "-"; if(m>=60){const h=Math.floor(m/60),r=m%60; return r?`${h}h ${r}m`:`${h}h`;} return `${m} min`; }
-function huMin(m){ if(m==null) return "-"; if(m===0) return "<15 min"; return fmtMin(m); }
+function huMin(m){ if(m==null) return "-"; if(m===0) return "Bez guzve"; return fmtMin(m); }
 
+function waitText(m){ if(m==null) return "-"; if(m<=30) return "Bez guzve"; return fmtMin(m); }
 function waitCell(label,dirKey,w){
   const p = w && w.putnicka ? w.putnicka[dirKey] : null;
   const t = w && w.teretna ? w.teretna[dirKey] : null;
   const s = waitStatus(p);
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
-  const truck = (t!=null)
-    ? `<div class="wtruck">\uD83D\uDE9B kamioni: <b>${fmtMin(t)}</b></div>`
-    : `<div class="wtruck">\uD83D\uDE9B kamioni: <b>-</b></div>`;
+  const big = (p==null) ? '-' : (p<=30 ? '<span class="wok">Bez guzve</span>' : fmtMin(p));
   return `
     <div class="wcell">
       <div class="wlabel"><span class="dir">${arrow}</span> ${label}</div>
-      <div class="wmin" style="color:${s.c}">${fmtMin(p)}</div>
-      <div class="wcat">putnicka &middot; ${s.t}</div>
-      ${truck}
+      <div class="wmin" style="color:${s.c}">${big}</div>
+      <div class="wcat">putnicka vozila</div>
+      <div class="wtruck">\uD83D\uDE9B kamioni: <b>${waitText(t)}</b></div>
       <div class="wbar"><i style="width:${s.pct}%;background:${s.c}"></i></div>
     </div>`;
 }
