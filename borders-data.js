@@ -64,7 +64,10 @@ window.BORDERS = (function () {
       id: "bogorodica", name: "Bogorodica", from: "MK", to: "GR",
       pair: "Evzoni (GR)", road: "E75", provider: "roads.org.mk",
       official: "https://alltrafficcams.com/live/border-crossings/north-macedonia/greece/bogorodica-evzonoi/",
-      linkOnly: true, noWait: true, feeds: [],
+      noWait: true,
+      feeds: [
+        { label: "Izlaz (ka Grckoj)", dir: "out", src: "https://streaming1.neotel.net.mk/stream/bogorodica.m3u8" },
+      ],
       wait: null,
     },
     {
