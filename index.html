@@ -594,7 +594,7 @@
       let fuelBig = '—', fuelSub = 'Ucitavanje cena...';
       if (fx) {
         fuelBig = `${fx.min.flag || ''} ${fx.min.name}`;
-        fuelSub = `Najjeftiniji dizel: ${fmtEur(fx.min.diesel.eur)}/L. Najskuplje: ${fx.max.flag || ''} ${fx.max.name} (${fmtEur(fx.max.diesel.eur)}).`;
+        fuelSub = `Najniza cena dizela (po dostupnim podacima): ${fmtEur(fx.min.diesel.eur)}/L. Najvisa: ${fx.max.flag || ''} ${fx.max.name} (${fmtEur(fx.max.diesel.eur)}).`;
       }
 
       const wb = worstBorder();
@@ -605,7 +605,7 @@
 
       el.innerHTML = `
         <a class="sc" href="#cards">
-          <div class="lab">⛽ Cene goriva</div>
+          <div class="lab">⛽ Cene goriva (region)</div>
           <div class="big">${fuelBig}</div>
           <div class="sub">${fuelSub}</div>
           <div class="go">Uporedi sve cene →</div>
@@ -617,10 +617,10 @@
           <div class="go">Otvori kalkulator →</div>
         </a>
         <a class="sc" href="granice.html">
-          <div class="lab">🚧 Granice uzivo</div>
+          <div class="lab">🚧 Stanje na granicama</div>
           <div class="big">${bBig}</div>
           <div class="sub">${bSub}</div>
-          <div class="go">Kamere i cekanja →</div>
+          <div class="go">Procena cekanja + kamere uzivo →</div>
         </a>`;
     }
 
