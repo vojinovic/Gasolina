@@ -137,6 +137,8 @@
   .wcat{font-size:11px;color:var(--dim)}
   .wtruck{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:5px;display:flex;align-items:center;gap:5px}
   .wtruck b{color:var(--text);font-weight:700}
+  .hustrip{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:10px;padding-top:9px;border-top:1px dashed var(--line)}
+  .hustrip b{color:var(--text);font-weight:700}
   .wbar{height:4px;border-radius:3px;background:var(--panel-2);margin-top:8px;overflow:hidden}
   .wbar i{display:block;height:100%;border-radius:3px}
 
@@ -212,6 +214,7 @@ function waitStatus(min){
   return            {c:"var(--bad)", pct:Math.min(100,70+(min-90)/120*30), t:"velika guzva"};
 }
 function fmtMin(m){ if(m==null) return "-"; if(m>=60){const h=Math.floor(m/60),r=m%60; return r?`${h}h ${r}m`:`${h}h`;} return `${m} min`; }
+function huMin(m){ if(m==null) return "-"; if(m===0) return "<15 min"; return fmtMin(m); }
 
 function waitCell(label,dirKey,w){
   const p = w && w.putnicka ? w.putnicka[dirKey] : null;
@@ -287,6 +290,7 @@ function cardHTML(c){
       ${waitCell("Ulaz u Srbiju","ulaz",c.wait)}
       ${waitCell("Izlaz iz Srbije","izlaz",c.wait)}
     </div>
+    ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Madjarska strana: ulaz <b>${huMin(c.hu.ulaz)}</b> &middot; izlaz <b>${huMin(c.hu.izlaz)}</b></div>` : ''}
 
     <div class="cfoot">
       <div class="src">Izvor: Uprava granicne policije RS<br>Kamera: AMSS / MUP</div>
@@ -390,6 +394,7 @@ async function init(){
         } else {
           cam.wait=null;   // nema zvanicnog podatka -> "nema podataka", ne demo
         }
+        cam.hu = (c && c.hu) ? c.hu : null;
       });
     }
   }catch(e){ /* nema fajla, ostaju demo brojke */ }
