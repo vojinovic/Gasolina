@@ -33,10 +33,10 @@
         "eur": 1.59
       },
       "lpg": {
-        "local": 0.75,
-        "eur": 0.75
+        "local": 0.71,
+        "eur": 0.71
       },
-      "updated": "2026-06-19 19:52 UTC"
+      "updated": "2026-06-26 19:52 UTC"
     },
     {
       "name": "Bosnia and Herzegovina",
@@ -152,18 +152,18 @@
       "currency": "ALL",
       "fx_rate_eur": 100.0,
       "petrol95": {
-        "local": 173.0,
-        "eur": 1.73
+        "local": 166.0,
+        "eur": 1.66
       },
       "diesel": {
-        "local": 187.0,
-        "eur": 1.87
+        "local": 176.0,
+        "eur": 1.76
       },
       "lpg": {
         "local": 65.0,
         "eur": 0.65
       },
-      "updated": "2026-06-19 19:52 UTC"
+      "updated": "2026-06-26 19:52 UTC"
     },
     {
       "name": "Greece",
