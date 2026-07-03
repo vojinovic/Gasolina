@@ -4,20 +4,20 @@
       "name": "Serbia",
       "flag": "🇷🇸",
       "currency": "RSD",
-      "fx_rate_eur": 117.5758,
+      "fx_rate_eur": 117.1779,
       "petrol95": {
-        "local": 194.0,
-        "eur": 1.65
+        "local": 191.0,
+        "eur": 1.63
       },
       "diesel": {
-        "local": 220.0,
-        "eur": 1.87
+        "local": 217.0,
+        "eur": 1.85
       },
       "lpg": {
-        "local": 109.9,
-        "eur": 0.94
+        "local": 107.4,
+        "eur": 0.91
       },
-      "updated": "2026-06-19 19:52 UTC"
+      "updated": "2026-07-03 19:26 UTC"
     },
     {
       "name": "Croatia",
@@ -25,18 +25,18 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.57,
-        "eur": 1.57
+        "local": 1.54,
+        "eur": 1.54
       },
       "diesel": {
-        "local": 1.59,
-        "eur": 1.59
+        "local": 1.54,
+        "eur": 1.54
       },
       "lpg": {
-        "local": 0.71,
-        "eur": 0.71
+        "local": 0.7,
+        "eur": 0.7
       },
-      "updated": "2026-06-26 19:52 UTC"
+      "updated": "2026-07-03 19:26 UTC"
     },
     {
       "name": "Bosnia and Herzegovina",
@@ -63,15 +63,15 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.66,
-        "eur": 1.66
+        "local": 1.6,
+        "eur": 1.6
       },
       "diesel": {
-        "local": 1.66,
-        "eur": 1.66
+        "local": 1.54,
+        "eur": 1.54
       },
       "lpg": null,
-      "updated": "2026-06-19 19:52 UTC"
+      "updated": "2026-07-03 19:26 UTC"
     },
     {
       "name": "Slovenia",
@@ -79,37 +79,37 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.6,
-        "eur": 1.6
+        "local": 1.54,
+        "eur": 1.54
       },
       "diesel": {
-        "local": 1.72,
-        "eur": 1.72
+        "local": 1.61,
+        "eur": 1.61
       },
       "lpg": {
-        "local": 0.97,
-        "eur": 0.97
+        "local": 1.02,
+        "eur": 1.02
       },
-      "updated": "2026-06-19 19:52 UTC"
+      "updated": "2026-07-03 19:26 UTC"
     },
     {
       "name": "North Macedonia",
       "flag": "🇲🇰",
       "currency": "MKD",
-      "fx_rate_eur": 61.4286,
+      "fx_rate_eur": 62.1324,
       "petrol95": {
-        "local": 86.0,
-        "eur": 1.4
+        "local": 84.5,
+        "eur": 1.36
       },
       "diesel": {
-        "local": 87.0,
-        "eur": 1.41
+        "local": 80.0,
+        "eur": 1.31
       },
       "lpg": {
-        "local": 51.0,
-        "eur": 0.83
+        "local": 47.0,
+        "eur": 0.76
       },
-      "updated": "2026-06-19 19:52 UTC"
+      "updated": "2026-07-03 19:26 UTC"
     },
     {
       "name": "Hungary",
@@ -117,18 +117,18 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.82,
-        "eur": 1.82
+        "local": 1.64,
+        "eur": 1.64
       },
       "diesel": {
-        "local": 1.9,
-        "eur": 1.9
+        "local": 1.68,
+        "eur": 1.68
       },
       "lpg": {
-        "local": 1.04,
-        "eur": 1.04
+        "local": 1.01,
+        "eur": 1.01
       },
-      "updated": "2026-06-19 19:52 UTC"
+      "updated": "2026-07-03 19:26 UTC"
     },
     {
       "name": "Bulgaria",
@@ -136,15 +136,15 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.518,
-        "eur": 1.518
+        "local": 1.465,
+        "eur": 1.465
       },
       "diesel": {
-        "local": 1.588,
-        "eur": 1.588
+        "local": 1.478,
+        "eur": 1.478
       },
       "lpg": null,
-      "updated": "2026-06-19 19:52 UTC"
+      "updated": "2026-07-03 19:26 UTC"
     },
     {
       "name": "Albania",
@@ -163,7 +163,7 @@
         "local": 65.0,
         "eur": 0.65
       },
-      "updated": "2026-06-26 19:52 UTC"
+      "updated": "2026-07-03 19:26 UTC"
     },
     {
       "name": "Greece",
@@ -171,15 +171,15 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.995,
-        "eur": 1.995
+        "local": 1.922,
+        "eur": 1.922
       },
       "diesel": {
-        "local": 1.739,
-        "eur": 1.739
+        "local": 1.608,
+        "eur": 1.608
       },
       "lpg": null,
-      "updated": "2026-06-19 19:52 UTC"
+      "updated": "2026-07-03 19:26 UTC"
     }
   ]
 }
