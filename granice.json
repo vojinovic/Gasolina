@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-04T00:10:24+00:00",
+  "scraped_at": "2026-07-04T04:21:10+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "crossings": {
@@ -13,12 +13,12 @@
       },
       "teretna": {
         "izlaz": 30,
-        "ulaz": 30
+        "ulaz": null
       },
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
-        "ulaz": 30,
+        "ulaz": 0,
         "izlaz": 0
       }
     },
