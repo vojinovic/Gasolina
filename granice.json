@@ -1,10 +1,19 @@
 {
-  "scraped_at": "2026-07-06T00:12:30+00:00",
+  "scraped_at": "2026-07-06T04:53:31+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "crossings": {
     "gradina": {
-      "found": false
+      "putnicka": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "teretna": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "found": true,
+      "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)"
     },
     "horgos": {
       "putnicka": {
@@ -13,7 +22,7 @@
       },
       "teretna": {
         "izlaz": 30,
-        "ulaz": null
+        "ulaz": 30
       },
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
