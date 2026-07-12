@@ -25,6 +25,15 @@ URL = "https://www.amss.org.rs/stanje-na-putu/strana/mapa"
 HU_URL = ("https://www.police.hu/hu/hirek-es-informaciok/hatarinfo"
           "?field_hat_rszakasz_value=szerb+hat%C3%A1rszakasz")
 MK_URL = "https://amsm.mk/sostojba-na-patishta/dnevni-informacii/"
+
+# --- BorderAlarm (prijave vozaca, crowdsource) -----------------------------
+# PRIVREMENO za Gradinu dok ne postoji zvanicni izvor sa minutima.
+# Iskljucuje se jednim flagom. Podatak se prikazuje uz atribuciju i link.
+BA_ENABLED = True
+BA_URL = "https://borderalarm.com/countries/serbia/"
+BA_TARGETS = {
+    "gradina": "dragina / kalotina",   # njihov (pogresan) naziv za Gradinu
+}
 OUT = "granice.json"
 
 # id prelaza (mora da se poklapa sa CAMERAS u granice.html) -> kljucna rec
@@ -243,6 +252,36 @@ def fetch_mk():
         return r.read().decode("utf-8", "replace")
 
 
+def parse_ba(text):
+    """Vraca {id: {'izlaz':m,'ulaz':m}} sa BorderAlarm liste za Srbiju.
+    Format po prelazu: ime, pa prvi 'N min.' = Srbija->X (izlaz),
+    drugi 'N min.' = X->Srbija (ulaz)."""
+    low = text.lower()
+    res = {}
+    for cid, name in BA_TARGETS.items():
+        i = low.find(name)
+        if i == -1:
+            print(f"BA: {cid} ({name}) nije nadjen")
+            continue
+        nxt = low.find(" open", i + len(name) + 10)
+        window = low[i:(nxt if nxt != -1 else i + 400)]
+        mins = re.findall(r"(\d+)\s*min", window)
+        if len(mins) >= 2:
+            res[cid] = {"izlaz": int(mins[0]), "ulaz": int(mins[1])}
+            print(f"BA: {cid} -> {res[cid]}")
+        else:
+            print(f"BA: {cid} nadjen ali bez dva vremena u prozoru")
+    return res
+
+
+def fetch_ba():
+    req = urllib.request.Request(BA_URL, headers={
+        "User-Agent": "Gasolina/1.0 (+https://vojinovic.github.io/Gasolina)"
+    })
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return r.read().decode("utf-8", "replace")
+
+
 def fetch_hu():
     req = urllib.request.Request(HU_URL, headers={
         "User-Agent": "Gasolina/1.0 (+https://vojinovic.github.io/Gasolina)"
@@ -251,10 +290,11 @@ def fetch_hu():
         return r.read().decode("utf-8", "replace")
 
 
-def build(text, hu_text=None, mk_text=None):
+def build(text, hu_text=None, mk_text=None, ba_text=None):
     blocks = split_blocks(text)
     hu = parse_hu(hu_text) if hu_text else {}
     mk = parse_mk(mk_text) if mk_text else {}
+    ba = parse_ba(ba_text) if ba_text else {}
     crossings = {}
     for cid, kw in TARGETS.items():
         name, body = match_target(blocks, kw)
@@ -268,6 +308,8 @@ def build(text, hu_text=None, mk_text=None):
             entry["hu"] = hu[cid]
         if cid in mk:
             entry["mk"] = mk[cid]
+        if cid in ba:
+            entry["ba"] = ba[cid]
         crossings[cid] = entry
     # bogorodica nije na AMSS mapi (MK-GR granica), ali MK podatak treba da udje
     if "bogorodica" in mk and "bogorodica" not in crossings:
@@ -278,6 +320,7 @@ def build(text, hu_text=None, mk_text=None):
         "source": "AMSS / Uprava granicne policije RS",
         "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
         "source_mk": "AMSM (amsm.mk) - makedonska strana",
+        "source_ba": "BorderAlarm (borderalarm.com) - prijave vozaca",
         "crossings": crossings,
     }
 
@@ -407,8 +450,28 @@ MK_FIXTURE = """
 """
 
 
+BA_FIXTURE = """
+BG
+Dragina / Kalotina Open
+55 min.
+Serbia \u2794
+Bulgaria
+5 min.
+Bulgaria \u2794
+Serbia
+MK
+Presevo / Tabanovce Open
+15 min.
+Serbia \u2794
+North Macedonia
+10 min.
+North Macedonia \u2794
+Serbia
+"""
+
+
 def selftest():
-    result = build(SELFTEST_FIXTURE, HU_FIXTURE, MK_FIXTURE)
+    result = build(SELFTEST_FIXTURE, HU_FIXTURE, MK_FIXTURE, BA_FIXTURE)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     c = result["crossings"]
     ok = True
@@ -445,6 +508,12 @@ def selftest():
         if not good:
             ok = False
         print(f"[{'OK ' if good else 'FAIL'}] {label}: got={got} exp={exp}")
+    ba_g = c["gradina"].get("ba")
+    ba_exp = {"izlaz": 55, "ulaz": 5}
+    ba_ok = ba_g == ba_exp
+    if not ba_ok:
+        ok = False
+    print(f"[{'OK ' if ba_ok else 'FAIL'}] gradina.ba: got={ba_g} exp={ba_exp}")
     print("\nSELFTEST:", "PASS" if ok else "FAIL")
     return 0 if ok else 1
 
@@ -463,7 +532,13 @@ def main():
     except Exception as e:
         print("Upozorenje: amsm.mk nije dostupan:", e)
         mk_text = None
-    result = build(text, hu_text, mk_text)
+    ba_text = None
+    if BA_ENABLED:
+        try:
+            ba_text = html_to_text(fetch_ba())
+        except Exception as e:
+            print("Upozorenje: borderalarm.com nije dostupan:", e)
+    result = build(text, hu_text, mk_text, ba_text)
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
     found = sum(1 for v in result["crossings"].values() if v.get("found"))
