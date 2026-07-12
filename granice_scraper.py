@@ -32,7 +32,7 @@ MK_URL = "https://amsm.mk/sostojba-na-patishta/dnevni-informacii/"
 BA_ENABLED = True
 BA_URL = "https://borderalarm.com/countries/serbia/"
 BA_TARGETS = {
-    "gradina": "dragina / kalotina",   # njihov (pogresan) naziv za Gradinu
+    "gradina": r"dragina\s*/\s*kalotina",   # njihov (pogresan) naziv za Gradinu
 }
 OUT = "granice.json"
 
@@ -86,6 +86,7 @@ def html_to_text(raw):
     raw = re.sub(r"(?i)</(p|div|h[1-6]|li|tr)>", "\n", raw)
     raw = re.sub(r"<[^>]+>", " ", raw)
     raw = html.unescape(raw)
+    raw = raw.replace("\xa0", " ")
     lines = [re.sub(r"[ \t]+", " ", ln).strip() for ln in raw.splitlines()]
     return "\n".join(ln for ln in lines if ln)
 
@@ -119,9 +120,30 @@ def split_blocks(text):
 
 
 def grab(segment, key):
-    """Iz segmenta izvlaci minute za 'Izlaz iz Srbije' ili 'Ulaz u Srbiju'."""
-    m = re.search(key + r"[^0-9\n]{0,40}?(\d+)\s*min", segment, re.I)
-    return int(m.group(1)) if m else None
+    """Iz segmenta izvlaci minute za 'Izlaz iz Srbije' ili 'Ulaz u Srbiju'.
+    Razume 'oko/od/do/preko N min', 'N sata/casa', 'jedan sat', 'pola sata'."""
+    m = re.search(key, segment, re.I)
+    if m is None:
+        return None
+    rest = segment[m.end():]
+    stop = len(rest)
+    for pat in (r"(?i)ulaz u srbiju", r"(?i)izlaz iz srbije", r"\n"):
+        mm = re.search(pat, rest)
+        if mm:
+            stop = min(stop, mm.start())
+    win = fold(rest[:stop]).lower()[:90]
+    mmin = re.search(r"(\d+)\s*min", win)
+    if mmin:
+        return int(mmin.group(1))
+    mh = re.search(r"(\d+)\s*(?:sata|sati|sat|casa|casova|cas|h\b)", win)
+    if mh:
+        return int(mh.group(1)) * 60
+    for w, v in (("pola sata", 30), ("jedan sat", 60), ("sat vremena", 60),
+                 ("dva sata", 120), ("tri sata", 180), ("cetiri sata", 240),
+                 ("pet sati", 300)):
+        if w in win:
+            return v
+    return None
 
 
 def parse_block(text):
@@ -259,11 +281,12 @@ def parse_ba(text):
     low = text.lower()
     res = {}
     for cid, name in BA_TARGETS.items():
-        i = low.find(name)
-        if i == -1:
+        mm = re.search(name, low)
+        if mm is None:
             print(f"BA: {cid} ({name}) nije nadjen")
             continue
-        nxt = low.find(" open", i + len(name) + 10)
+        i = mm.end()
+        nxt = low.find(" open", i + 10)
         window = low[i:(nxt if nxt != -1 else i + 400)]
         mins = re.findall(r"(\d+)\s*min", window)
         if len(mins) >= 2:
@@ -401,6 +424,16 @@ Na TERETNIM terminalima:
 2. Ulaz u Srbiju- oko 30 min.
 Izvor: Uprava granicne policije RS
 
+#### 1GP GRADINA (Dimitrovgrad Srbija Bugarska AP E80)
+Prema poslednjim informacijama Uprave granicne policije RS, zadrzavanja su:
+Na PUTNICKIM terminalima:
+1. Izlaz iz Srbije - od 60 minuta.
+2. Ulaz u Srbiju - oko 30 min.
+Na TERETNIM terminalima:
+1. Izlaz iz Srbije - jedan sat.
+2. Ulaz u Srbiju - oko 30 min.
+Izvor: Uprava granicne policije RS
+
 #### Petlja Vranje, radovi
 Zabrana za teretna vozila preko 10 t. Izvor: Putevi Srbije
 """
@@ -486,6 +519,7 @@ def selftest():
             ok = False
         print(f"[{flag}] {cid}: got={got} exp={exp}")
     check("batrovci", 30, 30, 300, 30)
+    check("gradina", 60, 30, 60, 30)
     check("horgos", 30, 30, 30, 30)
     check("presevo", 30, 30, 30, 30)
     check("sremska-raca", 30, 30, 240, 30)
