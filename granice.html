@@ -181,6 +181,8 @@
   .wtruck b{color:var(--text);font-weight:700}
   .hustrip{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:10px;padding-top:9px;border-top:1px dashed var(--line)}
   .hustrip b{color:var(--text);font-weight:700}
+  .basrc a{color:var(--fuel);text-decoration:none}
+  .basrc a:hover{text-decoration:underline}
   .nowait{font-size:12px;color:var(--faint);line-height:1.5;margin-top:10px;padding:10px 12px;border:1px dashed var(--line);border-radius:10px}
   .cfoot-links{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
   .wbar{height:4px;border-radius:3px;background:var(--panel-2);margin-top:8px;overflow:hidden}
@@ -259,6 +261,10 @@ function waitStatus(min){
 }
 function fmtMin(m){ if(m==null) return "-"; if(m>=60){const h=Math.floor(m/60),r=m%60; return r?`${h}h ${r}m`:`${h}h`;} return `${m} min`; }
 function huMin(m){ if(m==null) return "-"; if(m===0) return "Bez guzve"; return fmtMin(m); }
+function baStrip(c){
+  if(!c.ba) return "";
+  return `<div class="hustrip">\uD83D\uDE97 Prijave vozaca: izlaz <b>${huMin(c.ba.izlaz)}</b> &middot; ulaz <b>${huMin(c.ba.ulaz)}</b> <span class="basrc">&middot; <a href="https://borderalarm.com/bottlenecks/dragina-kalotina/" target="_blank" rel="noopener">borderalarm.com</a></span></div>`;
+}
 function mkStrip(c){
   if(!c.mk) return "";
   const gp = (c.id==="presevo") ? " (Tabanovce)" : "";
@@ -354,7 +360,8 @@ function cardHTML(c){
       ${waitCell("Izlaz iz Srbije","izlaz",c.wait)}
     </div>
     ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Madjarska strana: ulaz <b>${huMin(c.hu.ulaz)}</b> &middot; izlaz <b>${huMin(c.hu.izlaz)}</b></div>` : ''}
-    ${mkStrip(c)}`}
+    ${mkStrip(c)}
+    ${baStrip(c)}`}
 
     <div class="cfoot">
       <div class="src">${c.noWait ? `Kamera: ${c.provider}` : `Izvor: Uprava granicne policije RS<br>Kamera: ${c.provider}`}</div>
@@ -503,6 +510,7 @@ async function init(){
         }
         cam.hu = (c && c.hu) ? c.hu : null;
         cam.mk = (c && c.mk) ? c.mk : null;
+        cam.ba = (c && c.ba) ? c.ba : null;
       });
     }
   }catch(e){ /* nema fajla, ostaju demo brojke */ }
