@@ -1,8 +1,9 @@
 {
-  "scraped_at": "2026-07-12T15:35:13+00:00",
+  "scraped_at": "2026-07-12T15:46:08+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
+  "source_ba": "BorderAlarm (borderalarm.com) - prijave vozaca",
   "crossings": {
     "gradina": {
       "putnicka": {
