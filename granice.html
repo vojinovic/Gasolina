@@ -258,6 +258,25 @@ function waitStatus(min){
 }
 function fmtMin(m){ if(m==null) return "-"; if(m>=60){const h=Math.floor(m/60),r=m%60; return r?`${h}h ${r}m`:`${h}h`;} return `${m} min`; }
 function huMin(m){ if(m==null) return "-"; if(m===0) return "Bez guzve"; return fmtMin(m); }
+function mkStrip(c){
+  if(!c.mk) return "";
+  const gp = (c.id==="presevo") ? " (Tabanovce)" : "";
+  // smerovi iz ugla MK: izlez = izlazak iz Makedonije, vlez = ulazak u Makedoniju
+  const L = (c.id==="bogorodica")
+    ? { izlez:"ka Grckoj", vlez:"iz Grcke" }
+    : { izlez:"ka Srbiji", vlez:"ka Makedoniji" };
+  let body;
+  if(c.mk.opsto!=null){
+    body = (c.mk.opsto===0) ? `<b>Bez guzve</b>` : `cekanje <b>${huMin(c.mk.opsto)}</b>`;
+  } else {
+    const parts=[];
+    if(c.mk.izlez!=null) parts.push(`${L.izlez}: <b>${huMin(c.mk.izlez)}</b>`);
+    if(c.mk.vlez!=null)  parts.push(`${L.vlez}: <b>${huMin(c.mk.vlez)}</b>`);
+    if(!parts.length) return "";
+    body = parts.join(" &middot; ");
+  }
+  return `<div class="hustrip">\uD83C\uDDF2\uD83C\uDDF0 Makedonska strana${gp}: ${body}</div>`;
+}
 
 function waitText(m){ if(m==null) return "-"; if(m<=30) return "Bez guzve"; return fmtMin(m); }
 function waitCell(label,dirKey,w){
@@ -328,12 +347,13 @@ function cardHTML(c){
     <div class="pane">${paneInner}</div>
     ${tabs}
 
-    ${c.noWait ? `<div class="nowait">Granica ${c.from}\u2013${c.to}. Vreme cekanja se ovde ne prati; iskoristi kameru iznad.</div>` : `
+    ${c.noWait ? (c.mk ? mkStrip(c) : `<div class="nowait">Granica ${c.from}\u2013${c.to}. Vreme cekanja se ovde ne prati; iskoristi kameru iznad.</div>`) : `
     <div class="wait">
       ${waitCell("Ulaz u Srbiju","ulaz",c.wait)}
       ${waitCell("Izlaz iz Srbije","izlaz",c.wait)}
     </div>
-    ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Madjarska strana: ulaz <b>${huMin(c.hu.ulaz)}</b> &middot; izlaz <b>${huMin(c.hu.izlaz)}</b></div>` : ''}`}
+    ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Madjarska strana: ulaz <b>${huMin(c.hu.ulaz)}</b> &middot; izlaz <b>${huMin(c.hu.izlaz)}</b></div>` : ''}
+    ${mkStrip(c)}`}
 
     <div class="cfoot">
       <div class="src">${c.noWait ? `Kamera: ${c.provider}` : `Izvor: Uprava granicne policije RS<br>Kamera: AMSS / MUP`}</div>
@@ -478,6 +498,7 @@ async function init(){
           cam.wait=null;   // nema zvanicnog podatka -> "nema podataka", ne demo
         }
         cam.hu = (c && c.hu) ? c.hu : null;
+        cam.mk = (c && c.mk) ? c.mk : null;
       });
     }
   }catch(e){ /* nema fajla, ostaju demo brojke */ }
