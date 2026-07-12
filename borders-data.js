@@ -90,13 +90,14 @@ window.BORDERS = (function () {
         { label: "Ulaz", dir: "in",  src: "https://kamere.mup.gov.rs:4443/Spiljani/spiljani1.m3u8" },
         { label: "Izlaz", dir: "out", src: "https://kamere.mup.gov.rs:4443/Spiljani/spiljani2.m3u8" },
       ],
+      official2: { label: "kamera CG strane (Dracenovac) \u2197", url: "http://kamere.mup.gov.me/kamere.php?kamere=Dracenovac&lang=me" },
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
       id: "gostun", name: "Gostun", from: "RS", to: "ME",
-      pair: "Dobrakovo (MNE)", road: "E763", provider: "AMSS",
-      official: "https://www.amss.org.rs/stanje-na-putu/strana/mapa",
-      noCamera: true, feeds: [],
+      pair: "Dobrakovo (MNE)", road: "E763", provider: "MUP Crne Gore",
+      official: "http://kamere.mup.gov.me/kamere.php?kamere=Dobrakovo&lang=me",
+      linkOnly: true, feeds: [],
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
   ];
