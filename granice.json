@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-12T09:56:07+00:00",
+  "scraped_at": "2026-07-12T11:17:53+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -29,7 +29,7 @@
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
         "ulaz": 60,
-        "izlaz": 0
+        "izlaz": 30
       }
     },
     "batrovci": {
@@ -56,9 +56,9 @@
       "found": true,
       "amss_name": "PREŠEVO Srbija - Severna Makedonija AP E 75 M1",
       "mk": {
-        "vlez": 0,
-        "izlez": 0,
-        "opsto": 0
+        "vlez": 45,
+        "izlez": null,
+        "opsto": null
       }
     },
     "sremska-raca": {
