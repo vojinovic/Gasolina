@@ -3,7 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gasolina. cene goriva i granice na Balkanu</title>
+  <title>Gasolina — cene goriva, kalkulator puta i granice uživo (Balkan)</title>
+  <meta name="description" content="Cene goriva u regionu, kalkulator troška puta sa putarinom i stanje na granicama uživo (kamere i procena čekanja). Isplaniraj put kroz Balkan pre nego što kreneš.">
+  <link rel="canonical" href="https://gasolina.rs/">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#0d1620">
+
+  <!-- Open Graph (deljenje na WhatsApp, Facebook, Viber) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Gasolina">
+  <meta property="og:locale" content="sr_RS">
+  <meta property="og:title" content="Gasolina — cene goriva, granice i kamere na Balkanu">
+  <meta property="og:description" content="Cene goriva, kalkulator troška puta sa putarinom i stanje na granicama uživo. Put bez iznenađenja.">
+  <meta property="og:url" content="https://gasolina.rs/">
+  <meta property="og:image" content="https://gasolina.rs/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gasolina — cene goriva, granice i kamere na Balkanu">
+  <meta name="twitter:description" content="Cene goriva, kalkulator troška puta i stanje na granicama uživo. Put bez iznenađenja.">
+  <meta name="twitter:image" content="https://gasolina.rs/og.png">
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Gasolina",
+    "url": "https://gasolina.rs/",
+    "applicationCategory": "TravelApplication",
+    "operatingSystem": "Web",
+    "inLanguage": "sr-RS",
+    "description": "Cene goriva u regionu, kalkulator troška puta sa putarinom i stanje na granicama uživo (kamere i procena čekanja) za put kroz Balkan.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RSD" }
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -469,7 +505,7 @@
     function bStatus(min) {
       if (min == null) return { c: 'var(--faint)', t: 'nema podataka' };
       if (min <= 30) return { c: 'var(--ok)', t: 'prohodno' };
-      if (min <= 90) return { c: 'var(--warn)', t: 'umereno' };
+      if (min < 45) return { c: 'var(--warn)', t: 'umereno' };
       return { c: 'var(--bad)', t: 'velika guzva' };
     }
     function bMin(m) { if (m == null) return '-'; if (m >= 60) { const h = Math.floor(m/60), r = m%60; return r ? `${h}h ${r}m` : `${h}h`; } return `${m} min`; }
