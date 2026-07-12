@@ -24,6 +24,7 @@ import urllib.request
 URL = "https://www.amss.org.rs/stanje-na-putu/strana/mapa"
 HU_URL = ("https://www.police.hu/hu/hirek-es-informaciok/hatarinfo"
           "?field_hat_rszakasz_value=szerb+hat%C3%A1rszakasz")
+MK_URL = "https://amsm.mk/sostojba-na-patishta/dnevni-informacii/"
 OUT = "granice.json"
 
 # id prelaza (mora da se poklapa sa CAMERAS u granice.html) -> kljucna rec
@@ -42,6 +43,14 @@ TARGETS = {
 # "ki" (Magyarorszag felol) = ulaz u Srbiju; "be" (Magyarorszag fele) = izlaz iz Srbije.
 HU_TARGETS = {
     "horgos": "horgos autopalya",
+}
+
+# id prelaza -> naziv GP na makedonskoj strani (AMSM dnevne informacije, kirilica).
+# AMSM navodi broj samo kad ima guzve; inace "nema podolgi zadrzuvanja" -> 0.
+# Smerovi: "vlez" = ulaz u MK, "izlez" = izlaz iz MK.
+MK_TARGETS = {
+    "presevo":    "табановце",
+    "bogorodica": "богородица",
 }
 
 
@@ -167,6 +176,77 @@ def parse_hu(text):
     return res
 
 
+def mk_minutes(segment):
+    """Makedonski tekst -> minuti. 'polovina cas'=30, 'eden cas'=60, 'N casa'=N*60."""
+    seg = segment.lower()
+    m = re.search(r"(\d+)\s*минут", seg)
+    if m:
+        return int(m.group(1))
+    if "половина час" in seg:
+        return 30
+    if "еден час" in seg:
+        return 60
+    h = re.search(r"(\d+)\s*час", seg)
+    if h:
+        return int(h.group(1)) * 60
+    return None
+
+
+def parse_mk(text):
+    """Vraca {id: {'vlez':min|None,'izlez':min|None,'opsto':min|None}} sa AMSM.
+    AMSM pominje prelaz samo kad ima guzve; nepomenuti prelazi -> sve 0."""
+    low = text.lower()
+    # sekcija FREKVENCIJA (guzve na prelazima) do sledece rubrike
+    start = low.find("фреквенција")
+    if start == -1:
+        return {}
+    end_markers = ["внимателно", "сезонски режим", "забрана за", "работи на пат"]
+    end = len(low)
+    for mrk in end_markers:
+        i = low.find(mrk, start + 10)
+        if i != -1:
+            end = min(end, i)
+    sect = low[start:end]
+
+    res = {}
+    for cid, name in MK_TARGETS.items():
+        i = sect.find(name)
+        if i == -1:
+            # AMSM ga ne pominje -> nema duzih zadrzavanja
+            res[cid] = {"vlez": 0, "izlez": 0, "opsto": 0}
+            continue
+        # segment od pomena do sledeceg "гп " ili kraja sekcije
+        nxt = sect.find("гп ", i + len(name))
+        seg = sect[i:(nxt if nxt != -1 else len(sect))]
+        # smer i vreme moraju biti u ISTOJ recenici (da zavrsna recenica
+        # "nema zadrzuvanja za vlez i izlez" ne zagadi smer)
+        sentence = None
+        mins = None
+        for s in seg.split("."):
+            v = mk_minutes(s)
+            if v is not None:
+                sentence, mins = s, v
+                break
+        entry = {"vlez": None, "izlez": None, "opsto": None}
+        if mins is not None:
+            if "за влез" in sentence:
+                entry["vlez"] = mins
+            elif "за излез" in sentence:
+                entry["izlez"] = mins
+            else:
+                entry["opsto"] = mins
+        res[cid] = entry
+    return res
+
+
+def fetch_mk():
+    req = urllib.request.Request(MK_URL, headers={
+        "User-Agent": "Gasolina/1.0 (+https://vojinovic.github.io/Gasolina)"
+    })
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return r.read().decode("utf-8", "replace")
+
+
 def fetch_hu():
     req = urllib.request.Request(HU_URL, headers={
         "User-Agent": "Gasolina/1.0 (+https://vojinovic.github.io/Gasolina)"
@@ -175,9 +255,10 @@ def fetch_hu():
         return r.read().decode("utf-8", "replace")
 
 
-def build(text, hu_text=None):
+def build(text, hu_text=None, mk_text=None):
     blocks = split_blocks(text)
     hu = parse_hu(hu_text) if hu_text else {}
+    mk = parse_mk(mk_text) if mk_text else {}
     crossings = {}
     for cid, kw in TARGETS.items():
         name, body = match_target(blocks, kw)
@@ -189,12 +270,18 @@ def build(text, hu_text=None):
             entry["amss_name"] = name
         if cid in hu:
             entry["hu"] = hu[cid]
+        if cid in mk:
+            entry["mk"] = mk[cid]
         crossings[cid] = entry
+    # bogorodica nije na AMSS mapi (MK-GR granica), ali MK podatak treba da udje
+    if "bogorodica" in mk and "bogorodica" not in crossings:
+        crossings["bogorodica"] = {"found": False, "mk": mk["bogorodica"]}
     return {
         "scraped_at": datetime.datetime.now(datetime.timezone.utc)
                           .isoformat(timespec="seconds"),
         "source": "AMSS / Uprava granicne policije RS",
         "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
+        "source_mk": "AMSM (amsm.mk) - makedonska strana",
         "crossings": crossings,
     }
 
@@ -310,8 +397,22 @@ Forgalom tipusa: nemzetkozi szemely- es teherforgalom
 """
 
 
+MK_FIXTURE = """
+Состојба на патишта
+Дневни информации
+СОСТОЈБА: Сообраќајот на државните патишта се одвива непречено, по суви коловози.
+ФРЕКВЕНЦИЈА: Интензитетот на сообраќај на патните правци надвор од градските средини е зголемен.
+Се бележи зголемена фреквенција на возила на ГП Блаце, времето на чекање е 20 минути,
+а на ГП Табановце времето на чекање е 30 минути.
+Поради зголемена фреквенција на возила, на ГП Богородица времето на чекање за излез
+од државата е околу половина час.
+На останатите гранични премини од македонска страна, нема подолги задржувања за влез и излез од државата.
+ВНИМАТЕЛНО: АМСМ препорачува прилагодена брзина на движење.
+"""
+
+
 def selftest():
-    result = build(SELFTEST_FIXTURE, HU_FIXTURE)
+    result = build(SELFTEST_FIXTURE, HU_FIXTURE, MK_FIXTURE)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     c = result["crossings"]
     ok = True
@@ -338,6 +439,16 @@ def selftest():
     if not hu_ok:
         ok = False
     print(f"[{'OK ' if hu_ok else 'FAIL'}] horgos.hu: got={hu} exp={hu_exp}")
+    # MK strana: Tabanovce bez smera -> opsto 30; Bogorodica "za izlez ... polovina cas" -> izlez 30
+    mk_p = c["presevo"].get("mk")
+    mk_p_exp = {"vlez": None, "izlez": None, "opsto": 30}
+    mk_b = c["bogorodica"].get("mk")
+    mk_b_exp = {"vlez": None, "izlez": 30, "opsto": None}
+    for label, got, exp in (("presevo.mk", mk_p, mk_p_exp), ("bogorodica.mk", mk_b, mk_b_exp)):
+        good = got == exp
+        if not good:
+            ok = False
+        print(f"[{'OK ' if good else 'FAIL'}] {label}: got={got} exp={exp}")
     print("\nSELFTEST:", "PASS" if ok else "FAIL")
     return 0 if ok else 1
 
@@ -351,7 +462,12 @@ def main():
     except Exception as e:
         print("Upozorenje: police.hu nije dostupan:", e)
         hu_text = None
-    result = build(text, hu_text)
+    try:
+        mk_text = html_to_text(fetch_mk())
+    except Exception as e:
+        print("Upozorenje: amsm.mk nije dostupan:", e)
+        mk_text = None
+    result = build(text, hu_text, mk_text)
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
     found = sum(1 for v in result["crossings"].values() if v.get("found"))
