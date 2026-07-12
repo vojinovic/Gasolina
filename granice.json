@@ -1,11 +1,12 @@
 {
-  "scraped_at": "2026-07-12T07:32:28+00:00",
+  "scraped_at": "2026-07-12T09:40:23+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
+  "source_mk": "AMSM (amsm.mk) - makedonska strana",
   "crossings": {
     "gradina": {
       "putnicka": {
-        "izlaz": 30,
+        "izlaz": null,
         "ulaz": 30
       },
       "teretna": {
@@ -33,7 +34,7 @@
     },
     "batrovci": {
       "putnicka": {
-        "izlaz": 30,
+        "izlaz": null,
         "ulaz": 30
       },
       "teretna": {
@@ -53,7 +54,12 @@
         "ulaz": 30
       },
       "found": true,
-      "amss_name": "PREŠEVO Srbija - Severna Makedonija AP E 75 M1"
+      "amss_name": "PREŠEVO Srbija - Severna Makedonija AP E 75 M1",
+      "mk": {
+        "vlez": 0,
+        "izlez": 0,
+        "opsto": 0
+      }
     },
     "sremska-raca": {
       "putnicka": {
@@ -90,6 +96,14 @@
       },
       "found": true,
       "amss_name": "GOSTUN Srbija Crna Gora"
+    },
+    "bogorodica": {
+      "found": false,
+      "mk": {
+        "vlez": 0,
+        "izlez": 0,
+        "opsto": 0
+      }
     }
   }
 }
