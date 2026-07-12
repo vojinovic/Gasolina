@@ -52,11 +52,13 @@ window.BORDERS = (function () {
     },
     {
       id: "presevo", name: "Presevo", from: "RS", to: "MK",
-      pair: "Tabanovce (MK)", road: "E75", provider: "AMSS",
+      pair: "Tabanovce (MK)", road: "E75", provider: "AMSS / MUP",
       official: "https://kamere.amss.org.rs/",
       feeds: [
-        { label: "Ulaz", dir: "in",  src: "https://kamere.amss.org.rs/presevo1/presevo1.m3u8" },
-        { label: "Izlaz", dir: "out", src: "https://kamere.amss.org.rs/presevo2/presevo2.m3u8" },
+        { label: "Ulaz (AMSS)", dir: "in",  src: "https://kamere.amss.org.rs/presevo1/presevo1.m3u8" },
+        { label: "Izlaz (AMSS)", dir: "out", src: "https://kamere.amss.org.rs/presevo2/presevo2.m3u8" },
+        { label: "Ulaz (MUP)", dir: "in",  src: "https://kamere.mup.gov.rs:4443/Presevo/presevo1.m3u8" },
+        { label: "Izlaz (MUP)", dir: "out", src: "https://kamere.mup.gov.rs:4443/Presevo/presevo2.m3u8" },
       ],
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
