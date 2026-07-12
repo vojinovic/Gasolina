@@ -3,7 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gasolina - Stanje na granici uzivo</title>
+<title>Stanje na granicama uživo — kamere i čekanje | Gasolina</title>
+<meta name="description" content="Kamere uživo i procena čekanja na graničnim prelazima Srbije (Horgoš, Batrovci, Gradina, Preševo, Sremska Rača, Špiljani, Gostun) i ka Grčkoj (Bogorodica). Proveri gužvu pre puta.">
+<link rel="canonical" href="https://gasolina.rs/granice.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0d1620">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gasolina">
+<meta property="og:locale" content="sr_RS">
+<meta property="og:title" content="Stanje na granicama uživo — kamere i čekanje | Gasolina">
+<meta property="og:description" content="Kamere uživo i procena čekanja na graničnim prelazima ka Mađarskoj, Hrvatskoj, Crnoj Gori, Grčkoj i Bugarskoj. Proveri gužvu pre puta.">
+<meta property="og:url" content="https://gasolina.rs/granice.html">
+<meta property="og:image" content="https://gasolina.rs/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Stanje na granicama uživo — kamere i čekanje | Gasolina">
+<meta name="twitter:description" content="Kamere uživo i procena čekanja na graničnim prelazima. Proveri gužvu pre puta.">
+<meta name="twitter:image" content="https://gasolina.rs/og.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Stanje na granicama uživo — kamere i čekanje",
+  "url": "https://gasolina.rs/granice.html",
+  "inLanguage": "sr-RS",
+  "description": "Kamere uživo i procena čekanja na graničnim prelazima Srbije i ka susednim zemljama.",
+  "isPartOf": { "@type": "WebSite", "name": "Gasolina", "url": "https://gasolina.rs/" }
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -81,6 +112,16 @@
   /* Camera pane */
   .pane{position:relative;aspect-ratio:16/9;background:#070d13;overflow:hidden}
   .pane video{width:100%;height:100%;object-fit:cover;display:block;background:#070d13}
+
+  /* rasirena kartica dok kamera radi */
+  .card.expanded{grid-column:1 / -1}
+  .card.expanded .pane{aspect-ratio:21/9}
+  .card.expanded .pane video{object-fit:contain}
+  @media (max-width:760px){ .card.expanded .pane{aspect-ratio:16/9} }
+
+  .vidctl{position:absolute;top:10px;right:10px;display:flex;gap:8px;z-index:3}
+  .vbtn{width:36px;height:36px;border-radius:9px;border:1px solid rgba(255,255,255,.18);background:rgba(7,13,19,.72);color:var(--text);font-size:15px;cursor:pointer;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center}
+  .vbtn:hover{border-color:var(--fuel);color:var(--fuel)}
 
   .poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;
     background:
@@ -302,6 +343,40 @@ function cardHTML(c){
 }
 
 /* ---- HLS player ---- */
+function ensureVidControls(card, video){
+  const pane = card.querySelector(".pane");
+  if(pane.querySelector(".vidctl")) return;
+  const ctl = document.createElement("div");
+  ctl.className = "vidctl";
+  ctl.innerHTML = `
+    <button class="vbtn" data-act="fs" title="Ceo ekran">\u26F6</button>
+    <button class="vbtn" data-act="close" title="Zatvori kameru">\u2715</button>`;
+  pane.appendChild(ctl);
+  ctl.querySelector('[data-act="fs"]').addEventListener("click", e=>{
+    e.stopPropagation();
+    const v = pane.querySelector("video");
+    if (v.requestFullscreen) v.requestFullscreen();
+    else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen(); // iOS
+  });
+  ctl.querySelector('[data-act="close"]').addEventListener("click", e=>{
+    e.stopPropagation();
+    stopFeed(card);
+  });
+}
+
+function stopFeed(card){
+  const pane = card.querySelector(".pane");
+  const video = pane.querySelector("video");
+  const poster = pane.querySelector(".poster");
+  const live = pane.querySelector(".live");
+  if(card._hls){ try{card._hls.destroy();}catch(e){} card._hls=null; }
+  video.removeAttribute("src"); video.load();
+  live.style.display="none";
+  const ctl = pane.querySelector(".vidctl"); if(ctl) ctl.remove();
+  if(poster) poster.style.display="";
+  card.classList.remove("expanded");
+}
+
 function playFeed(card, cam, feedIndex){
   const feed = cam.feeds[feedIndex];
   if(!feed || !feed.src) return;
@@ -314,13 +389,19 @@ function playFeed(card, cam, feedIndex){
   if(poster) poster.style.display="none";
   pmsg.style.display="none";
 
+  // rasiri karticu preko celog reda dok kamera radi
+  card.classList.add("expanded");
+  card.scrollIntoView({behavior:"smooth", block:"nearest"});
+
   // cleanup prethodni hls
   if(card._hls){ try{card._hls.destroy();}catch(e){} card._hls=null; }
 
-  const onOk = ()=>{ live.style.display="flex"; video.play().catch(()=>{}); };
+  const onOk = ()=>{ live.style.display="flex"; ensureVidControls(card, video); video.play().catch(()=>{}); };
   const onFail = ()=>{
     live.style.display="none";
     pmsg.style.display="flex";
+    card.classList.remove("expanded");
+    const ctl = pane.querySelector(".vidctl"); if(ctl) ctl.remove();
     video.removeAttribute("src"); video.load();
   };
 
