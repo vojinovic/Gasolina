@@ -193,40 +193,33 @@ def mk_minutes(segment):
 
 
 def parse_mk(text):
-    """Vraca {id: {'vlez':min|None,'izlez':min|None,'opsto':min|None}} sa AMSM.
-    AMSM pominje prelaz samo kad ima guzve; nepomenuti prelazi -> sve 0."""
+    """Vraca {id: {'vlez':m,'izlez':m,'opsto':m}} sa AMSM dnevnih informacija.
+    Trazi naziv prelaza po celom tekstu; minuti se citaju u ISTOJ recenici,
+    i to POSLE imena (da 'Blace 20 min, a Tabanovce 30 min' ne pomesa brojke).
+    Ako prelaz nije pomenut a stoji 'nema podolgi zadrzuvanja' -> sve 0.
+    Ako nema ni pomena ni te fraze -> prelaz se preskace (posteno 'ne znamo')."""
     low = text.lower()
-    # sekcija FREKVENCIJA (guzve na prelazima) do sledece rubrike
-    start = low.find("фреквенција")
-    if start == -1:
+    if "фреквенција" not in low and "гранични премини" not in low:
+        print("MK: stranica ne lici na AMSM dnevne informacije")
         return {}
-    end_markers = ["внимателно", "сезонски режим", "забрана за", "работи на пат"]
-    end = len(low)
-    for mrk in end_markers:
-        i = low.find(mrk, start + 10)
-        if i != -1:
-            end = min(end, i)
-    sect = low[start:end]
-
+    no_delay = ("нема подолги задржувања" in low)
     res = {}
     for cid, name in MK_TARGETS.items():
-        i = sect.find(name)
+        i = low.find(name)
         if i == -1:
-            # AMSM ga ne pominje -> nema duzih zadrzavanja
-            res[cid] = {"vlez": 0, "izlez": 0, "opsto": 0}
+            if no_delay:
+                res[cid] = {"vlez": 0, "izlez": 0, "opsto": 0}
+                print(f"MK: {cid} ({name}) nije pomenut -> bez zadrzavanja")
+            else:
+                print(f"MK: {cid} ({name}) nije nadjen, preskacem")
             continue
-        # segment od pomena do sledeceg "гп " ili kraja sekcije
-        nxt = sect.find("гп ", i + len(name))
-        seg = sect[i:(nxt if nxt != -1 else len(sect))]
-        # smer i vreme moraju biti u ISTOJ recenici (da zavrsna recenica
-        # "nema zadrzuvanja za vlez i izlez" ne zagadi smer)
-        sentence = None
-        mins = None
-        for s in seg.split("."):
-            v = mk_minutes(s)
-            if v is not None:
-                sentence, mins = s, v
-                break
+        s_start = low.rfind(".", 0, i) + 1
+        s_end = low.find(".", i)
+        if s_end == -1:
+            s_end = min(i + 300, len(low))
+        after_name = low[i:s_end]          # od imena do kraja recenice
+        sentence = low[s_start:s_end]      # cela recenica (za smer ispred imena)
+        mins = mk_minutes(after_name)
         entry = {"vlez": None, "izlez": None, "opsto": None}
         if mins is not None:
             if "за влез" in sentence:
@@ -235,6 +228,9 @@ def parse_mk(text):
                 entry["izlez"] = mins
             else:
                 entry["opsto"] = mins
+            print(f"MK: {cid} -> {entry}")
+        else:
+            print(f"MK: {cid} pomenut ali bez minuta u recenici: '{sentence[:120]}'")
         res[cid] = entry
     return res
 
