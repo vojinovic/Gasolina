@@ -256,14 +256,19 @@ const CAMERAS = BORDERS.CROSSINGS;
 function waitStatus(min){
   if(min==null) return {c:"var(--faint)",pct:0,t:"nema podataka"};
   if(min<=30)  return {c:"var(--ok)",  pct:Math.max(12,min/30*40),  t:"prohodno"};
-  if(min<=90)  return {c:"var(--warn)",pct:40+(min-30)/60*30,        t:"umereno"};
-  return            {c:"var(--bad)", pct:Math.min(100,70+(min-90)/120*30), t:"velika guzva"};
+  if(min<45)   return {c:"var(--warn)",pct:40+(min-30)/15*25,        t:"umereno"};
+  return            {c:"var(--bad)", pct:Math.min(100,65+(min-45)/120*35), t:"velika guzva"};
 }
 function fmtMin(m){ if(m==null) return "-"; if(m>=60){const h=Math.floor(m/60),r=m%60; return r?`${h}h ${r}m`:`${h}h`;} return `${m} min`; }
 function huMin(m){ if(m==null) return "-"; if(m===0) return "Bez guzve"; return fmtMin(m); }
+function cVal(m){
+  if(m==null) return "<b>-</b>";
+  const s = waitStatus(m);
+  return `<b style="color:${s.c}">${huMin(m)}</b>`;
+}
 function baStrip(c){
   if(!c.ba) return "";
-  return `<div class="hustrip">\uD83D\uDE97 Prijave vozaca: izlaz <b>${huMin(c.ba.izlaz)}</b> &middot; ulaz <b>${huMin(c.ba.ulaz)}</b> <span class="basrc">&middot; <a href="https://borderalarm.com/bottlenecks/dragina-kalotina/" target="_blank" rel="noopener">borderalarm.com</a></span></div>`;
+  return `<div class="hustrip">\uD83D\uDE97 Prijave vozaca: izlaz ${cVal(c.ba.izlaz)} &middot; ulaz ${cVal(c.ba.ulaz)} <span class="basrc">&middot; <a href="https://borderalarm.com/bottlenecks/dragina-kalotina/" target="_blank" rel="noopener">borderalarm.com</a></span></div>`;
 }
 function mkStrip(c){
   if(!c.mk) return "";
@@ -274,21 +279,19 @@ function mkStrip(c){
     : { izlez:"ka Srbiji", vlez:"ka Makedoniji" };
   let body;
   if(c.mk.opsto!=null){
-    body = (c.mk.opsto===0) ? `<b>Bez guzve</b>` : `cekanje <b>${huMin(c.mk.opsto)}</b>`;
+    body = (c.mk.opsto===0) ? `<b style="color:var(--ok)">Bez guzve</b>` : `cekanje ${cVal(c.mk.opsto)}`;
   } else {
     const parts=[];
-    if(c.mk.izlez!=null) parts.push(`${L.izlez}: <b>${huMin(c.mk.izlez)}</b>`);
-    if(c.mk.vlez!=null)  parts.push(`${L.vlez}: <b>${huMin(c.mk.vlez)}</b>`);
+    if(c.mk.izlez!=null) parts.push(`${L.izlez}: ${cVal(c.mk.izlez)}`);
+    if(c.mk.vlez!=null)  parts.push(`${L.vlez}: ${cVal(c.mk.vlez)}`);
     if(!parts.length) return "";
     body = parts.join(" &middot; ");
   }
   return `<div class="hustrip">\uD83C\uDDF2\uD83C\uDDF0 Makedonska strana${gp}: ${body}</div>`;
 }
 
-function waitText(m){ if(m==null) return "-"; if(m<=30) return "Bez guzve"; return fmtMin(m); }
 function waitCell(label,dirKey,w){
   const p = w && w.putnicka ? w.putnicka[dirKey] : null;
-  const t = w && w.teretna ? w.teretna[dirKey] : null;
   const s = waitStatus(p);
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
   const big = (p==null) ? '-' : (p<=30 ? '<span class="wok">Bez guzve</span>' : fmtMin(p));
@@ -297,7 +300,6 @@ function waitCell(label,dirKey,w){
       <div class="wlabel"><span class="dir">${arrow}</span> ${label}</div>
       <div class="wmin" style="color:${s.c}">${big}</div>
       <div class="wcat">putnicka vozila</div>
-      <div class="wtruck">\uD83D\uDE9B kamioni: <b>${waitText(t)}</b></div>
       <div class="wbar"><i style="width:${s.pct}%;background:${s.c}"></i></div>
     </div>`;
 }
@@ -359,7 +361,7 @@ function cardHTML(c){
       ${waitCell("Ulaz u Srbiju","ulaz",c.wait)}
       ${waitCell("Izlaz iz Srbije","izlaz",c.wait)}
     </div>
-    ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Madjarska strana: ulaz <b>${huMin(c.hu.ulaz)}</b> &middot; izlaz <b>${huMin(c.hu.izlaz)}</b></div>` : ''}
+    ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Madjarska strana: ulaz ${cVal(c.hu.ulaz)} &middot; izlaz ${cVal(c.hu.izlaz)}</div>` : ''}
     ${mkStrip(c)}
     ${baStrip(c)}`}
 
