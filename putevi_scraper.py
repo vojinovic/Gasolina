@@ -12,6 +12,7 @@ import datetime
 import json
 import os
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -57,8 +58,16 @@ def fetch_box(key, box):
     req = urllib.request.Request(API + "?" + params, headers={
         "User-Agent": "Gasolina/1.0 (+https://vojinovic.github.io/Gasolina)"
     })
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        body = ""
+        try:
+            body = e.read().decode("utf-8", "replace")[:400]
+        except Exception:
+            pass
+        raise RuntimeError(f"HTTP {e.code} | odgovor: {body}") from None
 
 
 def parse_incidents(data, corridor):
@@ -92,6 +101,7 @@ def main():
     if not key:
         print("GRESKA: TOMTOM_KEY nije postavljen (GitHub Secret).")
         return 1
+    print(f"TOMTOM_KEY: duzina {len(key)}, pocinje '{key[:4]}', zavrsava '{key[-4:]}'")
     seen, incidents = set(), []
     for box in BOXES:
         try:
