@@ -177,6 +177,7 @@
   .wmin span{font-size:12px;color:var(--dim);font-weight:500}
   .wmin .wok{font-size:16px;color:inherit;font-weight:700;white-space:nowrap}
   .wcat{font-size:11px;color:var(--dim)}
+  .wsrc{font-size:11px;color:var(--fuel)}
   .wtruck{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:5px;display:flex;align-items:center;gap:5px}
   .wtruck b{color:var(--text);font-weight:700}
   .hustrip{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:10px;padding-top:9px;border-top:1px dashed var(--line)}
@@ -290,16 +291,35 @@ function mkStrip(c){
   return `<div class="hustrip">\uD83C\uDDF2\uD83C\uDDF0 Makedonska strana${gp}: ${body}</div>`;
 }
 
-function waitCell(label,dirKey,w){
-  const p = w && w.putnicka ? w.putnicka[dirKey] : null;
-  const s = waitStatus(p);
+/* najgori dostupan podatak za smer, iz svih izvora (AMSS default 30 ne maskira prave brojke) */
+function effective(c, dirKey){
+  const cands = [];
+  const p = c.wait && c.wait.putnicka ? c.wait.putnicka[dirKey] : null;
+  if(p!=null) cands.push({v:p, src:null});
+  if(c.hu){ const v=c.hu[dirKey]; if(v!=null && v>0) cands.push({v, src:"madjarska strana"}); }
+  if(c.mk){
+    const v = (dirKey==='izlaz') ? c.mk.vlez : c.mk.izlez;   // ka MK = izlaz iz RS
+    if(v!=null && v>0) cands.push({v, src:"makedonska strana"});
+    if(c.mk.opsto!=null && c.mk.opsto>0) cands.push({v:c.mk.opsto, src:"makedonska strana"});
+  }
+  if(c.ba){ const v=c.ba[dirKey]; if(v!=null && v>0) cands.push({v, src:"prijave vozaca"}); }
+  if(!cands.length) return {v:null, src:null};
+  let best = cands[0];
+  cands.forEach(x=>{ if(best.v==null || (x.v!=null && x.v>best.v)) best=x; });
+  return best;
+}
+
+function waitCell(label,dirKey,c){
+  const eff = effective(c, dirKey);
+  const s = waitStatus(eff.v);
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
-  const big = (p==null) ? '-' : (p<=30 ? '<span class="wok">Bez guzve</span>' : fmtMin(p));
+  const big = (eff.v==null) ? '-' : (eff.v<=30 ? '<span class="wok">Bez guzve</span>' : fmtMin(eff.v));
+  const srcTag = (eff.src && eff.v>30) ? `<div class="wsrc">izvor: ${eff.src}</div>` : `<div class="wcat">putnicka vozila</div>`;
   return `
     <div class="wcell">
       <div class="wlabel"><span class="dir">${arrow}</span> ${label}</div>
       <div class="wmin" style="color:${s.c}">${big}</div>
-      <div class="wcat">putnicka vozila</div>
+      ${srcTag}
       <div class="wbar"><i style="width:${s.pct}%;background:${s.c}"></i></div>
     </div>`;
 }
@@ -358,8 +378,8 @@ function cardHTML(c){
 
     ${c.noWait ? (c.mk ? mkStrip(c) : `<div class="nowait">Granica ${c.from}\u2013${c.to}. Vreme cekanja se ovde ne prati; iskoristi kameru iznad.</div>`) : `
     <div class="wait">
-      ${waitCell("Ulaz u Srbiju","ulaz",c.wait)}
-      ${waitCell("Izlaz iz Srbije","izlaz",c.wait)}
+      ${waitCell("Ulaz u Srbiju","ulaz",c)}
+      ${waitCell("Izlaz iz Srbije","izlaz",c)}
     </div>
     ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Madjarska strana: ulaz ${cVal(c.hu.ulaz)} &middot; izlaz ${cVal(c.hu.izlaz)}</div>` : ''}
     ${mkStrip(c)}
