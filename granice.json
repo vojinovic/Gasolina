@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-13T01:06:27+00:00",
+  "scraped_at": "2026-07-13T05:02:44+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -7,7 +7,7 @@
   "crossings": {
     "gradina": {
       "putnicka": {
-        "izlaz": 120,
+        "izlaz": 30,
         "ulaz": 30
       },
       "teretna": {
@@ -15,7 +15,11 @@
         "ulaz": 30
       },
       "found": true,
-      "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)"
+      "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
+      "ba": {
+        "izlaz": 45,
+        "ulaz": 15
+      }
     },
     "horgos": {
       "putnicka": {
@@ -23,19 +27,19 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 60,
+        "izlaz": 30,
         "ulaz": 30
       },
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
-        "ulaz": 0,
+        "ulaz": 30,
         "izlaz": 0
       }
     },
     "batrovci": {
       "putnicka": {
-        "izlaz": 60,
+        "izlaz": 30,
         "ulaz": 30
       },
       "teretna": {
@@ -57,9 +61,9 @@
       "found": true,
       "amss_name": "PREŠEVO Srbija - Severna Makedonija AP E 75 M1",
       "mk": {
-        "vlez": 45,
-        "izlez": null,
-        "opsto": null
+        "vlez": 0,
+        "izlez": 0,
+        "opsto": 0
       }
     },
     "sremska-raca": {
