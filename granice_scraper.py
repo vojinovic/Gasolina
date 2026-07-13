@@ -32,7 +32,10 @@ MK_URL = "https://amsm.mk/sostojba-na-patishta/dnevni-informacii/"
 BA_ENABLED = True
 BA_URL = "https://borderalarm.com/countries/serbia/"
 BA_TARGETS = {
-    "gradina": r"dragina\s*/\s*kalotina",   # njihov (pogresan) naziv za Gradinu
+    "gradina":  r"dragina\s*/\s*kalotina",   # njihov (pogresan) naziv za Gradinu
+    "presevo":  r"presevo\s*/\s*tabanovce",
+    "horgos":   r"horgos\s*/\s*roszke",
+    "batrovci": r"batrovci\s*/\s*bajakovo",
 }
 OUT = "granice.json"
 
@@ -278,7 +281,7 @@ def parse_ba(text):
     """Vraca {id: {'izlaz':m,'ulaz':m}} sa BorderAlarm liste za Srbiju.
     Format po prelazu: ime, pa prvi 'N min.' = Srbija->X (izlaz),
     drugi 'N min.' = X->Srbija (ulaz)."""
-    low = text.lower()
+    low = fold(text).lower()
     res = {}
     for cid, name in BA_TARGETS.items():
         mm = re.search(name, low)
@@ -548,6 +551,12 @@ def selftest():
     if not ba_ok:
         ok = False
     print(f"[{'OK ' if ba_ok else 'FAIL'}] gradina.ba: got={ba_g} exp={ba_exp}")
+    ba_p = c["presevo"].get("ba")
+    ba_p_exp = {"izlaz": 15, "ulaz": 10}
+    ba_p_ok = ba_p == ba_p_exp
+    if not ba_p_ok:
+        ok = False
+    print(f"[{'OK ' if ba_p_ok else 'FAIL'}] presevo.ba: got={ba_p} exp={ba_p_exp}")
     print("\nSELFTEST:", "PASS" if ok else "FAIL")
     return 0 if ok else 1
 
