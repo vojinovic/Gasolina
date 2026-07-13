@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-13T11:51:11+00:00",
+  "scraped_at": "2026-07-13T11:56:00+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -47,7 +47,11 @@
         "ulaz": 30
       },
       "found": true,
-      "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70"
+      "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
+      "ba": {
+        "izlaz": 5,
+        "ulaz": 5
+      }
     },
     "presevo": {
       "putnicka": {
@@ -64,6 +68,10 @@
         "vlez": 0,
         "izlez": 0,
         "opsto": 0
+      },
+      "ba": {
+        "izlaz": 60,
+        "ulaz": 25
       }
     },
     "sremska-raca": {
