@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-13T11:56:00+00:00",
+  "scraped_at": "2026-07-13T15:23:56+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -18,7 +18,7 @@
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
         "izlaz": 5,
-        "ulaz": 5
+        "ulaz": 10
       }
     },
     "horgos": {
@@ -71,7 +71,7 @@
       },
       "ba": {
         "izlaz": 60,
-        "ulaz": 25
+        "ulaz": 5
       }
     },
     "sremska-raca": {
