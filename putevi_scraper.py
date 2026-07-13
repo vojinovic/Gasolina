@@ -96,6 +96,51 @@ def parse_incidents(data, corridor):
     return out
 
 
+def probe(key):
+    """Isproba vise varijanti endpointa i javi koja prolazi sa ovim kljucem."""
+    lo1, la1, lo2, la2 = 21.50, 42.25, 22.20, 43.35   # nis-presevo kutija
+    variants = [
+        ("v5 incidentDetails",
+         "https://api.tomtom.com/traffic/services/5/incidentDetails",
+         {"bbox": f"{lo1},{la1},{lo2},{la2}", "fields": FIELDS,
+          "language": "en-GB", "timeValidityFilter": "present"}),
+        ("v5 bez fields",
+         "https://api.tomtom.com/traffic/services/5/incidentDetails",
+         {"bbox": f"{lo1},{la1},{lo2},{la2}"}),
+        ("v4 incidentDetails/s3",
+         "https://api.tomtom.com/traffic/services/4/incidentDetails/s3/"
+         f"{la1},{lo1},{la2},{lo2}/10/-1/json",
+         {"projection": "EPSG4326"}),
+        ("v4 incidentViewport",
+         "https://api.tomtom.com/traffic/services/4/incidentViewport/"
+         f"{lo1},{la1},{lo2},{la2}/10/{lo1},{la1},{lo2},{la2}/10/true/json",
+         {}),
+        ("flow v4 (provera da li ijedan traffic radi)",
+         "https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json",
+         {"point": "43.32,21.90"}),
+    ]
+    for name, url, extra in variants:
+        params = dict(extra)
+        params["key"] = key
+        full = url + "?" + urllib.parse.urlencode(params)
+        try:
+            req = urllib.request.Request(full, headers={"User-Agent": "Gasolina/1.0"})
+            with urllib.request.urlopen(req, timeout=30) as r:
+                body = r.read().decode("utf-8", "replace")
+            print(f"[OK  ] {name} -> HTTP 200, {len(body)} bajtova")
+            print(f"       {body[:200]}")
+        except urllib.error.HTTPError as e:
+            msg = ""
+            try:
+                msg = e.read().decode("utf-8", "replace")[:160]
+            except Exception:
+                pass
+            print(f"[FAIL] {name} -> HTTP {e.code} | {msg}")
+        except Exception as e:
+            print(f"[FAIL] {name} -> {e}")
+    return 0
+
+
 def main():
     key = os.environ.get("TOMTOM_KEY", "").strip()
     if not key:
@@ -167,4 +212,10 @@ def selftest():
 if __name__ == "__main__":
     if "--selftest" in sys.argv:
         sys.exit(selftest())
+    if "--probe" in sys.argv:
+        k = os.environ.get("TOMTOM_KEY", "").strip()
+        if not k:
+            print("GRESKA: TOMTOM_KEY nije postavljen.")
+            sys.exit(1)
+        sys.exit(probe(k))
     sys.exit(main())
