@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-13T19:36:36+00:00",
+  "scraped_at": "2026-07-13T21:02:38+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -62,8 +62,8 @@
         "opsto": 0
       },
       "ba": {
-        "izlaz": 40,
-        "ulaz": 10
+        "izlaz": 15,
+        "ulaz": 15
       }
     },
     "sremska-raca": {
