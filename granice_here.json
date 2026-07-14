@@ -1,29 +1,8 @@
 {
-  "scraped_at": "2026-07-14T09:54:08+00:00",
+  "scraped_at": "2026-07-14T09:56:51+00:00",
   "source": "HERE Traffic",
   "crossings": {
-    "gradina": {
-      "category": "radovi",
-      "criticality": "minor",
-      "closed": false,
-      "desc": "At 8001 (Novo Bardo) - Road construction",
-      "length_km": 2.1
-    },
-    "horgos": {
-      "category": "zatvoren prelaz",
-      "criticality": "critical",
-      "closed": true,
-      "desc": "Lezárva",
-      "length_km": 0.1
-    },
     "batrovci": {
-      "category": "radovi",
-      "criticality": "minor",
-      "closed": false,
-      "desc": "Between Stjepana Radića/Ilok and 4152/Sotin - Road construction",
-      "length_km": 7.3
-    },
-    "sremska-raca": {
       "category": "kolona",
       "criticality": "minor",
       "closed": false,
