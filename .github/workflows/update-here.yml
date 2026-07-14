@@ -2,7 +2,7 @@ name: Update HERE granice
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "5,35 * * * *"     # pomereno da se ne sudara sa ostalima
   workflow_dispatch: {}
 
 permissions:
@@ -34,7 +34,14 @@ jobs:
           if [ -n "$(git status --porcelain granice_here.json)" ]; then
             git add granice_here.json
             git commit -m "Auto update HERE traffic at crossings"
-            git push
+            # povuci tudje commitove pa tek onda push (izbegava 'fetch first' gresku)
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push origin main && exit 0
+              echo "Pokusaj $i nije uspeo, ponavljam..."
+              sleep 5
+            done
+            echo "Push nije uspeo ni iz treceg pokusaja."
+            exit 1
           else
             echo "Nema promena."
           fi
