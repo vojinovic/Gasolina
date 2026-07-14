@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: update-fuel
+  cancel-in-progress: false
+
 jobs:
   update-prices:
     runs-on: ubuntu-latest
@@ -35,6 +39,16 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add fuel_prices.json
-          git commit -m "Auto update fuel prices" || echo "No changes"
-          git push
+          if [ -n "$(git status --porcelain fuel_prices.json)" ]; then
+            git add fuel_prices.json
+            git commit -m "Auto update fuel prices"
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push origin main && exit 0
+              echo "Pokusaj $i nije uspeo, ponavljam..."
+              sleep 5
+            done
+            echo "Push nije uspeo ni iz treceg pokusaja."
+            exit 1
+          else
+            echo "Nema promena."
+          fi
