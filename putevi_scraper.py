@@ -62,10 +62,18 @@ def fetch_box(key, box):
         raise RuntimeError(f"HTTP {ex.code} | odgovor: {body}") from None
 
 
-def parse_incidents(data, corridor):
+def parse_incidents(data, corridor, debug=False):
     """HERE odgovor -> lista nasih incidenata."""
+    results = data.get("results", [])
+    if debug:
+        types = {}
+        for res in results:
+            d = res.get("incidentDetails", {}) or {}
+            k = f'{d.get("type")}/{d.get("criticality")}'
+            types[k] = types.get(k, 0) + 1
+        print(f"   sirovo: {len(results)} stavki, tipovi: {types or '-'}")
     out = []
-    for res in data.get("results", []):
+    for res in results:
         d = res.get("incidentDetails", {}) or {}
         itype = d.get("type")
         if itype not in KEEP:
@@ -97,14 +105,19 @@ def main():
         return 1
     print(f"HERE_KEY: duzina {len(key)}, pocinje '{key[:4]}'")
     seen, incidents = set(), []
+    dumped = {"done": False}
     for box in BOXES:
         try:
             data = fetch_box(key, box)
         except Exception as ex:
             print(f"Upozorenje: {box[0]} nedostupan: {ex}")
             continue
-        got = parse_incidents(data, box[0])
-        print(f"{box[0]}: {len(got)} incidenata")
+        got = parse_incidents(data, box[0], debug=True)
+        print(f"{box[0]}: {len(got)} incidenata (posle filtera)")
+        if data.get("results") and not dumped["done"]:
+            print("   PRIMER sirove stavke:")
+            print("   " + json.dumps(data["results"][0], ensure_ascii=False)[:600])
+            dumped["done"] = True
         for inc in got:
             kid = inc["id"] or (inc["corridor"], inc["from"])
             if kid in seen:
