@@ -21,9 +21,12 @@ OVERPASS = "https://overpass-api.de/api/interpreter"
 
 # koridori: (id, opis, W, S, E, N) - pojas oko autoputa/magistrale
 CORRIDORS = [
-    ("bg-horgos",   "A1 Beograd - Horgos",        19.60, 44.75, 20.60, 46.20),
-    ("bg-sid",      "A3 Beograd - Batrovci",      19.00, 44.70, 20.60, 45.20),
-    ("bg-nis",      "A1 Beograd - Nis",           20.30, 43.20, 21.95, 44.95),
+    ("bg-horgos",   "A1 Beograd - Novi Sad",      19.75, 45.05, 20.55, 45.65),
+    ("bg-horgos",   "A1 Novi Sad - Horgos",       19.55, 45.55, 20.20, 46.20),
+    ("bg-sid",      "A3 Beograd - Ruma",          19.85, 44.75, 20.55, 45.15),
+    ("bg-sid",      "A3 Ruma - Batrovci",         19.00, 44.75, 19.95, 45.15),
+    ("bg-nis",      "A1 Beograd - Jagodina",      20.35, 43.90, 21.30, 44.90),
+    ("bg-nis",      "A1 Jagodina - Nis",          21.05, 43.20, 21.95, 44.05),
     ("nis-presevo", "A1 Nis - Presevo",           21.45, 42.25, 22.20, 43.35),
     ("nis-gradina", "A4 Nis - Gradina",           21.80, 42.90, 22.75, 43.45),
     ("bg-cacak",    "A2 Milos Veliki (ka CG)",    19.95, 43.75, 20.65, 44.75),
@@ -31,23 +34,41 @@ CORRIDORS = [
     ("bg-loznica",  "Ka Sremskoj Raci / BiH",     19.10, 44.55, 19.90, 45.00),
 ]
 
-# brend -> normalizovano ime (da se poklopi sa cenama i da lepo izgleda)
-BRAND_MAP = {
-    "nis petrol": "NIS Petrol", "nis": "NIS Petrol", "gazprom": "Gazprom",
-    "gazprom neft": "Gazprom", "lukoil": "Lukoil", "omv": "OMV",
-    "mol": "MOL", "eko": "EKO", "shell": "Shell", "knez petrol": "Knez Petrol",
-    "eurodiesel": "Euro Diesel", "euro petrol": "Euro Petrol",
-    "ina": "INA", "petrol": "Petrol", "avia": "Avia", "mrk": "MRK",
+# cirilica -> latinica (OSM ima i "НИС Петрол" i "NIS Petrol")
+CYR = {
+    "а":"a","б":"b","в":"v","г":"g","д":"d","ђ":"dj","е":"e","ж":"z","з":"z",
+    "и":"i","ј":"j","к":"k","л":"l","љ":"lj","м":"m","н":"n","њ":"nj","о":"o",
+    "п":"p","р":"r","с":"s","т":"t","ћ":"c","у":"u","ф":"f","х":"h","ц":"c",
+    "ч":"c","џ":"dz","ш":"s",
 }
+
+
+def translit(s):
+    return "".join(CYR.get(ch, ch) for ch in s.lower())
+
+
+# redosled je bitan: specificnije prvo ("nis petrol" pre "petrol")
+BRAND_RULES = [
+    ("nis petrol", "NIS Petrol"), ("nis ", "NIS Petrol"),
+    ("knez petrol", "Knez Petrol"),
+    ("euro petrol", "Euro Petrol"), ("eurodiesel", "Euro Diesel"),
+    ("gazprom", "Gazprom"), ("lukoil", "Lukoil"), ("omv", "OMV"),
+    ("mol ", "MOL"), ("shell", "Shell"), ("eko ", "EKO"),
+    ("ina ", "INA"), ("avia", "Avia"), ("mrk", "MRK"),
+    ("petrol", "Petrol"),   # slovenacki Petrol - na kraju, da ne pojede NIS/Knez
+    ("mol", "MOL"), ("eko", "EKO"), ("ina", "INA"), ("nis", "NIS Petrol"),
+]
 
 
 def norm_brand(tags):
     raw = (tags.get("brand") or tags.get("operator") or tags.get("name") or "").strip()
-    low = raw.lower()
-    for key, val in BRAND_MAP.items():
+    if not raw:
+        return "Nepoznata pumpa"
+    low = translit(raw)
+    for key, val in BRAND_RULES:
         if key in low:
             return val
-    return raw or "Nepoznata pumpa"
+    return raw
 
 
 def fetch_corridor(cid, w, s, e, n, tries=3):
@@ -65,11 +86,18 @@ def fetch_corridor(cid, w, s, e, n, tries=3):
             with urllib.request.urlopen(req, timeout=90) as r:
                 return json.loads(r.read().decode("utf-8"))
         except urllib.error.HTTPError as ex:
-            if ex.code == 429 and i < tries - 1:
-                print(f"   {cid}: rate limit, cekam 30s...")
-                time.sleep(30)
+            if ex.code in (429, 504) and i < tries - 1:
+                wait = 30 if ex.code == 429 else 20
+                print(f"   {cid}: HTTP {ex.code}, cekam {wait}s pa ponavljam...")
+                time.sleep(wait)
                 continue
             raise RuntimeError(f"HTTP {ex.code}") from None
+        except Exception as ex:
+            if i < tries - 1:
+                print(f"   {cid}: {ex}, ponavljam...")
+                time.sleep(15)
+                continue
+            raise
     raise RuntimeError("nije uspelo posle vise pokusaja")
 
 
@@ -115,7 +143,7 @@ def main():
             all_st.append(st)
             new += 1
         print(f"{cid} ({desc}): {len(got)} pumpi, {new} novih")
-        time.sleep(2)   # ljubazno prema Overpass serveru
+        time.sleep(6)   # ljubazno prema Overpass serveru (izbegava 429/504)
 
     # statistika po brendu
     brands = {}
@@ -148,6 +176,10 @@ SELFTEST = {
                   "fuel:diesel": "yes"}},
         {"id": 3, "lat": 43.3209, "lon": 21.8958,
          "tags": {"amenity": "fuel", "name": "Pumpa kod Mite"}},
+        {"id": 4, "lat": 44.5, "lon": 20.5,
+         "tags": {"amenity": "fuel", "brand": "НИС Петрол", "fuel:diesel": "yes"}},
+        {"id": 5, "lat": 44.6, "lon": 20.6,
+         "tags": {"amenity": "fuel", "brand": "Кнез Петрол"}},
     ]
 }
 
@@ -155,7 +187,11 @@ SELFTEST = {
 def selftest():
     got = parse(SELFTEST, "bg-nis")
     ok = True
-    if len(got) != 3:
+    if len(got) != 5:
+        ok = False
+    if got[3]["brand"] != "NIS Petrol":   # cirilica -> latinica
+        ok = False
+    if got[4]["brand"] != "Knez Petrol":
         ok = False
     if got[0]["brand"] != "NIS Petrol" or "tng" not in (got[0]["fuels"] or []):
         ok = False
