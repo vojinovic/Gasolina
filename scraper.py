@@ -9,6 +9,8 @@ Sources:
   - Macedonia:  nafta.hr (4-column table: fuel/MKD/EUR/RSD)
   - Hungary:    nafta.hr (Min/Avg/Max EUR table)
   - Bulgaria:   fuel-prices.eu (EU Oil Bulletin, machine-readable)
+  - Romania:    fuel-prices.eu (EU Oil Bulletin, EUR -> RON preko kursa)
+  - Kosovo:     globalpetrolprices.com (EUR)
 """
 
 import json
@@ -354,6 +356,74 @@ def scrape_greece():
 
 # ------------------------------ main -------------------------------
 
+def scrape_romania():
+    """fuel-prices.eu/Romania/llms.txt - EU Oil Bulletin, isti format kao Bugarska.
+    Cene su u evrima; lokalna valuta je RON, pa preracunavamo preko kursa."""
+    url = "https://www.fuel-prices.eu/Romania/llms.txt"
+    r = requests.get(url, headers=HEADERS, timeout=20)
+    r.raise_for_status()
+    text = r.text
+
+    def grab(label):
+        m = re.search(rf"^{label}\s+€\s*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
+        if not m:
+            raise ValueError(f"Romania: missing {label}")
+        return float(m.group(1).replace(",", "."))
+
+    petrol = grab(r"Euro\s*95")
+    diesel = grab(r"Diesel")
+
+    # kurs RON/EUR (ako ne uspe, koristimo priblizan fiksni)
+    rate = 4.98
+    try:
+        fx = requests.get("https://api.frankfurter.app/latest?from=EUR&to=RON",
+                          headers=HEADERS, timeout=10)
+        if fx.ok:
+            rate = float(fx.json()["rates"]["RON"])
+    except Exception:
+        pass
+
+    return {
+        "name": "Romania", "flag": "🇷🇴", "currency": "RON", "fx_rate_eur": round(rate, 4),
+        "petrol95": {"local": round(petrol * rate, 2), "eur": petrol},
+        "diesel":   {"local": round(diesel * rate, 2), "eur": diesel},
+        "lpg":      None,
+        "updated":  now_utc(),
+    }
+
+
+def scrape_kosovo():
+    """globalpetrolprices.com - Kosovo koristi EUR, cene se azuriraju nedeljno."""
+    petrol = diesel = None
+    for fuel, key in (("gasoline_prices", "petrol"), ("diesel_prices", "diesel")):
+        url = f"https://www.globalpetrolprices.com/Kosovo/{fuel}/"
+        try:
+            soup = fetch_soup(url)
+            txt = soup.get_text(" ", strip=True)
+            m = re.search(r"(\d+\.\d+)\s*(?:Euro|EUR|€)", txt)
+            if not m:
+                m = re.search(r"is\s+(\d+\.\d+)\s", txt)
+            if m:
+                val = float(m.group(1))
+                if key == "petrol":
+                    petrol = val
+                else:
+                    diesel = val
+        except Exception:
+            pass
+
+    if petrol is None or diesel is None:
+        raise ValueError("Kosovo: cene nisu pronadjene")
+
+    return {
+        "name": "Kosovo", "flag": "🇽🇰", "currency": "EUR", "fx_rate_eur": 1.0,
+        "petrol95": {"local": petrol, "eur": petrol},
+        "diesel":   {"local": diesel, "eur": diesel},
+        "lpg":      None,
+        "updated":  now_utc(),
+    }
+
+
 SCRAPERS = [
     ("Serbia", scrape_serbia),
     ("Croatia", scrape_croatia),
@@ -365,6 +435,8 @@ SCRAPERS = [
     ("Bulgaria", scrape_bulgaria),
     ("Albania", scrape_albania),
     ("Greece", scrape_greece),
+    ("Romania", scrape_romania),
+    ("Kosovo", scrape_kosovo),
 ]
 
 
