@@ -508,6 +508,7 @@
 
     let borderWaits = {};   // id -> {putnicka, teretna} iz granice.json
     let borderStamp = null; // scraped_at
+    let hereCrossings = {}; // iz granice_here.json
 
 
 
@@ -530,6 +531,28 @@
       return out;
     }
 
+    // najgori dostupan podatak za smer, iz svih izvora (isto kao na granice.html)
+    function effWait(cid, dirKey) {
+      const w = borderWaits[cid] || {};
+      const cands = [];
+      const p = w.putnicka ? w.putnicka[dirKey] : null;
+      if (p != null) cands.push({ v: p, src: null });
+      if (w.hu) { const v = w.hu[dirKey]; if (v != null && v > 0) cands.push({ v, src: 'madjarska strana' }); }
+      if (w.mk) {
+        const v = (dirKey === 'izlaz') ? w.mk.vlez : w.mk.izlez;
+        if (v != null && v > 0) cands.push({ v, src: 'makedonska strana' });
+        if (w.mk.opsto != null && w.mk.opsto > 0) cands.push({ v: w.mk.opsto, src: 'makedonska strana' });
+      }
+      if (w.ba) { const v = w.ba[dirKey]; if (v != null && v > 0) cands.push({ v, src: 'prijave vozaca' }); }
+      if (hereCrossings[cid]) cands.push({ v: null, src: 'HERE', here: hereCrossings[cid] });
+      const nums = cands.filter(x => x.v != null);
+      if (!nums.length) return { v: null, src: null, here: (hereCrossings[cid] || null) };
+      let best = nums[0];
+      nums.forEach(x => { if (x.v > best.v) best = x; });
+      best.here = hereCrossings[cid] || null;
+      return best;
+    }
+
     function bordersPanel(route) {
       if (typeof BORDERS === 'undefined') return '';
       const list = routeCrossings(route);
@@ -545,10 +568,10 @@
           <div class="rb-wait"><span class="rb-cat">kamera dostupna &middot; cekanje se ne prati</span></div>
         </div>`;
         }
-        const w = borderWaits[cx.id] || cx.wait;
-        const pOut = w && w.putnicka ? w.putnicka.izlaz : null;
-        const tOut = w && w.teretna ? w.teretna.izlaz : null;
+        const eff = effWait(cx.id, 'izlaz');
+        const pOut = eff.v;
         const s = bStatus(pOut);
+        const extra = eff.here ? ` &middot; HERE: ${eff.here.category}` : '';
         return `
         <div class="rb-row${i === 0 ? ' first' : ''}">
           <div class="rb-main">
@@ -558,7 +581,7 @@
           <div class="rb-wait">
             <span class="rb-dot" style="background:${s.c}"></span>
             <span class="rb-min" style="color:${s.c}">${bText(pOut)}</span>
-            <span class="rb-cat">putnicka, izlaz${tOut != null ? ' &middot; kamioni ' + bText(tOut) : ''}</span>
+            <span class="rb-cat">${eff.src && pOut > 30 ? 'izvor: ' + eff.src : 'putnicka, izlaz'}${extra}</span>
           </div>
         </div>`;
       }).join('');
@@ -655,12 +678,12 @@
       if (typeof BORDERS === 'undefined') return null;
       let best = null;
       BORDERS.CROSSINGS.forEach(cx => {
-        const w = borderWaits[cx.id];
-        if (!w) return;
-        const arr = [];
-        if (w.putnicka) { arr.push(['putnicka', w.putnicka.ulaz]); arr.push(['putnicka', w.putnicka.izlaz]); }
-        if (w.teretna)  { arr.push(['kamioni', w.teretna.ulaz]); arr.push(['kamioni', w.teretna.izlaz]); }
-        arr.forEach(([k, m]) => { if (m != null && (!best || m > best.min)) best = { name: cx.name, kind: k, min: m }; });
+        ['ulaz', 'izlaz'].forEach(dir => {
+          const e = effWait(cx.id, dir);
+          if (e.v != null && (!best || e.v > best.min)) {
+            best = { name: cx.name, kind: dir === 'izlaz' ? 'izlaz' : 'ulaz', min: e.v };
+          }
+        });
       });
       return best;
     }
@@ -741,12 +764,26 @@
             const cr = gj.crossings || {};
             Object.keys(cr).forEach(id => {
               const c = cr[id];
-              if (c && c.found && c.putnicka) borderWaits[id] = { putnicka: c.putnicka, teretna: c.teretna || null };
+              if (!c) return;
+              borderWaits[id] = {
+                putnicka: (c.found && c.putnicka) ? c.putnicka : null,
+                teretna: (c.found && c.teretna) ? c.teretna : null,
+                hu: c.hu || null, mk: c.mk || null, ba: c.ba || null,
+              };
             });
             renderShowcase();
             if (currentTab === 'calc') renderCalc();
           }
         } catch (e) { /* nema granice.json, ostaju demo brojke */ }
+        try {
+          const rh = await fetch('granice_here.json?cb=' + Date.now());
+          if (rh.ok) {
+            const hj = await rh.json();
+            hereCrossings = hj.crossings || {};
+            renderShowcase();
+            if (currentTab === 'calc') renderCalc();
+          }
+        } catch (e) { /* nema HERE podataka */ }
       } catch (err) {
         document.getElementById('meta').textContent = 'Greška pri učitavanju podataka.';
         console.error(err);
