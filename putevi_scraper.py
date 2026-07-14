@@ -21,6 +21,7 @@ API = "https://data.traffic.hereapi.com/v7/incidents"
 CROSSINGS = {
     "gradina":      (22.7386, 43.0044),   # Gradina / Kalotina
     "horgos":       (19.9910, 46.1650),   # Horgos / Roszke
+    "kelebija":     (19.6050, 46.1930),   # Kelebija / Tompa
     "batrovci":     (19.1710, 45.0400),   # Batrovci / Bajakovo
     "presevo":      (21.6400, 42.2450),   # Presevo / Tabanovce
     "sremska-raca": (19.2620, 44.8830),   # Sremska Raca
@@ -51,6 +52,7 @@ BORDER_WORDS = ("granicni prijelaz", "granicni prelaz", "granični prijelaz",
 NAMES = {
     "gradina":      ("gradina", "kalotina"),
     "horgos":       ("horgos", "roszke", "roeszke"),
+    "kelebija":     ("kelebija", "tompa"),
     "batrovci":     ("batrovci", "bajakovo"),
     "presevo":      ("presevo", "tabanovce"),
     "sremska-raca": ("sremska raca", "raca"),
