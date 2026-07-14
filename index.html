@@ -508,49 +508,8 @@
 
     let borderWaits = {};   // id -> {putnicka, teretna} iz granice.json
     let borderStamp = null; // scraped_at
-    let roadIncidents = []; // iz putevi.json (TomTom)
 
-    // ruta -> koridori iz putevi_scraper.py BOXES
-    const ROUTE_CORRIDORS = {
-      'bg-bd': ['bg-preljina','zlatibor-gostun'],
-      'bg-ti': ['bg-preljina','zlatibor-gostun'],
-      'bg-st': ['bg-sid'],
-      'bg-zg': ['bg-sid'], 'zg-bg': ['bg-sid'],
-      'bg-lj': ['bg-sid'], 'lj-bg': ['bg-sid'],
-      'bg-sk': ['bg-jagodina','jagodina-nis','nis-presevo'],
-      'bg-so': ['bg-jagodina','jagodina-nis','nis-presevo'],
-      'ni-sk': ['nis-presevo'],
-      'bg-sf': ['bg-jagodina','jagodina-nis','nis-gradina'],
-      'ni-sf': ['nis-gradina'],
-      'bg-bp': ['bg-horgos'],
-    };
 
-    function roadsPanel(route) {
-      const corr = ROUTE_CORRIDORS[route.id];
-      if (!corr || !roadIncidents.length) return '';
-      const list = roadIncidents.filter(i => corr.includes(i.corridor));
-      if (!list.length) return '';
-      const critColor = { critical: 'var(--bad)', major: 'var(--bad)', minor: 'var(--warn)', low: 'var(--dim)' };
-      const critText = { critical: 'kriticno', major: 'ozbiljno', minor: 'manje', low: 'manje' };
-      const rows = list.slice(0, 5).map((i, n) => {
-        const where = [i.road, i.from && i.to ? `${i.from} - ${i.to}` : (i.from || i.to)].filter(Boolean).join(' \u00b7 ');
-        let badge;
-        if (i.delay_min) {
-          badge = `<strong style="color:${i.delay_min >= 20 ? 'var(--bad)' : 'var(--warn)'}">+${i.delay_min} min</strong>`;
-        } else if (i.criticality) {
-          badge = `<strong style="color:${critColor[i.criticality] || 'var(--dim)'}">${critText[i.criticality] || i.criticality}</strong>`;
-        } else {
-          badge = '';
-        }
-        return `<div class="rd-row${n === 0 ? ' first' : ''}"><span>\u26A0\uFE0F ${i.category}${where ? ' \u00b7 ' + where : ''}</span>${badge}</div>`;
-      }).join('');
-      return `
-        <div class="result-box rd-box">
-          <h3>\uD83D\uDEE3\uFE0F Stanje na putu</h3>
-          ${rows}
-          <div class="rb-foot">Izvor: HERE Traffic &middot; zastoji, radovi i zatvaranja duz rute</div>
-        </div>`;
-    }
 
     function bStatus(min) {
       if (min == null) return { c: 'var(--faint)', t: 'nema podataka' };
@@ -654,7 +613,6 @@
       out.innerHTML = `
         ${savings > 0.5 ? `<div class="savings-banner"><div class="label">Pametna strategija ti štedi</div><div class="amount">${fmtEur(savings)}</div><div class="pct">${savingsPct.toFixed(0)}% jeftinije nego naivno (${fuelText})</div></div>` : ''}
         ${bordersPanel(t.route)}
-        ${roadsPanel(t.route)}
         ${tripCostBox}
         <div class="results">
           <div class="result-box smart"><h3>🧠 Pametna strategija</h3><div class="total">${t.smartCost > 0 ? fmtEur(t.smartCost) : '-'}</div>${smartHtml}</div>
@@ -789,14 +747,6 @@
             if (currentTab === 'calc') renderCalc();
           }
         } catch (e) { /* nema granice.json, ostaju demo brojke */ }
-        try {
-          const r3 = await fetch('putevi.json?cb=' + Date.now());
-          if (r3.ok) {
-            const pj = await r3.json();
-            roadIncidents = pj.incidents || [];
-            if (currentTab === 'calc') renderCalc();
-          }
-        } catch (e) { /* nema putevi.json */ }
       } catch (err) {
         document.getElementById('meta').textContent = 'Greška pri učitavanju podataka.';
         console.error(err);
