@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""Gasolina - stanje na putevima (TomTom Traffic Incidents).
+"""Gasolina - stanje na putevima (HERE Traffic API v7).
 
-Povlaci saobracajne incidente (zastoji, radovi, zatvaranja) duz glavnih
-koridora u Srbiji i pise ih u putevi.json. API kljuc se cita iz env
-promenljive TOMTOM_KEY (GitHub Secret), nikad iz koda.
+Povlaci saobracajne incidente duz glavnih koridora u Srbiji i pise ih
+u putevi.json. API kljuc se cita iz env promenljive HERE_KEY (GitHub Secret).
 
-Koristi TomTom Traffic API v5 (besplatno do 2.500 zahteva dnevno).
-8 koridora x 48 pokretanja dnevno = ~384 zahteva, daleko ispod limita.
+Izlaz je isti oblik kao ranija TomTom verzija, pa index.html ostaje isti.
 """
 import datetime
 import json
@@ -16,10 +14,9 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-API = "https://api.tomtom.com/traffic/services/5/incidentDetails"
+API = "https://data.traffic.hereapi.com/v7/incidents"
 
-# koridori: (id, minLon, minLat, maxLon, maxLat) - uske kutije duz autoputeva,
-# svaka ispod TomTom limita povrsine
+# koridori: (id, W, S, E, N) - HERE bbox: west,south,east,north
 BOXES = [
     ("bg-horgos",       19.70, 44.95, 20.25, 46.18),  # A1 sever, BG-Horgos
     ("bg-sid",          19.05, 44.70, 20.45, 45.15),  # A3, BG-Sid (Batrovci)
@@ -31,29 +28,24 @@ BOXES = [
     ("zlatibor-gostun", 19.40, 43.15, 20.35, 43.90),  # Zlatibor-Gostun
 ]
 
-# TomTom iconCategory -> srpski opis (zadrzavamo samo bitne)
-CATS = {
-    1: "nezgoda",
-    6: "zastoj",
-    7: "zatvorena traka",
-    8: "zatvoren put",
-    9: "radovi na putu",
-    14: "vozilo u kvaru",
+TYPES = {
+    "accident": "nezgoda",
+    "congestion": "zastoj",
+    "construction": "radovi na putu",
+    "roadClosure": "zatvoren put",
+    "laneRestriction": "zatvorena traka",
+    "disabledVehicle": "vozilo u kvaru",
+    "roadHazard": "opasnost na putu",
 }
-
-FIELDS = ("{incidents{properties{id,iconCategory,magnitudeOfDelay,"
-          "from,to,length,delay,roadNumbers,events{description}}}}")
+KEEP = set(TYPES)
 
 
 def fetch_box(key, box):
-    cid, lo1, la1, lo2, la2 = box
+    cid, w, s, e, n = box
     params = urllib.parse.urlencode({
-        "key": key,
-        "bbox": f"{lo1},{la1},{lo2},{la2}",
-        "fields": FIELDS,
-        "language": "en-GB",
-        "categoryFilter": ",".join(str(c) for c in CATS),
-        "timeValidityFilter": "present",
+        "apiKey": key,
+        "in": f"bbox:{w},{s},{e},{n}",
+        "locationReferencing": "none",
     })
     req = urllib.request.Request(API + "?" + params, headers={
         "User-Agent": "Gasolina/1.0 (+https://vojinovic.github.io/Gasolina)"
@@ -61,111 +53,70 @@ def fetch_box(key, box):
     try:
         with urllib.request.urlopen(req, timeout=30) as r:
             return json.loads(r.read().decode("utf-8"))
-    except urllib.error.HTTPError as e:
+    except urllib.error.HTTPError as ex:
         body = ""
         try:
-            body = e.read().decode("utf-8", "replace")[:400]
+            body = ex.read().decode("utf-8", "replace")[:300]
         except Exception:
             pass
-        raise RuntimeError(f"HTTP {e.code} | odgovor: {body}") from None
+        raise RuntimeError(f"HTTP {ex.code} | odgovor: {body}") from None
 
 
 def parse_incidents(data, corridor):
-    """TomTom odgovor -> lista nasih incidenata za dat koridor."""
+    """HERE odgovor -> lista nasih incidenata."""
     out = []
-    for inc in data.get("incidents", []):
-        p = inc.get("properties", {})
-        cat = p.get("iconCategory")
-        if cat not in CATS:
+    for res in data.get("results", []):
+        d = res.get("incidentDetails", {}) or {}
+        itype = d.get("type")
+        if itype not in KEEP:
             continue
-        delay_min = round((p.get("delay") or 0) / 60)
-        length_km = round((p.get("length") or 0) / 1000, 1)
-        # zadrzimo samo znacajno: kasnjenje 5+ min, ili zatvaranja/radove
-        if delay_min < 5 and cat not in (8, 9):
+        crit = (d.get("criticality") or "").lower()
+        desc = ((d.get("description") or {}).get("value")
+                or (d.get("summary") or {}).get("value") or "").strip()
+        # zatvaranja i radove zadrzavamo uvek; ostalo samo ako je znacajno
+        if itype not in ("roadClosure", "construction") and crit in ("low", "minor"):
             continue
         out.append({
-            "id": p.get("id"),
+            "id": d.get("id"),
             "corridor": corridor,
-            "category": CATS[cat],
-            "road": ", ".join(p.get("roadNumbers") or []) or None,
-            "from": p.get("from"),
-            "to": p.get("to"),
-            "delay_min": delay_min if delay_min > 0 else None,
-            "length_km": length_km if length_km > 0 else None,
+            "category": TYPES.get(itype, itype),
+            "criticality": crit or None,
+            "road": None,
+            "from": desc[:90] if desc else None,
+            "to": None,
+            "delay_min": None,
+            "length_km": None,
         })
     return out
 
 
-def probe(key):
-    """Isproba vise varijanti endpointa i javi koja prolazi sa ovim kljucem."""
-    lo1, la1, lo2, la2 = 21.50, 42.25, 22.20, 43.35   # nis-presevo kutija
-    variants = [
-        ("v5 incidentDetails",
-         "https://api.tomtom.com/traffic/services/5/incidentDetails",
-         {"bbox": f"{lo1},{la1},{lo2},{la2}", "fields": FIELDS,
-          "language": "en-GB", "timeValidityFilter": "present"}),
-        ("v5 bez fields",
-         "https://api.tomtom.com/traffic/services/5/incidentDetails",
-         {"bbox": f"{lo1},{la1},{lo2},{la2}"}),
-        ("v4 incidentDetails/s3",
-         "https://api.tomtom.com/traffic/services/4/incidentDetails/s3/"
-         f"{la1},{lo1},{la2},{lo2}/10/-1/json",
-         {"projection": "EPSG4326"}),
-        ("v4 incidentViewport",
-         "https://api.tomtom.com/traffic/services/4/incidentViewport/"
-         f"{lo1},{la1},{lo2},{la2}/10/{lo1},{la1},{lo2},{la2}/10/true/json",
-         {}),
-        ("flow v4 (provera da li ijedan traffic radi)",
-         "https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json",
-         {"point": "43.32,21.90"}),
-    ]
-    for name, url, extra in variants:
-        params = dict(extra)
-        params["key"] = key
-        full = url + "?" + urllib.parse.urlencode(params)
-        try:
-            req = urllib.request.Request(full, headers={"User-Agent": "Gasolina/1.0"})
-            with urllib.request.urlopen(req, timeout=30) as r:
-                body = r.read().decode("utf-8", "replace")
-            print(f"[OK  ] {name} -> HTTP 200, {len(body)} bajtova")
-            print(f"       {body[:200]}")
-        except urllib.error.HTTPError as e:
-            msg = ""
-            try:
-                msg = e.read().decode("utf-8", "replace")[:160]
-            except Exception:
-                pass
-            print(f"[FAIL] {name} -> HTTP {e.code} | {msg}")
-        except Exception as e:
-            print(f"[FAIL] {name} -> {e}")
-    return 0
-
-
 def main():
-    key = os.environ.get("TOMTOM_KEY", "").strip()
+    key = os.environ.get("HERE_KEY", "").strip()
     if not key:
-        print("GRESKA: TOMTOM_KEY nije postavljen (GitHub Secret).")
+        print("GRESKA: HERE_KEY nije postavljen (GitHub Secret).")
         return 1
-    print(f"TOMTOM_KEY: duzina {len(key)}, pocinje '{key[:4]}', zavrsava '{key[-4:]}'")
+    print(f"HERE_KEY: duzina {len(key)}, pocinje '{key[:4]}'")
     seen, incidents = set(), []
     for box in BOXES:
         try:
             data = fetch_box(key, box)
-        except Exception as e:
-            print(f"Upozorenje: {box[0]} nedostupan: {e}")
+        except Exception as ex:
+            print(f"Upozorenje: {box[0]} nedostupan: {ex}")
             continue
         got = parse_incidents(data, box[0])
         print(f"{box[0]}: {len(got)} incidenata")
         for inc in got:
-            if inc["id"] in seen:
+            kid = inc["id"] or (inc["corridor"], inc["from"])
+            if kid in seen:
                 continue
-            seen.add(inc["id"])
+            seen.add(kid)
             incidents.append(inc)
-    incidents.sort(key=lambda x: -(x["delay_min"] or 0))
+    rank = {"critical": 0, "major": 1, "minor": 2, "low": 3}
+    incidents.sort(key=lambda x: rank.get(x.get("criticality") or "", 9))
     result = {
         "scraped_at": datetime.datetime.now(datetime.timezone.utc)
                           .isoformat(timespec="seconds"),
-        "source": "TomTom Traffic",
+        "source": "HERE Traffic",
         "incidents": incidents[:40],
     }
     with open("putevi.json", "w", encoding="utf-8") as f:
@@ -175,19 +126,19 @@ def main():
 
 
 SELFTEST_RESPONSE = {
-    "incidents": [
-        {"properties": {"id": "a1", "iconCategory": 6, "magnitudeOfDelay": 3,
-                        "from": "Vranje", "to": "Bujanovac", "length": 3200,
-                        "delay": 1500, "roadNumbers": ["A1"],
-                        "events": [{"description": "Stationary traffic"}]}},
-        {"properties": {"id": "a2", "iconCategory": 9, "magnitudeOfDelay": 0,
-                        "from": "Petlja Nis", "to": "Petlja Merosina",
-                        "length": 800, "delay": 0, "roadNumbers": ["A1"],
-                        "events": [{"description": "Roadworks"}]}},
-        {"properties": {"id": "a3", "iconCategory": 6, "magnitudeOfDelay": 1,
-                        "from": "X", "to": "Y", "length": 200,
-                        "delay": 120, "roadNumbers": [],
-                        "events": [{"description": "Queuing traffic"}]}},
+    "results": [
+        {"incidentDetails": {"id": "h1", "type": "congestion",
+                             "criticality": "major",
+                             "description": {"value": "Stationary traffic on A1 near Vranje"}}},
+        {"incidentDetails": {"id": "h2", "type": "construction",
+                             "criticality": "low",
+                             "description": {"value": "Roadworks between Nis and Merosina"}}},
+        {"incidentDetails": {"id": "h3", "type": "congestion",
+                             "criticality": "low",
+                             "description": {"value": "Slow traffic"}}},
+        {"incidentDetails": {"id": "h4", "type": "weather",
+                             "criticality": "major",
+                             "description": {"value": "Rain"}}},
     ]
 }
 
@@ -195,14 +146,11 @@ SELFTEST_RESPONSE = {
 def selftest():
     got = parse_incidents(SELFTEST_RESPONSE, "nis-presevo")
     ok = True
-    # a1: zastoj 25 min -> ostaje; a2: radovi bez kasnjenja -> ostaje (cat 9);
-    # a3: zastoj 2 min -> ispada (ispod praga)
     if len(got) != 2:
         ok = False
-    if not (got and got[0]["delay_min"] == 25 and got[0]["category"] == "zastoj"):
+    if not (got and got[0]["category"] == "zastoj" and got[0]["criticality"] == "major"):
         ok = False
-    if not (len(got) > 1 and got[1]["category"] == "radovi na putu"
-            and got[1]["delay_min"] is None):
+    if not (len(got) > 1 and got[1]["category"] == "radovi na putu"):
         ok = False
     print(json.dumps(got, ensure_ascii=False, indent=2))
     print("SELFTEST:", "PASS" if ok else "FAIL")
@@ -212,10 +160,4 @@ def selftest():
 if __name__ == "__main__":
     if "--selftest" in sys.argv:
         sys.exit(selftest())
-    if "--probe" in sys.argv:
-        k = os.environ.get("TOMTOM_KEY", "").strip()
-        if not k:
-            print("GRESKA: TOMTOM_KEY nije postavljen.")
-            sys.exit(1)
-        sys.exit(probe(k))
     sys.exit(main())
