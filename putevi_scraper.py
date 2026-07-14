@@ -29,7 +29,7 @@ CROSSINGS = {
     "bogorodica":   (22.5490, 41.1343),   # Bogorodica / Evzoni
 }
 
-PAD = 0.06   # ~6 km oko rampe (kutija ~12x12 km, daleko ispod HERE limita)
+PAD = 0.25   # ~25 km oko rampe (kutija 0.5x0.5 stepena, ispod HERE limita od 1)
 
 TYPES = {
     "accident": "nezgoda",
@@ -101,7 +101,15 @@ def main():
             print(f"Upozorenje: {cid} nedostupan: {ex}")
             continue
         worst = pick_worst(data)
-        n = len(data.get("results", []))
+        res = data.get("results", [])
+        n = len(res)
+        if res:
+            tp = {}
+            for r in res:
+                dd = r.get("incidentDetails", {}) or {}
+                k = f'{dd.get("type")}/{dd.get("criticality")}'
+                tp[k] = tp.get(k, 0) + 1
+            print(f"   [{cid}] sirovi tipovi: {tp}")
         if worst:
             out[cid] = worst
             print(f"{cid}: {n} stavki -> {worst['category']}/{worst['criticality']}"
