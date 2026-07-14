@@ -17,15 +17,19 @@ import urllib.request
 API = "https://data.traffic.hereapi.com/v7/incidents"
 
 # koridori: (id, W, S, E, N) - HERE bbox: west,south,east,north
+# VAZNO: HERE dozvoljava max 1 stepen sirine i visine po kutiji,
+# pa su duzi koridori podeljeni na vise segmenata.
 BOXES = [
-    ("bg-horgos",       19.70, 44.95, 20.25, 46.18),  # A1 sever, BG-Horgos
-    ("bg-sid",          19.05, 44.70, 20.45, 45.15),  # A3, BG-Sid (Batrovci)
-    ("bg-jagodina",     20.35, 44.10, 21.35, 44.95),  # A1, BG-Jagodina
-    ("jagodina-nis",    21.00, 43.25, 21.95, 44.15),  # A1, Jagodina-Nis
-    ("nis-presevo",     21.50, 42.25, 22.20, 43.35),  # A1 jug, Nis-Presevo
+    ("bg-horgos",       19.70, 45.20, 20.25, 46.15),  # A1 sever (Subotica-Horgos)
+    ("bg-horgos",       19.80, 44.75, 20.55, 45.60),  # A1 sever (BG-Novi Sad)
+    ("bg-sid",          19.05, 44.75, 19.95, 45.15),  # A3 zapad (Sid-Ruma)
+    ("bg-sid",          19.90, 44.70, 20.55, 45.10),  # A3 istok (Ruma-BG)
+    ("bg-jagodina",     20.35, 44.10, 21.30, 44.90),  # A1, BG-Jagodina
+    ("jagodina-nis",    21.00, 43.30, 21.95, 44.15),  # A1, Jagodina-Nis
+    ("nis-presevo",     21.55, 42.30, 22.20, 43.25),  # A1 jug, Nis-Presevo
     ("nis-gradina",     21.85, 42.95, 22.70, 43.40),  # A4, Nis-Gradina
-    ("bg-preljina",     20.00, 43.80, 20.60, 44.70),  # Milos Veliki
-    ("zlatibor-gostun", 19.40, 43.15, 20.35, 43.90),  # Zlatibor-Gostun
+    ("bg-preljina",     20.00, 43.85, 20.60, 44.70),  # Milos Veliki
+    ("zlatibor-gostun", 19.40, 43.20, 20.35, 43.90),  # Zlatibor-Gostun
 ]
 
 TYPES = {
@@ -81,9 +85,8 @@ def parse_incidents(data, corridor, debug=False):
         crit = (d.get("criticality") or "").lower()
         desc = ((d.get("description") or {}).get("value")
                 or (d.get("summary") or {}).get("value") or "").strip()
-        # zatvaranja i radove zadrzavamo uvek; ostalo samo ako je znacajno
-        if itype not in ("roadClosure", "construction") and crit in ("low", "minor"):
-            continue
+        # Filter je namerno blag: HERE u Srbiji cesto oznaci sve kao 'low',
+        # pa bi strog filter obrisao sve. Prikaz sortira po ozbiljnosti.
         out.append({
             "id": d.get("id"),
             "corridor": corridor,
@@ -159,11 +162,12 @@ SELFTEST_RESPONSE = {
 def selftest():
     got = parse_incidents(SELFTEST_RESPONSE, "nis-presevo")
     ok = True
-    if len(got) != 2:
+    # blag filter: prolaze zastoj/major, radovi/low, zastoj/low; weather ispada (nije u KEEP)
+    if len(got) != 3:
         ok = False
     if not (got and got[0]["category"] == "zastoj" and got[0]["criticality"] == "major"):
         ok = False
-    if not (len(got) > 1 and got[1]["category"] == "radovi na putu"):
+    if any(g["category"] == "weather" for g in got):
         ok = False
     print(json.dumps(got, ensure_ascii=False, indent=2))
     print("SELFTEST:", "PASS" if ok else "FAIL")
