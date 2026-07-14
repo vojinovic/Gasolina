@@ -29,7 +29,7 @@ CROSSINGS = {
     "bogorodica":   (22.5490, 41.1343),   # Bogorodica / Evzoni
 }
 
-PAD = 0.25   # ~25 km oko rampe (kutija 0.5x0.5 stepena, ispod HERE limita od 1)
+PAD = 0.12   # ~12 km oko rampe
 
 TYPES = {
     "accident": "nezgoda",
@@ -41,6 +41,39 @@ TYPES = {
     "roadHazard": "opasnost",
 }
 RANK = {"critical": 0, "major": 1, "minor": 2, "low": 3}
+
+# Incident se prihvata SAMO ako opis pominje granicni prelaz i to bas nas.
+BORDER_WORDS = ("granicni prijelaz", "granicni prelaz", "granični prijelaz",
+                "granični prelaz", "border crossing", "hatarat", "hataratkelo",
+                "granicen premin", "customs", "carina")
+
+# ime prelaza (i ime naspramnog GP) koje mora da se pojavi u opisu
+NAMES = {
+    "gradina":      ("gradina", "kalotina"),
+    "horgos":       ("horgos", "roszke", "roeszke"),
+    "batrovci":     ("batrovci", "bajakovo"),
+    "presevo":      ("presevo", "tabanovce"),
+    "sremska-raca": ("sremska raca", "raca"),
+    "spiljani":     ("spiljani", "dracenovac"),
+    "gostun":       ("gostun", "dobrakovo"),
+    "bogorodica":   ("bogorodica", "evzoni", "evzonoi"),
+}
+
+
+def fold(s):
+    for a, b in (("š","s"),("Š","s"),("đ","dj"),("Đ","dj"),("č","c"),("Č","c"),
+                 ("ć","c"),("Ć","c"),("ž","z"),("Ž","z"),("á","a"),("é","e"),
+                 ("í","i"),("ó","o"),("ö","o"),("ő","o"),("ú","u"),("ü","u"),("ű","u")):
+        s = s.replace(a, b)
+    return s.lower()
+
+
+def is_at_crossing(desc, cid):
+    """True samo ako opis pominje granicni prelaz I ime naseg prelaza."""
+    d = fold(desc or "")
+    if not any(w in d for w in BORDER_WORDS):
+        return False
+    return any(n in d for n in NAMES.get(cid, ()))
 
 
 def fetch_box(key, lon, lat):
@@ -65,8 +98,8 @@ def fetch_box(key, lon, lat):
         raise RuntimeError(f"HTTP {ex.code} | {body}") from None
 
 
-def pick_worst(data):
-    """Iz HERE odgovora izvuci najozbiljniju stavku za prelaz."""
+def pick_worst(data, cid):
+    """Najozbiljnija stavka koja se stvarno odnosi na NAS granicni prelaz."""
     best = None
     for res in data.get("results", []):
         d = res.get("incidentDetails", {}) or {}
@@ -75,6 +108,8 @@ def pick_worst(data):
             continue
         crit = (d.get("criticality") or "").lower()
         desc = ((d.get("description") or {}).get("value") or "").strip()
+        if not is_at_crossing(desc, cid):
+            continue
         length_m = (res.get("location") or {}).get("length")
         item = {
             "category": TYPES[itype],
@@ -100,7 +135,7 @@ def main():
         except Exception as ex:
             print(f"Upozorenje: {cid} nedostupan: {ex}")
             continue
-        worst = pick_worst(data)
+        worst = pick_worst(data, cid)
         res = data.get("results", [])
         n = len(res)
         if res:
@@ -133,7 +168,7 @@ SELFTEST = {
         {"location": {"length": 309.0},
          "incidentDetails": {"type": "congestion", "criticality": "minor",
                              "roadClosed": False,
-                             "description": {"value": "At Granicni prijelaz Bajakovo - Backed-up traffic. Approach with care"}}},
+                             "description": {"value": "At Granični prijelaz Bajakovo - Backed-up traffic. Approach with care"}}},
         {"location": {"length": 1200.0},
          "incidentDetails": {"type": "congestion", "criticality": "major",
                              "roadClosed": False,
@@ -143,12 +178,33 @@ SELFTEST = {
     ]
 }
 
+NOISE = {
+    "results": [
+        {"incidentDetails": {"type": "construction", "criticality": "minor",
+                             "description": {"value": "At 8001 (Novo Bardo) - Road construction"}}},
+        {"incidentDetails": {"type": "roadClosure", "criticality": "critical",
+                             "description": {"value": "Lezárva"}}},
+    ]
+}
+
 
 def selftest():
-    got = pick_worst(SELFTEST)
-    ok = (got and got["category"] == "kolona" and got["criticality"] == "major"
-          and got["length_km"] == 1.2)
-    print(json.dumps(got, ensure_ascii=False, indent=2))
+    ok = True
+    # Bajakovo se prihvata za batrovci
+    b = pick_worst(SELFTEST, "batrovci")
+    if not (b and b["category"] == "kolona" and b["length_km"] == 0.3):
+        ok = False
+    print("batrovci ->", json.dumps(b, ensure_ascii=False))
+    # isti podatak se NE sme pripisati Sremskoj Raci
+    r = pick_worst(SELFTEST, "sremska-raca")
+    if r is not None:
+        ok = False
+    print("sremska-raca ->", r)
+    # radovi kod Novog Brda se ne smeju pripisati Gradini
+    g = pick_worst(NOISE, "gradina")
+    if g is not None:
+        ok = False
+    print("gradina (sum) ->", g)
     print("SELFTEST:", "PASS" if ok else "FAIL")
     return 0 if ok else 1
 
