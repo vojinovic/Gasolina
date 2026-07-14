@@ -228,6 +228,16 @@
     .cost-note { margin-top: 12px; font-size: 12px; color: var(--faint); line-height: 1.5; }
     .cost-hint { background: var(--panel); border: 1px dashed var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 18px; font-size: 13px; color: var(--faint); }
   </style>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4EPLBJE8BL');
+  // kratka pomocna funkcija za dogadjaje
+  function track(name, params){ try{ gtag('event', name, params || {}); }catch(e){} }
+</script>
 </head>
 <body>
   <nav class="topbar">
@@ -596,6 +606,7 @@
         </div>`;
     }
 
+    let lastTrackedRoute = null;
     function renderCalc() {
       document.getElementById('consVal').textContent = parseFloat(document.getElementById('consInp').value).toFixed(1).replace('.', ',') + ' L';
       document.getElementById('tankVal').textContent = document.getElementById('tankInp').value + ' L';
@@ -603,6 +614,10 @@
 
       const out = document.getElementById('calcOutput');
       const t = computeTrip();
+      if (t && t.route && t.route.id !== lastTrackedRoute) {
+        lastTrackedRoute = t.route.id;
+        track('izracunaj_rutu', { ruta: t.route.id, gorivo: t.fuelKey });
+      }
       if (!t) { out.innerHTML = ''; return; }
       const fuelText = fuelLabel(t.fuelKey);
 
@@ -660,7 +675,10 @@
 
     function goRoute() {
       const hero = document.getElementById('heroRoute');
-      if (hero) document.getElementById('routeSel').value = hero.value;
+      if (hero) {
+        document.getElementById('routeSel').value = hero.value;
+        track('hero_izracunaj_rutu', { ruta: hero.value });
+      }
       setTab('calc');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -719,7 +737,7 @@
           <div class="sub">Izracunaj gorivo i trosak za svoju rutu i dobij pametnu strategiju punjenja.</div>
           <div class="go">Otvori kalkulator →</div>
         </a>
-        <a class="sc" href="granice.html">
+        <a class="sc" href="granice.html" onclick="track('otvori_granice', { odakle: 'showcase' })">
           <div class="lab">🚧 Stanje na granicama</div>
           <div class="big">${bBig}</div>
           <div class="sub">${bSub}</div>
@@ -728,6 +746,7 @@
     }
 
     function setTab(tab) {
+      if (tab === 'calc' && currentTab !== 'calc') track('otvori_kalkulator');
       currentTab = tab;
       const np = document.getElementById('navPrices');
       const nc = document.getElementById('navCalc');
