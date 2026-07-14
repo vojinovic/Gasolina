@@ -1,0 +1,9218 @@
+{
+  "scraped_at": "2026-07-14T15:00:17+00:00",
+  "source": "OpenStreetMap (Overpass API)",
+  "count": 780,
+  "stations": [
+    {
+      "id": 272424994,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.83368,
+      "lon": 20.41096,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 296878310,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 45.27826,
+      "lon": 19.85008,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 410652165,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 46.10027,
+      "lon": 19.689,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 431340945,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.04111,
+      "lon": 20.08755,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 475419512,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 45.14983,
+      "lon": 20.08258,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 488584038,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.82273,
+      "lon": 20.45559,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 509408782,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 45.27776,
+      "lon": 19.85094,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 524694707,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.53453,
+      "lon": 20.22905,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 599723736,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.97477,
+      "lon": 20.171,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 609178743,
+      "corridor": "bg-horgos",
+      "brand": "ButanGas",
+      "lat": 44.99791,
+      "lon": 20.14625,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 611627001,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.9918,
+      "lon": 19.98377,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 618770043,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.96978,
+      "lon": 20.28125,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 619518759,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 45.14629,
+      "lon": 20.08462,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 873841335,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.01933,
+      "lon": 20.33365,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 878610682,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 46.029,
+      "lon": 20.09298,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 929353265,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 46.06531,
+      "lon": 19.68157,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 939079813,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.98183,
+      "lon": 20.28125,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1079431053,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.20867,
+      "lon": 19.73215,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1115230036,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.92565,
+      "lon": 19.74864,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1229907240,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.9149,
+      "lon": 20.0836,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1275763866,
+      "corridor": "bg-horgos",
+      "brand": "Nepoznata pumpa",
+      "lat": 45.75125,
+      "lon": 20.12759,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1275763898,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 45.81296,
+      "lon": 20.10688,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1275763904,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.78332,
+      "lon": 20.13614,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1362560530,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 45.32833,
+      "lon": 19.78139,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1366435292,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 45.32893,
+      "lon": 19.77908,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1392744577,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.27653,
+      "lon": 19.92282,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1410634355,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 45.28641,
+      "lon": 19.83313,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1410634511,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 45.30883,
+      "lon": 19.89462,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1410634514,
+      "corridor": "bg-horgos",
+      "brand": "Jelić promet",
+      "lat": 45.30947,
+      "lon": 19.89367,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1410634630,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.38751,
+      "lon": 20.52602,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1410634637,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 45.39607,
+      "lon": 20.40524,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1440487131,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.20333,
+      "lon": 19.93792,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1534010342,
+      "corridor": "bg-horgos",
+      "brand": "Nepoznata pumpa",
+      "lat": 46.07246,
+      "lon": 19.9259,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1596378928,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.30352,
+      "lon": 19.83086,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1604949273,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 44.75011,
+      "lon": 20.58562,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1738679551,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 45.91548,
+      "lon": 20.08705,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1750722443,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.97519,
+      "lon": 19.63756,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1790660472,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 45.21022,
+      "lon": 19.77741,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1825130994,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.87896,
+      "lon": 20.12221,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1888688620,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.34739,
+      "lon": 19.72686,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1895049940,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.2687,
+      "lon": 19.81154,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1922516062,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 45.2902,
+      "lon": 19.74997,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1937190510,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.5058,
+      "lon": 20.32019,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2003245155,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.75146,
+      "lon": 20.41299,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2003300299,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.78961,
+      "lon": 20.42281,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2003617521,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.89951,
+      "lon": 20.2869,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2003715087,
+      "corridor": "bg-horgos",
+      "brand": "Jelić promet",
+      "lat": 45.30554,
+      "lon": 19.92164,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2003834773,
+      "corridor": "bg-horgos",
+      "brand": "Miletić komerc",
+      "lat": 46.14427,
+      "lon": 19.93974,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 2085901423,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.8095,
+      "lon": 20.42715,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2119609150,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 45.26931,
+      "lon": 19.825,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2119609165,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.24168,
+      "lon": 19.6406,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2129103410,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.08183,
+      "lon": 19.85566,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2129103421,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.7633,
+      "lon": 19.6957,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2129103425,
+      "corridor": "bg-horgos",
+      "brand": "АМК",
+      "lat": 45.00122,
+      "lon": 19.8161,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2129103430,
+      "corridor": "bg-horgos",
+      "brand": "Ekspres gas",
+      "lat": 44.99526,
+      "lon": 19.8301,
+      "fuels": [
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2130793792,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.43493,
+      "lon": 19.89966,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2130793803,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 45.56417,
+      "lon": 19.64663,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2130793810,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 45.81017,
+      "lon": 19.63042,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2130793831,
+      "corridor": "bg-horgos",
+      "brand": "Гиле Гас",
+      "lat": 45.81772,
+      "lon": 19.64708,
+      "fuels": [
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2130793839,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 45.35096,
+      "lon": 19.61007,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2137890994,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 45.91436,
+      "lon": 20.1027,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2137890995,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 46.05912,
+      "lon": 20.04285,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2137890997,
+      "corridor": "bg-horgos",
+      "brand": "KryoGas",
+      "lat": 46.09771,
+      "lon": 19.6892,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2139366063,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 45.82549,
+      "lon": 20.45735,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2140105679,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 45.59746,
+      "lon": 20.03501,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2140105681,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.64506,
+      "lon": 20.02946,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2329384113,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 45.96746,
+      "lon": 19.71126,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2337209427,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.55017,
+      "lon": 19.76432,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2503368104,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.80928,
+      "lon": 19.75425,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2503368106,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 44.88194,
+      "lon": 19.76298,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2503368110,
+      "corridor": "bg-horgos",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.89068,
+      "lon": 19.76432,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2503368113,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.91978,
+      "lon": 19.9613,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2503368117,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 44.93449,
+      "lon": 19.91541,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2503368126,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.93266,
+      "lon": 19.78285,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2516679261,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.05369,
+      "lon": 20.09731,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2565962760,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.97285,
+      "lon": 19.63759,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2566065526,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 44.97442,
+      "lon": 19.62604,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2584313064,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.75206,
+      "lon": 19.70692,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2604438611,
+      "corridor": "bg-horgos",
+      "brand": "Gazprom",
+      "lat": 44.97114,
+      "lon": 20.234,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2642669644,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.75076,
+      "lon": 19.70707,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2704194156,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.55398,
+      "lon": 19.8015,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2766692867,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.76318,
+      "lon": 20.49505,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3075776963,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.8202,
+      "lon": 20.46704,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3136123042,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.98463,
+      "lon": 20.06301,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3176943414,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.823,
+      "lon": 19.67245,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3207479026,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.80434,
+      "lon": 20.11406,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 3334248916,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 45.02645,
+      "lon": 20.10606,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3383761891,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.53307,
+      "lon": 19.7896,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3393574260,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.50752,
+      "lon": 20.31946,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3475795821,
+      "corridor": "bg-horgos",
+      "brand": "Calypso-oil",
+      "lat": 45.60326,
+      "lon": 20.0376,
+      "fuels": [
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3475795826,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.62165,
+      "lon": 20.0355,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3475795830,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.6218,
+      "lon": 20.0359,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3493662463,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.4171,
+      "lon": 19.89207,
+      "fuels": [
+        "dizel"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3677748307,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.77632,
+      "lon": 20.50008,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3728934838,
+      "corridor": "bg-horgos",
+      "brand": "Gazprom",
+      "lat": 44.84126,
+      "lon": 20.5037,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3729602529,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.75167,
+      "lon": 20.41228,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3731023377,
+      "corridor": "bg-horgos",
+      "brand": "Gazprom",
+      "lat": 45.2758,
+      "lon": 19.92158,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3733417546,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 44.86565,
+      "lon": 20.34652,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3733423610,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 44.86836,
+      "lon": 20.35574,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3733451283,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 44.80333,
+      "lon": 20.39107,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3733451932,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 44.78453,
+      "lon": 20.41281,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3774593444,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.5828,
+      "lon": 19.61733,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3822866761,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.93528,
+      "lon": 20.14029,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3842261793,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.76503,
+      "lon": 20.52707,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3853932576,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 44.80859,
+      "lon": 20.51291,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3883259980,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 46.10243,
+      "lon": 19.76195,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3889691115,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.81385,
+      "lon": 20.48976,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3955731616,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 44.7606,
+      "lon": 20.47295,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4007326331,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 46.10028,
+      "lon": 19.6899,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4015519308,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.7858,
+      "lon": 20.53689,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4041351369,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.78086,
+      "lon": 20.49473,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4103887808,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.80394,
+      "lon": 20.52528,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4105657877,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 44.81282,
+      "lon": 20.38948,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4126804781,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.79508,
+      "lon": 20.45763,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4142958646,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.85883,
+      "lon": 20.37973,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4172958279,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.38227,
+      "lon": 20.38409,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4177357141,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.38001,
+      "lon": 20.35392,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4220068199,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.78169,
+      "lon": 20.52316,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4222510486,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 44.78235,
+      "lon": 20.52194,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4242868572,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.85278,
+      "lon": 20.4741,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4244804873,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 44.86309,
+      "lon": 20.47658,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4307617993,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.81289,
+      "lon": 20.48198,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 4572180036,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.81785,
+      "lon": 20.51151,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4749850431,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.87367,
+      "lon": 20.32646,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4880766022,
+      "corridor": "bg-horgos",
+      "brand": "Sante Union",
+      "lat": 45.11459,
+      "lon": 19.79824,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4954708053,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 46.08716,
+      "lon": 19.68398,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4979355925,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.02447,
+      "lon": 19.834,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4987677430,
+      "corridor": "bg-horgos",
+      "brand": "Mačva expres",
+      "lat": 44.76972,
+      "lon": 19.67486,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 5007413222,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 46.05969,
+      "lon": 20.04183,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 5007697421,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 46.07236,
+      "lon": 20.05545,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 5013922199,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.96521,
+      "lon": 20.28121,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 5024306620,
+      "corridor": "bg-horgos",
+      "brand": "D&B Company",
+      "lat": 44.9801,
+      "lon": 20.28103,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 5032961922,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.08385,
+      "lon": 19.85585,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 5032961923,
+      "corridor": "bg-horgos",
+      "brand": "Ранковић-Промет",
+      "lat": 45.09323,
+      "lon": 19.86157,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5474214021,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 45.38495,
+      "lon": 20.37677,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 5520240022,
+      "corridor": "bg-horgos",
+      "brand": "Alfa gas",
+      "lat": 45.5043,
+      "lon": 19.93733,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 5738760516,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.77477,
+      "lon": 20.53597,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 5774055691,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 45.64107,
+      "lon": 20.41386,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5820287960,
+      "corridor": "bg-horgos",
+      "brand": "Mihajlović",
+      "lat": 45.59015,
+      "lon": 20.5559,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 5820568954,
+      "corridor": "bg-horgos",
+      "brand": "Mihajlović",
+      "lat": 45.8316,
+      "lon": 20.17171,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 6034253212,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.93179,
+      "lon": 20.06835,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 6066297356,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.85018,
+      "lon": 20.53052,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6090527532,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.80185,
+      "lon": 20.52606,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6296362456,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.8115,
+      "lon": 20.40521,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6299738539,
+      "corridor": "bg-horgos",
+      "brand": "Арт Петрол",
+      "lat": 44.87967,
+      "lon": 20.11867,
+      "fuels": [
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 6314441292,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 44.85127,
+      "lon": 20.53065,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6326548448,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.0488,
+      "lon": 20.39275,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6381055533,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.87059,
+      "lon": 20.35077,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 6461789422,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.31444,
+      "lon": 20.45396,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6466927745,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.20505,
+      "lon": 20.31135,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 7043718190,
+      "corridor": "bg-horgos",
+      "brand": "AK oil",
+      "lat": 45.28958,
+      "lon": 19.74948,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 7115758398,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.78611,
+      "lon": 20.41504,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 7155055320,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.81097,
+      "lon": 20.38494,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 7252440964,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.95349,
+      "lon": 20.2066,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 7300324710,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 44.98645,
+      "lon": 20.20466,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 7368497087,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.23911,
+      "lon": 19.70158,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 7371822584,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.79822,
+      "lon": 20.48637,
+      "fuels": [
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 7536461764,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 46.15039,
+      "lon": 19.97292,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 7537827028,
+      "corridor": "bg-horgos",
+      "brand": "Miletić komerc",
+      "lat": 45.59876,
+      "lon": 20.0453,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 7588538085,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 45.11992,
+      "lon": 20.38712,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 7588698190,
+      "corridor": "bg-horgos",
+      "brand": "WMV",
+      "lat": 45.38746,
+      "lon": 20.42173,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 7593582731,
+      "corridor": "bg-horgos",
+      "brand": "Gama Gas-oil",
+      "lat": 45.41111,
+      "lon": 20.46762,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 7593582733,
+      "corridor": "bg-horgos",
+      "brand": "Груја Петрол",
+      "lat": 45.47917,
+      "lon": 20.55225,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 7601054526,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.05207,
+      "lon": 20.42021,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 7812926639,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.87633,
+      "lon": 20.07567,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 7812926652,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.8756,
+      "lon": 20.11617,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 8376072288,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 45.39836,
+      "lon": 19.8835,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 8376171426,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.42141,
+      "lon": 19.89269,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 8627655342,
+      "corridor": "bg-horgos",
+      "brand": "Nepoznata pumpa",
+      "lat": 45.10297,
+      "lon": 20.3795,
+      "fuels": [
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 8820123575,
+      "corridor": "bg-horgos",
+      "brand": "Ledi-MS",
+      "lat": 44.96927,
+      "lon": 20.2334,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 9103961437,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 44.81527,
+      "lon": 20.50509,
+      "fuels": [
+        "dizel"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9124083937,
+      "corridor": "bg-horgos",
+      "brand": "Naftaprom",
+      "lat": 44.81604,
+      "lon": 20.51867,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9270713029,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.81307,
+      "lon": 20.44102,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 9348828317,
+      "corridor": "bg-horgos",
+      "brand": "Shell",
+      "lat": 44.92033,
+      "lon": 20.30501,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9455121715,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 45.00829,
+      "lon": 19.7892,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 9459572858,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 45.82269,
+      "lon": 20.45432,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9514212993,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.38229,
+      "lon": 20.43279,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9874516953,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.93353,
+      "lon": 20.42107,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9885246546,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.99632,
+      "lon": 20.15408,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9889455950,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.83741,
+      "lon": 20.47759,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9889595347,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.81639,
+      "lon": 20.43619,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9889887184,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.70309,
+      "lon": 20.08658,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9919100970,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.7583,
+      "lon": 20.57709,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9919304553,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.57212,
+      "lon": 19.66448,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9933522773,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.27322,
+      "lon": 20.08131,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9933635033,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.48095,
+      "lon": 20.55246,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9933675917,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.46866,
+      "lon": 20.05428,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9933770838,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.45397,
+      "lon": 19.68729,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9933810365,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.34589,
+      "lon": 19.62998,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9959405303,
+      "corridor": "bg-horgos",
+      "brand": "Gazprom",
+      "lat": 44.83182,
+      "lon": 20.36971,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9979607613,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.77639,
+      "lon": 20.4565,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9979811967,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.36402,
+      "lon": 19.86733,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 9979861423,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.31646,
+      "lon": 20.06829,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9994924508,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.97125,
+      "lon": 19.61919,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9994924745,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.84971,
+      "lon": 20.38865,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 10011227784,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 46.08954,
+      "lon": 19.64499,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10011338776,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 46.0859,
+      "lon": 19.66969,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10011362573,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 46.10457,
+      "lon": 19.73754,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10029628882,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 46.10049,
+      "lon": 19.6732,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10029691620,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 46.16619,
+      "lon": 19.95891,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10029691628,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 46.16492,
+      "lon": 19.95708,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10044621185,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.23848,
+      "lon": 20.03277,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 10045224664,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.81995,
+      "lon": 20.45628,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10047387103,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 45.96742,
+      "lon": 19.71012,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10157029154,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 46.0995,
+      "lon": 19.65491,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10157101306,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 46.10363,
+      "lon": 19.74066,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 10162574720,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 44.82087,
+      "lon": 20.42164,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10231773276,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.85766,
+      "lon": 20.38182,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10270201117,
+      "corridor": "bg-horgos",
+      "brand": "Shell",
+      "lat": 45.27093,
+      "lon": 19.84243,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10313776011,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.97537,
+      "lon": 20.16992,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10568150623,
+      "corridor": "bg-horgos",
+      "brand": "Црни МБ Гас Петрол",
+      "lat": 45.42812,
+      "lon": 20.3124,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11010682629,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 44.94907,
+      "lon": 20.15548,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11027453442,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.85879,
+      "lon": 20.37786,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 11076784233,
+      "corridor": "bg-horgos",
+      "brand": "Nepoznata pumpa",
+      "lat": 45.14058,
+      "lon": 20.13142,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11096778675,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.96794,
+      "lon": 20.18053,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 11097219001,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 45.03073,
+      "lon": 20.10087,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 11229162721,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.82558,
+      "lon": 20.46523,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 11232658027,
+      "corridor": "bg-horgos",
+      "brand": "FCW",
+      "lat": 45.82144,
+      "lon": 20.45758,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11371432667,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.77484,
+      "lon": 19.72461,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 11416982505,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 45.38337,
+      "lon": 20.38404,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 11509249114,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.85265,
+      "lon": 20.37366,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11545901025,
+      "corridor": "bg-horgos",
+      "brand": "Gazprom",
+      "lat": 46.12493,
+      "lon": 19.83302,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 11608437499,
+      "corridor": "bg-horgos",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.99609,
+      "lon": 19.81602,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11738449865,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.40261,
+      "lon": 20.39358,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 11799342315,
+      "corridor": "bg-horgos",
+      "brand": "Shell",
+      "lat": 44.80267,
+      "lon": 20.38282,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 11799377655,
+      "corridor": "bg-horgos",
+      "brand": "Shell",
+      "lat": 45.24032,
+      "lon": 19.81274,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12010059899,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.24294,
+      "lon": 19.83946,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12039940543,
+      "corridor": "bg-horgos",
+      "brand": "Nepoznata pumpa",
+      "lat": 45.19838,
+      "lon": 20.3059,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12071722692,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.37081,
+      "lon": 20.06385,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12087101076,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.00111,
+      "lon": 19.82333,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12087101078,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.08289,
+      "lon": 20.18122,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12163085757,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.87608,
+      "lon": 20.11865,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12166703273,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.27223,
+      "lon": 19.83044,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12166703274,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.2723,
+      "lon": 19.8309,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12173084152,
+      "corridor": "bg-horgos",
+      "brand": "Univerzal",
+      "lat": 44.7791,
+      "lon": 20.49585,
+      "fuels": [
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12188457588,
+      "corridor": "bg-horgos",
+      "brand": "OMV",
+      "lat": 44.8145,
+      "lon": 20.25229,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12244902481,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.84189,
+      "lon": 20.41694,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12244918230,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 45.36428,
+      "lon": 20.39118,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12319419198,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 45.26903,
+      "lon": 19.82615,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12592599321,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.76466,
+      "lon": 20.52666,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12732579334,
+      "corridor": "bg-horgos",
+      "brand": "KryoGas",
+      "lat": 44.94014,
+      "lon": 20.28153,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12749499732,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 45.39971,
+      "lon": 19.98197,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12749500646,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.3917,
+      "lon": 20.01592,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12749501325,
+      "corridor": "bg-horgos",
+      "brand": "Zlokolica",
+      "lat": 45.27557,
+      "lon": 20.085,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12749506613,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.36622,
+      "lon": 20.06492,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12749809249,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 45.52722,
+      "lon": 20.01474,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12749839393,
+      "corridor": "bg-horgos",
+      "brand": "Avia",
+      "lat": 45.434,
+      "lon": 19.81327,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12752320038,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.91759,
+      "lon": 19.96013,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12752367402,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.29483,
+      "lon": 19.82264,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12752391693,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.43256,
+      "lon": 19.8133,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12752589985,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 46.07626,
+      "lon": 19.67692,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12752619201,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.55725,
+      "lon": 19.66561,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12752623428,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.27992,
+      "lon": 19.78973,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12752623429,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.2437,
+      "lon": 19.78591,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12752623430,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.2296,
+      "lon": 19.88329,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12752637132,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.05523,
+      "lon": 20.10427,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12752641046,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.99461,
+      "lon": 20.20772,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12752683422,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.8125,
+      "lon": 20.40456,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12752683423,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.78433,
+      "lon": 20.41064,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12752683424,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.7668,
+      "lon": 20.41265,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12754619932,
+      "corridor": "bg-horgos",
+      "brand": "Браћа Црномарковић",
+      "lat": 44.88441,
+      "lon": 20.30841,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12754791111,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 46.10471,
+      "lon": 19.87931,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12754796948,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 44.82168,
+      "lon": 20.53677,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12754807215,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 44.79883,
+      "lon": 20.3727,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12754807216,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 44.80534,
+      "lon": 20.34973,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12754807256,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 46.07924,
+      "lon": 19.78346,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12754819247,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 44.82262,
+      "lon": 20.4806,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12754833554,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 46.05145,
+      "lon": 20.03817,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12755169864,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 45.57042,
+      "lon": 19.65614,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12755172297,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 46.09275,
+      "lon": 19.66048,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12755180960,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 45.8935,
+      "lon": 19.86339,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12755186011,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 45.92325,
+      "lon": 19.6349,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12755189160,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 44.85291,
+      "lon": 20.36976,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12755189161,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 44.86212,
+      "lon": 20.36819,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12755189162,
+      "corridor": "bg-horgos",
+      "brand": "Euro Petrol",
+      "lat": 44.83603,
+      "lon": 20.36926,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12766470607,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.13,
+      "lon": 20.06958,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12766586424,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.76126,
+      "lon": 19.68296,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12768108712,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.8313,
+      "lon": 20.23279,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12768117534,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.84018,
+      "lon": 20.39543,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12768137446,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.82426,
+      "lon": 20.46297,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12768137447,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.7896,
+      "lon": 20.51645,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12768137449,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.79419,
+      "lon": 20.44226,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12768920639,
+      "corridor": "bg-horgos",
+      "brand": "KryoGas",
+      "lat": 44.83493,
+      "lon": 20.36973,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12768968560,
+      "corridor": "bg-horgos",
+      "brand": "KryoGas",
+      "lat": 44.81653,
+      "lon": 20.48825,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12769031175,
+      "corridor": "bg-horgos",
+      "brand": "KryoGas",
+      "lat": 45.04696,
+      "lon": 20.09572,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12769049044,
+      "corridor": "bg-horgos",
+      "brand": "KryoGas",
+      "lat": 45.23254,
+      "lon": 19.89351,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12770248458,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.97436,
+      "lon": 19.82791,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12770326017,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.3006,
+      "lon": 19.83109,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12770326018,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.26717,
+      "lon": 19.849,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12770326019,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.26735,
+      "lon": 19.83251,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12770326020,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.25947,
+      "lon": 19.80579,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12770358755,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.8066,
+      "lon": 19.62972,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12771739805,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.02915,
+      "lon": 20.10179,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12771760004,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.94929,
+      "lon": 20.21128,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12771796097,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.84974,
+      "lon": 20.18685,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12771796098,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.82706,
+      "lon": 20.22344,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12771796099,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.83479,
+      "lon": 20.2665,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12771814899,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.82015,
+      "lon": 20.44928,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12771814900,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.77421,
+      "lon": 20.49151,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12771835752,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.84297,
+      "lon": 20.3789,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12771835753,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.84668,
+      "lon": 20.40752,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12771863128,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.83826,
+      "lon": 20.41162,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12771863129,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.83306,
+      "lon": 20.40285,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12771863130,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.81274,
+      "lon": 20.43817,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12771893301,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.77115,
+      "lon": 20.47528,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12771910614,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 44.76243,
+      "lon": 19.64014,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12784300022,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 44.88139,
+      "lon": 20.46453,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12784320817,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 45.27015,
+      "lon": 19.84425,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12784320818,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 45.25685,
+      "lon": 19.79823,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12784320819,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 45.25648,
+      "lon": 19.79837,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12787625470,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 44.76754,
+      "lon": 19.66303,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12787694667,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 44.8306,
+      "lon": 20.38908,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12787694669,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 44.80414,
+      "lon": 20.40062,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12791159804,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 44.77641,
+      "lon": 20.53922,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12791207368,
+      "corridor": "bg-horgos",
+      "brand": "EKO",
+      "lat": 45.37006,
+      "lon": 20.44329,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12801757048,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 45.82089,
+      "lon": 20.31778,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12801762725,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 46.08565,
+      "lon": 19.63942,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12801771490,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 45.57728,
+      "lon": 19.63494,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12801775011,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 45.63834,
+      "lon": 20.58226,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12801797993,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.84566,
+      "lon": 20.51234,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12801824947,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.87062,
+      "lon": 20.47243,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12801860106,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.85115,
+      "lon": 20.48571,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12801894232,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 45.57994,
+      "lon": 20.15801,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12801974368,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 45.27592,
+      "lon": 19.79879,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12802067389,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 45.00126,
+      "lon": 19.84163,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12802095511,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 45.20731,
+      "lon": 19.92873,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12802098539,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.97146,
+      "lon": 19.6437,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12803608650,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.93303,
+      "lon": 20.15079,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12803822473,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.91309,
+      "lon": 20.26277,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12803822482,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.91256,
+      "lon": 20.26296,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12803822486,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.89377,
+      "lon": 20.29554,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12803873975,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.79846,
+      "lon": 20.31806,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12803893537,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.87651,
+      "lon": 20.33184,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12803893538,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.84734,
+      "lon": 20.37217,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12803935630,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.76329,
+      "lon": 19.67681,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12804000433,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.81778,
+      "lon": 20.50696,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12804009937,
+      "corridor": "bg-horgos",
+      "brand": "Кнез Петрол",
+      "lat": 44.76381,
+      "lon": 20.4907,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12809819283,
+      "corridor": "bg-horgos",
+      "brand": "ButanGas",
+      "lat": 45.28412,
+      "lon": 19.82771,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12810016858,
+      "corridor": "bg-horgos",
+      "brand": "ButanGas",
+      "lat": 46.11872,
+      "lon": 19.68155,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12810051188,
+      "corridor": "bg-horgos",
+      "brand": "ButanGas",
+      "lat": 44.97129,
+      "lon": 19.62619,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12812312300,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.79909,
+      "lon": 20.32162,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12830274967,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.36348,
+      "lon": 20.42326,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12830546784,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.216,
+      "lon": 19.62805,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12830899735,
+      "corridor": "bg-horgos",
+      "brand": "Luki komerc",
+      "lat": 44.89173,
+      "lon": 19.96474,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12831797687,
+      "corridor": "bg-horgos",
+      "brand": "Spoint",
+      "lat": 44.75478,
+      "lon": 20.49943,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12831863155,
+      "corridor": "bg-horgos",
+      "brand": "Spoint",
+      "lat": 44.87045,
+      "lon": 20.47178,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12846707389,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.06411,
+      "lon": 20.05874,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12847347014,
+      "corridor": "bg-horgos",
+      "brand": "Morava gas",
+      "lat": 44.86314,
+      "lon": 19.71611,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12847424253,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.03847,
+      "lon": 20.44967,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12849280097,
+      "corridor": "bg-horgos",
+      "brand": "Branix",
+      "lat": 44.88712,
+      "lon": 20.21953,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12849302420,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.87701,
+      "lon": 20.1847,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12854003476,
+      "corridor": "bg-horgos",
+      "brand": "Arkom",
+      "lat": 44.87727,
+      "lon": 20.07156,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12854017977,
+      "corridor": "bg-horgos",
+      "brand": "Тигар гас",
+      "lat": 44.80312,
+      "lon": 20.41615,
+      "fuels": [
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12855379744,
+      "corridor": "bg-horgos",
+      "brand": "Nepoznata pumpa",
+      "lat": 45.12338,
+      "lon": 20.23602,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12855406056,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.81094,
+      "lon": 20.24752,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12855428261,
+      "corridor": "bg-horgos",
+      "brand": "Авис",
+      "lat": 45.00733,
+      "lon": 19.84131,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12855459908,
+      "corridor": "bg-horgos",
+      "brand": "Sim Tim",
+      "lat": 45.03973,
+      "lon": 19.83946,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12855459916,
+      "corridor": "bg-horgos",
+      "brand": "Nepoznata pumpa",
+      "lat": 45.03855,
+      "lon": 19.67274,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12860314437,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.24444,
+      "lon": 19.72933,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12860327677,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.269,
+      "lon": 19.80331,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12860350221,
+      "corridor": "bg-horgos",
+      "brand": "Ekspres gas",
+      "lat": 45.27199,
+      "lon": 19.82107,
+      "fuels": [
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12860407617,
+      "corridor": "bg-horgos",
+      "brand": "Rimski oil",
+      "lat": 45.34431,
+      "lon": 19.85386,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12860423311,
+      "corridor": "bg-horgos",
+      "brand": "Turbo gas",
+      "lat": 45.78769,
+      "lon": 20.43405,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12861996699,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.67202,
+      "lon": 19.69636,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12862019399,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 46.02263,
+      "lon": 20.09475,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12862050652,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.70458,
+      "lon": 19.67151,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12862076062,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.57305,
+      "lon": 19.63625,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12862375386,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.19879,
+      "lon": 20.37944,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12866914608,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 45.37944,
+      "lon": 20.35455,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12867072349,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 45.26776,
+      "lon": 19.84774,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12867072350,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 45.25782,
+      "lon": 19.81876,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12867072351,
+      "corridor": "bg-horgos",
+      "brand": "MOL",
+      "lat": 45.24821,
+      "lon": 19.8136,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 13175232409,
+      "corridor": "bg-horgos",
+      "brand": "Lukoil",
+      "lat": 45.71171,
+      "lon": 20.29983,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 13256193369,
+      "corridor": "bg-horgos",
+      "brand": "Gazprom",
+      "lat": 45.24951,
+      "lon": 19.84463,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 13446078140,
+      "corridor": "bg-horgos",
+      "brand": "Nepoznata pumpa",
+      "lat": 45.00514,
+      "lon": 20.48289,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 13929090710,
+      "corridor": "bg-horgos",
+      "brand": "Petrol",
+      "lat": 44.98823,
+      "lon": 20.52226,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 13988705385,
+      "corridor": "bg-horgos",
+      "brand": "НИС Петрол",
+      "lat": 44.80647,
+      "lon": 20.48367,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 14006924357,
+      "corridor": "bg-horgos",
+      "brand": "Infas gas",
+      "lat": 44.77209,
+      "lon": 20.52116,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 476339429,
+      "corridor": "bg-sid",
+      "brand": "Pam promet",
+      "lat": 45.11646,
+      "lon": 19.24807,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 611035579,
+      "corridor": "bg-sid",
+      "brand": "Shell",
+      "lat": 45.0469,
+      "lon": 19.22491,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1313020990,
+      "corridor": "bg-sid",
+      "brand": "Dragstes",
+      "lat": 44.84024,
+      "lon": 19.12463,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1319966526,
+      "corridor": "bg-sid",
+      "brand": "OMV",
+      "lat": 44.73997,
+      "lon": 19.68937,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1428855230,
+      "corridor": "bg-sid",
+      "brand": "Lukoil",
+      "lat": 44.73283,
+      "lon": 19.46351,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1642125667,
+      "corridor": "bg-sid",
+      "brand": "Neskovic",
+      "lat": 44.78613,
+      "lon": 19.23812,
+      "fuels": [
+        "dizel",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1840421958,
+      "corridor": "bg-sid",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.74792,
+      "lon": 19.20561,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1844357953,
+      "corridor": "bg-sid",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.74168,
+      "lon": 19.18867,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1848366708,
+      "corridor": "bg-sid",
+      "brand": "Nešković",
+      "lat": 44.78461,
+      "lon": 19.23772,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1848412303,
+      "corridor": "bg-sid",
+      "brand": "Nešković",
+      "lat": 44.76641,
+      "lon": 19.21501,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1848435941,
+      "corridor": "bg-sid",
+      "brand": "4. април",
+      "lat": 44.7809,
+      "lon": 19.23312,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 1848447847,
+      "corridor": "bg-sid",
+      "brand": "Petrol",
+      "lat": 44.79089,
+      "lon": 19.24341,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1915593680,
+      "corridor": "bg-sid",
+      "brand": "Slap",
+      "lat": 44.71922,
+      "lon": 20.53888,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1939883992,
+      "corridor": "bg-sid",
+      "brand": "НИС Петрол",
+      "lat": 45.04136,
+      "lon": 19.26364,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2205475735,
+      "corridor": "bg-sid",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.76822,
+      "lon": 19.22703,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2318906092,
+      "corridor": "bg-sid",
+      "brand": "Lukoil",
+      "lat": 44.99133,
+      "lon": 19.57383,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2390059266,
+      "corridor": "bg-sid",
+      "brand": "НИС Петрол",
+      "lat": 45.12056,
+      "lon": 19.22499,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2390127605,
+      "corridor": "bg-sid",
+      "brand": "Petrol",
+      "lat": 45.13373,
+      "lon": 19.21517,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2503368103,
+      "corridor": "bg-sid",
+      "brand": "НИС Петрол",
+      "lat": 44.70654,
+      "lon": 19.40932,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2503368128,
+      "corridor": "bg-sid",
+      "brand": "Petrol",
+      "lat": 44.73354,
+      "lon": 19.46531,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2598331681,
+      "corridor": "bg-sid",
+      "brand": "Petrol",
+      "lat": 44.7226,
+      "lon": 20.21615,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 3068270264,
+      "corridor": "bg-sid",
+      "brand": "MOL",
+      "lat": 45.04902,
+      "lon": 19.18739,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3334248896,
+      "corridor": "bg-sid",
+      "brand": "OMV",
+      "lat": 45.03623,
+      "lon": 19.45076,
+      "fuels": [
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3334249193,
+      "corridor": "bg-sid",
+      "brand": "OMV",
+      "lat": 45.03565,
+      "lon": 19.4492,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3469399666,
+      "corridor": "bg-sid",
+      "brand": "INA",
+      "lat": 45.14005,
+      "lon": 19.03587,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4076093882,
+      "corridor": "bg-sid",
+      "brand": "НИС Петрол",
+      "lat": 44.72437,
+      "lon": 20.42162,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4988018124,
+      "corridor": "bg-sid",
+      "brand": "Газпром",
+      "lat": 44.75852,
+      "lon": 19.19733,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 5160595760,
+      "corridor": "bg-sid",
+      "brand": "Benzinska pumpa Petrić",
+      "lat": 44.83018,
+      "lon": 19.01716,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5214208017,
+      "corridor": "bg-sid",
+      "brand": "Benzinska pumpa Monaco",
+      "lat": 44.80771,
+      "lon": 19.06856,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5215032911,
+      "corridor": "bg-sid",
+      "brand": "Monaco",
+      "lat": 44.76381,
+      "lon": 19.18074,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5215032912,
+      "corridor": "bg-sid",
+      "brand": "Monaco",
+      "lat": 44.75882,
+      "lon": 19.1986,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5218311448,
+      "corridor": "bg-sid",
+      "brand": "Benzinska pumpa Braća Lazić",
+      "lat": 44.78056,
+      "lon": 19.10092,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5757243458,
+      "corridor": "bg-sid",
+      "brand": "Пико",
+      "lat": 44.72228,
+      "lon": 19.70923,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5764596880,
+      "corridor": "bg-sid",
+      "brand": "Pitt Stop",
+      "lat": 44.78748,
+      "lon": 19.38354,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5764596912,
+      "corridor": "bg-sid",
+      "brand": "Пико",
+      "lat": 44.74853,
+      "lon": 19.66083,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5793648254,
+      "corridor": "bg-sid",
+      "brand": "MOL",
+      "lat": 45.04791,
+      "lon": 19.19824,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6207930501,
+      "corridor": "bg-sid",
+      "brand": "Benzinska pumpa Petrić",
+      "lat": 44.82612,
+      "lon": 19.03516,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6208028997,
+      "corridor": "bg-sid",
+      "brand": "Benzinska pumpa Rakić",
+      "lat": 44.82954,
+      "lon": 19.01431,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6208209364,
+      "corridor": "bg-sid",
+      "brand": "Benzinska pumpa Nešković",
+      "lat": 44.77344,
+      "lon": 19.11755,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6208374724,
+      "corridor": "bg-sid",
+      "brand": "MDrive",
+      "lat": 44.76891,
+      "lon": 19.15887,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6208461175,
+      "corridor": "bg-sid",
+      "brand": "NIS Petrol",
+      "lat": 44.76264,
+      "lon": 19.20724,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6208461596,
+      "corridor": "bg-sid",
+      "brand": "Деспотовић",
+      "lat": 44.76104,
+      "lon": 19.20641,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6209061620,
+      "corridor": "bg-sid",
+      "brand": "Benzinska pumpa",
+      "lat": 44.73952,
+      "lon": 19.18072,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6382944947,
+      "corridor": "bg-sid",
+      "brand": "BP Intergaj",
+      "lat": 44.78586,
+      "lon": 19.27896,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6385290644,
+      "corridor": "bg-sid",
+      "brand": "BP Euro",
+      "lat": 44.73383,
+      "lon": 19.17014,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6439729704,
+      "corridor": "bg-sid",
+      "brand": "Petrol",
+      "lat": 44.74291,
+      "lon": 20.42728,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 6629899954,
+      "corridor": "bg-sid",
+      "brand": "Nepoznata pumpa",
+      "lat": 45.03158,
+      "lon": 19.3896,
+      "fuels": [
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 6973914558,
+      "corridor": "bg-sid",
+      "brand": "Dragstes",
+      "lat": 44.77972,
+      "lon": 19.31708,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 7925767959,
+      "corridor": "bg-sid",
+      "brand": "Nešković",
+      "lat": 44.78021,
+      "lon": 19.30909,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 8931224446,
+      "corridor": "bg-sid",
+      "brand": "НИС Петрол",
+      "lat": 44.73916,
+      "lon": 19.67415,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9876444672,
+      "corridor": "bg-sid",
+      "brand": "Nešković",
+      "lat": 44.76292,
+      "lon": 19.20798,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 9979920065,
+      "corridor": "bg-sid",
+      "brand": "НИС Петрол",
+      "lat": 45.11724,
+      "lon": 19.40731,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9994924469,
+      "corridor": "bg-sid",
+      "brand": "НИС Петрол",
+      "lat": 44.71553,
+      "lon": 20.50384,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 10157281523,
+      "corridor": "bg-sid",
+      "brand": "EKO",
+      "lat": 44.73836,
+      "lon": 20.38673,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10157283759,
+      "corridor": "bg-sid",
+      "brand": "EKO",
+      "lat": 44.74714,
+      "lon": 20.43001,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10210222121,
+      "corridor": "bg-sid",
+      "brand": "Nešković",
+      "lat": 44.88941,
+      "lon": 19.33347,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 10210222122,
+      "corridor": "bg-sid",
+      "brand": "Trifković",
+      "lat": 44.89012,
+      "lon": 19.33356,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 10236280962,
+      "corridor": "bg-sid",
+      "brand": "Petrol",
+      "lat": 44.84768,
+      "lon": 19.30291,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 10236319764,
+      "corridor": "bg-sid",
+      "brand": "NIS Petrol",
+      "lat": 44.83672,
+      "lon": 19.29576,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11049875001,
+      "corridor": "bg-sid",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.78156,
+      "lon": 19.28737,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11049875002,
+      "corridor": "bg-sid",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.7811,
+      "lon": 19.29413,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11049875004,
+      "corridor": "bg-sid",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.77995,
+      "lon": 19.31635,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11830859413,
+      "corridor": "bg-sid",
+      "brand": "Lukoil",
+      "lat": 44.73913,
+      "lon": 19.72706,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12087101079,
+      "corridor": "bg-sid",
+      "brand": "Lukoil",
+      "lat": 44.82436,
+      "lon": 19.48259,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12714499615,
+      "corridor": "bg-sid",
+      "brand": "Petrol",
+      "lat": 44.92385,
+      "lon": 19.34239,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12714532909,
+      "corridor": "bg-sid",
+      "brand": "Поповић петрол",
+      "lat": 44.95278,
+      "lon": 19.37316,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12752332751,
+      "corridor": "bg-sid",
+      "brand": "Petrol",
+      "lat": 45.00685,
+      "lon": 19.55147,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12768137448,
+      "corridor": "bg-sid",
+      "brand": "Petrol",
+      "lat": 44.74545,
+      "lon": 20.49983,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12768137451,
+      "corridor": "bg-sid",
+      "brand": "Petrol",
+      "lat": 44.74862,
+      "lon": 20.35628,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12768946339,
+      "corridor": "bg-sid",
+      "brand": "KryoGas",
+      "lat": 44.70074,
+      "lon": 20.41295,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12802096049,
+      "corridor": "bg-sid",
+      "brand": "Кнез Петрол",
+      "lat": 45.06818,
+      "lon": 19.35161,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12802105665,
+      "corridor": "bg-sid",
+      "brand": "Кнез Петрол",
+      "lat": 44.89656,
+      "lon": 19.54446,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12827736610,
+      "corridor": "bg-sid",
+      "brand": "Nepoznata pumpa",
+      "lat": 45.06792,
+      "lon": 19.21753,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12830450348,
+      "corridor": "bg-sid",
+      "brand": "Petrol",
+      "lat": 44.84063,
+      "lon": 19.50726,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12847373222,
+      "corridor": "bg-sid",
+      "brand": "Morava gas",
+      "lat": 44.85189,
+      "lon": 19.46903,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12847400158,
+      "corridor": "bg-sid",
+      "brand": "Morava gas",
+      "lat": 44.92636,
+      "lon": 19.54514,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12847401744,
+      "corridor": "bg-sid",
+      "brand": "Morava gas",
+      "lat": 44.78509,
+      "lon": 19.59632,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12849303186,
+      "corridor": "bg-sid",
+      "brand": "Petrol",
+      "lat": 44.74092,
+      "lon": 20.59594,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12873499019,
+      "corridor": "bg-sid",
+      "brand": "MOL",
+      "lat": 44.97999,
+      "lon": 19.59708,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 13305341421,
+      "corridor": "bg-sid",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.94567,
+      "lon": 19.44868,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 13624043323,
+      "corridor": "bg-sid",
+      "brand": "MDI",
+      "lat": 44.76827,
+      "lon": 19.16176,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 13624133177,
+      "corridor": "bg-sid",
+      "brand": "Šišarka",
+      "lat": 44.7676,
+      "lon": 19.16557,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 13720811206,
+      "corridor": "bg-sid",
+      "brand": "Nestro",
+      "lat": 44.76882,
+      "lon": 19.2255,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 13938374722,
+      "corridor": "bg-sid",
+      "brand": "Shell",
+      "lat": 44.74028,
+      "lon": 20.43906,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 449709991,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.22967,
+      "lon": 21.56778,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 466179120,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 42.99013,
+      "lon": 21.96219,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 470089369,
+      "corridor": "nis-presevo",
+      "brand": "Benzinska pumpa",
+      "lat": 42.7104,
+      "lon": 22.10018,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1013831310,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.37473,
+      "lon": 21.7146,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1055530081,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.45393,
+      "lon": 21.76298,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1057238225,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.42331,
+      "lon": 21.73917,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1057238230,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.4156,
+      "lon": 21.73553,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1128589687,
+      "corridor": "nis-presevo",
+      "brand": "MOL",
+      "lat": 42.99182,
+      "lon": 21.96089,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1133052015,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 42.99373,
+      "lon": 21.93143,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1133052285,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 42.98589,
+      "lon": 21.95477,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1446101159,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 42.70099,
+      "lon": 22.14797,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1484037097,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.57667,
+      "lon": 21.58069,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1484037099,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.58569,
+      "lon": 21.57417,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1614409877,
+      "corridor": "nis-presevo",
+      "brand": "Lukoil",
+      "lat": 43.31919,
+      "lon": 21.9144,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2016899853,
+      "corridor": "nis-presevo",
+      "brand": "Ricom Company",
+      "lat": 42.44591,
+      "lon": 21.45936,
+      "fuels": [
+        "dizel"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2016902701,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.4521,
+      "lon": 21.46141,
+      "fuels": [
+        "dizel"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2109765194,
+      "corridor": "nis-presevo",
+      "brand": "EKO",
+      "lat": 43.00399,
+      "lon": 21.95763,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2129058284,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.19615,
+      "lon": 21.71149,
+      "fuels": [
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2387527562,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.43022,
+      "lon": 21.47609,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2387814714,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.67866,
+      "lon": 21.46034,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2512616679,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.5254,
+      "lon": 21.66222,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2512625394,
+      "corridor": "nis-presevo",
+      "brand": "INA",
+      "lat": 42.50867,
+      "lon": 21.63489,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2726014782,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 42.52845,
+      "lon": 21.90515,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3276729058,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 42.87159,
+      "lon": 21.91033,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3276757757,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.95861,
+      "lon": 21.95864,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 3276770854,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.89335,
+      "lon": 21.88774,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 3334249119,
+      "corridor": "nis-presevo",
+      "brand": "OMV",
+      "lat": 43.3166,
+      "lon": 21.8503,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3387855324,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 42.99715,
+      "lon": 21.96673,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3731569967,
+      "corridor": "nis-presevo",
+      "brand": "Lukoil",
+      "lat": 42.99809,
+      "lon": 21.95439,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4227150933,
+      "corridor": "nis-presevo",
+      "brand": "Zoljevo promet",
+      "lat": 42.89031,
+      "lon": 22.07405,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4365377096,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.23508,
+      "lon": 21.50875,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4558538122,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.45458,
+      "lon": 21.49914,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 4738251221,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.48986,
+      "lon": 21.5046,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 4922939225,
+      "corridor": "nis-presevo",
+      "brand": "Наша Пумпа",
+      "lat": 43.00841,
+      "lon": 21.72849,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 4923055373,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 42.83507,
+      "lon": 21.58429,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 5064106901,
+      "corridor": "nis-presevo",
+      "brand": "ButanGas",
+      "lat": 43.31655,
+      "lon": 21.84909,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 5228508335,
+      "corridor": "nis-presevo",
+      "brand": "Zoljevo",
+      "lat": 43.00327,
+      "lon": 21.94194,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 5231245321,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.97276,
+      "lon": 22.16902,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5273544530,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.31777,
+      "lon": 21.88197,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5321443621,
+      "corridor": "nis-presevo",
+      "brand": "Кнез Петрол",
+      "lat": 42.99793,
+      "lon": 21.91911,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 5357851722,
+      "corridor": "nis-presevo",
+      "brand": "Beki Benz",
+      "lat": 42.48969,
+      "lon": 21.5374,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 5553051221,
+      "corridor": "nis-presevo",
+      "brand": "ADA GAS",
+      "lat": 42.47784,
+      "lon": 21.45798,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 5613445488,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 42.54451,
+      "lon": 21.89917,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6053538209,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 43.31685,
+      "lon": 21.89304,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 6095279438,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.49189,
+      "lon": 21.51003,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6095279459,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.4907,
+      "lon": 21.50558,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6806509485,
+      "corridor": "nis-presevo",
+      "brand": "Lukoil",
+      "lat": 43.33753,
+      "lon": 21.87745,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6808078885,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.29973,
+      "lon": 21.99862,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6812666792,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.31693,
+      "lon": 21.8469,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 7341719428,
+      "corridor": "nis-presevo",
+      "brand": "EXFIS",
+      "lat": 42.54366,
+      "lon": 21.60306,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 7694770030,
+      "corridor": "nis-presevo",
+      "brand": "Кнез Петрол",
+      "lat": 43.31574,
+      "lon": 21.87131,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9193140675,
+      "corridor": "nis-presevo",
+      "brand": "OMV",
+      "lat": 43.18211,
+      "lon": 21.86293,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9278993877,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.22338,
+      "lon": 21.83551,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9279014440,
+      "corridor": "nis-presevo",
+      "brand": "Avia",
+      "lat": 43.19973,
+      "lon": 21.85267,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 9915134908,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.51369,
+      "lon": 21.63939,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 9915134909,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.50979,
+      "lon": 21.63327,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 9919038207,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 43.15239,
+      "lon": 21.87946,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9919248226,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 42.45377,
+      "lon": 21.76963,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9919271767,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 42.96369,
+      "lon": 22.11541,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9933605097,
+      "corridor": "nis-presevo",
+      "brand": "НИС Петрол",
+      "lat": 42.83306,
+      "lon": 22.13107,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9967978349,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.51237,
+      "lon": 21.61324,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 9967978443,
+      "corridor": "nis-presevo",
+      "brand": "Lindi Oil",
+      "lat": 42.52835,
+      "lon": 21.61705,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 10047040559,
+      "corridor": "nis-presevo",
+      "brand": "MOL",
+      "lat": 42.96588,
+      "lon": 22.08883,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10075639085,
+      "corridor": "nis-presevo",
+      "brand": "OMV",
+      "lat": 42.54425,
+      "lon": 21.90066,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10152486821,
+      "corridor": "nis-presevo",
+      "brand": "Lukoil",
+      "lat": 42.5472,
+      "lon": 21.90903,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10157019437,
+      "corridor": "nis-presevo",
+      "brand": "Lukoil",
+      "lat": 42.6728,
+      "lon": 22.06648,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10251764624,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.23367,
+      "lon": 21.57862,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10789963124,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.39194,
+      "lon": 21.7329,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 10890490094,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.3495,
+      "lon": 21.72188,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11104902210,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.44899,
+      "lon": 21.47092,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11105051806,
+      "corridor": "nis-presevo",
+      "brand": "Euro Miti",
+      "lat": 42.47825,
+      "lon": 21.45933,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11110323805,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.35472,
+      "lon": 21.49514,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11116216405,
+      "corridor": "nis-presevo",
+      "brand": "Shell",
+      "lat": 43.00481,
+      "lon": 21.96078,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 11134767895,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.71033,
+      "lon": 22.0966,
+      "fuels": [
+        "dizel",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 11218730457,
+      "corridor": "nis-presevo",
+      "brand": "Кнез Петрол",
+      "lat": 42.88896,
+      "lon": 22.06817,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 11799522897,
+      "corridor": "nis-presevo",
+      "brand": "Shell",
+      "lat": 43.31589,
+      "lon": 21.88434,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12180289413,
+      "corridor": "nis-presevo",
+      "brand": "EKO",
+      "lat": 43.24068,
+      "lon": 21.60554,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12566492074,
+      "corridor": "nis-presevo",
+      "brand": "VM oil",
+      "lat": 42.30263,
+      "lon": 21.66813,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12566492076,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.30157,
+      "lon": 21.67165,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12699414599,
+      "corridor": "nis-presevo",
+      "brand": "Кнез Петрол",
+      "lat": 42.96285,
+      "lon": 22.11947,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12752737292,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.30576,
+      "lon": 21.96559,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12757967004,
+      "corridor": "nis-presevo",
+      "brand": "Pan Ledi",
+      "lat": 43.14956,
+      "lon": 21.88928,
+      "fuels": [
+        "struja"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12768233901,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.32115,
+      "lon": 21.90047,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12768234908,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.97826,
+      "lon": 21.97784,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12772864668,
+      "corridor": "nis-presevo",
+      "brand": "Lukoil",
+      "lat": 43.31659,
+      "lon": 21.88391,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12772864669,
+      "corridor": "nis-presevo",
+      "brand": "Lukoil",
+      "lat": 43.30982,
+      "lon": 21.93677,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12772884738,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.67281,
+      "lon": 22.0673,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12791486213,
+      "corridor": "nis-presevo",
+      "brand": "EKO",
+      "lat": 43.31669,
+      "lon": 21.84379,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12791486214,
+      "corridor": "nis-presevo",
+      "brand": "EKO",
+      "lat": 43.3385,
+      "lon": 21.88861,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12791486215,
+      "corridor": "nis-presevo",
+      "brand": "EKO",
+      "lat": 43.34154,
+      "lon": 21.92779,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12791534559,
+      "corridor": "nis-presevo",
+      "brand": "EKO",
+      "lat": 42.54287,
+      "lon": 21.91022,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806351245,
+      "corridor": "nis-presevo",
+      "brand": "Кнез Петрол",
+      "lat": 43.33106,
+      "lon": 22.06529,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806370897,
+      "corridor": "nis-presevo",
+      "brand": "Кнез Петрол",
+      "lat": 42.96182,
+      "lon": 21.83691,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806373388,
+      "corridor": "nis-presevo",
+      "brand": "Кнез Петрол",
+      "lat": 43.22636,
+      "lon": 22.03268,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806447389,
+      "corridor": "nis-presevo",
+      "brand": "Кнез Петрол",
+      "lat": 42.99749,
+      "lon": 21.91766,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806447395,
+      "corridor": "nis-presevo",
+      "brand": "Кнез Петрол",
+      "lat": 43.00381,
+      "lon": 21.93281,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806447400,
+      "corridor": "nis-presevo",
+      "brand": "Кнез Петрол",
+      "lat": 42.97108,
+      "lon": 22.01691,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806484178,
+      "corridor": "nis-presevo",
+      "brand": "Кнез Петрол",
+      "lat": 42.55218,
+      "lon": 21.90984,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806484182,
+      "corridor": "nis-presevo",
+      "brand": "Кнез Петрол",
+      "lat": 42.53216,
+      "lon": 21.9059,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12809825335,
+      "corridor": "nis-presevo",
+      "brand": "ButanGas",
+      "lat": 43.33707,
+      "lon": 21.93744,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12809860640,
+      "corridor": "nis-presevo",
+      "brand": "ButanGas",
+      "lat": 42.97669,
+      "lon": 21.90133,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12809941522,
+      "corridor": "nis-presevo",
+      "brand": "ButanGas",
+      "lat": 43.23034,
+      "lon": 21.59341,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12812269680,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.25041,
+      "lon": 21.86023,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12812325002,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.30695,
+      "lon": 21.95515,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12812333179,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.25933,
+      "lon": 21.86479,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12812333180,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.09501,
+      "lon": 21.93495,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12831802698,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.2892,
+      "lon": 21.73243,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12846446846,
+      "corridor": "nis-presevo",
+      "brand": "Alex internacional",
+      "lat": 43.17863,
+      "lon": 21.84324,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12851604075,
+      "corridor": "nis-presevo",
+      "brand": "Univerzal",
+      "lat": 42.69078,
+      "lon": 22.15503,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12851611283,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.6948,
+      "lon": 22.16677,
+      "fuels": [
+        "dizel",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12851621105,
+      "corridor": "nis-presevo",
+      "brand": "Univerzal",
+      "lat": 42.70111,
+      "lon": 22.14897,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12853712383,
+      "corridor": "nis-presevo",
+      "brand": "Pro Gas",
+      "lat": 43.25654,
+      "lon": 21.65583,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12853716904,
+      "corridor": "nis-presevo",
+      "brand": "Autogas Petrovic",
+      "lat": 43.22402,
+      "lon": 21.73064,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12853765584,
+      "corridor": "nis-presevo",
+      "brand": "Pro Gas",
+      "lat": 43.24787,
+      "lon": 21.64042,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12853771392,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.15773,
+      "lon": 21.91093,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12853790198,
+      "corridor": "nis-presevo",
+      "brand": "Naša pumpa",
+      "lat": 43.00985,
+      "lon": 21.93343,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12853831007,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.98414,
+      "lon": 21.96853,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12853872167,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.11452,
+      "lon": 22.14259,
+      "fuels": [
+        "dizel",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12853898328,
+      "corridor": "nis-presevo",
+      "brand": "Mančester",
+      "lat": 43.00249,
+      "lon": 21.97862,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12853924211,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.5261,
+      "lon": 21.89031,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12853924979,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.54597,
+      "lon": 21.88136,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12853936021,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.46976,
+      "lon": 21.7519,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12853939443,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.28193,
+      "lon": 21.65728,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12853956510,
+      "corridor": "nis-presevo",
+      "brand": "M.A.B. oil",
+      "lat": 42.33735,
+      "lon": 21.72378,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12853967291,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.65364,
+      "lon": 22.0407,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12854009770,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 42.92806,
+      "lon": 22.01806,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12854027467,
+      "corridor": "nis-presevo",
+      "brand": "Petrol",
+      "lat": 43.021,
+      "lon": 21.7321,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 13926656986,
+      "corridor": "nis-presevo",
+      "brand": "OMV",
+      "lat": 43.33911,
+      "lon": 21.87525,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 13953087159,
+      "corridor": "nis-presevo",
+      "brand": "Nepoznata pumpa",
+      "lat": 42.40837,
+      "lon": 21.48837,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2129058280,
+      "corridor": "nis-gradina",
+      "brand": "Petrol",
+      "lat": 43.15424,
+      "lon": 22.57294,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2129058282,
+      "corridor": "nis-gradina",
+      "brand": "Eurogas LPG",
+      "lat": 43.01154,
+      "lon": 22.7443,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2318808613,
+      "corridor": "nis-gradina",
+      "brand": "Олимп Гас",
+      "lat": 43.22268,
+      "lon": 22.36045,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3293915724,
+      "corridor": "nis-gradina",
+      "brand": "Gazprom",
+      "lat": 43.37999,
+      "lon": 21.80924,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3293971378,
+      "corridor": "nis-gradina",
+      "brand": "Gazprom",
+      "lat": 43.38544,
+      "lon": 21.80676,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3607289830,
+      "corridor": "nis-gradina",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.07184,
+      "lon": 22.6732,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 4913606802,
+      "corridor": "nis-gradina",
+      "brand": "BPT",
+      "lat": 43.38778,
+      "lon": 21.81717,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 5833996974,
+      "corridor": "nis-gradina",
+      "brand": "Miletić komerc",
+      "lat": 43.17707,
+      "lon": 22.57918,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 5844340405,
+      "corridor": "nis-gradina",
+      "brand": "НИС Петрол",
+      "lat": 43.12701,
+      "lon": 22.61576,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 6788170480,
+      "corridor": "nis-gradina",
+      "brand": "Euro Petrol",
+      "lat": 43.3567,
+      "lon": 21.85212,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12772864480,
+      "corridor": "nis-gradina",
+      "brand": "Lukoil",
+      "lat": 43.15778,
+      "lon": 22.57997,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12772864481,
+      "corridor": "nis-gradina",
+      "brand": "Lukoil",
+      "lat": 43.1615,
+      "lon": 22.59107,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12791525609,
+      "corridor": "nis-gradina",
+      "brand": "EKO",
+      "lat": 43.17026,
+      "lon": 22.58528,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806344615,
+      "corridor": "nis-gradina",
+      "brand": "Кнез Петрол",
+      "lat": 43.06515,
+      "lon": 22.41078,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806348443,
+      "corridor": "nis-gradina",
+      "brand": "Кнез Петрол",
+      "lat": 43.36543,
+      "lon": 21.84088,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806350482,
+      "corridor": "nis-gradina",
+      "brand": "Кнез Петрол",
+      "lat": 43.1411,
+      "lon": 22.60121,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12810160123,
+      "corridor": "nis-gradina",
+      "brand": "ButanGas",
+      "lat": 43.12891,
+      "lon": 22.61358,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12846876203,
+      "corridor": "nis-gradina",
+      "brand": "Petrol",
+      "lat": 43.15783,
+      "lon": 22.57814,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12851619108,
+      "corridor": "nis-gradina",
+      "brand": "Profit",
+      "lat": 43.06893,
+      "lon": 22.4108,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 422497065,
+      "corridor": "bg-cacak",
+      "brand": "Инграп Омни",
+      "lat": 44.11341,
+      "lon": 19.99717,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 449543910,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.0181,
+      "lon": 20.46343,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 613502399,
+      "corridor": "bg-cacak",
+      "brand": "Бензинска пумпа Авиа",
+      "lat": 44.03971,
+      "lon": 20.48366,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 693340878,
+      "corridor": "bg-cacak",
+      "brand": "Evoil",
+      "lat": 43.8986,
+      "lon": 20.41955,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng",
+        "struja"
+      ],
+      "open24": true
+    },
+    {
+      "id": 833068783,
+      "corridor": "bg-cacak",
+      "brand": "Lukoil",
+      "lat": 44.01022,
+      "lon": 20.20885,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 868065377,
+      "corridor": "bg-cacak",
+      "brand": "Lukoil",
+      "lat": 43.78744,
+      "lon": 20.23102,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 979249924,
+      "corridor": "bg-cacak",
+      "brand": "EKO",
+      "lat": 43.87774,
+      "lon": 20.35667,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1199986392,
+      "corridor": "bg-cacak",
+      "brand": "MOL",
+      "lat": 44.69379,
+      "lon": 20.58311,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1366987212,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.48182,
+      "lon": 20.5572,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1387155380,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 43.90816,
+      "lon": 20.00326,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1395132554,
+      "corridor": "bg-cacak",
+      "brand": "Lukoil",
+      "lat": 43.88365,
+      "lon": 20.35705,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1418702921,
+      "corridor": "bg-cacak",
+      "brand": "Avia",
+      "lat": 43.92508,
+      "lon": 20.40994,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 1600481406,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.39136,
+      "lon": 20.2396,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1600481421,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.39072,
+      "lon": 20.23979,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1917674461,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.66945,
+      "lon": 20.59529,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1917674475,
+      "corridor": "bg-cacak",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.66187,
+      "lon": 20.54842,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2002019707,
+      "corridor": "bg-cacak",
+      "brand": "Morava gas",
+      "lat": 43.86793,
+      "lon": 20.09881,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2002187404,
+      "corridor": "bg-cacak",
+      "brand": "Lika",
+      "lat": 44.02682,
+      "lon": 20.46973,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2002187715,
+      "corridor": "bg-cacak",
+      "brand": "Lika",
+      "lat": 44.03215,
+      "lon": 20.47401,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2002189275,
+      "corridor": "bg-cacak",
+      "brand": "Lukoil",
+      "lat": 44.18859,
+      "lon": 20.33281,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2002901141,
+      "corridor": "bg-cacak",
+      "brand": "Кнез Петрол",
+      "lat": 44.22622,
+      "lon": 20.24154,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2002926254,
+      "corridor": "bg-cacak",
+      "brand": "Morava gas",
+      "lat": 44.24952,
+      "lon": 20.28409,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2002951455,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.3142,
+      "lon": 20.23886,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 2002972848,
+      "corridor": "bg-cacak",
+      "brand": "Auto Gas",
+      "lat": 44.38184,
+      "lon": 20.23213,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2003062105,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.38123,
+      "lon": 20.25782,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2003081034,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.46724,
+      "lon": 20.27523,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 2003084904,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.51065,
+      "lon": 20.29438,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2103326038,
+      "corridor": "bg-cacak",
+      "brand": "OMV",
+      "lat": 44.36549,
+      "lon": 20.19678,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2112672790,
+      "corridor": "bg-cacak",
+      "brand": "EKO",
+      "lat": 44.65531,
+      "lon": 20.20858,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2112672791,
+      "corridor": "bg-cacak",
+      "brand": "MOL",
+      "lat": 44.65315,
+      "lon": 20.18535,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2112672792,
+      "corridor": "bg-cacak",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.63962,
+      "lon": 20.18274,
+      "fuels": [
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2116604399,
+      "corridor": "bg-cacak",
+      "brand": "Auto Gaca",
+      "lat": 44.74226,
+      "lon": 20.60614,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2116604408,
+      "corridor": "bg-cacak",
+      "brand": "Кнез Петрол",
+      "lat": 44.7395,
+      "lon": 20.6085,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2119488118,
+      "corridor": "bg-cacak",
+      "brand": "MOL",
+      "lat": 43.876,
+      "lon": 20.36115,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2495199916,
+      "corridor": "bg-cacak",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.33355,
+      "lon": 20.58623,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2911991370,
+      "corridor": "bg-cacak",
+      "brand": "Duda Invest",
+      "lat": 43.86346,
+      "lon": 20.13066,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 3071023412,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.37096,
+      "lon": 20.1676,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3368630098,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.25468,
+      "lon": 20.09218,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3545108250,
+      "corridor": "bg-cacak",
+      "brand": "Dečani",
+      "lat": 43.76363,
+      "lon": 20.09511,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3728962313,
+      "corridor": "bg-cacak",
+      "brand": "Gazprom",
+      "lat": 43.91294,
+      "lon": 20.40832,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3958908122,
+      "corridor": "bg-cacak",
+      "brand": "Paramun",
+      "lat": 43.7643,
+      "lon": 20.09448,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3978215197,
+      "corridor": "bg-cacak",
+      "brand": "Devix",
+      "lat": 44.47264,
+      "lon": 20.28852,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3978909343,
+      "corridor": "bg-cacak",
+      "brand": "Кнез Петрол",
+      "lat": 44.46256,
+      "lon": 20.07738,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3986423361,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 43.91337,
+      "lon": 20.40734,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4112004799,
+      "corridor": "bg-cacak",
+      "brand": "OMV",
+      "lat": 43.89047,
+      "lon": 20.33401,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4198923703,
+      "corridor": "bg-cacak",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.83302,
+      "lon": 20.59099,
+      "fuels": [
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4239677290,
+      "corridor": "bg-cacak",
+      "brand": "Dizel Punkt",
+      "lat": 44.03975,
+      "lon": 20.6122,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 4278015974,
+      "corridor": "bg-cacak",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.59982,
+      "lon": 20.33031,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 4554580239,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.28939,
+      "lon": 19.95174,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 4556135832,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.36509,
+      "lon": 20.14699,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4744732789,
+      "corridor": "bg-cacak",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.24747,
+      "lon": 20.09576,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 4774409752,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 43.89015,
+      "lon": 20.34319,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4950335494,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 43.84804,
+      "lon": 20.0494,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 5159739531,
+      "corridor": "bg-cacak",
+      "brand": "Avia",
+      "lat": 44.3695,
+      "lon": 20.30141,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5231496821,
+      "corridor": "bg-cacak",
+      "brand": "Кнез Петрол",
+      "lat": 44.13735,
+      "lon": 20.49292,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 5738760557,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.73385,
+      "lon": 20.61464,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6815757287,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.67883,
+      "lon": 20.30376,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 6918936543,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.52228,
+      "lon": 20.57631,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 7074256893,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 43.86396,
+      "lon": 20.5415,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 7074256894,
+      "corridor": "bg-cacak",
+      "brand": "EKO",
+      "lat": 43.81371,
+      "lon": 20.61324,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 7256127191,
+      "corridor": "bg-cacak",
+      "brand": "Evoil",
+      "lat": 44.30193,
+      "lon": 20.03499,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 7256183720,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 43.89582,
+      "lon": 20.35301,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 7643054668,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.63824,
+      "lon": 20.55176,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 8197001408,
+      "corridor": "bg-cacak",
+      "brand": "MOL",
+      "lat": 43.88321,
+      "lon": 20.47575,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 8412224551,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.66861,
+      "lon": 20.49271,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 8596781359,
+      "corridor": "bg-cacak",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.92452,
+      "lon": 20.32595,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 8596781366,
+      "corridor": "bg-cacak",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.91171,
+      "lon": 20.34002,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 8596904844,
+      "corridor": "bg-cacak",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.91302,
+      "lon": 20.64217,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 8607003798,
+      "corridor": "bg-cacak",
+      "brand": "Gazprom",
+      "lat": 43.93512,
+      "lon": 20.4021,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 8607003799,
+      "corridor": "bg-cacak",
+      "brand": "Gazprom",
+      "lat": 43.93728,
+      "lon": 20.39991,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9063018977,
+      "corridor": "bg-cacak",
+      "brand": "MOL",
+      "lat": 44.59452,
+      "lon": 20.34982,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9856178282,
+      "corridor": "bg-cacak",
+      "brand": "Антовић Петрол",
+      "lat": 43.86758,
+      "lon": 20.12642,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9979832218,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.57733,
+      "lon": 20.41252,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9994712122,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.30286,
+      "lon": 20.58732,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10011086891,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.46071,
+      "lon": 20.06924,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10047197378,
+      "corridor": "bg-cacak",
+      "brand": "MOL",
+      "lat": 44.45885,
+      "lon": 20.07176,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10047245549,
+      "corridor": "bg-cacak",
+      "brand": "MOL",
+      "lat": 44.31269,
+      "lon": 20.55046,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10085701044,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.65029,
+      "lon": 20.19325,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10085729456,
+      "corridor": "bg-cacak",
+      "brand": "Gazprom",
+      "lat": 44.57417,
+      "lon": 20.64888,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10085774133,
+      "corridor": "bg-cacak",
+      "brand": "НИС Петрол",
+      "lat": 44.01808,
+      "lon": 20.46354,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10157029897,
+      "corridor": "bg-cacak",
+      "brand": "EKO",
+      "lat": 44.57062,
+      "lon": 20.30449,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10157178644,
+      "corridor": "bg-cacak",
+      "brand": "EKO",
+      "lat": 44.57414,
+      "lon": 20.64733,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10157253695,
+      "corridor": "bg-cacak",
+      "brand": "EKO",
+      "lat": 44.69112,
+      "lon": 20.58481,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10902622447,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.19397,
+      "lon": 20.59877,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 10963162725,
+      "corridor": "bg-cacak",
+      "brand": "Shell",
+      "lat": 43.89733,
+      "lon": 20.3928,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 11488869092,
+      "corridor": "bg-cacak",
+      "brand": "MOL",
+      "lat": 44.40589,
+      "lon": 20.09361,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 11619310525,
+      "corridor": "bg-cacak",
+      "brand": "Lukoil",
+      "lat": 44.52287,
+      "lon": 20.57712,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12102901858,
+      "corridor": "bg-cacak",
+      "brand": "Кнез Петрол",
+      "lat": 43.85832,
+      "lon": 20.13616,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12434333757,
+      "corridor": "bg-cacak",
+      "brand": "EKO",
+      "lat": 44.03177,
+      "lon": 20.47457,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12442325423,
+      "corridor": "bg-cacak",
+      "brand": "Lukoil",
+      "lat": 43.8474,
+      "lon": 20.04463,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12752683425,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.74446,
+      "lon": 20.60148,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12752695884,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 43.89388,
+      "lon": 20.35353,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12755097801,
+      "corridor": "bg-cacak",
+      "brand": "Euro Petrol",
+      "lat": 43.91098,
+      "lon": 20.40832,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12758157584,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.45236,
+      "lon": 20.10515,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12758212692,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.46821,
+      "lon": 20.07544,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12768121488,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.57283,
+      "lon": 20.55828,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12768163592,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.65246,
+      "lon": 20.21997,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12768163593,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.65528,
+      "lon": 20.21695,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12768163594,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.66598,
+      "lon": 20.16372,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12768163596,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.64605,
+      "lon": 20.12881,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12787654304,
+      "corridor": "bg-cacak",
+      "brand": "EKO",
+      "lat": 44.69164,
+      "lon": 20.31319,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12787654305,
+      "corridor": "bg-cacak",
+      "brand": "EKO",
+      "lat": 44.69119,
+      "lon": 20.3134,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12791335031,
+      "corridor": "bg-cacak",
+      "brand": "EKO",
+      "lat": 43.90274,
+      "lon": 20.36456,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12803927226,
+      "corridor": "bg-cacak",
+      "brand": "Кнез Петрол",
+      "lat": 44.49593,
+      "lon": 20.04548,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12803948876,
+      "corridor": "bg-cacak",
+      "brand": "Кнез Петрол",
+      "lat": 44.67829,
+      "lon": 20.42909,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12803963498,
+      "corridor": "bg-cacak",
+      "brand": "Кнез Петрол",
+      "lat": 44.55767,
+      "lon": 20.14707,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12804075645,
+      "corridor": "bg-cacak",
+      "brand": "Кнез Петрол",
+      "lat": 44.52412,
+      "lon": 20.60581,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12805813820,
+      "corridor": "bg-cacak",
+      "brand": "Кнез Петрол",
+      "lat": 43.89119,
+      "lon": 20.38519,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12805817996,
+      "corridor": "bg-cacak",
+      "brand": "Кнез Петрол",
+      "lat": 43.92502,
+      "lon": 20.32585,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12805837640,
+      "corridor": "bg-cacak",
+      "brand": "Кнез Петрол",
+      "lat": 44.00116,
+      "lon": 20.43909,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12810085571,
+      "corridor": "bg-cacak",
+      "brand": "ButanGas",
+      "lat": 44.50616,
+      "lon": 20.29211,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12831791875,
+      "corridor": "bg-cacak",
+      "brand": "Spoint",
+      "lat": 43.88615,
+      "lon": 20.37225,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12832148774,
+      "corridor": "bg-cacak",
+      "brand": "Spoint",
+      "lat": 43.81274,
+      "lon": 20.47508,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12840393732,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 43.77402,
+      "lon": 20.23098,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12846628124,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.30791,
+      "lon": 20.59774,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12846817772,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.30208,
+      "lon": 20.59014,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12846817780,
+      "corridor": "bg-cacak",
+      "brand": "Univerzum",
+      "lat": 44.30072,
+      "lon": 20.59461,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12846849585,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.32906,
+      "lon": 20.51899,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12846849586,
+      "corridor": "bg-cacak",
+      "brand": "Univerzum",
+      "lat": 44.30985,
+      "lon": 20.55768,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12847189847,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.40698,
+      "lon": 20.26413,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12847189964,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.38669,
+      "lon": 20.25273,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12847400157,
+      "corridor": "bg-cacak",
+      "brand": "Morava gas",
+      "lat": 44.24703,
+      "lon": 20.39655,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12847476680,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.63743,
+      "lon": 20.18229,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12847521619,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 44.55376,
+      "lon": 20.41415,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12849444869,
+      "corridor": "bg-cacak",
+      "brand": "Morava gas",
+      "lat": 44.41343,
+      "lon": 20.4655,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12851281006,
+      "corridor": "bg-cacak",
+      "brand": "EKO",
+      "lat": 44.24992,
+      "lon": 20.09336,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12851391112,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 43.83008,
+      "lon": 20.07001,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12851402651,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 43.85744,
+      "lon": 20.02227,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12853589919,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 43.76204,
+      "lon": 20.54539,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12853607941,
+      "corridor": "bg-cacak",
+      "brand": "Petrol",
+      "lat": 43.84233,
+      "lon": 20.4322,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12854040492,
+      "corridor": "bg-cacak",
+      "brand": "Petrović",
+      "lat": 44.56272,
+      "lon": 20.64963,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12877117342,
+      "corridor": "bg-cacak",
+      "brand": "MOL",
+      "lat": 44.40598,
+      "lon": 20.09593,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 13081629601,
+      "corridor": "bg-cacak",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.63935,
+      "lon": 20.41042,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 13649858273,
+      "corridor": "bg-cacak",
+      "brand": "Leonardo",
+      "lat": 43.87811,
+      "lon": 20.35467,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1418772058,
+      "corridor": "cacak-gostun",
+      "brand": "Lukoil",
+      "lat": 43.39624,
+      "lon": 19.64231,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1418772063,
+      "corridor": "cacak-gostun",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.51148,
+      "lon": 19.79863,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1419615128,
+      "corridor": "cacak-gostun",
+      "brand": "Petrol",
+      "lat": 43.81056,
+      "lon": 19.79214,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2001995530,
+      "corridor": "cacak-gostun",
+      "brand": "Petrol",
+      "lat": 43.75469,
+      "lon": 19.71537,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2805900355,
+      "corridor": "cacak-gostun",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.59949,
+      "lon": 19.49534,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2959227185,
+      "corridor": "cacak-gostun",
+      "brand": "Petrol",
+      "lat": 43.61098,
+      "lon": 19.36742,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 3220391174,
+      "corridor": "cacak-gostun",
+      "brand": "НИС Петрол",
+      "lat": 43.58867,
+      "lon": 20.22421,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3421288490,
+      "corridor": "cacak-gostun",
+      "brand": "Делија петрол",
+      "lat": 43.49663,
+      "lon": 20.09238,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 3504895413,
+      "corridor": "cacak-gostun",
+      "brand": "Gens coop",
+      "lat": 43.27854,
+      "lon": 20.00631,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 3504911841,
+      "corridor": "cacak-gostun",
+      "brand": "EKO",
+      "lat": 43.2767,
+      "lon": 19.9912,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3731052840,
+      "corridor": "cacak-gostun",
+      "brand": "НИС Петрол",
+      "lat": 43.45962,
+      "lon": 19.81951,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3958908120,
+      "corridor": "cacak-gostun",
+      "brand": "MOL",
+      "lat": 43.74205,
+      "lon": 20.10733,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 3958908121,
+      "corridor": "cacak-gostun",
+      "brand": "Petrol",
+      "lat": 43.74616,
+      "lon": 20.10652,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4395744892,
+      "corridor": "cacak-gostun",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.2485,
+      "lon": 20.23311,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 4753355523,
+      "corridor": "cacak-gostun",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.87176,
+      "lon": 19.84586,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 4788385838,
+      "corridor": "cacak-gostun",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.6004,
+      "lon": 19.48318,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 4788390347,
+      "corridor": "cacak-gostun",
+      "brand": "Hifa Oil",
+      "lat": 43.60146,
+      "lon": 19.48151,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6778433476,
+      "corridor": "cacak-gostun",
+      "brand": "MOL",
+      "lat": 43.45886,
+      "lon": 19.82122,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9889781673,
+      "corridor": "cacak-gostun",
+      "brand": "НИС Петрол",
+      "lat": 43.27671,
+      "lon": 20.00579,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9889852259,
+      "corridor": "cacak-gostun",
+      "brand": "НИС Петрол",
+      "lat": 43.36575,
+      "lon": 19.63504,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10047164052,
+      "corridor": "cacak-gostun",
+      "brand": "MOL",
+      "lat": 43.36809,
+      "lon": 19.63308,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10047211043,
+      "corridor": "cacak-gostun",
+      "brand": "MOL",
+      "lat": 43.83679,
+      "lon": 19.80287,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10047235717,
+      "corridor": "cacak-gostun",
+      "brand": "MOL",
+      "lat": 43.60635,
+      "lon": 20.19483,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10647465441,
+      "corridor": "cacak-gostun",
+      "brand": "Petrol",
+      "lat": 43.27669,
+      "lon": 19.98925,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 10659809403,
+      "corridor": "cacak-gostun",
+      "brand": "MOL",
+      "lat": 43.8468,
+      "lon": 19.8633,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12754675525,
+      "corridor": "cacak-gostun",
+      "brand": "Petrol",
+      "lat": 43.8945,
+      "lon": 19.55602,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12772025688,
+      "corridor": "cacak-gostun",
+      "brand": "Lukoil",
+      "lat": 43.22717,
+      "lon": 19.71982,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12772052428,
+      "corridor": "cacak-gostun",
+      "brand": "Lukoil",
+      "lat": 43.38656,
+      "lon": 19.64305,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12805785266,
+      "corridor": "cacak-gostun",
+      "brand": "Кнез Петрол",
+      "lat": 43.79124,
+      "lon": 19.75887,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12805924844,
+      "corridor": "cacak-gostun",
+      "brand": "Кнез Петрол",
+      "lat": 43.58361,
+      "lon": 19.52269,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12831870428,
+      "corridor": "cacak-gostun",
+      "brand": "Spoint",
+      "lat": 43.59311,
+      "lon": 20.22269,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12851339876,
+      "corridor": "cacak-gostun",
+      "brand": "Petrol",
+      "lat": 43.88235,
+      "lon": 19.94177,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12851447929,
+      "corridor": "cacak-gostun",
+      "brand": "Petrol",
+      "lat": 43.59994,
+      "lon": 20.22444,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12851455962,
+      "corridor": "cacak-gostun",
+      "brand": "Petrol",
+      "lat": 43.72088,
+      "lon": 20.11398,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12851533602,
+      "corridor": "cacak-gostun",
+      "brand": "Petrol",
+      "lat": 43.56692,
+      "lon": 20.25433,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 13938096103,
+      "corridor": "cacak-gostun",
+      "brand": "Sjenica COOP",
+      "lat": 43.27036,
+      "lon": 20.01699,
+      "fuels": null,
+      "open24": null
+    }
+  ]
+}
