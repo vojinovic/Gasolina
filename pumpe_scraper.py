@@ -25,7 +25,8 @@ CORRIDORS = [
     ("bg-horgos",   "A1 Novi Sad - Horgos",       19.55, 45.55, 20.20, 46.20),
     ("bg-sid",      "A3 Beograd - Ruma",          19.85, 44.75, 20.55, 45.15),
     ("bg-sid",      "A3 Ruma - Batrovci",         19.00, 44.75, 19.95, 45.15),
-    ("bg-nis",      "A1 Beograd - Jagodina",      20.35, 43.90, 21.30, 44.90),
+    ("bg-nis",      "A1 Beograd - Velika Plana",  20.35, 44.30, 21.05, 44.90),
+    ("bg-nis",      "A1 Velika Plana - Jagodina", 20.90, 43.85, 21.40, 44.45),
     ("bg-nis",      "A1 Jagodina - Nis",          21.05, 43.20, 21.95, 44.05),
     ("nis-presevo", "A1 Nis - Presevo",           21.45, 42.25, 22.20, 43.35),
     ("nis-gradina", "A4 Nis - Gradina",           21.80, 42.90, 22.75, 43.45),
@@ -47,27 +48,53 @@ def translit(s):
     return "".join(CYR.get(ch, ch) for ch in s.lower())
 
 
-# redosled je bitan: specificnije prvo ("nis petrol" pre "petrol")
+# Prepoznajemo brend po CELIM RECIMA, ne po delu reci.
+# Inace "Ranis Petrol" -> NIS, a "Jugopetrol/MB Petrol" -> slovenacki Petrol.
+# Kljuc je torka reci koje moraju sve da postoje u imenu.
 BRAND_RULES = [
-    ("nis petrol", "NIS Petrol"), ("nis ", "NIS Petrol"),
-    ("knez petrol", "Knez Petrol"),
-    ("euro petrol", "Euro Petrol"), ("eurodiesel", "Euro Diesel"),
-    ("gazprom", "Gazprom"), ("lukoil", "Lukoil"), ("omv", "OMV"),
-    ("mol ", "MOL"), ("shell", "Shell"), ("eko ", "EKO"),
-    ("ina ", "INA"), ("avia", "Avia"), ("mrk", "MRK"),
-    ("petrol", "Petrol"),   # slovenacki Petrol - na kraju, da ne pojede NIS/Knez
-    ("mol", "MOL"), ("eko", "EKO"), ("ina", "INA"), ("nis", "NIS Petrol"),
+    (("nis", "petrol"), "NIS Petrol"),
+    (("knez", "petrol"), "Knez Petrol"),
+    (("euro", "petrol"), "Euro Petrol"),
+    (("eurodiesel",), "Euro Diesel"),
+    (("gazprom",), "Gazprom"),
+    (("gaspromnjeft",), "Gazprom"),
+    (("lukoil",), "Lukoil"),
+    (("omv",), "OMV"),
+    (("mol",), "MOL"),
+    (("shell",), "Shell"),
+    (("eko",), "EKO"),
+    (("ina",), "INA"),
+    (("avia",), "Avia"),
+    (("mrk",), "MRK"),
+    (("jugopetrol",), "Jugopetrol"),
+    (("beopetrol",), "Beopetrol"),
+    (("nis",), "NIS Petrol"),       # samostalna rec "nis"
 ]
+
+# Ovi brendovi se priznaju SAMO ako je ime tacno ta rec (mozda uz d.o.o/d.d.),
+# da "MB Petrol" ili "Sunny Petrol" ne postanu slovenacki Petrol.
+EXACT_ONLY = {
+    "petrol": "Petrol",
+}
+FILLER = {"doo", "dd", "ad", "d", "o", "srbija", "serbia",
+          "benzinska", "stanica", "pumpa", "gas"}
+
+WORD_RE = re.compile(r"[a-z0-9]+")
 
 
 def norm_brand(tags):
     raw = (tags.get("brand") or tags.get("operator") or tags.get("name") or "").strip()
     if not raw:
         return "Nepoznata pumpa"
-    low = translit(raw)
-    for key, val in BRAND_RULES:
-        if key in low:
+    words = set(WORD_RE.findall(translit(raw)))
+    for keys, val in BRAND_RULES:
+        if all(k in words for k in keys):
             return val
+    core = words - FILLER
+    if len(core) == 1:
+        only = next(iter(core))
+        if only in EXACT_ONLY:
+            return EXACT_ONLY[only]
     return raw
 
 
