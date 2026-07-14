@@ -220,6 +220,15 @@
     .brand .bname{font-size:18px}
   }
 </style>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4EPLBJE8BL');
+  function track(name, params){ try{ gtag('event', name, params || {}); }catch(e){} }
+</script>
 </head>
 <body>
 <nav class="topbar">
@@ -443,6 +452,7 @@ function stopFeed(card){
 function playFeed(card, cam, feedIndex){
   const feed = cam.feeds[feedIndex];
   if(!feed || !feed.src) return;
+  track('pusti_kameru', { prelaz: cam.id, kamera: feed.label, izvor: cam.provider });
   const pane = card.querySelector(".pane");
   const video = pane.querySelector("video");
   const poster = pane.querySelector(".poster");
@@ -459,8 +469,9 @@ function playFeed(card, cam, feedIndex){
   // cleanup prethodni hls
   if(card._hls){ try{card._hls.destroy();}catch(e){} card._hls=null; }
 
-  const onOk = ()=>{ live.style.display="flex"; ensureVidControls(card, video); video.play().catch(()=>{}); };
+  const onOk = ()=>{ live.style.display="flex"; ensureVidControls(card, video); video.play().catch(()=>{}); track('kamera_radi', { prelaz: cam.id, kamera: feed.label }); };
   const onFail = ()=>{
+    track('kamera_pala', { prelaz: cam.id, kamera: feed.label, izvor: cam.provider });
     live.style.display="none";
     pmsg.style.display="flex";
     card.classList.remove("expanded");
@@ -523,6 +534,17 @@ function setNote(live, scrapedAt){
     note.innerHTML=`<b>Demo prototip.</b> Vremena cekanja su ilustrativna jer granice.json jos nije ucitan. Kamere se vuku sa AMSS i MUP servera, pa video mozda nece da se ucita u svakom okruzenju.`;
   }
 }
+
+// odlazni klikovi (zvanicna kamera, borderalarm, CG kamera)
+document.addEventListener('click', function(e){
+  const a = e.target.closest('a[target="_blank"]');
+  if(!a) return;
+  const card = a.closest('.card');
+  track('odlazni_klik', {
+    url: a.href,
+    prelaz: card ? (card.dataset.id || '') : '',
+  });
+}, true);
 
 async function init(){
   let live=false, scrapedAt=null;
