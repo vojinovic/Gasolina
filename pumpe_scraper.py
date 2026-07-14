@@ -17,7 +17,11 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-OVERPASS = "https://overpass-api.de/api/interpreter"
+OVERPASS_MIRRORS = [
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter",
+    "https://overpass.osm.ch/api/interpreter",
+]
 
 # koridori: (id, opis, W, S, E, N) - pojas oko autoputa/magistrale
 CORRIDORS = [
@@ -98,34 +102,37 @@ def norm_brand(tags):
     return raw
 
 
-def fetch_corridor(cid, w, s, e, n, tries=3):
+def fetch_corridor(cid, w, s, e, n):
+    """Proba svako ogledalo redom, sa ponovnim pokusajima na 429/504."""
     q = f"""
-    [out:json][timeout:60];
+    [out:json][timeout:180];
     node["amenity"="fuel"]({s},{w},{n},{e});
     out body;
     """
     data = urllib.parse.urlencode({"data": q}).encode()
-    req = urllib.request.Request(OVERPASS, data=data, headers={
-        "User-Agent": "Gasolina/1.0 (+https://gasolina.rs)"
-    })
-    for i in range(tries):
-        try:
-            with urllib.request.urlopen(req, timeout=90) as r:
-                return json.loads(r.read().decode("utf-8"))
-        except urllib.error.HTTPError as ex:
-            if ex.code in (429, 504) and i < tries - 1:
-                wait = 30 if ex.code == 429 else 20
-                print(f"   {cid}: HTTP {ex.code}, cekam {wait}s pa ponavljam...")
-                time.sleep(wait)
+    last = None
+    for mirror in OVERPASS_MIRRORS:
+        for attempt in range(2):
+            req = urllib.request.Request(mirror, data=data, headers={
+                "User-Agent": "Gasolina/1.0 (+https://gasolina.rs)"
+            })
+            try:
+                with urllib.request.urlopen(req, timeout=180) as r:
+                    return json.loads(r.read().decode("utf-8"))
+            except urllib.error.HTTPError as ex:
+                last = f"HTTP {ex.code}"
+                if ex.code in (429, 504):
+                    wait = 25 if ex.code == 429 else 15
+                    print(f"   {cid}: {last} na {mirror.split('/')[2]}, cekam {wait}s...")
+                    time.sleep(wait)
+                    continue
+                break   # druga greska -> odmah na sledece ogledalo
+            except Exception as ex:
+                last = str(ex)
+                time.sleep(10)
                 continue
-            raise RuntimeError(f"HTTP {ex.code}") from None
-        except Exception as ex:
-            if i < tries - 1:
-                print(f"   {cid}: {ex}, ponavljam...")
-                time.sleep(15)
-                continue
-            raise
-    raise RuntimeError("nije uspelo posle vise pokusaja")
+        print(f"   {cid}: prelazim na sledece ogledalo...")
+    raise RuntimeError(last or "sva ogledala su pala")
 
 
 def parse(data, cid):
@@ -153,13 +160,24 @@ def parse(data, cid):
     return out
 
 
+def load_previous():
+    try:
+        with open("pumpe.json", encoding="utf-8") as f:
+            return json.load(f).get("stations", [])
+    except Exception:
+        return []
+
+
 def main():
+    prev = load_previous()
     all_st, seen = [], set()
+    failed = set()
     for cid, desc, w, s, e, n in CORRIDORS:
         try:
             data = fetch_corridor(cid, w, s, e, n)
         except Exception as ex:
             print(f"Upozorenje: {cid} nedostupan: {ex}")
+            failed.add(cid)
             continue
         got = parse(data, cid)
         new = 0
@@ -171,6 +189,18 @@ def main():
             new += 1
         print(f"{cid} ({desc}): {len(got)} pumpi, {new} novih")
         time.sleep(6)   # ljubazno prema Overpass serveru (izbegava 429/504)
+
+    # koridor koji je pao -> zadrzi prosle pumpe (bolje stare nego nikakve)
+    if failed and prev:
+        kept = 0
+        for st in prev:
+            if st.get("corridor") in failed and st.get("id") not in seen:
+                seen.add(st["id"])
+                all_st.append(st)
+                kept += 1
+        if kept:
+            print(f"\n[fallback] zadrzano {kept} pumpi iz prethodnog upisa "
+                  f"za koridore: {', '.join(sorted(failed))}")
 
     # statistika po brendu
     brands = {}
