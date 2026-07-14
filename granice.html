@@ -267,6 +267,15 @@ function cVal(m){
   const s = waitStatus(m);
   return `<b style="color:${s.c}">${huMin(m)}</b>`;
 }
+function hereStrip(c){
+  if(!c.here) return "";
+  const H = c.here;
+  const col = (H.criticality==="critical"||H.criticality==="major") ? "var(--bad)"
+            : (H.criticality==="minor") ? "var(--warn)" : "var(--dim)";
+  const len = H.length_km ? ` (${String(H.length_km).replace(".",",")} km)` : "";
+  const closed = H.closed ? " &middot; <b style=\"color:var(--bad)\">ZATVORENO</b>" : "";
+  return `<div class="hustrip">\uD83D\uDCE1 Saobracaj na prelazu: <b style="color:${col}">${H.category}${len}</b>${closed} <span class="basrc">&middot; HERE</span></div>`;
+}
 function baStrip(c){
   if(!c.ba) return "";
   return `<div class="hustrip">\uD83D\uDE97 Prijave vozaca: izlaz ${cVal(c.ba.izlaz)} &middot; ulaz ${cVal(c.ba.ulaz)} <span class="basrc">&middot; <a href="https://borderalarm.com/countries/serbia/" target="_blank" rel="noopener">borderalarm.com</a></span></div>`;
@@ -376,14 +385,15 @@ function cardHTML(c){
     <div class="pane">${paneInner}</div>
     ${tabs}
 
-    ${c.noWait ? (c.mk ? mkStrip(c) : `<div class="nowait">Granica ${c.from}\u2013${c.to}. Vreme cekanja se ovde ne prati; iskoristi kameru iznad.</div>`) : `
+    ${c.noWait ? ((c.mk||c.here) ? (mkStrip(c) + hereStrip(c)) : `<div class="nowait">Granica ${c.from}\u2013${c.to}. Vreme cekanja se ovde ne prati; iskoristi kameru iznad.</div>`) : `
     <div class="wait">
       ${waitCell("Ulaz u Srbiju","ulaz",c)}
       ${waitCell("Izlaz iz Srbije","izlaz",c)}
     </div>
     ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Madjarska strana: ulaz ${cVal(c.hu.ulaz)} &middot; izlaz ${cVal(c.hu.izlaz)}</div>` : ''}
     ${mkStrip(c)}
-    ${baStrip(c)}`}
+    ${baStrip(c)}
+    ${hereStrip(c)}`}
 
     <div class="cfoot">
       <div class="src">${c.noWait ? `Kamera: ${c.provider}` : `Izvor: Uprava granicne policije RS<br>Kamera: ${c.provider}`}</div>
@@ -533,9 +543,19 @@ async function init(){
         cam.hu = (c && c.hu) ? c.hu : null;
         cam.mk = (c && c.mk) ? c.mk : null;
         cam.ba = (c && c.ba) ? c.ba : null;
+        cam.here = null;
       });
     }
   }catch(e){ /* nema fajla, ostaju demo brojke */ }
+
+  try{
+    const rh = await fetch("granice_here.json?cb="+Date.now());
+    if(rh.ok){
+      const hj = await rh.json();
+      const hc = hj.crossings || {};
+      CAMERAS.forEach(cam=>{ if(hc[cam.id]) cam.here = hc[cam.id]; });
+    }
+  }catch(e){ /* nema HERE podataka */ }
 
   grid.innerHTML=CAMERAS.map(cardHTML).join("");
   wire();
