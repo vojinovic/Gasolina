@@ -41,6 +41,16 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
+      id: "kelebija", name: "Kelebija", from: "RS", to: "HU",
+      pair: "Tompa (HU)", road: "M17/E75", provider: "MUP",
+      official: "https://kamere.amss.org.rs/",
+      feeds: [
+        { label: "Ulaz", dir: "in",  src: "https://kamere.mup.gov.rs:4443/Kelebija/kelebija1.m3u8" },
+        { label: "Izlaz", dir: "out", src: "https://kamere.mup.gov.rs:4443/Kelebija/kelebija2.m3u8" },
+      ],
+      wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
+    },
+    {
       id: "batrovci", name: "Batrovci", from: "RS", to: "HR",
       pair: "Bajakovo (HR)", road: "E70", provider: "AMSS",
       official: "https://kamere.amss.org.rs/",
