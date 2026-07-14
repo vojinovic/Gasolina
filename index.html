@@ -519,6 +519,19 @@
     let borderWaits = {};   // id -> {putnicka, teretna} iz granice.json
     let borderStamp = null; // scraped_at
     let hereCrossings = {}; // iz granice_here.json
+    let pumpStations = []; // iz pumpe.json (OSM)
+
+    // ruta -> koridori u Srbiji (pumpe su mapirane samo za srpski deo puta)
+    const ROUTE_PUMPS = {
+      'bg-bd': ['bg-cacak','cacak-gostun'], 'bg-ti': ['bg-cacak','cacak-gostun'],
+      'bg-st': ['bg-sid'], 'bg-zg': ['bg-sid'], 'zg-bg': ['bg-sid'],
+      'bg-lj': ['bg-sid'], 'lj-bg': ['bg-sid'],
+      'bg-sk': ['bg-nis','nis-presevo'], 'bg-so': ['bg-nis','nis-presevo'],
+      'ni-sk': ['nis-presevo'],
+      'bg-sf': ['bg-nis','nis-gradina'], 'ni-sf': ['nis-gradina'],
+      'bg-bp': ['bg-horgos'],
+      'bg-sa': ['bg-loznica'], 'st-sa': [],
+    };
 
 
 
@@ -561,6 +574,36 @@
       nums.forEach(x => { if (x.v > best.v) best = x; });
       best.here = hereCrossings[cid] || null;
       return best;
+    }
+
+    function pumpsPanel(route) {
+      const corr = ROUTE_PUMPS[route.id];
+      if (!corr || !corr.length || !pumpStations.length) return '';
+      const list = pumpStations.filter(p => corr.includes(p.corridor));
+      if (!list.length) return '';
+
+      // grupisi po brendu
+      const byBrand = {};
+      list.forEach(p => { byBrand[p.brand] = (byBrand[p.brand] || 0) + 1; });
+      const rs = dataCache ? dataCache.countries.find(c => c.name === 'Serbia') : null;
+      const dieselRS = rs && rs.diesel ? rs.diesel.eur : null;
+
+      const rows = Object.entries(byBrand)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 8)
+        .map(([brand, n], i) => `
+          <div class="rd-row${i === 0 ? ' first' : ''}">
+            <span>⛽ ${brand}</span>
+            <strong style="color:var(--dim)">${n} ${n === 1 ? 'pumpa' : (n < 5 ? 'pumpe' : 'pumpi')}</strong>
+          </div>`).join('');
+
+      const cena = dieselRS ? ` Prosecna cena dizela u Srbiji: <b>${fmtEur(dieselRS)}/L</b>.` : '';
+      return `
+        <div class="result-box rd-box">
+          <h3>⛽ Pumpe na srpskom delu rute</h3>
+          ${rows}
+          <div class="rb-foot">Ukupno ${list.length} pumpi duz koridora &middot; izvor: OpenStreetMap.${cena}</div>
+        </div>`;
     }
 
     function bordersPanel(route) {
@@ -652,6 +695,7 @@
         ${savings > 0.5 ? `<div class="savings-banner"><div class="label">Pametna strategija ti štedi</div><div class="amount">${fmtEur(savings)}</div><div class="pct">${savingsPct.toFixed(0)}% jeftinije nego naivno (${fuelText})</div></div>` : ''}
         ${bordersPanel(t.route)}
         ${tripCostBox}
+        ${pumpsPanel(t.route)}
         <div class="results">
           <div class="result-box smart"><h3>🧠 Pametna strategija</h3><div class="total">${t.smartCost > 0 ? fmtEur(t.smartCost) : '-'}</div>${smartHtml}</div>
           <div class="result-box"><h3>😴 Naivno (sve u polasku)</h3><div class="total">${t.naiveCost !== null ? fmtEur(t.naiveCost) : '-'}</div>${naiveHtml}</div>
@@ -803,6 +847,14 @@
             if (currentTab === 'calc') renderCalc();
           }
         } catch (e) { /* nema HERE podataka */ }
+        try {
+          const rp = await fetch('pumpe.json?cb=' + Date.now());
+          if (rp.ok) {
+            const pj = await rp.json();
+            pumpStations = pj.stations || [];
+            if (currentTab === 'calc') renderCalc();
+          }
+        } catch (e) { /* nema pumpe.json */ }
       } catch (err) {
         document.getElementById('meta').textContent = 'Greška pri učitavanju podataka.';
         console.error(err);
