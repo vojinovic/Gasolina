@@ -530,17 +530,25 @@
       if (!corr || !roadIncidents.length) return '';
       const list = roadIncidents.filter(i => corr.includes(i.corridor));
       if (!list.length) return '';
+      const critColor = { critical: 'var(--bad)', major: 'var(--bad)', minor: 'var(--warn)', low: 'var(--dim)' };
+      const critText = { critical: 'kriticno', major: 'ozbiljno', minor: 'manje', low: 'manje' };
       const rows = list.slice(0, 5).map((i, n) => {
-        const where = [i.road, i.from && i.to ? `${i.from} - ${i.to}` : (i.from || i.to)].filter(Boolean).join(' · ');
-        const badge = i.delay_min ? `<strong style="color:${i.delay_min >= 20 ? 'var(--bad)' : 'var(--warn)'}">+${i.delay_min} min</strong>`
-                                  : `<span style="color:var(--dim)">${i.length_km ? i.length_km + ' km' : ''}</span>`;
-        return `<div class="rd-row${n === 0 ? ' first' : ''}"><span>\u26A0\uFE0F ${i.category}${where ? ' &middot; ' + where : ''}</span>${badge}</div>`;
+        const where = [i.road, i.from && i.to ? `${i.from} - ${i.to}` : (i.from || i.to)].filter(Boolean).join(' \u00b7 ');
+        let badge;
+        if (i.delay_min) {
+          badge = `<strong style="color:${i.delay_min >= 20 ? 'var(--bad)' : 'var(--warn)'}">+${i.delay_min} min</strong>`;
+        } else if (i.criticality) {
+          badge = `<strong style="color:${critColor[i.criticality] || 'var(--dim)'}">${critText[i.criticality] || i.criticality}</strong>`;
+        } else {
+          badge = '';
+        }
+        return `<div class="rd-row${n === 0 ? ' first' : ''}"><span>\u26A0\uFE0F ${i.category}${where ? ' \u00b7 ' + where : ''}</span>${badge}</div>`;
       }).join('');
       return `
         <div class="result-box rd-box">
           <h3>\uD83D\uDEE3\uFE0F Stanje na putu</h3>
           ${rows}
-          <div class="rb-foot">Izvor: TomTom Traffic &middot; znacajni zastoji i radovi duz rute</div>
+          <div class="rb-foot">Izvor: HERE Traffic &middot; zastoji, radovi i zatvaranja duz rute</div>
         </div>`;
     }
 
