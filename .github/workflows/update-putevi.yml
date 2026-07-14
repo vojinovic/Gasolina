@@ -22,9 +22,9 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Scrape road incidents (TomTom)
+      - name: Scrape road incidents (HERE)
         env:
-          TOMTOM_KEY: ${{ secrets.TOMTOM_KEY }}
+          HERE_KEY: ${{ secrets.HERE_KEY }}
         run: python putevi_scraper.py
 
       - name: Commit if changed
