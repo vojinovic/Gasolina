@@ -35,6 +35,7 @@ BA_TARGETS = {
     "gradina":  r"dragina\s*/\s*kalotina",   # njihov (pogresan) naziv za Gradinu
     "presevo":  r"presevo\s*/\s*tabanovce",
     "horgos":   r"horgos\s*/\s*roszke",
+    "kelebija": r"kelebija\s*/\s*tompa",
     "batrovci": r"batrovci\s*/\s*bajakovo",
 }
 OUT = "granice.json"
@@ -44,6 +45,7 @@ OUT = "granice.json"
 TARGETS = {
     "gradina":      "GRADINA",
     "horgos":       "HORGOS",
+    "kelebija":     "KELEBIJA",
     "batrovci":     "BATROVCI",
     "presevo":      "PRESEVO",
     "sremska-raca": "SREMSKA RACA",
@@ -55,6 +57,7 @@ TARGETS = {
 # "ki" (Magyarorszag felol) = ulaz u Srbiju; "be" (Magyarorszag fele) = izlaz iz Srbije.
 HU_TARGETS = {
     "horgos": "horgos autopalya",
+    "kelebija": "tompa - kelebia",
 }
 
 # id prelaza -> naziv GP na makedonskoj strani (AMSM dnevne informacije, kirilica).
@@ -437,6 +440,16 @@ Na TERETNIM terminalima:
 2. Ulaz u Srbiju - oko 30 min.
 Izvor: Uprava granicne policije RS
 
+#### 1GP KELEBIJA Srbija Madjarska
+Prema poslednjim informacijama Uprave granicne policije RS, zadrzavanja su:
+Na PUTNICKIM terminalima:
+1. Izlaz iz Srbije - oko 45 min.
+2. Ulaz u Srbiju - oko 30 min.
+Na TERETNIM terminalima:
+1. Izlaz iz Srbije- oko 30 min.
+2. Ulaz u Srbiju- oko 30 min.
+Izvor: Uprava granicne policije RS
+
 #### Petlja Vranje, radovi
 Zabrana za teretna vozila preko 10 t. Izvor: Putevi Srbije
 """
@@ -523,6 +536,7 @@ def selftest():
         print(f"[{flag}] {cid}: got={got} exp={exp}")
     check("batrovci", 30, 30, 300, 30)
     check("gradina", 60, 30, 60, 30)
+    check("kelebija", 45, 30, 30, 30)
     check("horgos", 30, 30, 30, 30)
     check("presevo", 30, 30, 30, 30)
     check("sremska-raca", 30, 30, 240, 30)
@@ -535,6 +549,12 @@ def selftest():
     if not hu_ok:
         ok = False
     print(f"[{'OK ' if hu_ok else 'FAIL'}] horgos.hu: got={hu} exp={hu_exp}")
+    hu_k = c["kelebija"].get("hu")
+    hu_k_exp = {"ulaz": 0, "izlaz": 180}
+    hu_k_ok = hu_k == hu_k_exp
+    if not hu_k_ok:
+        ok = False
+    print(f"[{'OK ' if hu_k_ok else 'FAIL'}] kelebija.hu: got={hu_k} exp={hu_k_exp}")
     # MK strana: Tabanovce bez smera -> opsto 30; Bogorodica "za izlez ... polovina cas" -> izlez 30
     mk_p = c["presevo"].get("mk")
     mk_p_exp = {"vlez": None, "izlez": None, "opsto": 30}
