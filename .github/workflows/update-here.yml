@@ -1,4 +1,4 @@
-name: Update putevi
+name: Update HERE granice
 
 on:
   schedule:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: update-putevi
+  group: update-here
   cancel-in-progress: false
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Scrape road incidents (HERE)
+      - name: Scrape HERE traffic at border crossings
         env:
           HERE_KEY: ${{ secrets.HERE_KEY }}
         run: python putevi_scraper.py
@@ -31,9 +31,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if [ -n "$(git status --porcelain putevi.json)" ]; then
-            git add putevi.json
-            git commit -m "Auto update road incidents"
+          if [ -n "$(git status --porcelain granice_here.json)" ]; then
+            git add granice_here.json
+            git commit -m "Auto update HERE traffic at crossings"
             git push
           else
             echo "Nema promena."
