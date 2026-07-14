@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Gasolina - stanje na putevima (HERE Traffic API v7).
+"""Gasolina - HERE Traffic na granicnim prelazima.
 
-Povlaci saobracajne incidente duz glavnih koridora u Srbiji i pise ih
-u putevi.json. API kljuc se cita iz env promenljive HERE_KEY (GitHub Secret).
+HERE prijavljuje kolone bas na rampama ("Backed-up traffic at Bajakovo"),
+sto je peti nezavisan izvor za nase kartice granica. Autoputevi u Srbiji
+su im slabo pokriveni, pa gledamo samo uske kutije oko prelaza.
 
-Izlaz je isti oblik kao ranija TomTom verzija, pa index.html ostaje isti.
+Kljuc iz env HERE_KEY (GitHub Secret). Pise granice_here.json.
 """
 import datetime
 import json
@@ -16,39 +17,37 @@ import urllib.request
 
 API = "https://data.traffic.hereapi.com/v7/incidents"
 
-# koridori: (id, W, S, E, N) - HERE bbox: west,south,east,north
-# VAZNO: HERE dozvoljava max 1 stepen sirine i visine po kutiji,
-# pa su duzi koridori podeljeni na vise segmenata.
-BOXES = [
-    ("bg-horgos",       19.70, 45.20, 20.25, 46.15),  # A1 sever (Subotica-Horgos)
-    ("bg-horgos",       19.80, 44.75, 20.55, 45.60),  # A1 sever (BG-Novi Sad)
-    ("bg-sid",          19.05, 44.75, 19.95, 45.15),  # A3 zapad (Sid-Ruma)
-    ("bg-sid",          19.90, 44.70, 20.55, 45.10),  # A3 istok (Ruma-BG)
-    ("bg-jagodina",     20.35, 44.10, 21.30, 44.90),  # A1, BG-Jagodina
-    ("jagodina-nis",    21.00, 43.30, 21.95, 44.15),  # A1, Jagodina-Nis
-    ("nis-presevo",     21.55, 42.30, 22.20, 43.25),  # A1 jug, Nis-Presevo
-    ("nis-gradina",     21.85, 42.95, 22.70, 43.40),  # A4, Nis-Gradina
-    ("bg-preljina",     20.00, 43.85, 20.60, 44.70),  # Milos Veliki
-    ("zlatibor-gostun", 19.40, 43.20, 20.35, 43.90),  # Zlatibor-Gostun
-]
+# id prelaza (isti kao borders-data.js) -> (lon, lat) rampe
+CROSSINGS = {
+    "gradina":      (22.7386, 43.0044),   # Gradina / Kalotina
+    "horgos":       (19.9910, 46.1650),   # Horgos / Roszke
+    "batrovci":     (19.1710, 45.0400),   # Batrovci / Bajakovo
+    "presevo":      (21.6400, 42.2450),   # Presevo / Tabanovce
+    "sremska-raca": (19.2620, 44.8830),   # Sremska Raca
+    "spiljani":     (20.3414, 42.9104),   # Spiljani / Dracenovac
+    "gostun":       (19.6740, 43.2870),   # Gostun / Dobrakovo
+    "bogorodica":   (22.5490, 41.1343),   # Bogorodica / Evzoni
+}
+
+PAD = 0.06   # ~6 km oko rampe (kutija ~12x12 km, daleko ispod HERE limita)
 
 TYPES = {
     "accident": "nezgoda",
-    "congestion": "zastoj",
-    "construction": "radovi na putu",
-    "roadClosure": "zatvoren put",
+    "congestion": "kolona",
+    "construction": "radovi",
+    "roadClosure": "zatvoren prelaz",
     "laneRestriction": "zatvorena traka",
     "disabledVehicle": "vozilo u kvaru",
-    "roadHazard": "opasnost na putu",
+    "roadHazard": "opasnost",
 }
-KEEP = set(TYPES)
+RANK = {"critical": 0, "major": 1, "minor": 2, "low": 3}
 
 
-def fetch_box(key, box):
-    cid, w, s, e, n = box
+def fetch_box(key, lon, lat):
+    w, s, e, n = lon - PAD, lat - PAD, lon + PAD, lat + PAD
     params = urllib.parse.urlencode({
         "apiKey": key,
-        "in": f"bbox:{w},{s},{e},{n}",
+        "in": f"bbox:{w:.4f},{s:.4f},{e:.4f},{n:.4f}",
         "locationReferencing": "none",
     })
     req = urllib.request.Request(API + "?" + params, headers={
@@ -60,45 +59,33 @@ def fetch_box(key, box):
     except urllib.error.HTTPError as ex:
         body = ""
         try:
-            body = ex.read().decode("utf-8", "replace")[:300]
+            body = ex.read().decode("utf-8", "replace")[:200]
         except Exception:
             pass
-        raise RuntimeError(f"HTTP {ex.code} | odgovor: {body}") from None
+        raise RuntimeError(f"HTTP {ex.code} | {body}") from None
 
 
-def parse_incidents(data, corridor, debug=False):
-    """HERE odgovor -> lista nasih incidenata."""
-    results = data.get("results", [])
-    if debug:
-        types = {}
-        for res in results:
-            d = res.get("incidentDetails", {}) or {}
-            k = f'{d.get("type")}/{d.get("criticality")}'
-            types[k] = types.get(k, 0) + 1
-        print(f"   sirovo: {len(results)} stavki, tipovi: {types or '-'}")
-    out = []
-    for res in results:
+def pick_worst(data):
+    """Iz HERE odgovora izvuci najozbiljniju stavku za prelaz."""
+    best = None
+    for res in data.get("results", []):
         d = res.get("incidentDetails", {}) or {}
         itype = d.get("type")
-        if itype not in KEEP:
+        if itype not in TYPES:
             continue
         crit = (d.get("criticality") or "").lower()
-        desc = ((d.get("description") or {}).get("value")
-                or (d.get("summary") or {}).get("value") or "").strip()
-        # Filter je namerno blag: HERE u Srbiji cesto oznaci sve kao 'low',
-        # pa bi strog filter obrisao sve. Prikaz sortira po ozbiljnosti.
-        out.append({
-            "id": d.get("id"),
-            "corridor": corridor,
-            "category": TYPES.get(itype, itype),
+        desc = ((d.get("description") or {}).get("value") or "").strip()
+        length_m = (res.get("location") or {}).get("length")
+        item = {
+            "category": TYPES[itype],
             "criticality": crit or None,
-            "road": None,
-            "from": desc[:90] if desc else None,
-            "to": None,
-            "delay_min": None,
-            "length_km": None,
-        })
-    return out
+            "closed": bool(d.get("roadClosed")),
+            "desc": desc[:120] or None,
+            "length_km": round(length_m / 1000, 1) if length_m else None,
+        }
+        if best is None or RANK.get(crit, 9) < RANK.get(best["criticality"] or "", 9):
+            best = item
+    return best
 
 
 def main():
@@ -106,69 +93,53 @@ def main():
     if not key:
         print("GRESKA: HERE_KEY nije postavljen (GitHub Secret).")
         return 1
-    print(f"HERE_KEY: duzina {len(key)}, pocinje '{key[:4]}'")
-    seen, incidents = set(), []
-    dumped = {"done": False}
-    for box in BOXES:
+    out = {}
+    for cid, (lon, lat) in CROSSINGS.items():
         try:
-            data = fetch_box(key, box)
+            data = fetch_box(key, lon, lat)
         except Exception as ex:
-            print(f"Upozorenje: {box[0]} nedostupan: {ex}")
+            print(f"Upozorenje: {cid} nedostupan: {ex}")
             continue
-        got = parse_incidents(data, box[0], debug=True)
-        print(f"{box[0]}: {len(got)} incidenata (posle filtera)")
-        if data.get("results") and not dumped["done"]:
-            print("   PRIMER sirove stavke:")
-            print("   " + json.dumps(data["results"][0], ensure_ascii=False)[:600])
-            dumped["done"] = True
-        for inc in got:
-            kid = inc["id"] or (inc["corridor"], inc["from"])
-            if kid in seen:
-                continue
-            seen.add(kid)
-            incidents.append(inc)
-    rank = {"critical": 0, "major": 1, "minor": 2, "low": 3}
-    incidents.sort(key=lambda x: rank.get(x.get("criticality") or "", 9))
+        worst = pick_worst(data)
+        n = len(data.get("results", []))
+        if worst:
+            out[cid] = worst
+            print(f"{cid}: {n} stavki -> {worst['category']}/{worst['criticality']}"
+                  f" | {worst['desc']}")
+        else:
+            print(f"{cid}: {n} stavki -> nista relevantno")
     result = {
         "scraped_at": datetime.datetime.now(datetime.timezone.utc)
                           .isoformat(timespec="seconds"),
         "source": "HERE Traffic",
-        "incidents": incidents[:40],
+        "crossings": out,
     }
-    with open("putevi.json", "w", encoding="utf-8") as f:
+    with open("granice_here.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
-    print(f"Ukupno upisano: {len(result['incidents'])}")
+    print(f"Prelaza sa prijavom: {len(out)}")
     return 0
 
 
-SELFTEST_RESPONSE = {
+SELFTEST = {
     "results": [
-        {"incidentDetails": {"id": "h1", "type": "congestion",
-                             "criticality": "major",
-                             "description": {"value": "Stationary traffic on A1 near Vranje"}}},
-        {"incidentDetails": {"id": "h2", "type": "construction",
-                             "criticality": "low",
-                             "description": {"value": "Roadworks between Nis and Merosina"}}},
-        {"incidentDetails": {"id": "h3", "type": "congestion",
-                             "criticality": "low",
-                             "description": {"value": "Slow traffic"}}},
-        {"incidentDetails": {"id": "h4", "type": "weather",
-                             "criticality": "major",
+        {"location": {"length": 309.0},
+         "incidentDetails": {"type": "congestion", "criticality": "minor",
+                             "roadClosed": False,
+                             "description": {"value": "At Granicni prijelaz Bajakovo - Backed-up traffic. Approach with care"}}},
+        {"location": {"length": 1200.0},
+         "incidentDetails": {"type": "congestion", "criticality": "major",
+                             "roadClosed": False,
+                             "description": {"value": "Queuing traffic"}}},
+        {"incidentDetails": {"type": "weather", "criticality": "critical",
                              "description": {"value": "Rain"}}},
     ]
 }
 
 
 def selftest():
-    got = parse_incidents(SELFTEST_RESPONSE, "nis-presevo")
-    ok = True
-    # blag filter: prolaze zastoj/major, radovi/low, zastoj/low; weather ispada (nije u KEEP)
-    if len(got) != 3:
-        ok = False
-    if not (got and got[0]["category"] == "zastoj" and got[0]["criticality"] == "major"):
-        ok = False
-    if any(g["category"] == "weather" for g in got):
-        ok = False
+    got = pick_worst(SELFTEST)
+    ok = (got and got["category"] == "kolona" and got["criticality"] == "major"
+          and got["length_km"] == 1.2)
     print(json.dumps(got, ensure_ascii=False, indent=2))
     print("SELFTEST:", "PASS" if ok else "FAIL")
     return 0 if ok else 1
