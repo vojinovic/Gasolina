@@ -474,17 +474,22 @@
       renderCalc();
     }
 
-    async function orsGeocode(text) {
-      // focus.point je "meki" bias, ne tvrdi filter - i dalje moze da nadje bilo sta u
-      // svetu, samo favorizuje rezultate blize regionu kad je ime dvosmisleno (npr. "Nis"
-      // bez kvacice je i Nis u Srbiji i Nice u Francuskoj - bez ovoga je pogadjao Francusku).
+    // Zemlje gde je auto-putovanje sa srpskim tablicama realno ocekivano. Koristi se kao
+    // TVRD filter (boundary.country) u prvom pokusaju geokodiranja - pouzdanije od "mekog"
+    // focus.point bias-a ili nagadjanja po properties.country nazivu (koji Pelias ume da
+    // vrati u razlicitim formatima). "Nis" bez kvacice je i dalje pogadjao Nice u Francuskoj
+    // dok ovo nije bio tvrd filter, ne samo blaga preferenca.
+    const EXPECTED_GEOCODE_COUNTRIES = 'RS,HR,BA,ME,SI,MK,HU,BG,AL,GR,RO,AT,IT,DE,CH,PL,SK,CZ';
+
+    async function orsGeocodeRaw(text, restrictCountries) {
       const params = new URLSearchParams({
         api_key: ORS_KEY,
         text,
-        size: 3,
+        size: 1,
         'focus.point.lat': '44.5',
         'focus.point.lon': '19.5',
       });
+      if (restrictCountries) params.set('boundary.country', restrictCountries);
       const res = await fetch(`https://api.openrouteservice.org/geocode/search?${params}`);
       if (!res.ok) {
         if (res.status === 403 || res.status === 401) throw new Error('ORS kljuc nije validan (proveri da li je tacno nalepljen).');
@@ -492,7 +497,15 @@
         throw new Error('Geokodiranje nije uspelo (' + res.status + ').');
       }
       const data = await res.json();
-      const f = data.features && data.features[0];
+      return (data.features && data.features[0]) || null;
+    }
+
+    async function orsGeocode(text) {
+      // Prvi pokusaj: strogo ogranicen na region (resava "Nis" -> Nice u Francuskoj).
+      // Ako tamo nema pogotka (npr. korisnik stvarno trazi mesto van regiona), tek onda
+      // globalna pretraga bez ogranicenja - ne zelimo da blokiramo legitimne udaljene rute.
+      let f = await orsGeocodeRaw(text, EXPECTED_GEOCODE_COUNTRIES);
+      if (!f) f = await orsGeocodeRaw(text, null);
       if (!f) return null;
       const [lon, lat] = f.geometry.coordinates;
       return { lat, lon, label: f.properties.label || text };
