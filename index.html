@@ -147,6 +147,17 @@
     .custom-route-status { margin-top: 12px; font-size: 13px; color: var(--dim); min-height: 1.4em; }
     .custom-route-status.err { color: var(--bad); }
     .custom-route-note { margin-top: 10px; font-size: 11.5px; color: var(--faint); line-height: 1.5; }
+    .suggest-list {
+      position: absolute; top: 100%; left: 0; right: 0; z-index: 30; margin-top: 4px;
+      background: var(--panel-2, #1b2a39); border: 1px solid var(--line); border-radius: 9px;
+      overflow: hidden; display: none; max-height: 220px; overflow-y: auto;
+    }
+    .suggest-list.show { display: block; }
+    .suggest-item { padding: 9px 12px; font-size: 13px; color: var(--text); cursor: pointer; border-bottom: 1px solid var(--line); }
+    .suggest-item:last-child { border-bottom: none; }
+    .suggest-item:hover, .suggest-item.active { background: var(--fuel); color: var(--ink); }
+    .suggest-item .sub { display: block; font-size: 11px; color: var(--faint); }
+    .suggest-item:hover .sub, .suggest-item.active .sub { color: rgba(13,22,32,.65); }
     .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
     .calc-input { display: flex; flex-direction: column; gap: 6px; }
     .calc-input label { color: var(--dim); font-size: 13px; }
@@ -357,13 +368,17 @@
 
         <div id="customRouteBox" style="display:none">
           <div class="calc-grid">
-            <div class="calc-input">
+            <div class="calc-input" style="position:relative">
               <label for="customFrom">Polazak</label>
-              <input id="customFrom" type="text" placeholder="npr. Kragujevac" autocomplete="off">
+              <input id="customFrom" type="text" placeholder="npr. Kragujevac" autocomplete="off"
+                     oninput="onCustomInput('customFrom','sugFrom')" onblur="hideSuggestionsLater('sugFrom')">
+              <div id="sugFrom" class="suggest-list"></div>
             </div>
-            <div class="calc-input">
+            <div class="calc-input" style="position:relative">
               <label for="customTo">Odredište</label>
-              <input id="customTo" type="text" placeholder="npr. Ohrid" autocomplete="off">
+              <input id="customTo" type="text" placeholder="npr. Ohrid" autocomplete="off"
+                     oninput="onCustomInput('customTo','sugTo')" onblur="hideSuggestionsLater('sugTo')">
+              <div id="sugTo" class="suggest-list"></div>
             </div>
           </div>
           <button type="button" class="btn" id="findRouteBtn" onclick="findCustomRoute()" style="margin-top:12px">Pronađi rutu →</button>
@@ -481,6 +496,61 @@
     // dok ovo nije bio tvrd filter, ne samo blaga preferenca.
     const EXPECTED_GEOCODE_COUNTRIES = 'RS,HR,BA,ME,SI,MK,HU,BG,AL,GR,RO,AT,IT,DE,CH,PL,SK,CZ';
 
+    // === Predlozi dok kucas (autocomplete) ===
+    // ORS ima poseban /geocode/autocomplete endpoint bas za ovo (za razliku od /search) -
+    // namenjen tacno za "type-ahead", ne krsi nicija pravila koriscenja kao sto bi bio
+    // slucaj sa raw Nominatim search pozivima na svaki taster.
+    const selectedPlace = { customFrom: null, customTo: null }; // popunjava se klikom na predlog
+    const debounceTimers = {};
+
+    function onCustomInput(inputId, listId) {
+      selectedPlace[inputId] = null; // menja tekst rucno posle izbora -> stari izbor vise ne vazi
+      clearTimeout(debounceTimers[inputId]);
+      const text = document.getElementById(inputId).value.trim();
+      if (text.length < 2) { hideSuggestions(listId); return; }
+      debounceTimers[inputId] = setTimeout(() => fetchSuggestions(inputId, listId, text), 300);
+    }
+
+    async function fetchSuggestions(inputId, listId, text) {
+      const listEl = document.getElementById(listId);
+      try {
+        const params = new URLSearchParams({
+          api_key: ORS_KEY, text, size: 6,
+          'focus.point.lat': '44.5', 'focus.point.lon': '19.5',
+          'boundary.country': EXPECTED_GEOCODE_COUNTRIES,
+        });
+        const res = await fetch(`https://api.openrouteservice.org/geocode/autocomplete?${params}`);
+        if (!res.ok) { hideSuggestions(listId); return; }
+        const data = await res.json();
+        const features = data.features || [];
+        // input je mozda vec promenjen dok je poziv trajao - ne prikazuj zastarele predloge
+        if (document.getElementById(inputId).value.trim() !== text) return;
+        if (!features.length) { hideSuggestions(listId); return; }
+        listEl.innerHTML = features.map((f, i) => {
+          const parts = (f.properties.label || '').split(',');
+          const main = parts[0] || f.properties.label;
+          const sub = parts.slice(1).join(',').trim();
+          const [lon, lat] = f.geometry.coordinates;
+          return `<div class="suggest-item" data-i="${i}" data-lat="${lat}" data-lon="${lon}" data-label="${(f.properties.label || '').replace(/"/g, '&quot;')}"
+                       onmousedown="pickSuggestion('${inputId}','${listId}',this)">${main}<span class="sub">${sub}</span></div>`;
+        }).join('');
+        listEl.classList.add('show');
+      } catch (e) { hideSuggestions(listId); }
+    }
+
+    function pickSuggestion(inputId, listId, el) {
+      document.getElementById(inputId).value = el.dataset.label.split(',')[0];
+      selectedPlace[inputId] = { lat: parseFloat(el.dataset.lat), lon: parseFloat(el.dataset.lon), label: el.dataset.label };
+      hideSuggestions(listId);
+    }
+    function hideSuggestions(listId) {
+      const el = document.getElementById(listId);
+      el.classList.remove('show'); el.innerHTML = '';
+    }
+    // onblur puca PRE onmousedown-klika na predlog, pa hidujemo sa malim zakasnjenjem
+    // da klik stigne da se registruje.
+    function hideSuggestionsLater(listId) { setTimeout(() => hideSuggestions(listId), 150); }
+
     async function orsGeocodeRaw(text, restrictCountries) {
       const params = new URLSearchParams({
         api_key: ORS_KEY,
@@ -578,7 +648,10 @@
 
       statusEl.textContent = 'Tražim lokacije…';
       try {
-        const [from, to] = await Promise.all([orsGeocode(fromText), orsGeocode(toText)]);
+        const [from, to] = await Promise.all([
+          selectedPlace.customFrom || orsGeocode(fromText),
+          selectedPlace.customTo || orsGeocode(toText),
+        ]);
         if (!from) throw new Error(`Nije pronađeno mesto "${fromText}".`);
         if (!to) throw new Error(`Nije pronađeno mesto "${toText}".`);
 
