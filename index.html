@@ -128,6 +128,15 @@
     .badge-worst { background: rgba(227,93,79,0.15); color: var(--bad); border: 1px solid rgba(227,93,79,0.4); }
     .updated { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--faint); font-size: 11px; font-family:"JetBrains Mono",monospace; }
 
+    .share-row { display: flex; align-items: center; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+    .share-label { font-size: 11px; color: var(--faint); font-family:"JetBrains Mono",monospace; margin-right: 2px; }
+    .share-btn {
+      font-family:"JetBrains Mono",monospace; font-size: 10.5px; color: var(--dim);
+      background: var(--panel-2, #1b2a39); border: 1px solid var(--line); border-radius: 7px;
+      padding: 4px 8px; cursor: pointer; text-decoration: none; transition: color .15s ease, border-color .15s ease;
+    }
+    .share-btn:hover { color: var(--text); border-color: var(--fuel); }
+
     .calc-form { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; margin-bottom: 24px; }
     .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
     .calc-input { display: flex; flex-direction: column; gap: 6px; }
@@ -491,6 +500,33 @@
         default: return arr;
       }
     }
+    function shareText(c) {
+      const parts = [];
+      if (c.petrol95?.eur) parts.push(`Benzin 95: ${fmtEur(c.petrol95.eur)}`);
+      if (c.diesel?.eur) parts.push(`Dizel: ${fmtEur(c.diesel.eur)}`);
+      if (c.lpg?.eur) parts.push(`Auto-gas: ${fmtEur(c.lpg.eur)}`);
+      return `Cene goriva u ${c.name}: ${parts.join(', ')} — gasolina.rs`;
+    }
+    function doShare(kind, name, btn) {
+      const c = dataCache?.countries?.find(x => x.name === name);
+      if (!c) return;
+      track('podeli_cena', { zemlja: c.name, kanal: kind });
+      const text = shareText(c);
+      if (kind === 'copy') {
+        navigator.clipboard.writeText(text + ' https://gasolina.rs/').then(() => {
+          if (btn) { const old = btn.textContent; btn.textContent = 'Kopirano!'; setTimeout(() => { btn.textContent = old; }, 1500); }
+        }).catch(() => {});
+        return;
+      }
+      const t = encodeURIComponent(text), u = encodeURIComponent('https://gasolina.rs/');
+      const urls = {
+        viber: `viber://forward?text=${t}%20${u}`,
+        whatsapp: `https://wa.me/?text=${t}%20${u}`,
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${u}&quote=${t}`,
+      };
+      window.open(urls[kind], '_blank', 'noopener');
+    }
+
     function renderPrices() {
       const cards = document.getElementById('cards');
       cards.innerHTML = '';
@@ -505,6 +541,13 @@
           <div class="price-row"><span class="fuel-name">Benzin 95${badgeFor('petrol95', c, bw)}</span><span class="fuel-price green">${priceCell(c.petrol95, c)}</span></div>
           <div class="price-row"><span class="fuel-name">Dizel${badgeFor('diesel', c, bw)}</span><span class="fuel-price yellow">${priceCell(c.diesel, c)}</span></div>
           <div class="price-row"><span class="fuel-name">Auto-gas${badgeFor('lpg', c, bw)}</span><span class="fuel-price blue">${priceCell(c.lpg, c)}</span></div>
+          <div class="share-row">
+            <span class="share-label">Podeli:</span>
+            <button class="share-btn" type="button" onclick="doShare('viber','${c.name}')">Viber</button>
+            <button class="share-btn" type="button" onclick="doShare('whatsapp','${c.name}')">WhatsApp</button>
+            <button class="share-btn" type="button" onclick="doShare('facebook','${c.name}')">Facebook</button>
+            <button class="share-btn" type="button" onclick="doShare('copy','${c.name}', this)">Kopiraj</button>
+          </div>
           <div class="updated">Ažurirano: ${c.updated || '-'}</div>`;
         cards.appendChild(card);
       });
