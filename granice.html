@@ -510,12 +510,14 @@ function stopFeed(card){
   const pane = card.querySelector(".pane");
   const video = pane.querySelector("video");
   const poster = pane.querySelector(".poster");
+  const thumb = pane.querySelector(".thumb");
   const live = pane.querySelector(".live");
   if(card._hls){ try{card._hls.destroy();}catch(e){} card._hls=null; }
   video.removeAttribute("src"); video.load();
   live.style.display="none";
   const ctl = pane.querySelector(".vidctl"); if(ctl) ctl.remove();
   if(poster) poster.style.display="";
+  if(thumb) thumb.style.display="";
   card.classList.remove("expanded");
 }
 
@@ -525,10 +527,12 @@ function playFeed(card, cam, feedIndex){
   track('pusti_kameru', { prelaz: cam.id, kamera: feed.label, izvor: cam.provider });
   const pane = card.querySelector(".pane");
   const poster = pane.querySelector(".poster");
+  const thumb = pane.querySelector(".thumb");
   const live = pane.querySelector(".live");
   const pmsg = pane.querySelector(".pmsg");
 
   if(poster) poster.style.display="none";
+  if(thumb) thumb.style.display="none";
   pmsg.style.display="none";
 
   // rasiri karticu preko celog reda dok kamera radi
@@ -559,7 +563,6 @@ function playFeed(card, cam, feedIndex){
     const ctl = pane.querySelector(".vidctl"); if(ctl) ctl.remove();
     video.removeAttribute("src"); video.load();
   };
-
   if(video.canPlayType("application/vnd.apple.mpegurl")){
     // Safari / iOS native HLS
     video.src = feed.src;
