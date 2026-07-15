@@ -123,8 +123,17 @@
   .vbtn{width:36px;height:36px;border-radius:9px;border:1px solid rgba(255,255,255,.18);background:rgba(7,13,19,.72);color:var(--text);font-size:15px;cursor:pointer;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center}
   .vbtn:hover{border-color:var(--fuel);color:var(--fuel)}
 
-  .poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;
+  /* prava fotografija sa kamere (thumbs/<id>.jpg, hvata je ffmpeg u Actions-ima) */
+  .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:0}
+
+  .poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;z-index:1;
     background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px),
+      radial-gradient(420px 220px at 50% 35%, rgba(245,166,35,.10), transparent 70%),
+      linear-gradient(180deg, rgba(7,13,19,.25) 0%, rgba(7,13,19,.55) 55%, rgba(7,13,19,.88) 100%);
+  }
+  /* kartice bez thumb slike (fajl jos ne postoji/pao 404) padaju na staru punu pozadinu */
+  .poster.no-thumb{background:
       repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px),
       radial-gradient(420px 220px at 50% 35%, rgba(245,166,35,.10), transparent 70%),
       #0a121b;
@@ -228,6 +237,10 @@
   .faq summary::before { content:"+"; color:var(--fuel); font-weight:700; margin-right:10px; }
   .faq details[open] summary::before { content:"\2212"; }
   .faq details p { margin:0 0 16px; color:var(--dim); font-size:14px; line-height:1.65; }
+
+  /* chip sa cekanjem preko slike/videa */
+  .wchips{position:absolute;bottom:10px;right:10px;display:flex;gap:6px;z-index:2}
+  .wchip{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:4px 8px;border-radius:7px;background:rgba(7,13,19,.78);backdrop-filter:blur(3px)}
 </style>
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
@@ -388,6 +401,15 @@ function waitCell(label,dirKey,c){
     </div>`;
 }
 
+function waitChips(c){
+  if(c.noWait) return "";
+  const u = effective(c, "ulaz"), i = effective(c, "izlaz");
+  if(u.v==null && i.v==null) return "";
+  const chip = (arrow, e) => e.v==null ? "" :
+    `<span class="wchip" style="color:${waitStatus(e.v).c}">${arrow}${e.v>=60?Math.round(e.v/60)+"h":e.v}</span>`;
+  return `<div class="wchips">${chip("\u2191", u)}${chip("\u2193", i)}</div>`;
+}
+
 function cardHTML(c){
   const hasVideo = c.feeds.some(f=>f.src);
   const noCamera = c.noCamera === true;
@@ -401,6 +423,8 @@ function cardHTML(c){
     paneInner = `<span class="badge">${c.provider}</span>
        <span class="live"><span class="ld"></span>UZIVO</span>
        <video playsinline muted></video>
+       <img class="thumb" src="thumbs/${c.id}.jpg" alt="Poslednja slika sa kamere ${c.name}" loading="lazy"
+            onerror="this.remove(); this.closest('.pane').querySelector('.poster').classList.add('no-thumb')">
        <button class="poster" aria-label="Pusti kameru ${c.name}">
          <span class="play"><svg width="20" height="20" viewBox="0 0 24 24" fill="var(--fuel)"><path d="M8 5v14l11-7z"/></svg></span>
          <span class="ptext">Pusti kameru</span>
@@ -437,7 +461,7 @@ function cardHTML(c){
       <div class="road">${c.road}</div>
     </div>
 
-    <div class="pane">${paneInner}</div>
+    <div class="pane">${paneInner}${waitChips(c)}</div>
     ${tabs}
 
     ${c.noWait ? ((c.mk||c.here) ? (mkStrip(c) + hereStrip(c)) : `<div class="nowait">Granica ${c.from}\u2013${c.to}. Vreme cekanja se ovde ne prati; iskoristi kameru iznad.</div>`) : `
@@ -512,7 +536,7 @@ function playFeed(card, cam, feedIndex){
   card.classList.add("expanded");
   card.scrollIntoView({behavior:"smooth", block:"nearest"});
 
-  // cleanup prethodni hls
+  // cleanup prethodnog hls-a
   if(card._hls){ try{card._hls.destroy();}catch(e){} card._hls=null; }
 
   const onOk = ()=>{ live.style.display="flex"; ensureVidControls(card, video); video.play().catch(()=>{}); track('kamera_radi', { prelaz: cam.id, kamera: feed.label }); };
