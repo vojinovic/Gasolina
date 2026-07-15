@@ -61,11 +61,17 @@ def parse_crossings(js_text):
     return out
 
 
-def capture_thumb(url, out_path):
-    tmp_path = out_path + ".tmp"
-    cmd = [
-        "ffmpeg", "-y",
-        "-user_agent", "Mozilla/5.0 (Gasolina thumbs bot)",
+def capture_thumb(url, out_path, force_input_args=None):
+    # BITNO: privremeni fajl mora da se zavrsava na .jpg (ne .jpg.tmp) -
+    # ffmpeg pogadja mux format po ekstenziji, a ".tmp" mu nije poznat pa
+    # baca "Error opening output files: Invalid argument" na SVAKOM URL-u.
+    tmp_path = os.path.join(os.path.dirname(out_path), f".tmp-{os.path.basename(out_path)}")
+    cmd = ["ffmpeg", "-y"]
+    if force_input_args:
+        cmd += force_input_args
+    else:
+        cmd += ["-user_agent", "Mozilla/5.0 (Gasolina thumbs bot)"]
+    cmd += [
         "-i", url,
         "-frames:v", "1",
         "-q:v", "4",
@@ -104,6 +110,24 @@ def selftest():
             problems.append(f"Ocekivani prelazi NISU nadjeni (parser ili JS pokvaren?): {sorted(missing)}")
         if extra:
             print(f"(info) Novi prelazi otkriveni van EXPECTED_IDS - ako je namerno, dodaj ih u listu: {sorted(extra)}")
+
+    # Pravi round-trip snimanja, bez mreze: ffmpeg-ov sopstveni sinteticki
+    # izvor (testsrc) glumi "pravi" video ulaz. Ovo hvata greske u samoj
+    # ffmpeg komandi (mux/ekstenzija/filter) koje parser ne moze da vidi -
+    # npr. tacno onu ".jpg.tmp" gresku koja je jednom prosla mimo ostalih provera.
+    if shutil.which("ffmpeg") is not None:
+        test_out = os.path.join(THUMBS_DIR, ".selftest-probe.jpg")
+        os.makedirs(THUMBS_DIR, exist_ok=True)
+        ok = capture_thumb("testsrc=size=320x180:rate=1", test_out, force_input_args=[
+            "-f", "lavfi",
+        ])
+        if os.path.exists(test_out):
+            os.remove(test_out)
+        if not ok:
+            problems.append("Probno snimanje (ffmpeg testsrc) nije uspelo - vidi [FAIL] iznad, verovatno je pukla sama ffmpeg komanda")
+        else:
+            print("Probno snimanje (ffmpeg testsrc, bez mreze) OK.")
+
     if problems:
         print("SELFTEST PALO:")
         for p in problems:
