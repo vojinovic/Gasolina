@@ -227,6 +227,8 @@
     .cost-row.total strong { color: var(--fuel); font-size: 20px; }
     .cost-note { margin-top: 12px; font-size: 12px; color: var(--faint); line-height: 1.5; }
     .cost-hint { background: var(--panel); border: 1px dashed var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 18px; font-size: 13px; color: var(--faint); }
+    .shortfall-warn { background: rgba(227,93,79,0.08); border: 1px solid rgba(227,93,79,0.35); border-radius: 12px; padding: 12px 14px; margin-bottom: 18px; font-size: 13px; color: var(--text); line-height: 1.5; }
+    .shortfall-warn b { color: var(--bad); }
   
     /* FAQ (SEO) */
     .faq { margin: 40px 0 10px; }
@@ -532,6 +534,8 @@
       let tankLevel = startFuel;
       const plan = [];
       let smartCost = 0;
+      let shortfallLiters = 0;
+      const shortfallLegs = [];
 
       for (let i = 0; i < legs.length; i++) {
         const leg = legs[i];
@@ -549,16 +553,28 @@
           }
         }
         tankLevel -= need;
-        if (tankLevel < -0.01) {
-          const forced = Math.min(tank, -tankLevel + 5);
-          if (leg.pricePerL) {
-            smartCost += forced * leg.pricePerL;
-            plan.push({ flag: leg.flag, label: leg.label, liters: forced, price: leg.pricePerL, cost: forced * leg.pricePerL, forced: true });
-            tankLevel += forced;
+        // Ako ni to nije dovoljno, dopunjavaj u krug (vise zaustavljanja u istoj
+        // zemlji su realna stvar na dugoj deonici sa malim rezervoarom) - dok
+        // se manjak ne pokrije ili dok ne ostane bez cene za tu zemlju.
+        // Ranije je ovo bio jednokratni "if", pa je visak manjka na predugim
+        // deonicama (npr. HR 600km na Beograd-Split sa malim rezervoarom)
+        // ili u zemljama bez cene za izabrano gorivo (LPG u ME/BG/GR) tiho
+        // nestajao iz racunice - ukupna cena je izgledala nizа nego sto bi
+        // realno bila.
+        while (tankLevel < -0.01) {
+          if (!leg.pricePerL) {
+            shortfallLiters += -tankLevel;
+            if (!shortfallLegs.includes(leg.label)) shortfallLegs.push(leg.label);
+            tankLevel = 0; // ne dozvoli da negativan broj otruje racunicu sledece deonice
+            break;
           }
+          const forced = Math.min(tank, -tankLevel + 5);
+          smartCost += forced * leg.pricePerL;
+          plan.push({ flag: leg.flag, label: leg.label, liters: forced, price: leg.pricePerL, cost: forced * leg.pricePerL, forced: true });
+          tankLevel += forced;
         }
       }
-      return { route, fuelKey, cons, tank, startFuel, totalKm, totalFuelNeeded, fuelToBuy, legs, naiveCost, naiveCountry, smartCost, plan, roundtrip: isRoundtrip };
+      return { route, fuelKey, cons, tank, startFuel, totalKm, totalFuelNeeded, fuelToBuy, legs, naiveCost, naiveCountry, smartCost, plan, roundtrip: isRoundtrip, shortfallLiters, shortfallLegs };
     }
 
     function fuelLabel(key) { return { diesel: 'dizel', petrol95: 'benzin 95', lpg: 'auto-gas' }[key]; }
@@ -738,8 +754,13 @@
            </div>`
         : (t.route.toll ? '' : `<div class="cost-hint">Putarina za ovu rutu jos nije uneta (uskoro). Prikazan je samo trosak goriva.</div>`);
 
+      const shortfallHtml = t.shortfallLiters > 0.05
+        ? `<div class="shortfall-warn">⚠️ <b>Pazi:</b> za izabrano gorivo (${fuelText}) nedostaje cena u: <b>${t.shortfallLegs.join(', ')}</b> — verovatno ga tamo teze nalaziš na pumpama. Nedostaje ti procenjeno <b>${t.shortfallLiters.toFixed(1).replace('.', ',')} L</b> koje ovaj kalkulator ne ume da uračuna u cenu, pa je ukupan trošak ispod veći od prikazanog. Napuni rezervoar unapred pre te deonice.</div>`
+        : '';
+
       out.innerHTML = `
         ${savings > 0.5 ? `<div class="savings-banner"><div class="label">Pametna strategija ti štedi</div><div class="amount">${fmtEur(savings)}</div><div class="pct">${savingsPct.toFixed(0)}% jeftinije nego naivno (${fuelText})</div></div>` : ''}
+        ${shortfallHtml}
         ${bordersPanel(t.route)}
         ${tripCostBox}
         ${pumpsPanel(t.route)}
