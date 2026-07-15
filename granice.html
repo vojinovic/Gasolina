@@ -204,6 +204,15 @@
   .basrc a:hover{text-decoration:underline}
   .nowait{font-size:12px;color:var(--faint);line-height:1.5;margin-top:10px;padding:10px 12px;border:1px dashed var(--line);border-radius:10px}
   .cfoot-links{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+
+  .share-row{display:flex;align-items:center;gap:6px;padding:0 14px 14px;flex-wrap:wrap}
+  .share-label{font-size:11px;color:var(--faint);font-family:"JetBrains Mono",monospace;margin-right:2px}
+  .share-btn{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:7px;
+    padding:4px 8px;cursor:pointer;text-decoration:none;transition:color .15s ease, border-color .15s ease;
+  }
+  .share-btn:hover{color:var(--text);border-color:var(--fuel)}
   .wbar{height:4px;border-radius:3px;background:var(--panel-2);margin-top:8px;overflow:hidden}
   .wbar i{display:block;height:100%;border-radius:3px}
 
@@ -397,6 +406,37 @@ function effective(c, dirKey){
   return best;
 }
 
+function shareTextBorder(c){
+  const parts = [];
+  if(c.noWait){
+    parts.push("kamera dostupna, cekanje se ne prati");
+  } else {
+    const iz = effective(c, "izlaz"), ul = effective(c, "ulaz");
+    parts.push(`izlaz iz Srbije: ${iz.v!=null ? (iz.v<=30 ? "bez guzve" : fmtMin(iz.v)) : "nema podataka"}`);
+    parts.push(`ulaz u Srbiju: ${ul.v!=null ? (ul.v<=30 ? "bez guzve" : fmtMin(ul.v)) : "nema podataka"}`);
+  }
+  return `Granica ${c.name} (${c.from}-${c.to}): ${parts.join(", ")} — gasolina.rs/granice.html`;
+}
+function doShareBorder(kind, id, btn){
+  const c = CAMERAS.find(x => x.id === id);
+  if(!c) return;
+  track("podeli_granica", { prelaz: c.id, kanal: kind });
+  const text = shareTextBorder(c);
+  if(kind === "copy"){
+    navigator.clipboard.writeText(text + " https://gasolina.rs/granice.html").then(() => {
+      if(btn){ const old = btn.textContent; btn.textContent = "Kopirano!"; setTimeout(() => { btn.textContent = old; }, 1500); }
+    }).catch(() => {});
+    return;
+  }
+  const t = encodeURIComponent(text), u = encodeURIComponent("https://gasolina.rs/granice.html");
+  const urls = {
+    viber: `viber://forward?text=${t}%20${u}`,
+    whatsapp: `https://wa.me/?text=${t}%20${u}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${u}&quote=${t}`,
+  };
+  window.open(urls[kind], "_blank", "noopener");
+}
+
 function waitCell(label,dirKey,c){
   const eff = effective(c, dirKey);
   const s = waitStatus(eff.v);
@@ -491,6 +531,13 @@ function cardHTML(c){
         <a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>
         ${c.official2 ? `<a class="link" href="${c.official2.url}" target="_blank" rel="noopener">${c.official2.label}</a>` : ''}
       </div>
+    </div>
+    <div class="share-row">
+      <span class="share-label">Podeli:</span>
+      <button class="share-btn" type="button" onclick="doShareBorder('viber','${c.id}')">Viber</button>
+      <button class="share-btn" type="button" onclick="doShareBorder('whatsapp','${c.id}')">WhatsApp</button>
+      <button class="share-btn" type="button" onclick="doShareBorder('facebook','${c.id}')">Facebook</button>
+      <button class="share-btn" type="button" onclick="doShareBorder('copy','${c.id}', this)">Kopiraj</button>
     </div>
   </article>`;
 }
