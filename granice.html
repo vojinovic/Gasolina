@@ -524,7 +524,6 @@ function playFeed(card, cam, feedIndex){
   if(!feed || !feed.src) return;
   track('pusti_kameru', { prelaz: cam.id, kamera: feed.label, izvor: cam.provider });
   const pane = card.querySelector(".pane");
-  const video = pane.querySelector("video");
   const poster = pane.querySelector(".poster");
   const live = pane.querySelector(".live");
   const pmsg = pane.querySelector(".pmsg");
@@ -539,6 +538,18 @@ function playFeed(card, cam, feedIndex){
   // cleanup prethodnog hls-a
   if(card._hls){ try{card._hls.destroy();}catch(e){} card._hls=null; }
 
+  // Nov <video> element pri SVAKOM pustanju/prebacivanju taba - dva blaza
+  // resetovanja (src+load, pa i puni removeAttribute+load) nisu pomogla na
+  // iOS-u, sto znaci da AVPlayer interno drzi staru sesiju vezanu za sam
+  // <video> DOM element, ne samo za manifest. Svez element to zaobilazi
+  // u korenu: iOS nema sta da "zapamti" jer element doslovno ne postoji
+  // dok se strim ne pusti.
+  const oldVideo = pane.querySelector("video");
+  const video = document.createElement("video");
+  video.setAttribute("playsinline", "");
+  video.muted = true;
+  oldVideo.replaceWith(video);
+
   const onOk = ()=>{ live.style.display="flex"; ensureVidControls(card, video); video.play().catch(()=>{}); track('kamera_radi', { prelaz: cam.id, kamera: feed.label }); };
   const onFail = ()=>{
     track('kamera_pala', { prelaz: cam.id, kamera: feed.label, izvor: cam.provider });
@@ -550,16 +561,8 @@ function playFeed(card, cam, feedIndex){
   };
 
   if(video.canPlayType("application/vnd.apple.mpegurl")){
-    // Safari / iOS native HLS - pause+src+load nije bilo dovoljno u praksi.
-    // Potpuni reset (prazan src + load PA TEK ONDA novi src + load) primorava
-    // iOS da stvarno napusti stari strim. Cache-bust (?t=) sprecava iOS da
-    // vrati kesiran raniji manifest za isti URL (retko, ali zna da se desi
-    // kod live HLS-a).
-    video.pause();
-    video.removeAttribute("src");
-    video.load();
-    const bust = feed.src + (feed.src.includes("?") ? "&" : "?") + "_=" + Date.now();
-    video.src = bust;
+    // Safari / iOS native HLS
+    video.src = feed.src;
     video.load();
     video.addEventListener("loadedmetadata",onOk,{once:true});
     video.addEventListener("error",onFail,{once:true});
