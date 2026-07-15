@@ -139,6 +139,14 @@
     .share-btn:hover { color: var(--text); border-color: var(--fuel); }
 
     .calc-form { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; margin-bottom: 24px; }
+    .route-mode-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+    .rmt { font-family:"JetBrains Mono",monospace; font-size: 12px; color: var(--dim); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .rmt.active { color: var(--ink); background: var(--fuel); border-color: var(--fuel); font-weight: 700; }
+    .rmt-new { font-size: 9px; background: var(--bad); color: #fff; padding: 1px 5px; border-radius: 5px; text-transform: uppercase; letter-spacing: .04em; }
+    .rmt.active .rmt-new { background: rgba(13,22,32,.35); }
+    .custom-route-status { margin-top: 12px; font-size: 13px; color: var(--dim); min-height: 1.4em; }
+    .custom-route-status.err { color: var(--bad); }
+    .custom-route-note { margin-top: 10px; font-size: 11.5px; color: var(--faint); line-height: 1.5; }
     .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
     .calc-input { display: flex; flex-direction: column; gap: 6px; }
     .calc-input label { color: var(--dim); font-size: 13px; }
@@ -335,11 +343,35 @@
     <!-- CALCULATOR -->
     <section id="viewCalc" style="display:none">
       <div class="calc-form">
-        <div class="calc-grid">
+        <div class="route-mode-tabs">
+          <button type="button" class="rmt active" id="rmtPreset" onclick="setRouteMode('preset')">Gotova ruta</button>
+          <button type="button" class="rmt" id="rmtCustom" onclick="setRouteMode('custom')">Bilo koja ruta <span class="rmt-new">novo</span></button>
+        </div>
+
+        <div id="presetRouteBox">
           <div class="calc-input">
             <label for="routeSel">Ruta</label>
             <select id="routeSel" onchange="renderCalc()"></select>
           </div>
+        </div>
+
+        <div id="customRouteBox" style="display:none">
+          <div class="calc-grid">
+            <div class="calc-input">
+              <label for="customFrom">Polazak</label>
+              <input id="customFrom" type="text" placeholder="npr. Kragujevac" autocomplete="off">
+            </div>
+            <div class="calc-input">
+              <label for="customTo">Odredište</label>
+              <input id="customTo" type="text" placeholder="npr. Ohrid" autocomplete="off">
+            </div>
+          </div>
+          <button type="button" class="btn" id="findRouteBtn" onclick="findCustomRoute()" style="margin-top:12px">Pronađi rutu →</button>
+          <div id="customRouteStatus" class="custom-route-status"></div>
+          <div class="custom-route-note">Polazak, odredište i sama ruta se traže preko OpenRouteService-a (besplatan javni servis, ne naš). Putarina nije uneta za ove rute (nemamo tačnu deonicu za svaku moguću kombinaciju), samo procena goriva, zeleni karton/vinjeta i granice na putu.</div>
+        </div>
+
+        <div class="calc-grid" style="margin-top:18px">
           <div class="calc-input">
             <label for="fuelSel">Vrsta goriva</label>
             <select id="fuelSel" onchange="renderCalc()">
@@ -379,6 +411,7 @@
         </div>
       </div>
       <div id="calcOutput"></div>
+
     </section>
 
     <section class="faq">
@@ -414,6 +447,137 @@
   <script>
     let dataCache = null;
     let priceHistory = {}; // zemlja -> gorivo -> [{ts:Date, eur}], puni se iz cene_istorija.csv (moze biti prazno dok se ne nakupi bar jedan run)
+
+    // === Dinamicke rute (OpenRouteService) ===
+    // Besplatan kljuc sa openrouteservice.org (Dashboard -> API Key), 2.500 poziva/dan.
+    // Ako ostane prazan, "Bilo koja ruta" tab i dalje radi ali odmah javlja jasnu gresku
+    // umesto da tiho puca - namerno, da se odmah vidi ako kljuc fali ili je pogresan.
+    const ORS_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjcxOWI4NzkyNzdjZjQyMTk4NGNkYmNiMTUyNGUzODVlIiwiaCI6Im11cm11cjY0In0=";
+
+    // ORS interni country_id -> nas ISO kod. Samo zemlje koje se realno mogu pojaviti
+    // na balkanskoj ruti - vidi punu listu: giscience.github.io/openrouteservice/technical-details/country-list
+    const ORS_COUNTRY_ID = {
+      2: 'AL', 23: 'BA', 30: 'BG', 49: 'HR', 78: 'GR', 88: 'HU',
+      106: 'XK', 118: 'MK', 132: 'ME', 162: 'RO', 175: 'RS', 180: 'SI',
+      11: 'AT', 97: 'IT', 159: 'PL', 179: 'SK', 213: 'GB',
+    };
+
+    let routeMode = 'preset'; // 'preset' | 'custom'
+    let customRoute = null;   // popunjava findCustomRoute(), isti oblik kao stavka iz ROUTES
+
+    function setRouteMode(mode) {
+      routeMode = mode;
+      document.getElementById('rmtPreset').classList.toggle('active', mode === 'preset');
+      document.getElementById('rmtCustom').classList.toggle('active', mode === 'custom');
+      document.getElementById('presetRouteBox').style.display = mode === 'preset' ? '' : 'none';
+      document.getElementById('customRouteBox').style.display = mode === 'custom' ? '' : 'none';
+      renderCalc();
+    }
+
+    async function orsGeocode(text) {
+      const url = `https://api.openrouteservice.org/geocode/search?api_key=${encodeURIComponent(ORS_KEY)}&text=${encodeURIComponent(text)}&size=1`;
+      const res = await fetch(url);
+      if (!res.ok) {
+        if (res.status === 403 || res.status === 401) throw new Error('ORS kljuc nije validan (proveri da li je tacno nalepljen).');
+        if (res.status === 429) throw new Error('Dnevni limit ORS poziva je potrosen (2.500/dan) - probaj sutra.');
+        throw new Error('Geokodiranje nije uspelo (' + res.status + ').');
+      }
+      const data = await res.json();
+      const f = data.features && data.features[0];
+      if (!f) return null;
+      const [lon, lat] = f.geometry.coordinates;
+      return { lat, lon, label: f.properties.label || text };
+    }
+
+    async function orsRoute(from, to) {
+      const url = `https://api.openrouteservice.org/v2/directions/driving-car`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Authorization': ORS_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          coordinates: [[from.lon, from.lat], [to.lon, to.lat]],
+          extra_info: ['countryinfo'],
+          units: 'km',
+        }),
+      });
+      if (!res.ok) {
+        if (res.status === 403 || res.status === 401) throw new Error('ORS kljuc nije validan.');
+        if (res.status === 429) throw new Error('Dnevni limit ORS poziva je potrosen (2.500/dan) - probaj sutra.');
+        if (res.status === 400 || res.status === 404) throw new Error('Nije nadjena drumska ruta izmedju ove dve tacke.');
+        throw new Error('Racunanje rute nije uspelo (' + res.status + ').');
+      }
+      const data = await res.json();
+      const route = data.routes && data.routes[0];
+      if (!route) throw new Error('Nije nadjena drumska ruta izmedju ove dve tacke.');
+
+      // countryinfo.summary daje [{value: country_id, distance, amount%}] - to direktno
+      // pretvaramo u legs niz istog oblika kao rucno pisane rute (bez ovoga bi trebalo
+      // sami da presecamo geometriju rute sa granicama zemalja - ORS to vec radi za nas).
+      const ci = route.extras && route.extras.countryinfo;
+      if (!ci || !ci.summary || !ci.summary.length) {
+        // Fallback: nema countryinfo (retko) - ceo put trpamo u jednu "nepoznato" deonicu
+        return { legs: [{ c: 'RS', km: Math.round(route.summary.distance) }], totalKm: route.summary.distance, unknownCountries: true };
+      }
+      // summary redosled nije uvek isti kao redosled voznje - koristimo "values" (koje ima
+      // way-point opsege po redosledu) da sacuvamo pravi redosled prolaska kroz zemlje.
+      const legs = [];
+      (ci.values || []).forEach(([, , countryId]) => {
+        const iso = ORS_COUNTRY_ID[countryId];
+        const last = legs[legs.length - 1];
+        if (last && last._cid === countryId) return; // spojeno u summary koraku ispod
+        legs.push({ c: iso || ('#' + countryId), _cid: countryId, km: 0 });
+      });
+      // km po deonici iz summary (koji ima tacnu distancu po zemlji, ne po way-point opsegu)
+      const distByCid = {};
+      ci.summary.forEach(s => { distByCid[s.value] = s.distance; });
+      // ako ista zemlja ima vise odvojenih "values" segmenata (ulaz-izlaz-ulaz, retko na
+      // kruznim rutama), spajamo ih pod jedan leg da se ne duplira u prikazu
+      const merged = [];
+      legs.forEach(l => {
+        const prev = merged[merged.length - 1];
+        if (prev && prev.c === l.c) return;
+        merged.push(l);
+      });
+      merged.forEach((l, i) => {
+        l.km = Math.round((distByCid[l._cid] || 0));
+        delete l._cid;
+      });
+      const unknownCountries = merged.some(l => l.c.startsWith('#'));
+      return { legs: merged, totalKm: route.summary.distance, unknownCountries };
+    }
+
+    async function findCustomRoute() {
+      const statusEl = document.getElementById('customRouteStatus');
+      const fromText = document.getElementById('customFrom').value.trim();
+      const toText = document.getElementById('customTo').value.trim();
+      statusEl.className = 'custom-route-status';
+      if (!fromText || !toText) { statusEl.textContent = 'Unesi i polazak i odredište.'; statusEl.className = 'custom-route-status err'; return; }
+      if (!ORS_KEY || ORS_KEY === 'TVOJ_KLJUC_OVDE') { statusEl.textContent = 'ORS ključ nije podešen u kodu (ORS_KEY).'; statusEl.className = 'custom-route-status err'; return; }
+
+      statusEl.textContent = 'Tražim lokacije…';
+      try {
+        const [from, to] = await Promise.all([orsGeocode(fromText), orsGeocode(toText)]);
+        if (!from) throw new Error(`Nije pronađeno mesto "${fromText}".`);
+        if (!to) throw new Error(`Nije pronađeno mesto "${toText}".`);
+
+        statusEl.textContent = 'Računam rutu…';
+        const r = await orsRoute(from, to);
+
+        customRoute = {
+          id: 'custom',
+          label: `${from.label.split(',')[0]} → ${to.label.split(',')[0]}`,
+          legs: r.legs,
+          custom: true,
+        };
+        statusEl.textContent = `Pronađeno: ${from.label.split(',')[0]} → ${to.label.split(',')[0]} (${Math.round(r.totalKm)} km)${r.unknownCountries ? ' — neke zemlje na ruti nisu prepoznate, cene goriva za te deonice neće biti tačne.' : ''}`;
+        renderCalc();
+      } catch (e) {
+        customRoute = null;
+        statusEl.textContent = e.message || 'Nešto nije uspelo, probaj ponovo.';
+        statusEl.className = 'custom-route-status err';
+        renderCalc();
+      }
+    }
     let currentTab = 'prices';
     let currentView = 'eur';
     let currentSort = 'default';
@@ -421,14 +585,17 @@
     const COUNTRY_NAMES = {
       RS: 'Serbia', HR: 'Croatia', BA: 'Bosnia and Herzegovina', ME: 'Montenegro',
       SI: 'Slovenia', MK: 'North Macedonia', HU: 'Hungary', BG: 'Bulgaria', AL: 'Albania', GR: 'Greece',
+      RO: 'Romania', XK: 'Kosovo',
     };
     const COUNTRY_FLAG = {
       RS: '🇷🇸', HR: '🇭🇷', BA: '🇧🇦', ME: '🇲🇪', SI: '🇸🇮', MK: '🇲🇰',
-      HU: '🇭🇺', BG: '🇧🇬', AL: '🇦🇱', GR: '🇬🇷', RO: '🇷🇴',
+      HU: '🇭🇺', BG: '🇧🇬', AL: '🇦🇱', GR: '🇬🇷', RO: '🇷🇴', XK: '🇽🇰',
+      AT: '🇦🇹', IT: '🇮🇹', PL: '🇵🇱', SK: '🇸🇰', GB: '🇬🇧',
     };
     const COUNTRY_LABEL = {
       RS: 'Srbija', HR: 'Hrvatska', BA: 'BiH', ME: 'Crna Gora', SI: 'Slovenija',
       MK: 'S. Makedonija', HU: 'Mađarska', BG: 'Bugarska', AL: 'Albanija', GR: 'Grčka', RO: 'Rumunija',
+      XK: 'Kosovo', AT: 'Austrija', IT: 'Italija', PL: 'Poljska', SK: 'Slovačka', GB: 'V. Britanija',
     };
 
     const ROUTES = [
@@ -615,7 +782,7 @@
     function getFuelEur(country, fuelKey) { return (country && country[fuelKey]) ? country[fuelKey].eur : null; }
 
     function computeTrip() {
-      const route = ROUTES.find(r => r.id === document.getElementById('routeSel').value);
+      const route = (routeMode === 'custom') ? customRoute : ROUTES.find(r => r.id === document.getElementById('routeSel').value);
       const fuelKey = document.getElementById('fuelSel').value;
       const cons = parseFloat(document.getElementById('consInp').value);
       const tank = parseFloat(document.getElementById('tankInp').value);
