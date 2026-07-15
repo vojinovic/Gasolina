@@ -203,6 +203,7 @@
     .rb-name { font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:19px; text-transform:uppercase; line-height:1.05; margin-top:2px; }
     .rb-road { font-family:"JetBrains Mono",monospace; font-size:10px; color:var(--dim); border:1px solid var(--line); border-radius:5px; padding:1px 5px; margin-left:4px; }
     .rb-wait { display:flex; align-items:center; gap:7px; justify-content:flex-end; flex-wrap:wrap; }
+    .rb-wait-group { display:flex; flex-direction:column; gap:8px; align-items:flex-end; }
     .rb-dot { width:8px; height:8px; border-radius:50%; flex:none; }
     .rb-min { font-family:"JetBrains Mono",monospace; font-weight:700; font-size:18px; }
     .rb-cat { font-size:11px; color:var(--dim); width:100%; text-align:right; }
@@ -610,8 +611,15 @@
     function routeCrossings(route) {
       const seen = new Set(), out = [];
       for (let i = 0; i < route.legs.length - 1; i++) {
-        BORDERS.forPair(route.legs[i].c, route.legs[i+1].c).forEach(cx => {
-          if (!seen.has(cx.id)) { seen.add(cx.id); out.push(cx); }
+        const a = route.legs[i].c, b = route.legs[i + 1].c;
+        // pravac IZ perspektive Srbije za OVAJ prelaz na OVOJ ruti:
+        // 'izlaz' = napustas Srbiju ovde, 'ulaz' = ulazis u Srbiju ovde.
+        // null = prelaz ne dodiruje Srbiju uopste (npr. MK-GR na Bogorodici),
+        // sto je bezopasno jer takvi prelazi idu kroz noWait granu ispod
+        // koja smer i ne koristi.
+        const dir = a === 'RS' ? 'izlaz' : (b === 'RS' ? 'ulaz' : null);
+        BORDERS.forPair(a, b).forEach(cx => {
+          if (!seen.has(cx.id)) { seen.add(cx.id); out.push({ ...cx, _dir: dir }); }
         });
       }
       return out;
@@ -669,10 +677,21 @@
         </div>`;
     }
 
-    function bordersPanel(route) {
+    function bordersPanel(route, isRoundtrip) {
       if (typeof BORDERS === 'undefined') return '';
       const list = routeCrossings(route);
       if (!list.length) return '';
+      const waitBlock = (cx, dirKey, dirLabel) => {
+        const eff = effWait(cx.id, dirKey);
+        const s = bStatus(eff.v);
+        const extra = eff.here ? ` &middot; HERE: ${eff.here.category}` : '';
+        return `
+          <div class="rb-wait">
+            <span class="rb-dot" style="background:${s.c}"></span>
+            <span class="rb-min" style="color:${s.c}">${bText(eff.v)}</span>
+            <span class="rb-cat">${dirLabel}${eff.src && eff.v > 30 ? ' &middot; izvor: ' + eff.src : ''}${extra}</span>
+          </div>`;
+      };
       const rows = list.map((cx, i) => {
         if (cx.noWait) {
           return `
@@ -684,21 +703,26 @@
           <div class="rb-wait"><span class="rb-cat">kamera dostupna &middot; cekanje se ne prati</span></div>
         </div>`;
         }
-        const eff = effWait(cx.id, 'izlaz');
-        const pOut = eff.v;
-        const s = bStatus(pOut);
-        const extra = eff.here ? ` &middot; HERE: ${eff.here.category}` : '';
+        // Pravac IZ PERSPEKTIVE OVE RUTE, ne uvek "izlaz" - vidi routeCrossings.
+        // Za rute koje ULAZE u Srbiju (npr. Zagreb->Beograd) ovo je 'ulaz',
+        // ranije je uvek bilo hardkodovano 'izlaz' pa je prikazivalo pogresan
+        // smer. Za povratna putovanja prikazujemo i suprotan smer ispod,
+        // jer se ista granica prelazi u oba smera na putu tamo-nazad.
+        const dir = cx._dir || 'izlaz';
+        const oppDir = dir === 'izlaz' ? 'ulaz' : 'izlaz';
+        const dirLabel = dir === 'izlaz' ? 'Izlaz iz Srbije' : 'Ulaz u Srbiju';
+        const oppLabel = (oppDir === 'izlaz' ? 'Izlaz iz Srbije' : 'Ulaz u Srbiju') + ' (povratak)';
+
+        let waitGroup = waitBlock(cx, dir, dirLabel);
+        if (isRoundtrip && cx._dir) waitGroup += waitBlock(cx, oppDir, oppLabel);
+
         return `
         <div class="rb-row${i === 0 ? ' first' : ''}">
           <div class="rb-main">
             <div class="rb-route">${BORDERS.FLAG[cx.from]} ${cx.from} <span class="rb-arr">\u2192</span> ${BORDERS.FLAG[cx.to]} ${cx.to}</div>
             <div class="rb-name">${cx.name} <span class="rb-road">${cx.road}</span></div>
           </div>
-          <div class="rb-wait">
-            <span class="rb-dot" style="background:${s.c}"></span>
-            <span class="rb-min" style="color:${s.c}">${bText(pOut)}</span>
-            <span class="rb-cat">${eff.src && pOut > 30 ? 'izvor: ' + eff.src : 'putnicka, izlaz'}${extra}</span>
-          </div>
+          <div class="rb-wait-group">${waitGroup}</div>
         </div>`;
       }).join('');
       const stamp = borderStamp
@@ -761,7 +785,7 @@
       out.innerHTML = `
         ${savings > 0.5 ? `<div class="savings-banner"><div class="label">Pametna strategija ti štedi</div><div class="amount">${fmtEur(savings)}</div><div class="pct">${savingsPct.toFixed(0)}% jeftinije nego naivno (${fuelText})</div></div>` : ''}
         ${shortfallHtml}
-        ${bordersPanel(t.route)}
+        ${bordersPanel(t.route, t.roundtrip)}
         ${tripCostBox}
         ${pumpsPanel(t.route)}
         <div class="results">
