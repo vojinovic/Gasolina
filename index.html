@@ -115,6 +115,7 @@
     .country { font-family:"Barlow Condensed",sans-serif; font-size: 26px; margin-bottom: 3px; font-weight: 700; text-transform:uppercase; letter-spacing:.01em; }
     .currency-info { font-size: 11px; color: var(--faint); margin-bottom: 18px; font-family:"JetBrains Mono",monospace; }
     .price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 13px; font-size: 16px; gap: 12px; }
+    .range-hint { font-size: 10.5px; color: var(--faint); font-family:"JetBrains Mono",monospace; margin-top: -9px; margin-bottom: 13px; text-align: right; }
     .fuel-name { color: var(--dim); display: flex; align-items: center; gap: 6px; }
     .fuel-price { font-weight: 700; font-family:"JetBrains Mono",monospace; font-variant-numeric: tabular-nums; text-align: right; }
     .fuel-price .secondary { font-size: 11px; color: var(--faint); font-weight: 500; margin-left: 6px; }
@@ -402,6 +403,7 @@
   <script src="borders-data.js"></script>
   <script>
     let dataCache = null;
+    let priceHistory = {}; // zemlja -> gorivo -> [{ts:Date, eur}], puni se iz cene_istorija.csv (moze biti prazno dok se ne nakupi bar jedan run)
     let currentTab = 'prices';
     let currentView = 'eur';
     let currentSort = 'default';
@@ -527,6 +529,50 @@
       window.open(urls[kind], '_blank', 'noopener');
     }
 
+    // "2026-07-15 13:41 UTC" -> ISO string, da parsiranje radi isto u svim
+    // browserima (ne samo onima cija Date() slucajno prihvata taj format).
+    function parseHistTs(s) {
+      return new Date(s.replace(' UTC', '').replace(' ', 'T') + ':00Z');
+    }
+    function parseHistoryCsv(text) {
+      const hist = {};
+      const lines = text.trim().split('\n');
+      for (let i = 1; i < lines.length; i++) {
+        const parts = lines[i].split(',');
+        if (parts.length < 4) continue;
+        const [tsStr, zemlja, gorivo, cenaStr] = parts;
+        const eur = parseFloat(cenaStr);
+        if (!zemlja || !gorivo || isNaN(eur)) continue;
+        const ts = parseHistTs(tsStr);
+        if (isNaN(ts.getTime())) continue;
+        (hist[zemlja] = hist[zemlja] || {});
+        (hist[zemlja][gorivo] = hist[zemlja][gorivo] || []).push({ ts, eur });
+      }
+      return hist;
+    }
+    // Raspon iz ONOGA STO STVARNO POSTOJI, ne lazni "30 dana" pre nego sto
+    // toliko istorije zaista postoji. Cron za cene ide nedeljno, pa ce prve
+    // nedelje/mesece raspon realno imati par tacaka - i to se iskreno kaze.
+    function priceRange(countryName, fuelKey) {
+      const hist = priceHistory[countryName] && priceHistory[countryName][fuelKey];
+      if (!hist || hist.length < 2) return null;
+      const sorted = [...hist].sort((a, b) => a.ts - b.ts);
+      const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
+      const inWindow = sorted.filter(h => h.ts.getTime() >= cutoff);
+      const pool = inWindow.length >= 2 ? inWindow : sorted;
+      const vals = pool.map(h => h.eur);
+      const min = Math.min(...vals), max = Math.max(...vals);
+      if (min === max) return null; // nema promene - nema sta da se istakne
+      const spanDays = Math.max(1, Math.round((pool[pool.length - 1].ts - pool[0].ts) / (24 * 60 * 60 * 1000)));
+      return { min, max, spanDays };
+    }
+    function rangeHint(c, fuelKey) {
+      const r = priceRange(c.name, fuelKey);
+      if (!r) return '';
+      const label = r.spanDays >= 27 ? 'poslednjih 30 dana' : `poslednjih ${r.spanDays} ${r.spanDays === 1 ? 'dan' : 'dana'}`;
+      return `<div class="range-hint">raspon ${label}: ${fmtEur(r.min)}–${fmtEur(r.max)}</div>`;
+    }
+
     function renderPrices() {
       const cards = document.getElementById('cards');
       cards.innerHTML = '';
@@ -539,8 +585,11 @@
           <div class="country">${c.flag || ''} ${c.name}</div>
           <div class="currency-info">Valuta: ${c.currency}${c.fx_rate_eur && c.currency !== 'EUR' ? ` · 1 EUR ≈ ${c.fx_rate_eur} ${c.currency}` : ''}</div>
           <div class="price-row"><span class="fuel-name">Benzin 95${badgeFor('petrol95', c, bw)}</span><span class="fuel-price green">${priceCell(c.petrol95, c)}</span></div>
+          ${rangeHint(c, 'petrol95')}
           <div class="price-row"><span class="fuel-name">Dizel${badgeFor('diesel', c, bw)}</span><span class="fuel-price yellow">${priceCell(c.diesel, c)}</span></div>
+          ${rangeHint(c, 'diesel')}
           <div class="price-row"><span class="fuel-name">Auto-gas${badgeFor('lpg', c, bw)}</span><span class="fuel-price blue">${priceCell(c.lpg, c)}</span></div>
+          ${rangeHint(c, 'lpg')}
           <div class="share-row">
             <span class="share-label">Podeli:</span>
             <button class="share-btn" type="button" onclick="doShare('viber','${c.name}')">Viber</button>
@@ -1029,6 +1078,14 @@
             if (currentTab === 'calc') renderCalc();
           }
         } catch (e) { /* nema pumpe.json */ }
+        try {
+          const rc = await fetch('cene_istorija.csv?cb=' + Date.now());
+          if (rc.ok) {
+            const text = await rc.text();
+            priceHistory = parseHistoryCsv(text);
+            renderPrices(); // ubaci raspone na vec iscrtane kartice
+          }
+        } catch (e) { /* nema cene_istorija.csv jos - normalno pre prvog run-a */ }
       } catch (err) {
         document.getElementById('meta').textContent = 'Greška pri učitavanju podataka.';
         console.error(err);
