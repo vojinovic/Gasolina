@@ -550,8 +550,12 @@ function playFeed(card, cam, feedIndex){
   };
 
   if(video.canPlayType("application/vnd.apple.mpegurl")){
-    // Safari / iOS native HLS
+    // Safari / iOS native HLS - .load() je OBAVEZAN posle promene .src,
+    // inace iOS zna da ostane "zaglavljen" na prethodnom strimu kad se
+    // prebacuje sa taba na tab (npr. Ulaz -> Izlaz) dok je video vec aktivan.
+    video.pause();
     video.src=feed.src;
+    video.load();
     video.addEventListener("loadedmetadata",onOk,{once:true});
     video.addEventListener("error",onFail,{once:true});
   } else if(window.Hls && Hls.isSupported()){
