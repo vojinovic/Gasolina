@@ -475,8 +475,17 @@
     }
 
     async function orsGeocode(text) {
-      const url = `https://api.openrouteservice.org/geocode/search?api_key=${encodeURIComponent(ORS_KEY)}&text=${encodeURIComponent(text)}&size=1`;
-      const res = await fetch(url);
+      // focus.point je "meki" bias, ne tvrdi filter - i dalje moze da nadje bilo sta u
+      // svetu, samo favorizuje rezultate blize regionu kad je ime dvosmisleno (npr. "Nis"
+      // bez kvacice je i Nis u Srbiji i Nice u Francuskoj - bez ovoga je pogadjao Francusku).
+      const params = new URLSearchParams({
+        api_key: ORS_KEY,
+        text,
+        size: 3,
+        'focus.point.lat': '44.5',
+        'focus.point.lon': '19.5',
+      });
+      const res = await fetch(`https://api.openrouteservice.org/geocode/search?${params}`);
       if (!res.ok) {
         if (res.status === 403 || res.status === 401) throw new Error('ORS kljuc nije validan (proveri da li je tacno nalepljen).');
         if (res.status === 429) throw new Error('Dnevni limit ORS poziva je potrosen (2.500/dan) - probaj sutra.');
@@ -560,7 +569,9 @@
         if (!from) throw new Error(`Nije pronađeno mesto "${fromText}".`);
         if (!to) throw new Error(`Nije pronađeno mesto "${toText}".`);
 
-        statusEl.textContent = 'Računam rutu…';
+        // Pokazi PUN naziv (sa državom) odmah, pre racunanja rute - ako je pogodio pogresno
+        // mesto (npr. Nice u Francuskoj umesto Nis u Srbiji), ovde se to odmah vidi.
+        statusEl.textContent = `Računam rutu: ${from.label} → ${to.label}…`;
         const r = await orsRoute(from, to);
 
         customRoute = {
@@ -569,7 +580,7 @@
           legs: r.legs,
           custom: true,
         };
-        statusEl.textContent = `Pronađeno: ${from.label.split(',')[0]} → ${to.label.split(',')[0]} (${Math.round(r.totalKm)} km)${r.unknownCountries ? ' — neke zemlje na ruti nisu prepoznate, cene goriva za te deonice neće biti tačne.' : ''}`;
+        statusEl.textContent = `Pronađeno: ${from.label} → ${to.label} (${Math.round(r.totalKm)} km)${r.unknownCountries ? ' — neke zemlje na ruti nisu prepoznate, cene goriva za te deonice neće biti tačne.' : ''}`;
         renderCalc();
       } catch (e) {
         customRoute = null;
