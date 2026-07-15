@@ -88,6 +88,15 @@
   }
   .note b{color:var(--text);font-weight:600}
 
+  .cmp-banner{
+    margin-top:14px;border:1px solid rgba(245,166,35,.35);border-left:3px solid var(--fuel);
+    background:linear-gradient(180deg, rgba(245,166,35,.07), transparent 60%), var(--panel);
+    border-radius:10px;padding:11px 14px;color:var(--text);font-size:13px;line-height:1.5;
+  }
+  .cmp-banner + .cmp-banner{margin-top:8px}
+  .cmp-banner b{font-weight:700}
+  .cmp-banner .cmp-fast{color:var(--ok)}
+
   /* Grid */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;margin-top:24px}
 
@@ -287,6 +296,8 @@
   <div class="note">
     <b>Kako čitati brojke.</b> Prikazujemo najgoru dostupnu procenu iz svih izvora za svaki smer, uz oznaku odakle je podatak. Kamere se vuku sa zvaničnih AMSS i MUP servera, pa video u nekim browserima možda neće da se učita (zavisi od CORS i referer politike izvora). Ako se ne učita, kartica nudi dugme ka zvaničnoj kameri. Kamera je uvek najpouzdanija provera stvarnog stanja.
   </div>
+
+  <div id="cmp"></div>
 
   <div class="grid" id="grid"></div>
 
@@ -582,6 +593,42 @@ function playFeed(card, cam, feedIndex){
 }
 
 /* ---- ucitaj prave podatke pa renderuj ---- */
+/* Dativ naziva zemalja, za recenice tipa "Ka Madjarskoj". Samo zemlje koje se
+   realno pojavljuju kao par sa vise prelaza (RS->HU: Horgos/Kelebija, RS->ME:
+   Spiljani/Gostun) - dopuni po potrebi ako se doda novi dupli prelaz. */
+const CN_DATIVE = { HU:"Mađarskoj", ME:"Crnoj Gori", HR:"Hrvatskoj", BG:"Bugarskoj", MK:"Makedoniji", BA:"Bosni", GR:"Grčkoj", RO:"Rumuniji" };
+
+/* Kad postoji vise prelaza ka istoj zemlji (npr. Horgos i Kelebija ka Madjarskoj),
+   prikazi direktno poredjenje umesto da korisnik sam racuna dve odvojene kartice.
+   Prag od 10 min je namerno - manja razlika nije vredna isticanja, samo sum. */
+function renderComparisons(){
+  const cmp = document.getElementById("cmp");
+  if(!cmp) return;
+  const groups = {};
+  CAMERAS.forEach(c => {
+    const key = BORDERS.pairKey(c.from, c.to);
+    (groups[key] = groups[key] || []).push(c);
+  });
+  const banners = [];
+  Object.values(groups).forEach(list => {
+    if(list.length < 2) return;
+    const withWait = list
+      .map(c => ({ c, eff: effective(c, "izlaz") }))
+      .filter(x => x.eff.v != null);
+    if(withWait.length < 2) return;
+    withWait.sort((a, b) => a.eff.v - b.eff.v);
+    const fastest = withWait[0], slowest = withWait[withWait.length - 1];
+    const diff = slowest.eff.v - fastest.eff.v;
+    if(diff < 10) return;
+    const toName = CN_DATIVE[list[0].to] || list[0].to;
+    banners.push(`
+      <div class="cmp-banner">
+        \uD83D\uDCA1 Ka ${BORDERS.FLAG[list[0].to]} <b>${toName}</b>: <b class="cmp-fast">${fastest.c.name}</b> trenutno brži za <b>${fmtMin(diff)}</b> nego ${slowest.c.name} (${fmtMin(fastest.eff.v)} : ${fmtMin(slowest.eff.v)}).
+      </div>`);
+  });
+  cmp.innerHTML = banners.join("");
+}
+
 const grid=document.getElementById("grid");
 
 function wire(){
@@ -666,6 +713,7 @@ async function init(){
 
   grid.innerHTML=CAMERAS.map(cardHTML).join("");
   wire();
+  renderComparisons();
   setNote(live, scrapedAt);
 }
 init();
