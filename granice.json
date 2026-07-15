@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-15T06:37:10+00:00",
+  "scraped_at": "2026-07-15T08:10:08+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -18,7 +18,7 @@
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
         "izlaz": 10,
-        "ulaz": 10
+        "ulaz": 15
       }
     },
     "horgos": {
