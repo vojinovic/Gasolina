@@ -17,6 +17,7 @@ window.BORDERS = (function () {
     HR: "\uD83C\uDDED\uD83C\uDDF7", HU: "\uD83C\uDDED\uD83C\uDDFA",
     MK: "\uD83C\uDDF2\uD83C\uDDF0", BA: "\uD83C\uDDE7\uD83C\uDDE6",
     BG: "\uD83C\uDDE7\uD83C\uDDEC", RO: "\uD83C\uDDF7\uD83C\uDDF4",
+    GR: "\uD83C\uDDEC\uD83C\uDDF7",
   };
 
   const CROSSINGS = [
