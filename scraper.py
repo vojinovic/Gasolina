@@ -13,6 +13,7 @@ Sources:
   - Kosovo:     globalpetrolprices.com (EUR)
 """
 
+import csv
 import json
 import re
 from datetime import datetime
@@ -20,6 +21,8 @@ from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
+
+HIST_PATH = Path("cene_istorija.csv")
 
 HEADERS = {
     "User-Agent": (
@@ -424,6 +427,42 @@ def scrape_kosovo():
     }
 
 
+def append_history(countries):
+    """Dopisuje cene_istorija.csv - jedan red po (zemlja, gorivo) kod svakog
+    pokretanja scrapera. Bez ovoga nema nikakve istorije cena (fuel_prices.json
+    se svaki put prepise, stari broj se gubi) - ovo je preduslov za bilo kakav
+    min/max ili trend prikaz na frontend-u.
+
+    NAPOMENA O UCESTALOSTI: cron za ovaj scraper trenutno ide jednom nedeljno
+    (petak 18h UTC), sto znaci da ce "30-dnevni" raspon realno imati samo
+    ~4 tacke podataka mesecno, ne 30. Frontend treba da to iskreno predstavi
+    (npr. "raspon poslednjih N sedmica" umesto lazno preciznog "30 dana") dok
+    se ne odluci da li cron treba da bude ucestaliji.
+    """
+    ts = now_utc()
+    rows = []
+    for c in countries:
+        name = c.get("name")
+        if not name:
+            continue
+        for fuel_key in ("petrol95", "diesel", "lpg"):
+            f = c.get(fuel_key)
+            if f and f.get("eur") is not None:
+                rows.append([ts, name, fuel_key, f["eur"]])
+
+    if not rows:
+        print("Istorija cena: nema sta da se upise.")
+        return
+
+    new_file = not HIST_PATH.exists()
+    with open(HIST_PATH, "a", encoding="utf-8", newline="") as fh:
+        w = csv.writer(fh)
+        if new_file:
+            w.writerow(["ts", "zemlja", "gorivo", "cena_eur"])
+        w.writerows(rows)
+    print(f"Istorija cena: dopisano {len(rows)} redova u {HIST_PATH}")
+
+
 SCRAPERS = [
     ("Serbia", scrape_serbia),
     ("Croatia", scrape_croatia),
@@ -464,6 +503,8 @@ def main():
     payload = {"countries": countries}
     JSON_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False))
     print(f"[done] wrote {JSON_PATH} with {len(countries)} country/countries")
+
+    append_history(countries)
 
 
 if __name__ == "__main__":
