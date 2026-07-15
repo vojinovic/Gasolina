@@ -866,6 +866,39 @@
         </div>`;
     }
 
+    let lastTripShare = null; // { text, routeId } - puni se pri svakom renderCalc()
+    function tripShareText(t, savings, savingsPct, tollTotal) {
+      const base = t.route.label;
+      if (savings > 0.5) {
+        return `${base}: pametna strategija štedi ${fmtEur(savings)} (${savingsPct.toFixed(0)}% jeftinije) na gorivu — gasolina.rs`;
+      }
+      if (tollTotal != null && t.smartCost > 0) {
+        return `${base}: procena troška puta ~${fmtEur(t.smartCost + tollTotal)} (gorivo + putarina) — gasolina.rs`;
+      }
+      if (t.smartCost > 0) {
+        return `${base}: procena troška goriva ~${fmtEur(t.smartCost)} — gasolina.rs`;
+      }
+      return `${base} — izračunaj svoju rutu na gasolina.rs`;
+    }
+    function doShareTrip(kind, btn) {
+      if (!lastTripShare) return;
+      track('podeli_rutu', { ruta: lastTripShare.routeId, kanal: kind });
+      const text = lastTripShare.text;
+      if (kind === 'copy') {
+        navigator.clipboard.writeText(text + ' https://gasolina.rs/#kalkulator').then(() => {
+          if (btn) { const old = btn.textContent; btn.textContent = 'Kopirano!'; setTimeout(() => { btn.textContent = old; }, 1500); }
+        }).catch(() => {});
+        return;
+      }
+      const t2 = encodeURIComponent(text), u = encodeURIComponent('https://gasolina.rs/#kalkulator');
+      const urls = {
+        viber: `viber://forward?text=${t2}%20${u}`,
+        whatsapp: `https://wa.me/?text=${t2}%20${u}`,
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${u}&quote=${t2}`,
+      };
+      window.open(urls[kind], '_blank', 'noopener');
+    }
+
     let lastTrackedRoute = null;
     function renderCalc() {
       document.getElementById('consVal').textContent = parseFloat(document.getElementById('consInp').value).toFixed(1).replace('.', ',') + ' L';
@@ -913,8 +946,19 @@
         ? `<div class="shortfall-warn">⚠️ <b>Pazi:</b> za izabrano gorivo (${fuelText}) nedostaje cena u: <b>${t.shortfallLegs.join(', ')}</b> — verovatno ga tamo teze nalaziš na pumpama. Nedostaje ti procenjeno <b>${t.shortfallLiters.toFixed(1).replace('.', ',')} L</b> koje ovaj kalkulator ne ume da uračuna u cenu, pa je ukupan trošak ispod veći od prikazanog. Napuni rezervoar unapred pre te deonice.</div>`
         : '';
 
+      lastTripShare = { text: tripShareText(t, savings, savingsPct, tollTotal), routeId: t.route.id };
+      const shareRowTrip = t.smartCost > 0 ? `
+        <div class="share-row" style="margin-bottom:18px">
+          <span class="share-label">Podeli:</span>
+          <button class="share-btn" type="button" onclick="doShareTrip('viber')">Viber</button>
+          <button class="share-btn" type="button" onclick="doShareTrip('whatsapp')">WhatsApp</button>
+          <button class="share-btn" type="button" onclick="doShareTrip('facebook')">Facebook</button>
+          <button class="share-btn" type="button" onclick="doShareTrip('copy', this)">Kopiraj</button>
+        </div>` : '';
+
       out.innerHTML = `
         ${savings > 0.5 ? `<div class="savings-banner"><div class="label">Pametna strategija ti štedi</div><div class="amount">${fmtEur(savings)}</div><div class="pct">${savingsPct.toFixed(0)}% jeftinije nego naivno (${fuelText})</div></div>` : ''}
+        ${shareRowTrip}
         ${shortfallHtml}
         ${bordersPanel(t.route, t.roundtrip)}
         ${tripCostBox}
