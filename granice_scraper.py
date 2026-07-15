@@ -581,6 +581,58 @@ def selftest():
     return 0 if ok else 1
 
 
+HIST = "istorija.csv"
+
+
+def append_history(result):
+    """Dopise jedan red po prelazu/smeru u istorija.csv (kombinovani najgori podatak).
+    Format: ts,prelaz,smer,minuti,izvor
+    Jedan red je par bajtova; 48 upisa dnevno x 9 prelaza x 2 smera = mali fajl."""
+    import csv
+    import os
+
+    ts = result["scraped_at"]
+    rows = []
+    for cid, c in result["crossings"].items():
+        for smer in ("ulaz", "izlaz"):
+            best, src_name = None, None
+            # AMSS (putnicka)
+            p = (c.get("putnicka") or {}).get(smer)
+            if p is not None:
+                best, src_name = p, "amss"
+            # madjarska strana
+            hu = c.get("hu")
+            if hu and hu.get(smer) is not None and hu[smer] > 0:
+                if best is None or hu[smer] > best:
+                    best, src_name = hu[smer], "hu"
+            # makedonska strana (vlez = izlaz iz Srbije)
+            mk = c.get("mk")
+            if mk:
+                v = mk.get("vlez") if smer == "izlaz" else mk.get("izlez")
+                for cand in (v, mk.get("opsto")):
+                    if cand is not None and cand > 0 and (best is None or cand > best):
+                        best, src_name = cand, "mk"
+            # prijave vozaca
+            ba = c.get("ba")
+            if ba and ba.get(smer) is not None and ba[smer] > 0:
+                if best is None or ba[smer] > best:
+                    best, src_name = ba[smer], "ba"
+            if best is not None:
+                rows.append([ts, cid, smer, best, src_name])
+
+    if not rows:
+        print("Istorija: nema sta da se upise.")
+        return
+
+    new_file = not os.path.exists(HIST)
+    with open(HIST, "a", encoding="utf-8", newline="") as f:
+        w = csv.writer(f)
+        if new_file:
+            w.writerow(["ts", "prelaz", "smer", "minuti", "izvor"])
+        w.writerows(rows)
+    print(f"Istorija: dopisano {len(rows)} redova u {HIST}")
+
+
 def main():
     if "--selftest" in sys.argv:
         return selftest()
@@ -604,6 +656,8 @@ def main():
     result = build(text, hu_text, mk_text, ba_text)
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
+
+    append_history(result)
     found = sum(1 for v in result["crossings"].values() if v.get("found"))
     print(f"Upisano {OUT}: {found}/{len(TARGETS)} prelaza, {result['scraped_at']}")
     return 0
