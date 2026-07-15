@@ -550,11 +550,16 @@ function playFeed(card, cam, feedIndex){
   };
 
   if(video.canPlayType("application/vnd.apple.mpegurl")){
-    // Safari / iOS native HLS - .load() je OBAVEZAN posle promene .src,
-    // inace iOS zna da ostane "zaglavljen" na prethodnom strimu kad se
-    // prebacuje sa taba na tab (npr. Ulaz -> Izlaz) dok je video vec aktivan.
+    // Safari / iOS native HLS - pause+src+load nije bilo dovoljno u praksi.
+    // Potpuni reset (prazan src + load PA TEK ONDA novi src + load) primorava
+    // iOS da stvarno napusti stari strim. Cache-bust (?t=) sprecava iOS da
+    // vrati kesiran raniji manifest za isti URL (retko, ali zna da se desi
+    // kod live HLS-a).
     video.pause();
-    video.src=feed.src;
+    video.removeAttribute("src");
+    video.load();
+    const bust = feed.src + (feed.src.includes("?") ? "&" : "?") + "_=" + Date.now();
+    video.src = bust;
     video.load();
     video.addEventListener("loadedmetadata",onOk,{once:true});
     video.addEventListener("error",onFail,{once:true});
