@@ -436,11 +436,11 @@
       { id: 'bg-sa', label: 'Beograd → Sarajevo', legs: [{c:'RS', km:140}, {c:'BA', km:150}] },
       { id: 'bg-st', label: 'Beograd → Split', legs: [{c:'RS', km:120}, {c:'HR', km:600}], toll: { eur: 48, note: 'Najveci deo je Hrvatska (~44€: Batrovci-Zagreb 16-18€, Zagreb-Split ~27€) + Srbija 520 din. Leti zna biti skuplje.' } },
       { id: 'bg-sk', label: 'Beograd → Skopje', legs: [{c:'RS', km:330}, {c:'MK', km:110}] },
-      { id: 'bg-lj', label: 'Beograd → Ljubljana', legs: [{c:'RS', km:120}, {c:'HR', km:280}, {c:'SI', km:130}] },
+      { id: 'bg-lj', label: 'Beograd → Ljubljana', legs: [{c:'RS', km:120}, {c:'HR', km:280}, {c:'SI', km:130}], toll: { eur: 38, note: 'Srbija (Beograd-Šid) 520 din + Hrvatska (Batrovci-Zagreb) procena ~18€ (naplata po pređenim km, nismo direktno očitali za tačan izlaz ka Sloveniji) + Slovenija: nedeljna e-vinjeta 16€ (Slovenija NEMA dnevnu opciju za putnička vozila, samo nedeljna/mesečna/godišnja).' } },
       { id: 'bg-zg', label: 'Beograd → Zagreb', legs: [{c:'RS', km:130}, {c:'HR', km:270}] },
       { id: 'ni-sk', label: 'Niš → Skopje', legs: [{c:'RS', km:120}, {c:'MK', km:110}] },
       { id: 'zg-bg', label: 'Zagreb → Beograd', legs: [{c:'HR', km:270}, {c:'RS', km:130}] },
-      { id: 'lj-bg', label: 'Ljubljana → Beograd', legs: [{c:'SI', km:130}, {c:'HR', km:280}, {c:'RS', km:120}] },
+      { id: 'lj-bg', label: 'Ljubljana → Beograd', legs: [{c:'SI', km:130}, {c:'HR', km:280}, {c:'RS', km:120}], toll: { eur: 38, note: 'Slovenija: nedeljna e-vinjeta 16€ (nema dnevne opcije za putnička vozila) + Hrvatska procena ~18€ (naplata po pređenim km) + Srbija (Šid-Beograd) 520 din.' } },
       { id: 'st-sa', label: 'Split → Sarajevo', legs: [{c:'HR', km:140}, {c:'BA', km:110}] },
       { id: 'bg-so', label: 'Beograd → Solun (Grčka)', legs: [{c:'RS', km:330}, {c:'MK', km:170}, {c:'GR', km:160}], toll: { eur: 27, note: 'Srbija 2.060 din + Makedonija ~380 MKD (~6€, 5 rampi) + Grcka 2,95€ kod Evzonija. Za Halkidiki i dalje destinacije ima dodatnih grckih rampi.' } },
       { id: 'bg-so-bg', label: 'Beograd → Solun (preko Bugarske)', legs: [{c:'RS', km:340}, {c:'BG', km:230}, {c:'GR', km:120}], toll: { eur: 23, note: 'Srbija (Beograd-Dimitrovgrad/Gradina) 1.800 din + Bugarska dnevna e-vinjeta 4,09€ (vikend vinjeta 5,11€ ako ostajes duze - kupuje se online na bgtoll.bg ili na granici) + Grcka 4,10€ od Kulate/Promahona do Soluna. Jeftinije od rute preko Makedonije i, prema putopisima, slicne duzine ili kraca ako izbegavas centar Soluna. BG i GR deonice su procena na osnovu opisa rute, ne tacnih km oznaka.' } },
@@ -458,7 +458,7 @@
       { id: 'ni-pef', label: 'Niš → Pefkohori (Kasandra)', legs: [{c:'RS', km:130}, {c:'MK', km:170}, {c:'GR', km:200}], toll: { eur: 17, note: 'Srbija (Niš-Presevo) ~900 din + Makedonija ~380 MKD (~6€, 5 rampi) + Grcka 3,60€ (Evzoni + obilaznica Soluna). Dalje do Pefkohorija nema vise naplatnih rampi.' } },
       { id: 'bg-sf', label: 'Beograd → Sofija', legs: [{c:'RS', km:240}, {c:'BG', km:150}] },
       { id: 'ni-sf', label: 'Niš → Sofija', legs: [{c:'RS', km:60}, {c:'BG', km:105}] },
-      { id: 'bg-bp', label: 'Beograd → Budimpešta', legs: [{c:'RS', km:170}, {c:'HU', km:210}] },
+      { id: 'bg-bp', label: 'Beograd → Budimpešta', legs: [{c:'RS', km:170}, {c:'HU', km:210}], toll: { eur: 20, note: 'Srbija (Beograd-Subotica, do granice kod Horgoša) 850 din + Mađarska: dnevna e-vinjeta ~13€ (5.320 HUF, D1 kategorija). Ako ostaješ duže, 10-dnevna je ~16€ i isplativija od dve dnevne.' } },
       { id: 'bg-ti', label: 'Beograd → Tirana (Albanija)', legs: [{c:'RS', km:330}, {c:'ME', km:200}, {c:'AL', km:300}] },
     ];
 
@@ -847,11 +847,20 @@
           </div>`).join('');
 
       const cena = dieselRS ? ` Prosecna cena dizela u Srbiji: <b>${fmtEur(dieselRS)}/L</b>.` : '';
+
+      // "open24" polje vec postoji u pumpe.json (iz OSM opening_hours=24/7), samo
+      // dosad nigde nije prikazivano - korisno za nocnu voznju.
+      const open24List = list.filter(p => p.open24);
+      const open24Html = open24List.length
+        ? `<div class="rb-foot" style="border-top:1px dashed var(--line);padding-top:8px;margin-top:8px">🌙 <b style="color:var(--text)">${open24List.length}</b> od ${list.length} pumpi na ovom delu rute radi 24h (po OSM podacima, proveri pre noćne vožnje).</div>`
+        : '';
+
       return `
         <div class="result-box rd-box">
           <h3>⛽ Pumpe na srpskom delu rute</h3>
           ${rows}
           <div class="rb-foot">Ukupno ${list.length} pumpi duz koridora &middot; izvor: OpenStreetMap.${cena}</div>
+          ${open24Html}
         </div>`;
     }
 
