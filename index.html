@@ -602,7 +602,7 @@
           const buyAmount = Math.min(tank - tankLevel, Math.max(0, neededTotalFromHere - tankLevel));
           if (buyAmount > 0.01) {
             smartCost += buyAmount * leg.pricePerL;
-            plan.push({ flag: leg.flag, label: leg.label, liters: buyAmount, price: leg.pricePerL, cost: buyAmount * leg.pricePerL });
+            plan.push({ flag: leg.flag, label: leg.label, cc: leg.c, liters: buyAmount, price: leg.pricePerL, cost: buyAmount * leg.pricePerL });
             tankLevel += buyAmount;
           }
         }
@@ -624,7 +624,7 @@
           }
           const forced = Math.min(tank, -tankLevel + 5);
           smartCost += forced * leg.pricePerL;
-          plan.push({ flag: leg.flag, label: leg.label, liters: forced, price: leg.pricePerL, cost: forced * leg.pricePerL, forced: true });
+          plan.push({ flag: leg.flag, label: leg.label, cc: leg.c, liters: forced, price: leg.pricePerL, cost: forced * leg.pricePerL, forced: true });
           tankLevel += forced;
         }
       }
@@ -701,6 +701,31 @@
       nums.forEach(x => { if (x.v > best.v) best = x; });
       best.here = hereCrossings[cid] || null;
       return best;
+    }
+
+    // Kratka preporuka brenda za korak "kupi u Srbiji" u pametnoj strategiji.
+    // NEMA cene po pumpi u pumpe.json (OSM ne daje realtime cenu goriva po
+    // stanici) - ovo NIJE "nadji najjeftiniju pumpu", nego "koji brend
+    // realno preovladava na ovom delu puta i ima li ih uopste sa tvojim
+    // gorivom" (bitno pogotovo za LPG, koji je redak). Pošteno, ne lazno.
+    function pumpBrandHint(route, fuelKey) {
+      const corr = ROUTE_PUMPS[route.id];
+      if (!corr || !corr.length || !pumpStations.length) return '';
+      const list = pumpStations.filter(p => corr.includes(p.corridor));
+      if (!list.length) return '';
+      const byBrand = {};
+      list.forEach(p => { byBrand[p.brand] = (byBrand[p.brand] || 0) + 1; });
+      const top = Object.entries(byBrand).sort((a, b) => b[1] - a[1])[0];
+      if (!top) return '';
+      const fuelTag = { lpg: 'tng', diesel: 'dizel', petrol95: 'benzin' }[fuelKey];
+      const withFuel = fuelTag ? list.filter(p => p.fuels && p.fuels.includes(fuelTag)).length : null;
+      let hint = ` Najviše pumpi na ovom delu: <b>${top[0]}</b> (${top[1]}).`;
+      if (fuelKey === 'lpg') {
+        hint += withFuel
+          ? ` ${withFuel} od ${list.length} ima potvrđen auto-gas u OSM podacima (moglo je da se promeni od upisa).`
+          : ` Nijedna od ${list.length} pumpi u OSM podacima nema potvrđen auto-gas - proveri unapred, ne oslanjaj se samo na ovo.`;
+      }
+      return hint;
     }
 
     function pumpsPanel(route) {
@@ -812,7 +837,8 @@
         smartHtml = `<div class="step">Imaš dovoljno goriva za ceo put. nema potrebe za punjenjem.</div>`;
       } else {
         t.plan.forEach((p, i) => {
-          smartHtml += `<div class="step">${i + 1}. ${p.flag} <strong>${p.label}</strong>: kupi <strong>${p.liters.toFixed(1).replace('.', ',')} L</strong> po ${fmtEur(p.price)} = <strong>${fmtEur(p.cost)}</strong></div>`;
+          const hint = p.cc === 'RS' ? pumpBrandHint(t.route, t.fuelKey) : '';
+          smartHtml += `<div class="step">${i + 1}. ${p.flag} <strong>${p.label}</strong>: kupi <strong>${p.liters.toFixed(1).replace('.', ',')} L</strong> po ${fmtEur(p.price)} = <strong>${fmtEur(p.cost)}</strong>${hint}</div>`;
         });
       }
       const naiveHtml = t.naiveCost !== null
