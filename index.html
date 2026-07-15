@@ -619,9 +619,13 @@
         if (last && last._cid === countryId) return; // spojeno u summary koraku ispod
         legs.push({ c: iso || ('#' + countryId), _cid: countryId, km: 0 });
       });
-      // km po deonici iz summary (koji ima tacnu distancu po zemlji, ne po way-point opsegu)
-      const distByCid = {};
-      ci.summary.forEach(s => { distByCid[s.value] = s.distance; });
+      // km po deonici iz summary. NAPOMENA: polje "distance" u countryinfo.summary je
+      // nepouzdano (u ORS-ovoj sopstvenoj primer-dokumentaciji pokazuje 0 za realne rute) -
+      // koristimo "amount" (procenat od ukupne rute) puta stvarnu ukupnu distancu, sto
+      // stvarno radi.
+      const totalKm = route.summary.distance;
+      const amountByCid = {};
+      ci.summary.forEach(s => { amountByCid[s.value] = s.amount; });
       // ako ista zemlja ima vise odvojenih "values" segmenata (ulaz-izlaz-ulaz, retko na
       // kruznim rutama), spajamo ih pod jedan leg da se ne duplira u prikazu
       const merged = [];
@@ -631,11 +635,11 @@
         merged.push(l);
       });
       merged.forEach((l, i) => {
-        l.km = Math.round((distByCid[l._cid] || 0));
+        l.km = Math.round(((amountByCid[l._cid] || 0) / 100) * totalKm);
         delete l._cid;
       });
       const unknownCountries = merged.some(l => l.c.startsWith('#'));
-      return { legs: merged, totalKm: route.summary.distance, unknownCountries };
+      return { legs: merged, totalKm, unknownCountries };
     }
 
     async function findCustomRoute() {
