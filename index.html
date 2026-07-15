@@ -227,7 +227,17 @@
     .cost-row.total strong { color: var(--fuel); font-size: 20px; }
     .cost-note { margin-top: 12px; font-size: 12px; color: var(--faint); line-height: 1.5; }
     .cost-hint { background: var(--panel); border: 1px dashed var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 18px; font-size: 13px; color: var(--faint); }
-  </style>
+  
+    /* FAQ (SEO) */
+    .faq { margin: 40px 0 10px; }
+    .faq h2 { font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:26px; text-transform:uppercase; margin:0 0 16px; }
+    .faq details { border:1px solid var(--line); border-radius:11px; padding:2px 16px; margin-bottom:10px; background:var(--panel); }
+    .faq summary { cursor:pointer; padding:14px 0; font-weight:600; font-size:15px; list-style:none; }
+    .faq summary::-webkit-details-marker { display:none; }
+    .faq summary::before { content:"+"; color:var(--fuel); font-weight:700; margin-right:10px; }
+    .faq details[open] summary::before { content:"\2212"; }
+    .faq details p { margin:0 0 16px; color:var(--dim); font-size:14px; line-height:1.65; }
+</style>
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
 <script>
@@ -238,6 +248,19 @@
   // kratka pomocna funkcija za dogadjaje
   function track(name, params){ try{ gtag('event', name, params || {}); }catch(e){} }
 </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"Gde je najjeftinije gorivo u regionu?","acceptedAnswer":{"@type":"Answer","text":"Gasolina prikazuje aktuelne cene benzina, dizela i auto-gasa u 12 zemalja regiona, preracunate u evre radi lakseg poredjenja, i istice gde je gorivo najjeftinije a gde najskuplje."}},
+      {"@type":"Question","name":"Kako da izracunam trosak puta do mora?","acceptedAnswer":{"@type":"Answer","text":"U kalkulatoru izaberes rutu, uneses potrosnju i velicinu rezervoara, a Gasolina izracuna koliko goriva ti treba, gde je najisplativije da sipas, i procenu ukupnog troska zajedno sa putarinom."}},
+      {"@type":"Question","name":"Da li je uracunata putarina u trosak puta?","acceptedAnswer":{"@type":"Answer","text":"Za glavne letnje rute (Budva, Split, Solun) putarina je uneta iz zvanicnih cenovnika za 2026. i prikazuje se kao deo ukupnog troska, sa napomenom sta tacno ukljucuje."}},
+      {"@type":"Question","name":"Koliko su azurne cene goriva?","acceptedAnswer":{"@type":"Answer","text":"Cene se automatski osvezavaju iz zvanicnih i javnih izvora, sa datumom poslednjeg osvezavanja na svakoj kartici."}}
+    ]
+  }
+  </script>
 </head>
 <body>
   <nav class="topbar">
@@ -259,9 +282,9 @@
     <!-- PRICES / HOME -->
     <section id="viewPrices">
       <header class="home-hero">
-        <div class="eyebrow"><span class="dot"></span> Gorivo, granice i kamere na Balkanu</div>
-        <h1>Put bez iznenadjenja</h1>
-        <p class="subtitle">Cene goriva, kalkulator puta i stanje na granicama. Sve pre polaska, na jednom mestu.</p>
+        <div class="eyebrow"><span class="dot"></span> Put bez iznenađenja</div>
+        <h1>Cene goriva i stanje na granicama na Balkanu</h1>
+        <p class="subtitle">Cene goriva u 12 zemalja, kalkulator troška puta sa putarinom, i gužve na granicama uživo (kamere i procena čekanja). Sve pre polaska, na jednom mestu.</p>
         <div class="route-pick">
           <select id="heroRoute" aria-label="Izaberi rutu"></select>
           <button class="route-btn" onclick="goRoute()">Izracunaj rutu \u2192</button>
@@ -341,6 +364,26 @@
         </div>
       </div>
       <div id="calcOutput"></div>
+    </section>
+
+    <section class="faq">
+      <h2>Česta pitanja</h2>
+      <details>
+        <summary>Gde je najjeftinije gorivo u regionu?</summary>
+        <p>Gasolina prikazuje aktuelne cene benzina, dizela i auto-gasa u 12 zemalja regiona (Srbija, Hrvatska, Bosna i Hercegovina, Crna Gora, Slovenija, Severna Makedonija, Mađarska, Bugarska, Albanija, Grčka, Rumunija i Kosovo), preračunate u evre radi lakšeg poređenja. Kartica na vrhu strane uvek ističe gde je gorivo najjeftinije a gde najskuplje.</p>
+      </details>
+      <details>
+        <summary>Kako da izračunam trošak puta do mora?</summary>
+        <p>U kalkulatoru izabereš rutu (na primer Beograd - Budva ili Beograd - Solun), uneseš potrošnju i veličinu rezervoara, a Gasolina izračuna koliko goriva ti treba, gde je najisplativije da sipaš, i procenu ukupnog troška zajedno sa putarinom.</p>
+      </details>
+      <details>
+        <summary>Da li je uračunata putarina u trošak puta?</summary>
+        <p>Za glavne letnje rute (Budva, Split, Solun) putarina je uneta iz zvaničnih cenovnika za 2026. i prikazuje se kao deo ukupnog troška, sa napomenom šta tačno uključuje. Za ostale rute putarinu dodajemo postepeno.</p>
+      </details>
+      <details>
+        <summary>Koliko su ažurne cene goriva?</summary>
+        <p>Cene se automatski osvežavaju iz zvaničnih i javnih izvora, sa datumom poslednjeg osvežavanja na svakoj kartici. Cene goriva se u regionu najčešće menjaju jednom nedeljno.</p>
+      </details>
     </section>
   </div>
 
