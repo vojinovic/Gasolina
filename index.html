@@ -787,6 +787,44 @@
       return hint;
     }
 
+    // Zeleni karton i vinjeta po zemlji - za srpske tablice, provereno u vise
+    // izvora (AMSS, DDOR, 021.rs...) za 2025/2026. Zeleni karton NIJE
+    // potreban za HR/BA/ME/SI/HU/BG/GR/RO (multilateralni sporazum + bilateralni
+    // sa CG) - jeste za MK i AL. Vinjeta (vremenska, ne po km) treba za
+    // HU/SI/RO/BG; BG vinjeta je vec pomenuta u napomeni putarine gde postoji.
+    // Ovo se odnosi na tranzit/kratak boravak - za duzi boravak ili posebne
+    // slucajeve uvek proveri kod svog osiguravaca pre puta.
+    const COUNTRY_DOCS = {
+      MK: { greenCard: true },
+      AL: { greenCard: true },
+      HU: { vignette: 'e-matrica (vinjeta), online ili na granici' },
+      SI: { vignette: 'e-vinjeta ili nalepnica, na granici/pumpi' },
+      RO: { vignette: 'rovinieta (elektronska vinjeta)' },
+      BG: { vignette: 'e-vinjeta (bgtoll.bg)' },
+    };
+    function docsPanel(route) {
+      const countries = [...new Set(route.legs.map(l => l.c))];
+      const greenCardFor = countries.filter(c => COUNTRY_DOCS[c] && COUNTRY_DOCS[c].greenCard);
+      const vignetteFor = countries.filter(c => COUNTRY_DOCS[c] && COUNTRY_DOCS[c].vignette);
+      if (!greenCardFor.length && !vignetteFor.length) return '';
+      const rows = [];
+      if (greenCardFor.length) {
+        const names = greenCardFor.map(c => COUNTRY_LABEL[c] || c).join(', ');
+        rows.push(`<div class="step">🪪 <strong>Zeleni karton</strong> — potreban za: ${names}. Vadi se kod svog osiguravača pre puta (srpske tablice, kratak boravak).</div>`);
+      }
+      if (vignetteFor.length) {
+        vignetteFor.forEach(c => {
+          rows.push(`<div class="step">🎫 <strong>Vinjeta (${COUNTRY_LABEL[c] || c})</strong> — ${COUNTRY_DOCS[c].vignette}.</div>`);
+        });
+      }
+      return `
+        <div class="result-box">
+          <h3>📋 Šta ti treba za ovu rutu</h3>
+          ${rows.join('')}
+          <div class="step" style="margin-top:8px;color:var(--faint);font-size:12px">Osnovno (vozačka, saobraćajna, polisa) se podrazumeva na svakom putu. Ovo su samo dodatni dokumenti specifični za ovu rutu — proveri kod svog osiguravača pre polaska, pravila se mogu promeniti.</div>
+        </div>`;
+    }
+
     function pumpsPanel(route) {
       const corr = ROUTE_PUMPS[route.id];
       if (!corr || !corr.length || !pumpStations.length) return '';
@@ -973,6 +1011,7 @@
         ${bordersPanel(t.route, t.roundtrip)}
         ${tripCostBox}
         ${pumpsPanel(t.route)}
+        ${docsPanel(t.route)}
         <div class="results">
           <div class="result-box smart"><h3>🧠 Pametna strategija</h3><div class="total">${t.smartCost > 0 ? fmtEur(t.smartCost) : '-'}</div>${smartHtml}</div>
           <div class="result-box"><h3>😴 Naivno (sve u polasku)</h3><div class="total">${t.naiveCost !== null ? fmtEur(t.naiveCost) : '-'}</div>${naiveHtml}</div>
