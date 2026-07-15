@@ -219,6 +219,15 @@
     .nav a{padding:6px 8px;font-size:12px}
     .brand .bname{font-size:18px}
   }
+
+  .faq { margin:40px 0 10px; }
+  .faq h2 { font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:24px; text-transform:uppercase; margin:0 0 16px; }
+  .faq details { border:1px solid var(--line); border-radius:11px; padding:2px 16px; margin-bottom:10px; background:var(--panel); }
+  .faq summary { cursor:pointer; padding:14px 0; font-weight:600; font-size:15px; list-style:none; }
+  .faq summary::-webkit-details-marker { display:none; }
+  .faq summary::before { content:"+"; color:var(--fuel); font-weight:700; margin-right:10px; }
+  .faq details[open] summary::before { content:"\2212"; }
+  .faq details p { margin:0 0 16px; color:var(--dim); font-size:14px; line-height:1.65; }
 </style>
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
@@ -228,6 +237,17 @@
   gtag('js', new Date());
   gtag('config', 'G-4EPLBJE8BL');
   function track(name, params){ try{ gtag('event', name, params || {}); }catch(e){} }
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"Kolika je guzva na Horgosu ili Batrovcima sada?","acceptedAnswer":{"@type":"Answer","text":"Na svakoj kartici prelaza prikazujemo procenu cekanja za ulaz i izlaz iz Srbije, uz kameru uzivo. Kamera je najsigurnija provera trenutnog stanja."}},
+    {"@type":"Question","name":"Odakle dolaze podaci o cekanju?","acceptedAnswer":{"@type":"Answer","text":"Kombinujemo granicnu policiju RS (preko AMSS-a), madjarsku policiju, makedonski AMSM i prijave vozaca. Za svaki smer prikazujemo najgoru dostupnu procenu, sa oznakom izvora."}},
+    {"@type":"Question","name":"Koji prelaz je brzi, Horgos ili Kelebija?","acceptedAnswer":{"@type":"Answer","text":"Na obe kartice vidis aktuelno cekanje, a u kalkulatoru puta se za rutu ka Madjarskoj prikazuju oba prelaza jedan pored drugog radi poredjenja."}},
+    {"@type":"Question","name":"Kako da vidim kameru na granici uzivo?","acceptedAnswer":{"@type":"Answer","text":"Klikni na dugme za reprodukciju na kartici prelaza. Kamere se ucitavaju sa zvanicnih AMSS i MUP servera; ako se ne ucita, kartica nudi dugme ka zvanicnom izvoru."}}
+  ]
+}
 </script>
 </head>
 <body>
@@ -247,15 +267,35 @@
 </nav>
 
 <div class="wrap">
-  <div class="eyebrow"><span class="dot"></span> Gasolina / Granicni prelazi</div>
-  <h1>Stanje na granici uzivo</h1>
-  <p class="lead">Pre polaska proveri kameru i vreme zadrzavanja na prelazu. Svih pet prelaza je povezano sa zivim kamerama (ulaz i izlaz), izvor su AMSS i MUP serveri.</p>
+  <div class="eyebrow"><span class="dot"></span> Gasolina / Granični prelazi</div>
+  <h1>Gužve na granici uživo: kamere i vreme čekanja</h1>
+  <p class="lead">Pre polaska proveri kameru uživo i procenu čekanja na graničnim prelazima Srbije ka Mađarskoj, Hrvatskoj, Bosni, Crnoj Gori, Bugarskoj, Makedoniji i Grčkoj. Podaci se kombinuju iz više izvora: granična policija RS, mađarska i makedonska strana, i prijave vozača.</p>
 
   <div class="note">
-    <b>Demo prototip.</b> Vremena cekanja su ilustrativna, nisu uzivo. Kamere za Gradinu vuku se direktno sa AMSS i MUP servera, pa video mozda nece da se ucita u svakom okruzenju (zavisi od CORS i referer politike izvora). Ako se ne ucita, kartica nudi dugme ka zvanicnoj kameri.
+    <b>Kako čitati brojke.</b> Prikazujemo najgoru dostupnu procenu iz svih izvora za svaki smer, uz oznaku odakle je podatak. Kamere se vuku sa zvaničnih AMSS i MUP servera, pa video u nekim browserima možda neće da se učita (zavisi od CORS i referer politike izvora). Ako se ne učita, kartica nudi dugme ka zvaničnoj kameri. Kamera je uvek najpouzdanija provera stvarnog stanja.
   </div>
 
   <div class="grid" id="grid"></div>
+
+  <section class="faq">
+    <h2>Česta pitanja o granicama</h2>
+    <details>
+      <summary>Kolika je gužva na Horgošu ili Batrovcima sada?</summary>
+      <p>Na svakoj kartici prelaza prikazujemo procenu čekanja za ulaz i izlaz iz Srbije, uz kameru uživo. Za Horgoš i Kelebiju imamo i podatke sa mađarske strane, a za Preševo i Bogorodicu sa makedonske. Kamera je najsigurnija provera trenutnog stanja.</p>
+    </details>
+    <details>
+      <summary>Odakle dolaze podaci o čekanju?</summary>
+      <p>Kombinujemo više izvora: Uprava granične policije RS (preko AMSS-a), mađarska policija za prelaze ka Mađarskoj, makedonski AMSM za prelaze ka Makedoniji, i prijave vozača. Za svaki smer prikazujemo najgoru dostupnu procenu, sa oznakom izvora.</p>
+    </details>
+    <details>
+      <summary>Koji prelaz je brži, Horgoš ili Kelebija?</summary>
+      <p>Kelebija je česta alternativa Horgošu ka Mađarskoj. Na obe kartice vidiš aktuelno čekanje, a u kalkulatoru puta se za rutu ka Mađarskoj prikazuju oba prelaza jedan pored drugog, pa lako uporediš.</p>
+    </details>
+    <details>
+      <summary>Kako da vidim kameru na granici uživo?</summary>
+      <p>Klikni na dugme za reprodukciju na kartici prelaza. Kamere se učitavaju direktno sa zvaničnih AMSS i MUP servera. Ako se video ne učita u tvom browseru, kartica nudi dugme ka zvaničnom izvoru kamere.</p>
+    </details>
+  </section>
 </div>
 
 <script src="borders-data.js"></script>
