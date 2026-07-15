@@ -301,7 +301,12 @@
 <script src="borders-data.js"></script>
 <script>
 /* Prelazi se ucitavaju iz deljenog borders-data.js (jedan izvor istine). */
-const CAMERAS = BORDERS.CROSSINGS;
+// Redosled kartica: najprometniji prelazi gore. Ostali zadrzavaju redosled iz borders-data.
+const CAMERA_ORDER = ["presevo", "gradina", "horgos", "batrovci", "kelebija"];
+const CAMERAS = [...BORDERS.CROSSINGS].sort((a, b) => {
+  const ia = CAMERA_ORDER.indexOf(a.id), ib = CAMERA_ORDER.indexOf(b.id);
+  return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+});
 
 /* status iz minuta */
 function waitStatus(min){
