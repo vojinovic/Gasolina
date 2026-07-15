@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kada je najveća gužva na granici — istorija čekanja | Gasolina</title>
+<meta name="description" content="Kada je najveća a kada najmanja gužva na graničnim prelazima. Prosečno vreme čekanja po danu i satu, na osnovu izmerenih podataka.">
+<link rel="canonical" href="https://gasolina.rs/istorija.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0d1620">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gasolina">
+<meta property="og:locale" content="sr_RS">
+<meta property="og:title" content="Kada je najveća gužva na granici | Gasolina">
+<meta property="og:description" content="Prosečno čekanje po danu i satu na graničnim prelazima. Izaberi pravo vreme za polazak.">
+<meta property="og:url" content="https://gasolina.rs/istorija.html">
+<meta property="og:image" content="https://gasolina.rs/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4EPLBJE8BL');
+  function track(name, params){ try{ gtag('event', name, params || {}); }catch(e){} }
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0d1620; --panel:#15212e; --panel-2:#1b2937; --line:#26384a; --line-2:#33485e;
+    --text:#e9eff5; --dim:#96a7b8; --faint:#66798c;
+    --fuel:#f5a623; --ok:#2fbf71; --warn:#f4c430; --bad:#e35d4f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.5}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px 60px}
+
+  .topbar{border-bottom:1px solid var(--line);background:rgba(13,22,32,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:10}
+  .topbar-in{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+  .logo{width:34px;height:34px;border-radius:9px;background:var(--fuel);color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:22px}
+  .wordmark{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:22px;letter-spacing:.04em;text-transform:uppercase}
+  .nav{display:flex;gap:6px;flex-wrap:wrap}
+  .nav a{padding:8px 13px;border-radius:8px;text-decoration:none;color:var(--dim);font-size:14px;font-weight:500}
+  .nav a:hover{color:var(--text);background:var(--panel)}
+  .nav a.active{background:var(--fuel);color:var(--ink);font-weight:600}
+
+  h1{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:38px;text-transform:uppercase;margin:28px 0 6px;letter-spacing:.01em}
+  .sub{color:var(--dim);max-width:65ch;margin:0 0 22px}
+
+  .controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+  select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:11px 13px;font-size:14px;cursor:pointer;min-width:190px}
+
+  .note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--fuel);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--dim);margin-bottom:22px;line-height:1.6}
+  .note b{color:var(--text)}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:20px}
+  .card h2{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;margin:0 0 14px}
+
+  /* heatmap */
+  .hm{overflow-x:auto}
+  table{border-collapse:separate;border-spacing:3px;font-family:"JetBrains Mono",monospace;font-size:11px}
+  th{color:var(--faint);font-weight:500;font-size:10px;padding:2px}
+  th.day{text-align:right;padding-right:8px;color:var(--dim);font-size:11px}
+  td{width:30px;height:26px;border-radius:5px;text-align:center;color:var(--ink);font-weight:700;background:var(--panel-2)}
+  td.empty{background:var(--panel-2);color:var(--faint);font-weight:400}
+  td:hover{outline:2px solid var(--fuel)}
+
+  .legend{display:flex;align-items:center;gap:14px;margin-top:14px;font-size:12px;color:var(--faint);flex-wrap:wrap}
+  .legend i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:5px;vertical-align:-2px}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+  .stat{background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:15px}
+  .stat .lab{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .stat .val{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:26px;margin-top:4px;line-height:1.1}
+  .stat .sub2{font-size:12px;color:var(--dim);margin-top:3px}
+
+  .empty-state{text-align:center;padding:46px 20px;color:var(--dim)}
+  .empty-state .big{font-family:"Barlow Condensed",sans-serif;font-size:24px;text-transform:uppercase;color:var(--text);margin-bottom:8px}
+
+  .foot{margin-top:26px;font-size:12px;color:var(--faint);font-family:"JetBrains Mono",monospace;line-height:1.7}
+  .foot a{color:var(--fuel);text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="index.html">
+      <span class="logo">G</span>
+      <span class="wordmark">Gasolina</span>
+    </a>
+    <nav class="nav">
+      <a href="index.html">Cene goriva</a>
+      <a href="index.html#kalkulator">Kalkulator</a>
+      <a href="granice.html">Granice</a>
+      <a href="istorija.html" class="active">Istorija</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+  <h1>Kada je gužva na granici</h1>
+  <p class="sub">Prosečno vreme čekanja po danu i satu, na osnovu izmerenih podataka. Zeleno je prohodno, crveno je gužva. Odaberi prelaz i smer.</p>
+
+  <div class="controls">
+    <select id="selPrelaz"></select>
+    <select id="selSmer">
+      <option value="izlaz">Izlaz iz Srbije</option>
+      <option value="ulaz">Ulaz u Srbiju</option>
+    </select>
+  </div>
+
+  <div id="content"></div>
+
+  <div class="foot" id="foot"></div>
+</div>
+
+<script src="borders-data.js"></script>
+<script>
+const DANI = ["Ponedeljak","Utorak","Sreda","Cetvrtak","Petak","Subota","Nedelja"];
+let ROWS = [];   // {ts:Date, prelaz, smer, minuti}
+
+function colorFor(m){
+  if(m==null) return null;
+  if(m<=30) return "#2fbf71";
+  if(m<45)  return "#8fc93a";
+  if(m<60)  return "#f4c430";
+  if(m<120) return "#ef8b3f";
+  return "#e35d4f";
+}
+function fmt(m){
+  if(m==null) return "-";
+  if(m>=60){ const h=Math.floor(m/60), r=Math.round(m%60); return r?`${h}h${r}`:`${h}h`; }
+  return String(Math.round(m));
+}
+
+function parseCSV(text){
+  const lines = text.trim().split("\n");
+  const out = [];
+  for(let i=1;i<lines.length;i++){
+    const p = lines[i].split(",");
+    if(p.length < 4) continue;
+    const d = new Date(p[0]);
+    if(isNaN(d)) continue;
+    out.push({ ts:d, prelaz:p[1], smer:p[2], minuti:parseInt(p[3],10) });
+  }
+  return out;
+}
+
+function aggregate(prelaz, smer){
+  // [dan 0-6][sat 0-23] -> {sum, n}
+  const grid = Array.from({length:7}, ()=>Array.from({length:24}, ()=>({s:0,n:0})));
+  let total=0, count=0, worst=null, best=null;
+  ROWS.forEach(r=>{
+    if(r.prelaz!==prelaz || r.smer!==smer) return;
+    // lokalno vreme (Srbija)
+    const d = new Date(r.ts.toLocaleString("en-US",{timeZone:"Europe/Belgrade"}));
+    const dan = (d.getDay()+6)%7;   // pon=0
+    const sat = d.getHours();
+    const cell = grid[dan][sat];
+    cell.s += r.minuti; cell.n++;
+    total += r.minuti; count++;
+  });
+  const avg = count ? total/count : null;
+  for(let d=0;d<7;d++) for(let h=0;h<24;h++){
+    const c = grid[d][h];
+    if(!c.n) continue;
+    const m = c.s/c.n;
+    if(worst===null || m>worst.m) worst={m,d,h};
+    if(best===null  || m<best.m)  best={m,d,h};
+  }
+  return {grid, avg, count, worst, best};
+}
+
+function render(){
+  const prelaz = document.getElementById("selPrelaz").value;
+  const smer   = document.getElementById("selSmer").value;
+  const el = document.getElementById("content");
+  const A = aggregate(prelaz, smer);
+
+  if(!A.count){
+    el.innerHTML = `
+      <div class="card"><div class="empty-state">
+        <div class="big">Jos nema dovoljno podataka</div>
+        <p>Merenja se belezena na svakih 30 minuta. Za pouzdan obrazac po danima<br>i satima treba bar nedelju dana. Vrati se uskoro.</p>
+      </div></div>`;
+    return;
+  }
+
+  // heatmap
+  let head = "<tr><th></th>";
+  for(let h=0;h<24;h++) head += `<th>${h}</th>`;
+  head += "</tr>";
+  let body = "";
+  for(let d=0;d<7;d++){
+    body += `<tr><th class="day">${DANI[d].slice(0,3)}</th>`;
+    for(let h=0;h<24;h++){
+      const c = A.grid[d][h];
+      if(!c.n){ body += `<td class="empty" title="nema podataka">·</td>`; continue; }
+      const m = c.s/c.n;
+      body += `<td style="background:${colorFor(m)}" title="${DANI[d]} ${h}:00 · prosek ${fmt(m)} min · ${c.n} merenja">${fmt(m)}</td>`;
+    }
+    body += "</tr>";
+  }
+
+  const nazivPrelaza = (BORDERS.byId(prelaz) || {}).name || prelaz;
+  const savet = A.best
+    ? `Najmirnije je ${DANI[A.best.d].toLowerCase()} oko ${A.best.h}h (prosek ${fmt(A.best.m)} min).`
+    : "";
+  const upozorenje = A.worst
+    ? `Najgore je ${DANI[A.worst.d].toLowerCase()} oko ${A.worst.h}h (prosek ${fmt(A.worst.m)} min).`
+    : "";
+
+  el.innerHTML = `
+    <div class="card">
+      <h2>${nazivPrelaza} &middot; ${smer === "izlaz" ? "izlaz iz Srbije" : "ulaz u Srbiju"}</h2>
+      <div class="hm"><table>${head}${body}</table></div>
+      <div class="legend">
+        <span><i style="background:#2fbf71"></i>do 30 min</span>
+        <span><i style="background:#8fc93a"></i>30-45</span>
+        <span><i style="background:#f4c430"></i>45-60</span>
+        <span><i style="background:#ef8b3f"></i>1-2h</span>
+        <span><i style="background:#e35d4f"></i>preko 2h</span>
+        <span><i style="background:#1b2937"></i>nema podataka</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="lab">Prosecno cekanje</div>
+        <div class="val" style="color:${colorFor(A.avg)}">${fmt(A.avg)} min</div>
+        <div class="sub2">iz ${A.count} merenja</div>
+      </div>
+      <div class="stat">
+        <div class="lab">Najgori termin</div>
+        <div class="val" style="color:var(--bad)">${A.worst ? fmt(A.worst.m)+" min" : "-"}</div>
+        <div class="sub2">${upozorenje}</div>
+      </div>
+      <div class="stat">
+        <div class="lab">Najbolji termin</div>
+        <div class="val" style="color:var(--ok)">${A.best ? fmt(A.best.m)+" min" : "-"}</div>
+        <div class="sub2">${savet}</div>
+      </div>
+    </div>`;
+}
+
+async function init(){
+  // popuni prelaze iz deljenog izvora
+  const sel = document.getElementById("selPrelaz");
+  sel.innerHTML = BORDERS.CROSSINGS
+    .map(c => `<option value="${c.id}">${c.name} (${c.from}\u2192${c.to})</option>`).join("");
+
+  try{
+    const r = await fetch("istorija.csv?cb="+Date.now());
+    if(r.ok){
+      ROWS = parseCSV(await r.text());
+    }
+  }catch(e){ /* jos nema fajla */ }
+
+  const foot = document.getElementById("foot");
+  if(ROWS.length){
+    const prvi = new Date(Math.min(...ROWS.map(r=>r.ts)));
+    const dana = Math.max(1, Math.round((Date.now()-prvi)/86400000));
+    foot.innerHTML = `Ukupno ${ROWS.length.toLocaleString("sr-RS")} merenja, skupljano ${dana} ${dana===1?"dan":"dana"}. `
+      + `Merenje na svakih 30 min, najgori podatak iz dostupnih izvora (granicna policija RS, madjarska i makedonska strana, prijave vozaca). `
+      + `<a href="granice.html">Trenutno stanje \u2192</a>`;
+  } else {
+    foot.textContent = "Skupljanje podataka je u toku.";
+  }
+
+  render();
+  sel.addEventListener("change", ()=>{ render(); track("istorija_prelaz", {prelaz: sel.value}); });
+  document.getElementById("selSmer").addEventListener("change", render);
+}
+init();
+</script>
+</body>
+</html>
