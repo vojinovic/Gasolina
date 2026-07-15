@@ -111,6 +111,17 @@ window.BORDERS = (function () {
       linkOnly: true, feeds: [],
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
+    {
+      // ME->HR, ne dodiruje Srbiju - isti slucaj kao Bogorodica (MK->GR): AMSS/MUP RS
+      // nema kako da prati cekanje ovde, pa nema wait praceenja. Crnogorski MUP ima
+      // svoju kamera-stranicu (isti obrazac kao za Gostun), ali je to embed stranica sa
+      // vise kamera, ne pojedinacan m3u8 link koji mozemo da ubacimo direktno - linkOnly.
+      id: "debeli-brijeg", name: "Debeli Brijeg", from: "ME", to: "HR",
+      pair: "Karasovici (HR)", road: "Jadranska magistrala (E65)", provider: "MUP Crne Gore",
+      official: "http://kamere.mup.gov.me/kamere.php?kamere=Debeli_brijeg",
+      linkOnly: true, noWait: true, feeds: [],
+      wait: null,
+    },
   ];
 
   function pairKey(a, b) { return [a, b].sort().join("-"); }
