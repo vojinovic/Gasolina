@@ -29,8 +29,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if [ -n "$(git status --porcelain granice.json)" ]; then
-            git add granice.json
+          if [ -n "$(git status --porcelain granice.json istorija.csv)" ]; then
+            git add granice.json istorija.csv
             git commit -m "Auto update border wait times"
             for i in 1 2 3; do
               git pull --rebase --autostash origin main && git push origin main && exit 0
