@@ -17,6 +17,30 @@
 <meta property="og:url" content="https://gasolina.rs/istorija.html">
 <meta property="og:image" content="https://gasolina.rs/og.png">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kada je najveća gužva na granici | Gasolina">
+<meta name="twitter:description" content="Prosečno čekanje po danu i satu na graničnim prelazima. Izaberi pravo vreme za polazak.">
+<meta name="twitter:image" content="https://gasolina.rs/og.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Kada je najveća gužva na granici",
+  "url": "https://gasolina.rs/istorija.html",
+  "inLanguage": "sr-RS",
+  "description": "Prosečno vreme čekanja po danu i satu na graničnim prelazima Srbije, na osnovu izmerenih podataka.",
+  "isPartOf": { "@type": "WebSite", "name": "Gasolina", "url": "https://gasolina.rs/" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+    {"@type":"Question","name":"Kada je najveca guzva na granici?","acceptedAnswer":{"@type":"Answer","text":"Zavisi od prelaza i dana, ali letnji petak popodne i subota ujutru su tipicno najgori termini za izlazak iz Srbije, dok je nedelja uvece najgusce za ulazak nazad. Heatmap na ovoj stranici pokazuje tacan prosek po danu i satu za svaki prelaz posebno."}},
+    {"@type":"Question","name":"Koji je najbolji dan i sat za putovanje ka moru?","acceptedAnswer":{"@type":"Answer","text":"Rano ujutru radnim danom je gotovo uvek najprohodnije. Izaberi prelaz i smer iznad da vidis konkretan prosek po satu, ne opstu preporuku."}},
+    {"@type":"Question","name":"Da li je istorija cekanja ista svake nedelje?","acceptedAnswer":{"@type":"Answer","text":"Ne bukvalno, ali obrazac (petak/subota guzva, radno jutro prohodno) je dosledan tokom letnje sezone. Prikazujemo prosek na osnovu stvarno izmerenih podataka, ne procenu."}}
+  ]
+}
+</script>
 
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
@@ -86,6 +110,15 @@
 
   .foot{margin-top:26px;font-size:12px;color:var(--faint);font-family:"JetBrains Mono",monospace;line-height:1.7}
   .foot a{color:var(--fuel);text-decoration:none}
+
+  .faq { margin:40px 0 10px; }
+  .faq h2 { font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:24px; text-transform:uppercase; margin:0 0 16px; }
+  .faq details { border:1px solid var(--line); border-radius:11px; padding:2px 16px; margin-bottom:10px; background:var(--panel); }
+  .faq summary { cursor:pointer; padding:14px 0; font-weight:600; font-size:15px; list-style:none; }
+  .faq summary::-webkit-details-marker { display:none; }
+  .faq summary::before { content:"+"; color:var(--fuel); font-weight:700; margin-right:10px; }
+  .faq details[open] summary::before { content:"\2212"; }
+  .faq details p { margin:0 0 16px; color:var(--dim); font-size:14px; line-height:1.65; }
 </style>
 </head>
 <body>
@@ -120,6 +153,22 @@
   <div id="content"></div>
 
   <div class="foot" id="foot"></div>
+
+  <section class="faq">
+    <h2>Česta pitanja o gužvama</h2>
+    <details>
+      <summary>Kada je najveća gužva na granici?</summary>
+      <p>Zavisi od prelaza i dana, ali letnji petak popodne i subota ujutru su tipično najgori termini za izlazak iz Srbije, dok je nedelja uveče najgušće za ulazak nazad. Heatmap iznad pokazuje tačan prosek po danu i satu za svaki prelaz posebno.</p>
+    </details>
+    <details>
+      <summary>Koji je najbolji dan i sat za putovanje ka moru?</summary>
+      <p>Rano ujutru radnim danom je gotovo uvek najprohodnije. Izaberi prelaz i smer iznad da vidiš konkretan prosek po satu, ne opštu preporuku.</p>
+    </details>
+    <details>
+      <summary>Da li je istorija čekanja ista svake nedelje?</summary>
+      <p>Ne bukvalno, ali obrazac (petak/subota gužva, radno jutro prohodno) je dosledan tokom letnje sezone. Prikazujemo prosek na osnovu stvarno izmerenih podataka, ne procenu.</p>
+    </details>
+  </section>
 </div>
 
 <script src="borders-data.js"></script>
