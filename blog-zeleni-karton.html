@@ -79,6 +79,14 @@
   .nav{display:flex;align-items:center;gap:4px}
   .nav a{font-size:13px;color:var(--dim);text-decoration:none;padding:7px 11px;border-radius:8px;font-weight:500}
   .nav a:hover{color:var(--text);background:var(--panel)}
+  @media (max-width:560px){
+    .topbar .inner{gap:8px}
+    .brand{flex-shrink:0}
+    .nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-width:0}
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{padding:6px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
+    .brand .bname{font-size:18px}
+  }
   .wrap{max-width:720px;margin:0 auto;padding:28px 18px 60px}
   .crumb{font-size:11px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
   .crumb a{color:var(--faint);text-decoration:none}
