@@ -9,6 +9,13 @@
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#0d1620">
 
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gasolina">
+
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Gasolina">
 <meta property="og:locale" content="sr_RS">
@@ -64,6 +71,7 @@
     font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
     -webkit-font-smoothing:antialiased;
     min-height:100vh;
+    min-height:100dvh; /* sprecava "skakanje" na mobilnom dok adresna traka nestaje/pojavljuje se pri skrolu */
   }
   .wrap{max-width:1180px;margin:0 auto;padding:28px 18px 60px}
 
@@ -767,6 +775,11 @@ async function init(){
   setNote(live, scrapedAt);
 }
 init();
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
 </script>
 </body>
 </html>
