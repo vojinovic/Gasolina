@@ -1082,7 +1082,8 @@
       }
       if (vignetteFor.length) {
         vignetteFor.forEach(c => {
-          rows.push(`<div class="step">🎫 <strong>Vinjeta (${COUNTRY_LABEL[c] || c})</strong> — ${COUNTRY_DOCS[c].vignette}.</div>`);
+          const extra = c === 'BG' ? ' <a href="blog-vinjeta-bugarska.html" style="color:var(--fuel)">detaljan vodič →</a>' : '';
+          rows.push(`<div class="step">🎫 <strong>Vinjeta (${COUNTRY_LABEL[c] || c})</strong> — ${COUNTRY_DOCS[c].vignette}.${extra}</div>`);
         });
       }
       return `
