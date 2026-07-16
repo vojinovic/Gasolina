@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-16T21:08:16+00:00",
+  "scraped_at": "2026-07-16T22:30:28+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -17,8 +17,8 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 5,
-        "ulaz": 5
+        "izlaz": 15,
+        "ulaz": 10
       }
     },
     "horgos": {
@@ -34,11 +34,11 @@
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
         "ulaz": 30,
-        "izlaz": 0
+        "izlaz": 30
       },
       "ba": {
-        "izlaz": 240,
-        "ulaz": 240
+        "izlaz": 30,
+        "ulaz": 10
       }
     },
     "kelebija": {
@@ -57,8 +57,8 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 5
+        "izlaz": 20,
+        "ulaz": 15
       }
     },
     "batrovci": {
