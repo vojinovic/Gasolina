@@ -777,6 +777,19 @@ async function init(){
   wire();
   renderComparisons();
   setNote(live, scrapedAt);
+
+  // Ako je stiglo sa landing stranice (granica-<id>.html "Pusti kameru uzivo" ->
+  // granice.html#<id>), ne samo skroluj do kartice (to browser vec radi sam za
+  // #anchor) nego STVARNO pusti kameru - inace je dugme "uzivo" laz, treba
+  // dodatni klik da bi neko video isto ono sto mu je vec obecano.
+  const hashId = (window.location.hash || "").replace("#", "");
+  if (hashId) {
+    const cam = CAMERAS.find(c => c.id === hashId);
+    const card = grid.querySelector(`[data-id="${hashId}"]`);
+    if (cam && card && cam.feeds && cam.feeds.length && !cam.linkOnly) {
+      setTimeout(() => playFeed(card, cam, 0), 150);
+    }
+  }
 }
 init();
 </script>
