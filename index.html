@@ -9,6 +9,13 @@
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#0d1620">
 
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Gasolina">
+
   <!-- Open Graph (deljenje na WhatsApp, Facebook, Viber) -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Gasolina">
@@ -68,10 +75,35 @@
       color: var(--text);
       font-family: system-ui,-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       min-height: 100vh;
+      min-height: 100dvh; /* sprecava "skakanje" na mobilnom dok adresna traka nestaje/pojavljuje se pri skrolu */
       -webkit-text-size-adjust: 100%;
       -webkit-font-smoothing:antialiased;
     }
     .container { max-width: 1180px; margin: 0 auto; padding: 28px 18px 60px; }
+
+    .install-banner {
+      max-height: 0; overflow: hidden; opacity: 0;
+      max-width: 1180px; margin: 0 auto; padding: 0 18px;
+      background: linear-gradient(180deg, rgba(245,166,35,.08), transparent), var(--panel);
+      border: 1px solid transparent; border-radius: 12px;
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+      transition: max-height .35s ease, opacity .3s ease, padding .35s ease, margin .35s ease, border-color .35s ease;
+    }
+    .install-banner.show {
+      max-height: 200px; opacity: 1; margin: 18px auto 0; padding: 14px 18px;
+      border-color: rgba(245,166,35,.3);
+    }
+    .install-banner .itext { flex: 1; min-width: 200px; font-size: 13px; color: var(--dim); }
+    .install-banner .itext b { color: var(--text); display: block; font-size: 14px; margin-bottom: 2px; }
+    .install-banner .ibtn {
+      font-family: "Barlow Condensed", sans-serif; font-weight: 600; text-transform: uppercase;
+      letter-spacing: .04em; font-size: 13px; color: var(--ink); background: var(--fuel);
+      border: none; border-radius: 8px; padding: 9px 16px; cursor: pointer; white-space: nowrap;
+    }
+    .install-banner .iclose {
+      background: none; border: none; color: var(--faint); font-size: 20px; cursor: pointer;
+      padding: 0 4px; line-height: 1;
+    }
 
     /* Shared site nav */
     .topbar{position:sticky;top:0;z-index:50;background:rgba(13,22,32,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
@@ -314,6 +346,12 @@
     </div>
   </nav>
 
+  <div class="install-banner" id="installBanner">
+    <div class="itext" id="installText"></div>
+    <button class="ibtn" id="installBtn" style="display:none" onclick="doInstall()">Instaliraj</button>
+    <button class="iclose" onclick="dismissInstallBanner()" aria-label="Zatvori">✕</button>
+  </div>
+
   <div class="container">
     <!-- PRICES / HOME -->
     <section id="viewPrices">
@@ -466,6 +504,59 @@
 
   <script src="borders-data.js"></script>
   <script>
+    // === "Instaliraj" baner ===
+    // iOS Safari NEMA API za programsko instaliranje (Apple to namerno ne dozvoljava) -
+    // jedini nacin je rucno Deli -> "Dodaj na pocetni ekran", pa im samo pokazujemo
+    // uputstvo. Android/Chrome ima pravi beforeinstallprompt event koji hvatamo i
+    // pustimo tek na klik (ne sme ranije, browser sam odlucuje kad je "spreman").
+    let deferredInstallPrompt = null;
+    const DISMISS_KEY = 'gasolina_install_dismissed';
+    const DISMISS_DAYS = 14;
+
+    function isStandalone() {
+      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    }
+    function isIOS() {
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    }
+    function wasDismissedRecently() {
+      const ts = localStorage.getItem(DISMISS_KEY);
+      if (!ts) return false;
+      return (Date.now() - parseInt(ts, 10)) < DISMISS_DAYS * 24 * 60 * 60 * 1000;
+    }
+    function dismissInstallBanner() {
+      localStorage.setItem(DISMISS_KEY, String(Date.now()));
+      document.getElementById('installBanner').classList.remove('show');
+    }
+    function doInstall() {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      deferredInstallPrompt.userChoice.finally(() => {
+        deferredInstallPrompt = null;
+        document.getElementById('installBanner').classList.remove('show');
+      });
+      track('install_klik', {});
+    }
+    function initInstallBanner() {
+      if (isStandalone() || wasDismissedRecently()) return;
+      const banner = document.getElementById('installBanner');
+      const textEl = document.getElementById('installText');
+      const btnEl = document.getElementById('installBtn');
+      if (isIOS()) {
+        textEl.innerHTML = '<b>Dodaj Gasolinu na početni ekran</b>Dodirni Deli dugme (⬆️) na dnu, pa "Dodaj na početni ekran".';
+        banner.classList.add('show');
+      } else {
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredInstallPrompt = e;
+          textEl.innerHTML = '<b>Instaliraj Gasolinu</b>Brži pristup cenama, granicama i kalkulatoru sa početnog ekrana.';
+          btnEl.style.display = '';
+          banner.classList.add('show');
+        });
+      }
+    }
+    initInstallBanner();
+
     let dataCache = null;
     let priceHistory = {}; // zemlja -> gorivo -> [{ts:Date, eur}], puni se iz cene_istorija.csv (moze biti prazno dok se ne nakupi bar jedan run)
 
@@ -1495,5 +1586,10 @@
     }
     load();
   </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
 </body>
 </html>
