@@ -253,7 +253,11 @@
   .nav a:hover{color:var(--text);background:var(--panel)}
   .nav a[aria-current="page"]{color:var(--ink);background:var(--fuel);font-weight:600}
   @media (max-width:560px){
-    .nav a{padding:6px 8px;font-size:12px}
+    .topbar .inner{gap:8px}
+    .brand{flex-shrink:0}
+    .nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-width:0}
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{padding:6px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
     .brand .bname{font-size:18px}
   }
 
