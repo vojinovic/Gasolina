@@ -970,10 +970,10 @@
       'bg-bd': ['bg-cacak','cacak-gostun'], 'bg-ti': ['bg-cacak','cacak-gostun'],
       'bg-st': ['bg-sid'], 'bg-zg': ['bg-sid'], 'zg-bg': ['bg-sid'],
       'bg-lj': ['bg-sid'], 'lj-bg': ['bg-sid'],
-      'bg-sk': ['bg-nis','nis-presevo'], 'bg-so': ['bg-nis','nis-presevo'], 'ja-so': ['bg-nis','nis-presevo'], 'ja-sarti': ['bg-nis','nis-presevo'], 'ja-pef': ['bg-nis','nis-presevo'],
-      'bg-sarti': ['bg-nis','nis-presevo'], 'bg-pef': ['bg-nis','nis-presevo'],
-      'ns-so': ['bg-horgos','bg-nis','nis-presevo'], 'ns-sarti': ['bg-horgos','bg-nis','nis-presevo'], 'ns-pef': ['bg-horgos','bg-nis','nis-presevo'],
-      'ni-sk': ['nis-presevo'], 'ni-so': ['nis-presevo'], 'ni-sarti': ['nis-presevo'], 'ni-pef': ['nis-presevo'],
+      'bg-sk': ['bg-nis','nis-presevo','mk-transit'], 'bg-so': ['bg-nis','nis-presevo','mk-transit'], 'ja-so': ['bg-nis','nis-presevo','mk-transit'], 'ja-sarti': ['bg-nis','nis-presevo','mk-transit'], 'ja-pef': ['bg-nis','nis-presevo','mk-transit'],
+      'bg-sarti': ['bg-nis','nis-presevo','mk-transit'], 'bg-pef': ['bg-nis','nis-presevo','mk-transit'],
+      'ns-so': ['bg-horgos','bg-nis','nis-presevo','mk-transit'], 'ns-sarti': ['bg-horgos','bg-nis','nis-presevo','mk-transit'], 'ns-pef': ['bg-horgos','bg-nis','nis-presevo','mk-transit'],
+      'ni-sk': ['nis-presevo','mk-transit'], 'ni-so': ['nis-presevo','mk-transit'], 'ni-sarti': ['nis-presevo','mk-transit'], 'ni-pef': ['nis-presevo','mk-transit'],
       'bg-sf': ['bg-nis','nis-gradina'], 'ni-sf': ['nis-gradina'],
       'bg-so-bg': ['bg-nis','nis-gradina'], 'ni-so-bg': ['nis-gradina'],
       'bg-bp': ['bg-horgos'],
@@ -1035,10 +1035,10 @@
     // stanici) - ovo NIJE "nadji najjeftiniju pumpu", nego "koji brend
     // realno preovladava na ovom delu puta i ima li ih uopste sa tvojim
     // gorivom" (bitno pogotovo za LPG, koji je redak). Pošteno, ne lazno.
-    function pumpBrandHint(route, fuelKey) {
+    function pumpBrandHint(route, fuelKey, country) {
       const corr = ROUTE_PUMPS[route.id];
       if (!corr || !corr.length || !pumpStations.length) return '';
-      const list = pumpStations.filter(p => corr.includes(p.corridor));
+      const list = pumpStations.filter(p => corr.includes(p.corridor) && (p.country || 'RS') === country);
       if (!list.length) return '';
       const byBrand = {};
       list.forEach(p => { byBrand[p.brand] = (byBrand[p.brand] || 0) + 1; });
@@ -1116,6 +1116,17 @@
 
       const cena = dieselRS ? ` Prosecna cena dizela u Srbiji: <b>${fmtEur(dieselRS)}/L</b>.` : '';
 
+      // Kad ruta prolazi kroz vise zemalja sa pumpe.json pokrivenoscu (npr. RS+MK
+      // na Solun/Sarti/Pefkohori rutama), pokazi razlaganje po zemlji - naslov
+      // "pumpe na srpskom delu" bi bio pogresan/nepotpun cim MK udje u igru.
+      const byCountry = {};
+      list.forEach(p => { const c = p.country || 'RS'; byCountry[c] = (byCountry[c] || 0) + 1; });
+      const countryKeys = Object.keys(byCountry);
+      const countryLine = countryKeys.length > 1
+        ? `<div class="rb-foot">${countryKeys.map(c => `${COUNTRY_FLAG[c] || ''} ${byCountry[c]} u ${COUNTRY_LABEL[c] || c}`).join(' &middot; ')}</div>`
+        : '';
+      const title = countryKeys.length > 1 ? '⛽ Pumpe na ruti' : `⛽ Pumpe na ${COUNTRY_LABEL[countryKeys[0]] || 'ruti'}`;
+
       // "open24" polje vec postoji u pumpe.json (iz OSM opening_hours=24/7), samo
       // dosad nigde nije prikazivano - korisno za nocnu voznju.
       const open24List = list.filter(p => p.open24);
@@ -1125,9 +1136,10 @@
 
       return `
         <div class="result-box rd-box">
-          <h3>⛽ Pumpe na srpskom delu rute</h3>
+          <h3>${title}</h3>
           ${rows}
           <div class="rb-foot">Ukupno ${list.length} pumpi duz koridora &middot; izvor: OpenStreetMap.${cena}</div>
+          ${countryLine}
           ${open24Html}
         </div>`;
     }
@@ -1244,7 +1256,14 @@
         smartHtml = `<div class="step">Imaš dovoljno goriva za ceo put. nema potrebe za punjenjem.</div>`;
       } else {
         t.plan.forEach((p, i) => {
-          const hint = p.cc === 'RS' ? pumpBrandHint(t.route, t.fuelKey) : '';
+          let hint = '';
+          if (p.cc === 'RS' || p.cc === 'MK') hint = pumpBrandHint(t.route, t.fuelKey, p.cc);
+          // Konkretan odgovor na "napuni pred kraj Makedonije, blizu Evzonija" - ako se
+          // kupuje u Makedoniji i ruta ide dalje ka Grckoj, to JESTE zadnja jeftina
+          // prilika (Grcka je skuplja), vredno je eksplicitno reci, ne samo podrazumevati.
+          if (p.cc === 'MK' && t.route.legs.some(l => l.c === 'GR')) {
+            hint += ' 🇬🇷 Ovo ti je poslednja jeftina prilika pre Grčke - napuni do vrha, mnogi vozači baš zbog toga staju tek pred samu granicu (npr. kod Gevgelije), ne odmah po ulasku u Makedoniju.';
+          }
           smartHtml += `<div class="step">${i + 1}. ${p.flag} <strong>${p.label}</strong>: kupi <strong>${p.liters.toFixed(1).replace('.', ',')} L</strong> po ${fmtEur(p.price)} = <strong>${fmtEur(p.cost)}</strong>${hint}</div>`;
         });
       }
