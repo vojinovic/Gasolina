@@ -17,7 +17,7 @@
         "local": 105.9,
         "eur": 0.9
       },
-      "updated": "2026-07-15 13:45 UTC"
+      "updated": "2026-07-16 08:58 UTC"
     },
     {
       "name": "Croatia",
@@ -71,7 +71,7 @@
         "eur": 1.67
       },
       "lpg": null,
-      "updated": "2026-07-15 13:45 UTC"
+      "updated": "2026-07-16 08:58 UTC"
     },
     {
       "name": "Slovenia",
@@ -90,7 +90,7 @@
         "local": 0.96,
         "eur": 0.96
       },
-      "updated": "2026-07-15 13:45 UTC"
+      "updated": "2026-07-16 08:58 UTC"
     },
     {
       "name": "North Macedonia",
@@ -109,7 +109,7 @@
         "local": 47.0,
         "eur": 0.76
       },
-      "updated": "2026-07-15 13:45 UTC"
+      "updated": "2026-07-16 08:58 UTC"
     },
     {
       "name": "Hungary",
@@ -128,7 +128,7 @@
         "local": 1.01,
         "eur": 1.01
       },
-      "updated": "2026-07-15 13:45 UTC"
+      "updated": "2026-07-16 08:58 UTC"
     },
     {
       "name": "Bulgaria",
@@ -144,7 +144,7 @@
         "eur": 1.478
       },
       "lpg": null,
-      "updated": "2026-07-15 13:45 UTC"
+      "updated": "2026-07-16 08:58 UTC"
     },
     {
       "name": "Albania",
@@ -163,7 +163,7 @@
         "local": 69.0,
         "eur": 0.69
       },
-      "updated": "2026-07-15 13:45 UTC"
+      "updated": "2026-07-16 08:58 UTC"
     },
     {
       "name": "Greece",
@@ -179,23 +179,23 @@
         "eur": 1.753
       },
       "lpg": null,
-      "updated": "2026-07-15 13:45 UTC"
+      "updated": "2026-07-16 08:58 UTC"
     },
     {
       "name": "Romania",
       "flag": "🇷🇴",
       "currency": "RON",
-      "fx_rate_eur": 5.2487,
+      "fx_rate_eur": 5.2418,
       "petrol95": {
-        "local": 8.67,
+        "local": 8.66,
         "eur": 1.652
       },
       "diesel": {
-        "local": 9.52,
+        "local": 9.5,
         "eur": 1.813
       },
       "lpg": null,
-      "updated": "2026-07-15 13:45 UTC"
+      "updated": "2026-07-16 08:58 UTC"
     },
     {
       "name": "Kosovo",
@@ -211,7 +211,7 @@
         "eur": 1.47
       },
       "lpg": null,
-      "updated": "2026-07-15 13:45 UTC"
+      "updated": "2026-07-16 08:58 UTC"
     }
   ]
 }
