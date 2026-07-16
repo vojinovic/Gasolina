@@ -23,20 +23,25 @@ OVERPASS_MIRRORS = [
     "https://overpass.osm.ch/api/interpreter",
 ]
 
-# koridori: (id, opis, W, S, E, N) - pojas oko autoputa/magistrale
+# koridori: (id, opis, W, S, E, N, zemlja) - pojas oko autoputa/magistrale
 CORRIDORS = [
-    ("bg-horgos",   "A1 Beograd - Novi Sad",      19.75, 45.05, 20.55, 45.65),
-    ("bg-horgos",   "A1 Novi Sad - Horgos",       19.55, 45.55, 20.20, 46.20),
-    ("bg-sid",      "A3 Beograd - Ruma",          19.85, 44.75, 20.55, 45.15),
-    ("bg-sid",      "A3 Ruma - Batrovci",         19.00, 44.75, 19.95, 45.15),
-    ("bg-nis",      "A1 Beograd - Velika Plana",  20.35, 44.30, 21.05, 44.90),
-    ("bg-nis",      "A1 Velika Plana - Jagodina", 20.90, 43.85, 21.40, 44.45),
-    ("bg-nis",      "A1 Jagodina - Nis",          21.05, 43.20, 21.95, 44.05),
-    ("nis-presevo", "A1 Nis - Presevo",           21.45, 42.25, 22.20, 43.35),
-    ("nis-gradina", "A4 Nis - Gradina",           21.80, 42.90, 22.75, 43.45),
-    ("bg-cacak",    "A2 Milos Veliki (ka CG)",    19.95, 43.75, 20.65, 44.75),
-    ("cacak-gostun", "Zlatibor - Gostun",         19.35, 43.10, 20.40, 43.95),
-    ("bg-loznica",  "Ka Sremskoj Raci / BiH",     19.10, 44.55, 19.90, 45.00),
+    ("bg-horgos",   "A1 Beograd - Novi Sad",      19.75, 45.05, 20.55, 45.65, "RS"),
+    ("bg-horgos",   "A1 Novi Sad - Horgos",       19.55, 45.55, 20.20, 46.20, "RS"),
+    ("bg-sid",      "A3 Beograd - Ruma",          19.85, 44.75, 20.55, 45.15, "RS"),
+    ("bg-sid",      "A3 Ruma - Batrovci",         19.00, 44.75, 19.95, 45.15, "RS"),
+    ("bg-nis",      "A1 Beograd - Velika Plana",  20.35, 44.30, 21.05, 44.90, "RS"),
+    ("bg-nis",      "A1 Velika Plana - Jagodina", 20.90, 43.85, 21.40, 44.45, "RS"),
+    ("bg-nis",      "A1 Jagodina - Nis",          21.05, 43.20, 21.95, 44.05, "RS"),
+    ("nis-presevo", "A1 Nis - Presevo",           21.45, 42.25, 22.20, 43.35, "RS"),
+    ("nis-gradina", "A4 Nis - Gradina",           21.80, 42.90, 22.75, 43.45, "RS"),
+    ("bg-cacak",    "A2 Milos Veliki (ka CG)",    19.95, 43.75, 20.65, 44.75, "RS"),
+    ("cacak-gostun", "Zlatibor - Gostun",         19.35, 43.10, 20.40, 43.95, "RS"),
+    ("bg-loznica",  "Ka Sremskoj Raci / BiH",     19.10, 44.55, 19.90, 45.00, "RS"),
+    # Prva zemlja van Srbije - trazio Ivan konkretno za Nis-Sarti/Solun rute.
+    # Pokriva ceo A1 kroz Makedoniju: Tabanovce (granica) - Kumanovo - Skopje -
+    # Veles - Negotino - Gevgelija - Bogorodica (granica ka Grckoj).
+    ("mk-transit",  "A1 Tabanovce - Skopje (MK)", 21.30, 41.85, 21.90, 42.45, "MK"),
+    ("mk-transit",  "A1 Skopje - Bogorodica (MK)", 21.90, 41.00, 22.70, 42.05, "MK"),
 ]
 
 # cirilica -> latinica (OSM ima i "НИС Петрол" i "NIS Petrol")
@@ -66,6 +71,7 @@ BRAND_RULES = [
     (("omv",), "OMV"),
     (("mol",), "MOL"),
     (("shell",), "Shell"),
+    (("coral",), "Shell"),          # Coral radi Shell pumpe po licenci na delu Balkana
     (("eko",), "EKO"),
     (("ina",), "INA"),
     (("avia",), "Avia"),
@@ -73,6 +79,16 @@ BRAND_RULES = [
     (("jugopetrol",), "Jugopetrol"),
     (("beopetrol",), "Beopetrol"),
     (("nis",), "NIS Petrol"),       # samostalna rec "nis"
+    # Makedonija - Makpetrol i Lukoil su ubedljivo najpreporucivaniji medju
+    # srpskim vozacima (potvrdjeno iz vise izvora), OKTA/Gulf/Jetoil/Avin manje
+    # cesti ali realni. Pucko Petrol treba par reci da se ne pobrka sa genericnim
+    # "petrol" pravilom ispod.
+    (("makpetrol",), "Makpetrol"),
+    (("okta",), "OKTA"),
+    (("gulf",), "Gulf"),
+    (("jetoil",), "Jetoil"),
+    (("avin",), "Avin"),
+    (("pucko", "petrol"), "Pucko Petrol"),
 ]
 
 # Ovi brendovi se priznaju SAMO ako je ime tacno ta rec (mozda uz d.o.o/d.d.),
@@ -135,7 +151,7 @@ def fetch_corridor(cid, w, s, e, n):
     raise RuntimeError(last or "sva ogledala su pala")
 
 
-def parse(data, cid):
+def parse(data, cid, country="RS"):
     out = []
     for el in data.get("elements", []):
         t = el.get("tags", {}) or {}
@@ -151,6 +167,7 @@ def parse(data, cid):
         out.append({
             "id": el.get("id"),
             "corridor": cid,
+            "country": country,
             "brand": norm_brand(t),
             "lat": round(el.get("lat", 0), 5),
             "lon": round(el.get("lon", 0), 5),
@@ -172,14 +189,14 @@ def main():
     prev = load_previous()
     all_st, seen = [], set()
     failed = set()
-    for cid, desc, w, s, e, n in CORRIDORS:
+    for cid, desc, w, s, e, n, country in CORRIDORS:
         try:
             data = fetch_corridor(cid, w, s, e, n)
         except Exception as ex:
             print(f"Upozorenje: {cid} nedostupan: {ex}")
             failed.add(cid)
             continue
-        got = parse(data, cid)
+        got = parse(data, cid, country)
         new = 0
         for st in got:
             if st["id"] in seen:
@@ -237,14 +254,18 @@ SELFTEST = {
          "tags": {"amenity": "fuel", "brand": "НИС Петрол", "fuel:diesel": "yes"}},
         {"id": 5, "lat": 44.6, "lon": 20.6,
          "tags": {"amenity": "fuel", "brand": "Кнез Петрол"}},
+        {"id": 6, "lat": 42.0, "lon": 21.43,
+         "tags": {"amenity": "fuel", "brand": "Makpetrol", "fuel:diesel": "yes"}},
+        {"id": 7, "lat": 41.14, "lon": 22.50,
+         "tags": {"amenity": "fuel", "brand": "Pucko Petrol"}},
     ]
 }
 
 
 def selftest():
-    got = parse(SELFTEST, "bg-nis")
+    got = parse(SELFTEST, "bg-nis")   # default country="RS"
     ok = True
-    if len(got) != 5:
+    if len(got) != 7:
         ok = False
     if got[3]["brand"] != "NIS Petrol":   # cirilica -> latinica
         ok = False
@@ -255,6 +276,13 @@ def selftest():
     if got[1]["brand"] != "Lukoil":
         ok = False
     if got[2]["brand"] != "Pumpa kod Mite" or got[2]["fuels"] is not None:
+        ok = False
+    if got[0]["country"] != "RS":
+        ok = False
+    got_mk = parse(SELFTEST, "mk-transit", "MK")
+    if got_mk[5]["brand"] != "Makpetrol" or got_mk[5]["country"] != "MK":
+        ok = False
+    if got_mk[6]["brand"] != "Pucko Petrol":   # ne sme da padne na genericni "Petrol"
         ok = False
     print(json.dumps(got, ensure_ascii=False, indent=2))
     print("SELFTEST:", "PASS" if ok else "FAIL")
