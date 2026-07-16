@@ -281,9 +281,13 @@ def fetch_mk():
 
 
 def parse_ba(text):
-    """Vraca {id: {'izlaz':m,'ulaz':m}} sa BorderAlarm liste za Srbiju.
-    Format po prelazu: ime, pa prvi 'N min.' = Srbija->X (izlaz),
-    drugi 'N min.' = X->Srbija (ulaz)."""
+    """Vraca {id: {'izlaz':m,'ulaz':m}} sa BorderAlarm liste za Srbiju, u minutima.
+    Format po prelazu: ime, pa prvi 'N min.'/'N h.' = Srbija->X (izlaz),
+    drugi 'N min.'/'N h.' = X->Srbija (ulaz). BorderAlarm prikazuje vreme u
+    satima kad je preko ~60 min (npr. "1.5 h.") umesto u minutima - stari regex
+    je hvatao SAMO "min" obrazac, pa je kod duzih cekanja tiho preskakao pravu
+    vrednost i pokupio prvi sledeci "N min" u prozoru (cesto od SLEDECEG
+    prelaza na listi) - otud pogresni/nepovezani brojevi kad je cekanje dugo."""
     low = fold(text).lower()
     res = {}
     for cid, name in BA_TARGETS.items():
@@ -294,12 +298,16 @@ def parse_ba(text):
         i = mm.end()
         nxt = low.find(" open", i + 10)
         window = low[i:(nxt if nxt != -1 else i + 400)]
-        mins = re.findall(r"(\d+)\s*min", window)
-        if len(mins) >= 2:
-            res[cid] = {"izlaz": int(mins[0]), "ulaz": int(mins[1])}
-            print(f"BA: {cid} -> {res[cid]}")
+        tokens = re.findall(r"(\d+(?:\.\d+)?)\s*(min|h)\b", window)
+        if len(tokens) >= 2:
+            def to_minutes(val, unit):
+                return round(float(val) * 60) if unit == "h" else int(round(float(val)))
+            izlaz = to_minutes(*tokens[0])
+            ulaz = to_minutes(*tokens[1])
+            res[cid] = {"izlaz": izlaz, "ulaz": ulaz}
+            print(f"BA: {cid} -> {res[cid]} (sirovo: {tokens[0]}, {tokens[1]})")
         else:
-            print(f"BA: {cid} nadjen ali bez dva vremena u prozoru")
+            print(f"BA: {cid} nadjen ali bez dva vremena u prozoru (tokens={tokens})")
     return res
 
 
@@ -505,7 +513,7 @@ Dragina / Kalotina Open
 55 min.
 Serbia \u2794
 Bulgaria
-5 min.
+1.5 h.
 Bulgaria \u2794
 Serbia
 MK
@@ -566,7 +574,7 @@ def selftest():
             ok = False
         print(f"[{'OK ' if good else 'FAIL'}] {label}: got={got} exp={exp}")
     ba_g = c["gradina"].get("ba")
-    ba_exp = {"izlaz": 55, "ulaz": 5}
+    ba_exp = {"izlaz": 55, "ulaz": 90}  # 1.5h u fixture-u - direktno testira sat->min konverziju
     ba_ok = ba_g == ba_exp
     if not ba_ok:
         ok = False
