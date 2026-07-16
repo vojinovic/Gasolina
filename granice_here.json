@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-16T20:29:36+00:00",
+  "scraped_at": "2026-07-16T21:37:48+00:00",
   "source": "HERE Traffic",
   "crossings": {
     "batrovci": {
@@ -7,7 +7,7 @@
       "criticality": "minor",
       "closed": false,
       "desc": "At Granični prijelaz Bajakovo - Backed-up traffic. Approach with care",
-      "length_km": 0.4
+      "length_km": 0.1
     }
   }
 }
