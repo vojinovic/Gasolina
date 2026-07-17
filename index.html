@@ -1185,7 +1185,6 @@
       const countries = [...new Set(route.legs.map(l => l.c))];
       const greenCardFor = countries.filter(c => COUNTRY_DOCS[c] && COUNTRY_DOCS[c].greenCard);
       const vignetteFor = countries.filter(c => COUNTRY_DOCS[c] && COUNTRY_DOCS[c].vignette);
-      if (!greenCardFor.length && !vignetteFor.length) return '';
       const rows = [];
       if (greenCardFor.length) {
         const names = greenCardFor.map(c => COUNTRY_LABEL[c] || c).join(', ');
@@ -1197,6 +1196,15 @@
           rows.push(`<div class="step">🎫 <strong>Vinjeta (${COUNTRY_LABEL[c] || c})</strong> — ${COUNTRY_DOCS[c].vignette}.${extra}</div>`);
         });
       }
+      // Zuti karton NIJE vezan za konkretnu zemlju kao zeleni karton/vinjeta - vezan
+      // je za vlasnistvo vozila, ne za destinaciju. Vazi za SVAKU voznju van Srbije
+      // (ako nisi vlasnik), pa se prikazuje kad god ruta uopste napusta Srbiju,
+      // ne uslovno po zemlji kao ostalo u ovom panelu.
+      const leavesSerbia = route.legs.some(l => l.c !== 'RS');
+      if (leavesSerbia) {
+        rows.push(`<div class="step">📝 <strong>Žuti karton</strong> — treba ti SAMO ako auto nije registrovano na tvoje ime (roditelj, supružnik, firma, lizing). Zvanično se zove "Ovlašćenje za upravljanje tuđim motornim vozilom u inostranstvu", vadi se u AMSS-u uz saglasnost vlasnika — ne zavisi od toga kuda tačno ideš.</div>`);
+      }
+      if (!rows.length) return '';
       return `
         <div class="result-box">
           <h3>📋 Šta ti treba za ovu rutu</h3>
