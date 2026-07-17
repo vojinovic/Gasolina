@@ -369,7 +369,7 @@ def parse_user_reports(csv_text):
     prelaz+smer u prozoru, uzima se medijana (otpornija na jednu
     lazljivu/pogresnu prijavu nego prosek ili "poslednja pobedjuje")."""
     reader = csv.DictReader(csv_text.splitlines())
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)  # naivan UTC, poredi se sa naivnim strptime rezultatom
     by_key = {}   # (cid, smer) -> [minuti, ...]
     comments = {}  # cid -> [(ts, tekst), ...]
 
@@ -628,7 +628,7 @@ Serbia
 
 
 def _fmt_ts(minutes_ago):
-    ts = datetime.datetime.utcnow() - datetime.timedelta(minutes=minutes_ago)
+    ts = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None) - datetime.timedelta(minutes=minutes_ago)
     return ts.strftime("%m/%d/%Y %H:%M:%S")
 
 
