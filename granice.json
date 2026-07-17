@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-17T08:36:34+00:00",
+  "scraped_at": "2026-07-17T10:52:16+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -17,8 +17,8 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 50,
-        "ulaz": 10
+        "izlaz": 40,
+        "ulaz": 60
       }
     },
     "horgos": {
@@ -33,12 +33,12 @@
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
-        "ulaz": 45,
+        "ulaz": 30,
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 5
+        "izlaz": 40,
+        "ulaz": 240
       }
     },
     "kelebija": {
@@ -57,8 +57,8 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 15
+        "izlaz": 5,
+        "ulaz": 5
       }
     },
     "batrovci": {
@@ -73,8 +73,8 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 50,
-        "ulaz": 5
+        "izlaz": 60,
+        "ulaz": 120
       }
     },
     "presevo": {
