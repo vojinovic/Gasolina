@@ -286,6 +286,14 @@
     .rd-row { display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:8px 0; border-top:1px solid var(--line); font-size:13px; color:var(--dim); }
     .rd-row.first { border-top:0; }
     .rd-row strong { font-family:"JetBrains Mono",monospace; }
+    .rd-summary { font-size:13px; color:var(--dim); line-height:1.6; }
+    .rd-summary b { color:var(--text); }
+    .rd-details { margin-top:6px; }
+    .rd-details summary { cursor:pointer; font-size:12px; color:var(--fuel); list-style:none; padding:2px 0; }
+    .rd-details summary::-webkit-details-marker { display:none; }
+    .rd-details summary::before { content:"▸ "; }
+    .rd-details[open] summary::before { content:"▾ "; }
+    .rd-details .rd-row:first-of-type { border-top:1px solid var(--line); margin-top:8px; }
 
     /* Procena troska puta */
     .cost-box { border-color: rgba(47,191,113,0.4); background: linear-gradient(180deg, rgba(47,191,113,0.06), transparent 60%), var(--panel); margin-bottom: 18px; }
@@ -1242,9 +1250,6 @@
       const byCountry = {};
       list.forEach(p => { const c = p.country || 'RS'; byCountry[c] = (byCountry[c] || 0) + 1; });
       const countryKeys = Object.keys(byCountry);
-      const countryLine = countryKeys.length > 1
-        ? `<div class="rb-foot">${countryKeys.map(c => `${COUNTRY_FLAG[c] || ''} ${byCountry[c]} u ${COUNTRY_LABEL[c] || c}`).join(' &middot; ')}</div>`
-        : '';
       const title = countryKeys.length > 1 ? '⛽ Pumpe na ruti' : `⛽ Pumpe na ${COUNTRY_LABEL[countryKeys[0]] || 'ruti'}`;
 
       // "open24" polje vec postoji u pumpe.json (iz OSM opening_hours=24/7), samo
@@ -1254,12 +1259,24 @@
         ? `<div class="rb-foot" style="border-top:1px dashed var(--line);padding-top:8px;margin-top:8px">🌙 <b style="color:var(--text)">${open24List.length}</b> od ${list.length} pumpi na ovom delu rute radi 24h (po OSM podacima, proveri pre noćne vožnje).</div>`
         : '';
 
+      // Puna lista svih brendova je vec dostupna kao kontekst uz "Pametna
+      // strategija" korak (pumpBrandHint) - ovde je samo dodatak za one koji
+      // hoce detalje, pa je sklonjena iza "prikazi sve" umesto da uvek zauzima
+      // prostor sa 8 redova koji uglavnom ponavljaju istu informaciju.
+      const topBrand = Object.entries(byBrand).sort((a, b) => b[1] - a[1])[0];
+      const countryInline = countryKeys.length > 1
+        ? ' &middot; ' + countryKeys.map(c => `${COUNTRY_FLAG[c] || ''} ${byCountry[c]} u ${COUNTRY_LABEL[c] || c}`).join(' &middot; ')
+        : '';
+
       return `
         <div class="result-box rd-box">
           <h3>${title}</h3>
-          ${rows}
-          <div class="rb-foot">Ukupno ${list.length} pumpi duz koridora &middot; izvor: OpenStreetMap.${cena}</div>
-          ${countryLine}
+          <div class="rd-summary">Ukupno <b>${list.length}</b> pumpi duž rute &middot; najviše: <b>${topBrand[0]}</b> (${topBrand[1]})${countryInline}</div>
+          <details class="rd-details">
+            <summary>Prikaži sve brendove</summary>
+            ${rows}
+          </details>
+          <div class="rb-foot">Izvor: OpenStreetMap.${cena}</div>
           ${open24Html}
         </div>`;
     }
