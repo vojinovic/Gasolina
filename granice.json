@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-17T03:48:10+00:00",
+  "scraped_at": "2026-07-17T06:22:07+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -17,28 +17,28 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 120,
+        "izlaz": 60,
         "ulaz": 10
       }
     },
     "horgos": {
       "putnicka": {
         "izlaz": 30,
-        "ulaz": 30
+        "ulaz": 45
       },
       "teretna": {
-        "izlaz": 60,
+        "izlaz": 30,
         "ulaz": 30
       },
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
         "ulaz": 30,
-        "izlaz": 30
+        "izlaz": 0
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 90
+        "ulaz": 55
       }
     },
     "kelebija": {
@@ -47,7 +47,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 120,
+        "izlaz": 30,
         "ulaz": 30
       },
       "found": true,
@@ -57,8 +57,8 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 15
+        "izlaz": 15,
+        "ulaz": 5
       }
     },
     "batrovci": {
@@ -67,13 +67,13 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 240,
+        "izlaz": 60,
         "ulaz": 30
       },
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 30,
+        "izlaz": 5,
         "ulaz": 150
       }
     },
@@ -94,8 +94,8 @@
         "opsto": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 90
+        "izlaz": 15,
+        "ulaz": 5
       }
     },
     "sremska-raca": {
@@ -104,7 +104,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 120,
+        "izlaz": 60,
         "ulaz": 30
       },
       "found": true,
