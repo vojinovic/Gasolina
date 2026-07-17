@@ -15,9 +15,11 @@ Izlaz: granice.json u rootu repoa.
 """
 
 import re
+import csv
 import sys
 import json
 import html
+import statistics
 import datetime
 import urllib.request
 
@@ -39,6 +41,26 @@ BA_TARGETS = {
     "batrovci": r"batrovci\s*/\s*bajakovo",
 }
 OUT = "granice.json"
+
+# --- Prijave vozaca preko Gasolina Google forme -----------------------------
+# Odvojeno od BorderAlarm-a iznad - ovo je NASA sopstvena forma, ne njihova.
+# CSV je javno objavljen Google Sheet (File > Share > Publish to web > CSV),
+# ne treba autentifikacija. Stare prijave (starije od USER_REPORT_MAX_AGE_MIN)
+# se ignorisu - "cekanje 2h" od pre tri sata je gore nego da ga uopste nema.
+USER_REPORTS_ENABLED = True
+USER_REPORTS_URL = (
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRR9O2rdGyLmVBNxBVyGPXNskqzodwRiXqwcLE-EzyZhibRp-YVC0-El9NtXRP6UBytH1Bxkc5o0MQj"
+    "/pub?gid=1312316892&single=true&output=csv"
+)
+USER_REPORT_MAX_AGE_MIN = 90
+USER_CROSSING_MAP = {
+    "Gradina": "gradina", "Horgoš": "horgos", "Kelebija": "kelebija",
+    "Batrovci": "batrovci", "Preševo": "presevo", "Sremska Rača": "sremska-raca",
+    "Špiljani": "spiljani", "Gostun": "gostun",
+}
+USER_DIR_MAP = {"Ulaz u Srbiju": "ulaz", "Izlaz iz Srbije": "izlaz"}
+# koliko poslednjih komentara po prelazu da nosimo u izlaz (za "sta kazu vozaci")
+USER_COMMENTS_PER_CROSSING = 3
 
 # id prelaza (mora da se poklapa sa CAMERAS u granice.html) -> kljucna rec
 # u AMSS naslovu (folovano, bez kvacica, velikim slovima)
@@ -319,6 +341,76 @@ def fetch_ba():
         return r.read().decode("utf-8", "replace")
 
 
+def fetch_user_reports():
+    req = urllib.request.Request(USER_REPORTS_URL, headers={
+        "User-Agent": "Gasolina/1.0 (+https://vojinovic.github.io/Gasolina)"
+    })
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return r.read().decode("utf-8", "replace")
+
+
+def _parse_form_timestamp(raw):
+    """Google Forms timestamp format zna da varira po regionu naloga
+    (MM/DD/YYYY HH:MM:SS je najcesci), probamo par realnih formata pre
+    nego sto odustanemo od tog reda."""
+    raw = raw.strip()
+    for fmt in ("%m/%d/%Y %H:%M:%S", "%d/%m/%Y %H:%M:%S", "%Y-%m-%d %H:%M:%S"):
+        try:
+            return datetime.datetime.strptime(raw, fmt)
+        except ValueError:
+            continue
+    return None
+
+
+def parse_user_reports(csv_text):
+    """Vraca {id: {'izlaz':m|None, 'ulaz':m|None, 'comments':[str, ...]}}
+    iz CSV-a povezanog sa Gasolina Google formom. Redovi stariji od
+    USER_REPORT_MAX_AGE_MIN se ignorisu. Kad ima vise prijava za isti
+    prelaz+smer u prozoru, uzima se medijana (otpornija na jednu
+    lazljivu/pogresnu prijavu nego prosek ili "poslednja pobedjuje")."""
+    reader = csv.DictReader(csv_text.splitlines())
+    now = datetime.datetime.utcnow()
+    by_key = {}   # (cid, smer) -> [minuti, ...]
+    comments = {}  # cid -> [(ts, tekst), ...]
+
+    for row in reader:
+        ts = _parse_form_timestamp(row.get("Timestamp", ""))
+        if ts is None:
+            continue
+        age_min = (now - ts).total_seconds() / 60
+        if age_min < 0 or age_min > USER_REPORT_MAX_AGE_MIN:
+            continue
+
+        cid = USER_CROSSING_MAP.get((row.get("Koji prelaz?") or "").strip())
+        smer = USER_DIR_MAP.get((row.get("Koji smer?") or "").strip())
+        if not cid or not smer:
+            continue
+
+        try:
+            minuti = float(row.get("Koliko čekaš (u minutima)?", "").strip())
+        except (TypeError, ValueError):
+            minuti = None
+        if minuti is not None and 0 <= minuti <= 300:
+            by_key.setdefault((cid, smer), []).append(minuti)
+
+        komentar = (row.get("Komentar (opciono)") or "").strip()
+        if komentar:
+            comments.setdefault(cid, []).append((ts, komentar[:200]))  # tvrdi limit duzine, ne oslanjaj se samo na formu
+
+    res = {}
+    all_cids = set(c for c, _ in by_key) | set(comments)
+    for cid in all_cids:
+        entry = {}
+        for smer in ("izlaz", "ulaz"):
+            vals = by_key.get((cid, smer))
+            entry[smer] = round(statistics.median(vals)) if vals else None
+        top_comments = sorted(comments.get(cid, []), key=lambda x: x[0], reverse=True)[:USER_COMMENTS_PER_CROSSING]
+        entry["comments"] = [c for _, c in top_comments]
+        res[cid] = entry
+        print(f"Prijave vozaca: {cid} -> izlaz={entry['izlaz']} ulaz={entry['ulaz']} ({len(entry['comments'])} komentara)")
+    return res
+
+
 def fetch_hu():
     req = urllib.request.Request(HU_URL, headers={
         "User-Agent": "Gasolina/1.0 (+https://vojinovic.github.io/Gasolina)"
@@ -327,11 +419,12 @@ def fetch_hu():
         return r.read().decode("utf-8", "replace")
 
 
-def build(text, hu_text=None, mk_text=None, ba_text=None):
+def build(text, hu_text=None, mk_text=None, ba_text=None, user_reports=None):
     blocks = split_blocks(text)
     hu = parse_hu(hu_text) if hu_text else {}
     mk = parse_mk(mk_text) if mk_text else {}
     ba = parse_ba(ba_text) if ba_text else {}
+    user = user_reports or {}
     crossings = {}
     for cid, kw in TARGETS.items():
         name, body = match_target(blocks, kw)
@@ -347,10 +440,16 @@ def build(text, hu_text=None, mk_text=None, ba_text=None):
             entry["mk"] = mk[cid]
         if cid in ba:
             entry["ba"] = ba[cid]
+        if cid in user:
+            entry["user"] = user[cid]
         crossings[cid] = entry
     # bogorodica nije na AMSS mapi (MK-GR granica), ali MK podatak treba da udje
     if "bogorodica" in mk and "bogorodica" not in crossings:
         crossings["bogorodica"] = {"found": False, "mk": mk["bogorodica"]}
+    # gostun je linkOnly (nema AMSS/kamera), ali korisnicke prijave i dalje
+    # mogu da postoje za njega - ne sme da ostane potpuno bez unosa u tom slucaju.
+    if "gostun" in user:
+        crossings.setdefault("gostun", {"found": False})["user"] = user["gostun"]
     return {
         "scraped_at": datetime.datetime.now(datetime.timezone.utc)
                           .isoformat(timespec="seconds"),
@@ -358,6 +457,7 @@ def build(text, hu_text=None, mk_text=None, ba_text=None):
         "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
         "source_mk": "AMSM (amsm.mk) - makedonska strana",
         "source_ba": "BorderAlarm (borderalarm.com) - prijave vozaca",
+        "source_user": "Prijave vozaca (Gasolina forma, poslednjih 90 min)",
         "crossings": crossings,
     }
 
@@ -527,8 +627,37 @@ Serbia
 """
 
 
+def _fmt_ts(minutes_ago):
+    ts = datetime.datetime.utcnow() - datetime.timedelta(minutes=minutes_ago)
+    return ts.strftime("%m/%d/%Y %H:%M:%S")
+
+
 def selftest():
-    result = build(SELFTEST_FIXTURE, HU_FIXTURE, MK_FIXTURE, BA_FIXTURE)
+    # Vremena su relativna prema "sada" (ne fiksni datum) jer parse_user_reports
+    # filtrira po starosti - fiksna stara vrednost bi uvek pala kao "prestara".
+    user_csv = (
+        "Timestamp,Koji prelaz?,Koji smer?,Koliko čekaš (u minutima)?,Komentar (opciono)\n"
+        f'{_fmt_ts(5)},Gradina,Izlaz iz Srbije,20,"malo sporo"\n'
+        f'{_fmt_ts(10)},Gradina,Izlaz iz Srbije,40,\n'
+        f'{_fmt_ts(15)},Gradina,Ulaz u Srbiju,15,"brzo je"\n'
+        f'{_fmt_ts(200)},Gradina,Izlaz iz Srbije,999,"ovo je prestaro, ne sme da udje"\n'
+        f'{_fmt_ts(5)},Horgoš,Izlaz iz Srbije,abc,"nevazeci broj, treba da se preskoci"\n'
+        f'{_fmt_ts(5)},Horgoš,Izlaz iz Srbije,999,"van opsega 0-300, treba da se preskoci"\n'
+    )
+    user_reports = parse_user_reports(user_csv)
+    ur_ok = True
+    gradina_ur = user_reports.get("gradina", {})
+    if gradina_ur.get("izlaz") != 30:  # medijana od [20, 40]
+        ur_ok = False
+    if gradina_ur.get("ulaz") != 15:
+        ur_ok = False
+    if len(gradina_ur.get("comments", [])) != 2:  # samo 2 komentara u prozoru, ne 3 (jedan je prestar)
+        ur_ok = False
+    if "horgos" in user_reports and (user_reports["horgos"].get("izlaz") is not None):
+        ur_ok = False  # oba horgos reda su nevazeca, ne sme da prodje nijedan broj
+    print(f"[{'OK ' if ur_ok else 'FAIL'}] user_reports (prijave vozaca preko forme): {user_reports}")
+
+    result = build(SELFTEST_FIXTURE, HU_FIXTURE, MK_FIXTURE, BA_FIXTURE, user_reports)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     c = result["crossings"]
     ok = True
@@ -585,6 +714,7 @@ def selftest():
     if not ba_p_ok:
         ok = False
     print(f"[{'OK ' if ba_p_ok else 'FAIL'}] presevo.ba: got={ba_p} exp={ba_p_exp}")
+    ok = ok and ur_ok
     print("\nSELFTEST:", "PASS" if ok else "FAIL")
     return 0 if ok else 1
 
@@ -661,7 +791,13 @@ def main():
             ba_text = html_to_text(fetch_ba())
         except Exception as e:
             print("Upozorenje: borderalarm.com nije dostupan:", e)
-    result = build(text, hu_text, mk_text, ba_text)
+    user_reports = {}
+    if USER_REPORTS_ENABLED:
+        try:
+            user_reports = parse_user_reports(fetch_user_reports())
+        except Exception as e:
+            print("Upozorenje: Gasolina forma (CSV) nije dostupna:", e)
+    result = build(text, hu_text, mk_text, ba_text, user_reports)
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
