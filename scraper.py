@@ -16,6 +16,7 @@ Sources:
 import csv
 import json
 import re
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -96,20 +97,73 @@ def now_utc():
 
 # --------------------------- scrapers ------------------------------
 
+MUST_LIST_URL = "https://must.gov.rs/tekst/sr/94/saopstenja.php"
+
+
+def _must_latest_price_url(soup):
+    """Nadji link najnovije vesti o ceni goriva na listi saopstenja Ministarstva.
+    Naslov je dosledan iz nedelje u nedelju ('OBAVESTENJE O NAJVISOJ
+    MALOPRODAJNOJ CENI...'), ali URL/ID vesti se menja svake nedelje pa mora
+    da se trazi svaki put iznova."""
+    for a in soup.find_all("a", href=True):
+        text = a.get_text(" ", strip=True).lower()
+        if "maloprodajnoj ceni" in text and ("derivata" in text or "goriva" in text):
+            href = a["href"]
+            if href.startswith("/"):
+                href = "https://must.gov.rs" + href
+            return href
+    return None
+
+
+def _must_parse_prices(text):
+    """Iz teksta zvanicnog obavestenja izvuci (dizel, benzin) u dinarima.
+    Format je godinama identican: 'EVRO DIZEL, u iznosu 222,00 dinara ...
+    EVRO PREMIJUM BMB 95 u iznosu 198,00 dinara'."""
+    d = re.search(r"EVRO\s+DIZEL[^0-9]{0,30}(\d{2,3})[,.]\d{2}\s*dinara", text, re.I)
+    b = re.search(r"BMB\s*95[^0-9]{0,30}(\d{2,3})[,.]\d{2}\s*dinara", text, re.I)
+    if not (d and b):
+        return None
+    return float(d.group(1)), float(b.group(1))
+
+
 def scrape_serbia():
+    # TNG uvek sa nafta.hr (Ministarstvo ne kontrolise/ne objavljuje cenu TNG-a).
     soup = fetch_soup("https://nafta.hr/sr/cene-goriva-srbija/")
-    petrol = get_company_row(find_table_for_heading(soup, ["BMB 95 Benzin"]), "nis")
-    diesel = get_company_row(find_table_for_heading(soup, ["Eurodizel"]), "nis")
-    lpg    = get_company_row(find_table_for_heading(soup, ["Autoplin", "TNG", "auto plin"]), "nis")
-    if not all([petrol, diesel, lpg]):
-        raise RuntimeError(f"Serbia: petrol={petrol}, diesel={diesel}, lpg={lpg}")
-    p_eur, p_loc = petrol; d_eur, d_loc = diesel; l_eur, l_loc = lpg
+    petrol_agg = get_company_row(find_table_for_heading(soup, ["BMB 95 Benzin"]), "nis")
+    diesel_agg = get_company_row(find_table_for_heading(soup, ["Eurodizel"]), "nis")
+    lpg        = get_company_row(find_table_for_heading(soup, ["Autoplin", "TNG", "auto plin"]), "nis")
+    if not all([petrol_agg, diesel_agg, lpg]):
+        raise RuntimeError(f"Serbia: petrol={petrol_agg}, diesel={diesel_agg}, lpg={lpg}")
+    p_eur, p_loc = petrol_agg; d_eur, d_loc = diesel_agg; l_eur, l_loc = lpg
+    fx = round(p_loc / p_eur, 4) if p_eur else None
+
+    # Dizel i benzin: PRVO zvanicno Ministarstvo (must.gov.rs, objava petkom 15h,
+    # izvor od kog svi agregatori prepisuju - nafta.hr je znao da kasni ceo dan+,
+    # pa je sajt subotom pokazivao staru cenu). Ako Ministarstvo ne uspe iz bilo
+    # kog razloga, ostaju agregatorske cifre - gore po svezini, ali ne pada nista.
+    src_note = "nafta.hr"
+    try:
+        must_list = fetch_soup(MUST_LIST_URL)
+        url = _must_latest_price_url(must_list)
+        if url:
+            must_page = fetch_soup(url)
+            parsed = _must_parse_prices(must_page.get_text(" ", strip=True))
+            if parsed and fx:
+                d_loc, p_loc = parsed
+                d_eur = round(d_loc / fx, 3)
+                p_eur = round(p_loc / fx, 3)
+                src_note = "must.gov.rs (zvanicno)"
+                print(f"[ok] Serbia dizel/benzin sa must.gov.rs: {d_loc}/{p_loc} din")
+    except Exception as ex:
+        print(f"[warn] must.gov.rs nedostupan ({ex}), Serbia ostaje na nafta.hr ciframa")
+
     return {
         "name": "Serbia", "flag": "🇷🇸", "currency": "RSD",
-        "fx_rate_eur": round(p_loc / p_eur, 4) if p_eur else None,
+        "fx_rate_eur": fx,
         "petrol95": {"local": p_loc, "eur": p_eur},
         "diesel":   {"local": d_loc, "eur": d_eur},
         "lpg":      {"local": l_loc, "eur": l_eur},
+        "price_source": src_note,
         "updated":  now_utc(),
     }
 
@@ -507,5 +561,28 @@ def main():
     append_history(countries)
 
 
+def selftest():
+    """Testira parsiranje zvanicnog obavestenja Ministarstva (must.gov.rs)
+    protiv TACNOG teksta iz dve stvarne objave (razlicite nedelje, jedna sa
+    rednim brojevima '1.'/'2.', druga bez) - bez mreze."""
+    t1 = ("utvrdjuje se najvisa maloprodajna cena derivata nafte za period od "
+          "15 casova 12. januara 2024. godine do 19. januara 2024. godine, i to za: "
+          "EVRO DIZEL, u iznosu 194,00 dinara za jedan litar i "
+          "EVRO PREMIJUM BMB 95 u iznosu 174,00 dinara za jedan litar.")
+    t2 = ("i to za: 1.EVRO DIZEL, u iznosu 217,00 dinara za jedan litar i "
+          "2. EVRO PREMIJUM BMB 95 u iznosu 199,00 dinara")
+    ok = True
+    if _must_parse_prices(t1) != (194.0, 174.0):
+        ok = False
+    if _must_parse_prices(t2) != (217.0, 199.0):
+        ok = False
+    if _must_parse_prices("nema cena u ovom tekstu") is not None:
+        ok = False
+    print("SELFTEST:", "PASS" if ok else "FAIL")
+    return 0 if ok else 1
+
+
 if __name__ == "__main__":
+    if "--selftest" in sys.argv:
+        raise SystemExit(selftest())
     main()
