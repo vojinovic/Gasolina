@@ -1,11 +1,9 @@
 name: Update Fuel Prices
 
 on:
-  workflow_dispatch:        # ručno pokretanje preko Actions taba
+  workflow_dispatch:
   schedule:
-    - cron: '0 7 * * 6'    # svake subote u 07:00 UTC (09:00 po nasem leti) - namerno POSLE petka
-                            # kad se u Srbiji menja cena goriva, da izvori sigurno stignu da se azuriraju
-                            # pre nego sto mi ocitamo (petak uvece je znalo da uhvati staru cenu)
+    - cron: '0 7 * * 6'
 
 permissions:
   contents: write
