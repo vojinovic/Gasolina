@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-19T04:04:21+00:00",
+  "scraped_at": "2026-07-19T07:06:39+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -8,7 +8,7 @@
   "crossings": {
     "gradina": {
       "putnicka": {
-        "izlaz": 30,
+        "izlaz": 60,
         "ulaz": 30
       },
       "teretna": {
@@ -18,7 +18,7 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 270,
+        "izlaz": 180,
         "ulaz": 5
       }
     },
@@ -38,14 +38,14 @@
         "izlaz": 30
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 210
+        "izlaz": 40,
+        "ulaz": 5
       }
     },
     "kelebija": {
       "putnicka": {
         "izlaz": 30,
-        "ulaz": 45
+        "ulaz": 30
       },
       "teretna": {
         "izlaz": 30,
@@ -58,8 +58,8 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 270
+        "izlaz": 5,
+        "ulaz": 35
       }
     },
     "batrovci": {
@@ -74,8 +74,8 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 120,
-        "ulaz": 750
+        "izlaz": 60,
+        "ulaz": 5
       }
     },
     "presevo": {
@@ -90,13 +90,13 @@
       "found": true,
       "amss_name": "PREŠEVO Srbija - Severna Makedonija AP E 75 M1",
       "mk": {
-        "vlez": 30,
+        "vlez": 20,
         "izlez": null,
         "opsto": null
       },
       "ba": {
-        "izlaz": 20,
-        "ulaz": 10
+        "izlaz": 240,
+        "ulaz": 240
       }
     },
     "sremska-raca": {
@@ -105,7 +105,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 60,
+        "izlaz": 30,
         "ulaz": 30
       },
       "found": true,
@@ -138,9 +138,9 @@
     "bogorodica": {
       "found": false,
       "mk": {
-        "vlez": 0,
-        "izlez": 0,
-        "opsto": 0
+        "vlez": 30,
+        "izlez": null,
+        "opsto": null
       }
     }
   }
