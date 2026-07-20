@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-20T03:40:07+00:00",
+  "scraped_at": "2026-07-20T06:53:07+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -8,7 +8,7 @@
   "crossings": {
     "gradina": {
       "putnicka": {
-        "izlaz": 60,
+        "izlaz": 180,
         "ulaz": 30
       },
       "teretna": {
@@ -18,14 +18,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 480,
-        "ulaz": 5
+        "izlaz": 5,
+        "ulaz": 10
       }
     },
     "horgos": {
       "putnicka": {
         "izlaz": 30,
-        "ulaz": 45
+        "ulaz": 30
       },
       "teretna": {
         "izlaz": 30,
@@ -38,31 +38,11 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 10
+        "izlaz": 5,
+        "ulaz": 25
       }
     },
     "kelebija": {
-      "putnicka": {
-        "izlaz": 30,
-        "ulaz": 30
-      },
-      "teretna": {
-        "izlaz": 30,
-        "ulaz": 30
-      },
-      "found": true,
-      "amss_name": "KELEBIJA Srbija-Mađarska",
-      "hu": {
-        "ulaz": 0,
-        "izlaz": 0
-      },
-      "ba": {
-        "izlaz": 10,
-        "ulaz": 15
-      }
-    },
-    "batrovci": {
       "putnicka": {
         "izlaz": 30,
         "ulaz": 30
@@ -72,15 +52,35 @@
         "ulaz": 30
       },
       "found": true,
+      "amss_name": "KELEBIJA Srbija-Mađarska",
+      "hu": {
+        "ulaz": 0,
+        "izlaz": 0
+      },
+      "ba": {
+        "izlaz": 5,
+        "ulaz": 10
+      }
+    },
+    "batrovci": {
+      "putnicka": {
+        "izlaz": 30,
+        "ulaz": 30
+      },
+      "teretna": {
+        "izlaz": 120,
+        "ulaz": 30
+      },
+      "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 30,
+        "izlaz": 60,
         "ulaz": 30
       }
     },
     "presevo": {
       "putnicka": {
-        "izlaz": 30,
+        "izlaz": 90,
         "ulaz": 30
       },
       "teretna": {
@@ -90,12 +90,12 @@
       "found": true,
       "amss_name": "PREŠEVO Srbija - Severna Makedonija AP E 75 M1",
       "mk": {
-        "vlez": 0,
-        "izlez": 0,
-        "opsto": 0
+        "vlez": 40,
+        "izlez": null,
+        "opsto": null
       },
       "ba": {
-        "izlaz": 25,
+        "izlaz": 60,
         "ulaz": 10
       }
     },
@@ -138,9 +138,9 @@
     "bogorodica": {
       "found": false,
       "mk": {
-        "vlez": 0,
-        "izlez": 0,
-        "opsto": 0
+        "vlez": 40,
+        "izlez": null,
+        "opsto": null
       }
     }
   }
