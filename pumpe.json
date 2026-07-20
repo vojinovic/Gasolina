@@ -1,7 +1,7 @@
 {
-  "scraped_at": "2026-07-16T08:41:36+00:00",
+  "scraped_at": "2026-07-20T06:33:15+00:00",
   "source": "OpenStreetMap (Overpass API)",
-  "count": 1090,
+  "count": 1089,
   "stations": [
     {
       "id": 296878310,
@@ -13590,16 +13590,6 @@
       "brand": "Makpetrol",
       "lat": 41.15128,
       "lon": 22.51294,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 2258349842,
-      "corridor": "mk-transit",
-      "country": "MK",
-      "brand": "Makpetrol",
-      "lat": 42.02144,
-      "lon": 22.58577,
       "fuels": null,
       "open24": null
     },
