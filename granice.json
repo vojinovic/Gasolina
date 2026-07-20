@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-20T16:57:42+00:00",
+  "scraped_at": "2026-07-20T19:01:02+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -8,7 +8,7 @@
   "crossings": {
     "gradina": {
       "putnicka": {
-        "izlaz": 180,
+        "izlaz": 240,
         "ulaz": 30
       },
       "teretna": {
@@ -19,12 +19,12 @@
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
         "izlaz": 240,
-        "ulaz": 15
+        "ulaz": 60
       }
     },
     "horgos": {
       "putnicka": {
-        "izlaz": 30,
+        "izlaz": 90,
         "ulaz": 30
       },
       "teretna": {
@@ -33,13 +33,9 @@
       },
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
-      "hu": {
-        "ulaz": 30,
-        "izlaz": 0
-      },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 15
+        "izlaz": 15,
+        "ulaz": 210
       }
     },
     "kelebija": {
@@ -53,12 +49,8 @@
       },
       "found": true,
       "amss_name": "KELEBIJA Srbija-Mađarska",
-      "hu": {
-        "ulaz": 0,
-        "izlaz": 0
-      },
       "ba": {
-        "izlaz": 15,
+        "izlaz": 5,
         "ulaz": 5
       }
     },
@@ -75,12 +67,12 @@
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
         "izlaz": 30,
-        "ulaz": 120
+        "ulaz": 60
       }
     },
     "presevo": {
       "putnicka": {
-        "izlaz": 90,
+        "izlaz": 150,
         "ulaz": 30
       },
       "teretna": {
@@ -95,8 +87,8 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 30,
-        "ulaz": 10
+        "izlaz": 240,
+        "ulaz": 15
       }
     },
     "sremska-raca": {
@@ -113,8 +105,8 @@
     },
     "spiljani": {
       "putnicka": {
-        "izlaz": 30,
-        "ulaz": 30
+        "izlaz": 35,
+        "ulaz": 50
       },
       "teretna": {
         "izlaz": 30,
