@@ -93,7 +93,7 @@
     .nav a{padding:6px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
     .brand .bname{font-size:18px}
   }
-  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px}
+  .wrap{max-width:1000px;margin:0 auto;padding:28px 18px 60px}
   .crumb{font-size:11px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
   .crumb a{color:var(--faint);text-decoration:none}
   .crumb a:hover{color:var(--fuel)}
@@ -158,7 +158,10 @@
 
   <div class="pane" id="pane"><span class="badge">MUP</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="thumbs/kelebija.jpg" alt="Kelebija" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Pusti kameru uživo</button></div><div class="feeds"><button onclick="playFeed(0)">Ulaz</button><button onclick="playFeed(1)">Izlaz</button></div>
   <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Učitavanje trenutnog stanja…</div></div>
-  <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Gužva na mapi (izlaz iz Srbije)</h2><iframe src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d11672.3!2d19.559506550000002!3d46.16737195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d46.1642685!2d19.5626338!4m3!3m2!1d46.1704754!2d19.5563793!5e0!3m2!1ssr!2srs!4v1627540443619!5m2!1ssr!2srs" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Kelebija" allowfullscreen></iframe><div style="font-size:11px;color:var(--faint);margin-top:6px">Vreme na mapi je procena vožnje kroz zonu prelaza u trenutnoj gužvi — ne uključuje pasošku kontrolu.</div></div>
+  <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
+  <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Gužva na mapi: Srbija → Mađarska</h2><iframe src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d11672.3!2d19.559506550000002!3d46.16737195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d46.1642685!2d19.5626338!4m3!3m2!1d46.1704754!2d19.5563793!5e0!3m2!1ssr!2srs!4v1627540443619!5m2!1ssr!2srs" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Gužva na mapi: Srbija → Mađarska" allowfullscreen></iframe></div>
+  <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Gužva na mapi: Mađarska → Srbija</h2><iframe src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d11672.3!2d19.559506550000002!3d46.16737195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d46.1704754!2d19.5563793!4m3!3m2!1d46.1642685!2d19.5626338!5e0!3m2!1ssr!2srs!4v1627540443619!5m2!1ssr!2srs" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Gužva na mapi: Mađarska → Srbija" allowfullscreen></iframe></div>
+  <div style="font-size:11px;color:var(--faint);margin-top:6px">Vreme na mapi je procena vožnje kroz zonu prelaza u trenutnoj gužvi — ne uključuje pasošku kontrolu.</div>
 
   <div class="cta">
     <a class="btn" href="granice.html" onclick="track('landing_cta', {prelaz:'kelebija', cilj:'granice'})">Uporedi sve prelaze →</a>
@@ -199,6 +202,22 @@
       box.innerHTML = `
         <div class="wcell"><div class="wlabel">Ulaz u Srbiju</div><div class="wval">${fmt(p ? p.ulaz : null)}</div></div>
         <div class="wcell"><div class="wlabel">Izlaz iz Srbije</div><div class="wval">${fmt(p ? p.izlaz : null)}</div></div>`;
+      // dodatni izvori (isti kao na granice.html karticama): prijave vozaca,
+      // madjarska/makedonska strana - landing ne sme da bude siromasniji od pregleda
+      const srcs = [];
+      const mfmt = m => (m == null) ? "-" : (m + " min");
+      if (c && c.ba) srcs.push(`\uD83D\uDE97 <b>Prijave vozača (BorderAlarm):</b> izlaz ${mfmt(c.ba.izlaz)} \u00b7 ulaz ${mfmt(c.ba.ulaz)}`);
+      if (c && c.hu) srcs.push(`\uD83C\uDDED\uD83C\uDDFA <b>Mađarska strana:</b> ulaz ${fmt(c.hu.ulaz)} \u00b7 izlaz ${fmt(c.hu.izlaz)}`);
+      if (c && c.mk) {
+        const mkTxt = (c.mk.opsto != null) ? ("~" + c.mk.opsto + " min")
+          : ["vlez: " + mfmt(c.mk.vlez), "izlez: " + mfmt(c.mk.izlez)].join(" \u00b7 ");
+        srcs.push(`\uD83C\uDDF2\uD83C\uDDF0 <b>Makedonska strana:</b> ${mkTxt}`);
+      }
+      const sbox = document.getElementById("sources");
+      if (sbox && srcs.length) {
+        sbox.innerHTML = srcs.map(s => `<div>${s}</div>`).join("");
+        sbox.style.display = "grid";
+      }
     }catch(e){
       box.innerHTML = `<div class="wcell" style="grid-column:1/-1;color:var(--faint)">Trenutno stanje nije dostupno - proveri direktno na <a href="granice.html#kelebija" style="color:var(--fuel)">granice.html</a>.</div>`;
     }
