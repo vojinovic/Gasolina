@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-20T23:32:38+00:00",
+  "scraped_at": "2026-07-21T03:20:15+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -8,7 +8,7 @@
   "crossings": {
     "gradina": {
       "putnicka": {
-        "izlaz": 240,
+        "izlaz": 30,
         "ulaz": 30
       },
       "teretna": {
@@ -18,18 +18,18 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 60,
-        "ulaz": 35
+        "izlaz": 40,
+        "ulaz": 20
       }
     },
     "horgos": {
       "putnicka": {
-        "izlaz": 90,
+        "izlaz": 30,
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 30,
-        "ulaz": 90
+        "izlaz": 120,
+        "ulaz": 30
       },
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
@@ -39,7 +39,7 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 25
+        "ulaz": 5
       }
     },
     "kelebija": {
@@ -48,7 +48,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 60,
+        "izlaz": 30,
         "ulaz": 30
       },
       "found": true,
@@ -59,7 +59,7 @@
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 10
+        "ulaz": 15
       }
     },
     "batrovci": {
@@ -75,12 +75,12 @@
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
         "izlaz": 10,
-        "ulaz": 55
+        "ulaz": 60
       }
     },
     "presevo": {
       "putnicka": {
-        "izlaz": 150,
+        "izlaz": 30,
         "ulaz": 30
       },
       "teretna": {
@@ -95,8 +95,8 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 390,
-        "ulaz": 15
+        "izlaz": 300,
+        "ulaz": 10
       }
     },
     "sremska-raca": {
@@ -113,8 +113,8 @@
     },
     "spiljani": {
       "putnicka": {
-        "izlaz": 35,
-        "ulaz": 50
+        "izlaz": 30,
+        "ulaz": 30
       },
       "teretna": {
         "izlaz": 30,
