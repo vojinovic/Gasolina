@@ -22,7 +22,7 @@ window.BORDERS = (function () {
 
   const CROSSINGS = [
     {
-      id: "gradina", mapRoute: ["Granični prelaz Gradina", "ГКПП Калотина"], coords: [43.0125, 22.8231], name: "Gradina", from: "RS", to: "BG",
+      id: "gradina", mapPB: [43.0003029, 22.8241663, 42.9957489, 22.8377659], mapRoute: ["Granični prelaz Gradina", "ГКПП Калотина"], coords: [43.0125, 22.8231], name: "Gradina", from: "RS", to: "BG",
       pair: "Kalotina (BG)", road: "E80", provider: "AMSS",
       official: "https://kamere.amss.org.rs/",
       feeds: [
@@ -32,7 +32,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
-      id: "horgos", mapRoute: ["Granični prelaz Horgoš", "Röszke határátkelőhely"], coords: [46.1755, 19.9772], name: "Horgos", from: "RS", to: "HU",
+      id: "horgos", mapPB: [46.1662695, 19.9615223, 46.1834449, 19.9880802], mapRoute: ["Granični prelaz Horgoš", "Röszke határátkelőhely"], coords: [46.1755, 19.9772], name: "Horgos", from: "RS", to: "HU",
       pair: "Roszke (HU)", road: "E75", provider: "AMSS",
       official: "https://kamere.amss.org.rs/",
       feeds: [
@@ -42,7 +42,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
-      id: "kelebija", mapRoute: ["Granični prelaz Kelebija", "Tompa határátkelőhely"], coords: [46.191, 19.541], name: "Kelebija", from: "RS", to: "HU",
+      id: "kelebija", mapPB: [46.1642685, 19.5626338, 46.1704754, 19.5563793], mapRoute: ["Granični prelaz Kelebija", "Tompa határátkelőhely"], coords: [46.191, 19.541], name: "Kelebija", from: "RS", to: "HU",
       pair: "Tompa (HU)", road: "M17/E75", provider: "MUP",
       official: "https://kamere.amss.org.rs/",
       feeds: [
@@ -52,7 +52,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
-      id: "batrovci", mapRoute: ["Granični prelaz Batrovci", "Granični prijelaz Bajakovo"], coords: [45.0492, 19.0989], name: "Batrovci", from: "RS", to: "HR",
+      id: "batrovci", mapPB: [45.0455054, 19.1216508, 45.048986, 19.0847306], mapRoute: ["Granični prelaz Batrovci", "Granični prijelaz Bajakovo"], coords: [45.0492, 19.0989], name: "Batrovci", from: "RS", to: "HR",
       pair: "Bajakovo (HR)", road: "E70", provider: "AMSS",
       official: "https://kamere.amss.org.rs/",
       feeds: [
@@ -62,7 +62,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 300 } },
     },
     {
-      id: "presevo", mapRoute: ["Granični prelaz Preševo", "Граничен премин Табановце"], coords: [42.2436, 21.6433], name: "Presevo", from: "RS", to: "MK",
+      id: "presevo", mapPB: [42.2398219, 21.7026983, 42.2314251, 21.704081], mapRoute: ["Granični prelaz Preševo", "Граничен премин Табановце"], coords: [42.2436, 21.6433], name: "Presevo", from: "RS", to: "MK",
       pair: "Tabanovce (MK)", road: "E75", provider: "AMSS / MUP",
       official: "https://kamere.amss.org.rs/",
       feeds: [
@@ -74,7 +74,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
-      id: "bogorodica", mapRoute: ["Граничен премин Богородица", "Border Crossing Point of Evzoni"], coords: [41.1264, 22.5092], name: "Bogorodica", from: "MK", to: "GR",
+      id: "bogorodica", mapPB: [41.134253, 22.5490008, 41.1276257, 22.5516536], mapRoute: ["Граничен премин Богородица", "Border Crossing Point of Evzoni"], coords: [41.1264, 22.5092], name: "Bogorodica", from: "MK", to: "GR",
       pair: "Evzoni (GR)", road: "E75", provider: "roads.org.mk",
       official: "https://alltrafficcams.com/live/border-crossings/north-macedonia/greece/bogorodica-evzonoi/",
       noWait: true,
@@ -127,7 +127,7 @@ window.BORDERS = (function () {
       // kad je Evzoni zakrcен. Isti obrazac kao Bogorodica: samo kamera (roads.org.mk /
       // neotel stream), bez pracenja cekanja (nije RS granica). Stream URL potvrdjen
       // rucno u browseru pre dodavanja (gvozdeno pravilo).
-      id: "dojran", mapRoute: ["Граничен премин Дојрани", "Doirani Border Station"], coords: [41.22, 22.72], name: "Dojran", from: "MK", to: "GR",
+      id: "dojran", mapPB: [41.1821, 22.7580, 41.1726, 22.7594], mapRoute: ["Граничен премин Дојрани", "Doirani Border Station"], coords: [41.22, 22.72], name: "Dojran", from: "MK", to: "GR",
       pair: "Doirani (GR)", road: "regionalni put (uz Dojransko jezero)", provider: "roads.org.mk",
       official: "https://roads.org.mk/en/road-network/live-webcast",
       noWait: true,
