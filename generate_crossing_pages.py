@@ -61,7 +61,9 @@ L = {
     "wait_loading": "U\u010ditavanje trenutnog stanja\u2026",
     "wait_unavail": 'Trenutno stanje nije dostupno - proveri direktno na <a href="{root}granice.html#{id}" style="color:var(--fuel)">granice.html</a>.',
     "no_queue": "Bez guzve", "no_data": "nema podataka",
-    "map_h": "Gu\u017eva na mapi (izlaz iz Srbije)",
+    "map_h": "Gu\u017eva na mapi: {a} \u2192 {b}",
+    "src_ba": "Prijave voza\u010da (BorderAlarm)", "src_hu": "Ma\u0111arska strana", "src_mk": "Makedonska strana",
+    "lbl_out": "izlaz", "lbl_in": "ulaz",
     "map_note": "Vreme na mapi je procena vo\u017enje kroz zonu prelaza u trenutnoj gu\u017evi \u2014 ne uklju\u010duje paso\u0161ku kontrolu.",
     "cta_borders": "Uporedi sve prelaze \u2192",
     "cta_calc": "Izra\u010dunaj tro\u0161ak puta \u2192",
@@ -94,7 +96,9 @@ L = {
     "wait_loading": "Loading current status\u2026",
     "wait_unavail": 'Current status unavailable - check directly on <a href="{root}granice.html#{id}" style="color:var(--fuel)">the borders page</a>.',
     "no_queue": "No queue", "no_data": "no data",
-    "map_h": "Traffic on the map (exiting Serbia)",
+    "map_h": "Traffic on the map: {a} \u2192 {b}",
+    "src_ba": "Driver reports (BorderAlarm)", "src_hu": "Hungarian side", "src_mk": "North Macedonian side",
+    "lbl_out": "exit", "lbl_in": "entry",
     "map_note": "The time on the map is a driving estimate through the crossing zone in current traffic \u2014 it does not include passport control.",
     "cta_borders": "Compare all crossings \u2192",
     "cta_calc": "Calculate trip cost \u2192",
@@ -253,7 +257,7 @@ PAGE_TMPL = """<!DOCTYPE html>
     .nav a{{padding:6px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}}
     .brand .bname{{font-size:18px}}
   }}
-  .wrap{{max-width:760px;margin:0 auto;padding:28px 18px 60px}}
+  .wrap{{max-width:1000px;margin:0 auto;padding:28px 18px 60px}}
   .crumb{{font-size:11px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}}
   .crumb a{{color:var(--faint);text-decoration:none}}
   .crumb a:hover{{color:var(--fuel)}}
@@ -357,6 +361,22 @@ PAGE_TMPL = """<!DOCTYPE html>
       box.innerHTML = `
         <div class="wcell"><div class="wlabel">{wait_in}</div><div class="wval">${{fmt(p ? p.ulaz : null)}}</div></div>
         <div class="wcell"><div class="wlabel">{wait_out}</div><div class="wval">${{fmt(p ? p.izlaz : null)}}</div></div>`;
+      // dodatni izvori (isti kao na granice.html karticama): prijave vozaca,
+      // madjarska/makedonska strana - landing ne sme da bude siromasniji od pregleda
+      const srcs = [];
+      const mfmt = m => (m == null) ? "-" : (m + " min");
+      if (c && c.ba) srcs.push(`\\uD83D\\uDE97 <b>{src_ba}:</b> {lbl_out} ${{mfmt(c.ba.izlaz)}} \\u00b7 {lbl_in} ${{mfmt(c.ba.ulaz)}}`);
+      if (c && c.hu) srcs.push(`\\uD83C\\uDDED\\uD83C\\uDDFA <b>{src_hu}:</b> {lbl_in} ${{fmt(c.hu.ulaz)}} \\u00b7 {lbl_out} ${{fmt(c.hu.izlaz)}}`);
+      if (c && c.mk) {{
+        const mkTxt = (c.mk.opsto != null) ? ("~" + c.mk.opsto + " min")
+          : ["vlez: " + mfmt(c.mk.vlez), "izlez: " + mfmt(c.mk.izlez)].join(" \\u00b7 ");
+        srcs.push(`\\uD83C\\uDDF2\\uD83C\\uDDF0 <b>{src_mk}:</b> ${{mkTxt}}`);
+      }}
+      const sbox = document.getElementById("sources");
+      if (sbox && srcs.length) {{
+        sbox.innerHTML = srcs.map(s => `<div>${{s}}</div>`).join("");
+        sbox.style.display = "grid";
+      }}
     }}catch(e){{
       box.innerHTML = `<div class="wcell" style="grid-column:1/-1;color:var(--faint)">{wait_unavail}</div>`;
     }}
@@ -440,30 +460,42 @@ def build_hero(c, lang, root):
 
     if not c["no_wait"]:
         parts.append(f'<div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">{t["wait_loading"]}</div></div>')
+        parts.append('<div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>')
 
     if c.get("map_pb"):
+        from_c = COUNTRY[lang].get(c["from"], c["from"])
+        to_c = COUNTRY[lang].get(c["to"], c["to"])
         o_lat, o_lon, d_lat, d_lon = c["map_pb"]
         mid_lat, mid_lon = (o_lat + d_lat) / 2, (o_lon + d_lon) / 2
         lp = "!1ssr!2srs" if lang == "sr" else "!1sen!2sus"
-        pb = (f"!1m24!1m12!1m3!1d11672.3!2d{mid_lon}!3d{mid_lat}"
-              f"!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1"
-              f"!4m9!3e0!4m3!3m2!1d{o_lat}!2d{o_lon}!4m3!3m2!1d{d_lat}!2d{d_lon}"
-              f"!5e0!3m2{lp}!4v1627540443619!5m2{lp}")
-        parts.append(
-            f'<div class="map-box"><h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:20px;'
-            f'text-transform:uppercase;margin:26px 0 10px">{t["map_h"]}</h2>'
-            f'<iframe src="https://www.google.com/maps/embed?pb={pb}" '
-            f'width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" '
-            f'loading="lazy" title="{c["name"]}" allowfullscreen></iframe>'
-            f'<div style="font-size:11px;color:var(--faint);margin-top:6px">{t["map_note"]}</div></div>'
-        )
+
+        def pb_iframe(a_lat, a_lon, b_lat, b_lon, heading):
+            pb = (f"!1m24!1m12!1m3!1d11672.3!2d{mid_lon}!3d{mid_lat}"
+                  f"!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1"
+                  f"!4m9!3e0!4m3!3m2!1d{a_lat}!2d{a_lon}!4m3!3m2!1d{b_lat}!2d{b_lon}"
+                  f"!5e0!3m2{lp}!4v1627540443619!5m2{lp}")
+            return (
+                f'<div class="map-box"><h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:20px;'
+                f'text-transform:uppercase;margin:26px 0 10px">{heading}</h2>'
+                f'<iframe src="https://www.google.com/maps/embed?pb={pb}" '
+                f'width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" '
+                f'loading="lazy" title="{heading}" allowfullscreen></iframe></div>'
+            )
+
+        # smer 1 (kako je kalibrisano, npr izlaz iz RS) + smer 2 (obrnute tacke)
+        parts.append(pb_iframe(o_lat, o_lon, d_lat, d_lon, t["map_h"].format(a=from_c, b=to_c)))
+        parts.append(pb_iframe(d_lat, d_lon, o_lat, o_lon, t["map_h"].format(a=to_c, b=from_c)))
+        parts.append(f'<div style="font-size:11px;color:var(--faint);margin-top:6px">{t["map_note"]}</div>')
     elif c.get("map_route"):
+        from_c2 = COUNTRY[lang].get(c["from"], c["from"])
+        to_c2 = COUNTRY[lang].get(c["to"], c["to"])
+        map_h_txt = t["map_h"].format(a=from_c2, b=to_c2)
         a, b = c["map_route"]
         qa, qb = urllib.parse.quote(a), urllib.parse.quote(b)
         hl = "sr" if lang == "sr" else "en"
         parts.append(
             f'<div class="map-box"><h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:20px;'
-            f'text-transform:uppercase;margin:26px 0 10px">{t["map_h"]}</h2>'
+            f'text-transform:uppercase;margin:26px 0 10px">{map_h_txt}</h2>'
             f'<iframe src="https://maps.google.com/maps?saddr={qa}&daddr={qb}&hl={hl}&t=m&z=13&output=embed" '
             f'width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" '
             f'loading="lazy" title="{c["name"]}" allowfullscreen></iframe>'
@@ -537,6 +569,8 @@ def render_page(c, all_c, lang):
         og_image=og_image,
         feeds_json=json.dumps(c["feeds"], ensure_ascii=False),
         no_queue=t["no_queue"], no_data=t["no_data"],
+        src_ba=t["src_ba"], src_hu=t["src_hu"], src_mk=t["src_mk"],
+        lbl_out=t["lbl_out"], lbl_in=t["lbl_in"],
         wait_in=t["wait_in"], wait_out=t["wait_out"],
         wait_loading=t["wait_loading"],
         wait_unavail=t["wait_unavail"].format(root=root, id=c["id"]),
