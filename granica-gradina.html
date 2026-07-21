@@ -286,7 +286,20 @@
   if (FEEDS.length && _params.get("play") === "1") {
     const _fi = Math.min(parseInt(_params.get("feed") || "0", 10) || 0, FEEDS.length - 1);
     document.addEventListener("DOMContentLoaded", () => playFeed(_fi, {muted:true}));
+  } else if (FEEDS.length) {
+    // bez autoplay-a: vizuelno oznaci prvu kameru kao izabranu, da tabovi
+    // ne izgledaju "mrtvo" pre prvog klika (overlay pusta bas nju)
+    document.addEventListener("DOMContentLoaded", () => {
+      const first = document.querySelector(".feeds button");
+      if (first) first.classList.add("on");
+    });
   }
+  // SR<->EN prekidac: prenesi ?play/&feed u drugu jezicku verziju, da
+  // prebacivanje jezika ne prekida kameru koja vec ide
+  document.addEventListener("DOMContentLoaded", () => {
+    const ll = document.querySelector(".nav a.lang");
+    if (ll && window.location.search) ll.href += window.location.search;
+  });
 </script>
 </body>
 </html>
