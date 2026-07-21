@@ -63,7 +63,7 @@ L = {
     "no_queue": "Bez guzve", "no_data": "nema podataka",
     "map_h": "Gu\u017eva na mapi: {a} \u2192 {b}",
     "src_ba": "Prijave voza\u010da (BorderAlarm)", "src_hu": "Ma\u0111arska strana", "src_mk": "Makedonska strana",
-    "lbl_out": "izlaz", "lbl_in": "ulaz",
+    "lbl_out": "izlaz", "lbl_in": "ulaz", "src_label": "izvor",
     "map_note": "Vreme na mapi je procena vo\u017enje kroz zonu prelaza u trenutnoj gu\u017evi \u2014 ne uklju\u010duje paso\u0161ku kontrolu.",
     "cta_borders": "Uporedi sve prelaze \u2192",
     "cta_calc": "Izra\u010dunaj tro\u0161ak puta \u2192",
@@ -98,7 +98,7 @@ L = {
     "no_queue": "No queue", "no_data": "no data",
     "map_h": "Traffic on the map: {a} \u2192 {b}",
     "src_ba": "Driver reports (BorderAlarm)", "src_hu": "Hungarian side", "src_mk": "North Macedonian side",
-    "lbl_out": "exit", "lbl_in": "entry",
+    "lbl_out": "exit", "lbl_in": "entry", "src_label": "source",
     "map_note": "The time on the map is a driving estimate through the crossing zone in current traffic \u2014 it does not include passport control.",
     "cta_borders": "Compare all crossings \u2192",
     "cta_calc": "Calculate trip cost \u2192",
@@ -357,10 +357,30 @@ PAGE_TMPL = """<!DOCTYPE html>
       const data = await res.json();
       const c = (data.crossings || {{}})[PRELAZ_ID];
       const fmt = m => (m == null) ? T.noData : (m <= 30 ? T.noQueue : (m >= 60 ? Math.floor(m/60)+"h "+(m%60)+"m" : m + " min"));
-      const p = (c && c.found && c.putnicka) ? c.putnicka : null;
+      // NAJGORI dostupan podatak po smeru, iz SVIH izvora - identicna logika
+      // kao effective() na granice.html. Sam AMSS cesto kaze "bez zadrzavanja"
+      // i kad prijave vozaca kazu 4h - bez ovoga landing laze "Bez guzve".
+      const eff = (dirKey) => {{
+        const cands = [];
+        const p = (c && c.found && c.putnicka) ? c.putnicka[dirKey] : null;
+        if (p != null) cands.push({{v: p, src: null}});
+        if (c && c.hu) {{ const v = c.hu[dirKey]; if (v != null && v > 0) cands.push({{v, src: "{src_hu}"}}); }}
+        if (c && c.mk) {{
+          const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
+          if (v != null && v > 0) cands.push({{v, src: "{src_mk}"}});
+          if (c.mk.opsto != null && c.mk.opsto > 0) cands.push({{v: c.mk.opsto, src: "{src_mk}"}});
+        }}
+        if (c && c.ba) {{ const v = c.ba[dirKey]; if (v != null && v > 0) cands.push({{v, src: "{src_ba}"}}); }}
+        if (!cands.length) return {{v: null, src: null}};
+        let best = cands[0];
+        cands.forEach(x => {{ if (best.v == null || (x.v != null && x.v > best.v)) best = x; }});
+        return best;
+      }};
+      const eIn = eff('ulaz'), eOut = eff('izlaz');
+      const srcNote = (e) => e.src ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">{src_label}: ${{e.src}}</div>` : '';
       box.innerHTML = `
-        <div class="wcell"><div class="wlabel">{wait_in}</div><div class="wval">${{fmt(p ? p.ulaz : null)}}</div></div>
-        <div class="wcell"><div class="wlabel">{wait_out}</div><div class="wval">${{fmt(p ? p.izlaz : null)}}</div></div>`;
+        <div class="wcell"><div class="wlabel">{wait_in}</div><div class="wval">${{fmt(eIn.v)}}</div>${{srcNote(eIn)}}</div>
+        <div class="wcell"><div class="wlabel">{wait_out}</div><div class="wval">${{fmt(eOut.v)}}</div>${{srcNote(eOut)}}</div>`;
       // dodatni izvori (isti kao na granice.html karticama): prijave vozaca,
       // madjarska/makedonska strana - landing ne sme da bude siromasniji od pregleda
       const srcs = [];
@@ -570,7 +590,7 @@ def render_page(c, all_c, lang):
         feeds_json=json.dumps(c["feeds"], ensure_ascii=False),
         no_queue=t["no_queue"], no_data=t["no_data"],
         src_ba=t["src_ba"], src_hu=t["src_hu"], src_mk=t["src_mk"],
-        lbl_out=t["lbl_out"], lbl_in=t["lbl_in"],
+        lbl_out=t["lbl_out"], lbl_in=t["lbl_in"], src_label=t["src_label"],
         wait_in=t["wait_in"], wait_out=t["wait_out"],
         wait_loading=t["wait_loading"],
         wait_unavail=t["wait_unavail"].format(root=root, id=c["id"]),
