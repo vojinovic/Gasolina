@@ -277,6 +277,14 @@
     }
     if(opts && opts.muted) video.muted = true;
     video.play().catch(()=>{});
+    // upisi stanje u URL (bez reload-a): jezicki prekidac i share link tako
+    // uvek nose "koja kamera trenutno ide"
+    try {
+      const u = new URL(window.location.href);
+      u.searchParams.set("play", "1");
+      u.searchParams.set("feed", String(idx));
+      history.replaceState(null, "", u.toString());
+    } catch(e) {}
     track('kamera_play', {prelaz: PRELAZ_ID, izvor: 'landing'});
   }
   // ?play=1 iz granice.html thumb klika: odmah pusti kameru (muted, browseri
@@ -294,11 +302,15 @@
       if (first) first.classList.add("on");
     });
   }
-  // SR<->EN prekidac: prenesi ?play/&feed u drugu jezicku verziju, da
-  // prebacivanje jezika ne prekida kameru koja vec ide
+  // SR<->EN prekidac: parametre cita U TRENUTKU KLIKA (playFeed ih upisuje u
+  // URL tek kad kamera krene), pa prebacivanje jezika nastavlja istu kameru
   document.addEventListener("DOMContentLoaded", () => {
     const ll = document.querySelector(".nav a.lang");
-    if (ll && window.location.search) ll.href += window.location.search;
+    if (!ll) return;
+    const base = ll.getAttribute("href");
+    ll.addEventListener("click", () => {
+      ll.href = base + window.location.search;
+    });
   });
 </script>
 </body>
