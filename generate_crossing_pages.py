@@ -61,6 +61,8 @@ def parse_crossings(js_text):
         coords = (float(cm.group(1)), float(cm.group(2))) if cm else None
         rm = re.search(r'mapRoute:\s*\["([^"]+)",\s*"([^"]+)"\]', chunk)
         map_route = (rm.group(1), rm.group(2)) if rm else None
+        pm = re.search(r'mapPB:\s*\[([\d.]+),\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)\]', chunk)
+        map_pb = tuple(float(x) for x in pm.groups()) if pm else None
 
         out.append({
             "id": cid,
@@ -76,6 +78,7 @@ def parse_crossings(js_text):
             "no_wait": no_wait,
             "coords": coords,
             "map_route": map_route,
+            "map_pb": map_pb,
         })
     return out
 
@@ -328,13 +331,28 @@ def render_page(c, all_c):
     if not c["no_wait"]:
         hero_block += '<div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">U\u010ditavanje trenutnog stanja\u2026</div></div>'
 
-    # Guzva na mapi: besplatan Google "directions" embed (output=embed, BEZ API
-    # kljuca i kartice - ovo je stari javni format, isti koji koristi
-    # alltrafficcams). Ruta izmedju mesta sa dve strane prelaza daje i BOJE
-    # guzve i PROCENU VREMENA voznje kroz zonu prelaza - to Waze iframe nema.
-    # Imena mesta umesto koordinata: Google ih sam geokodira tacno, nema
-    # nagadjanih brojeva. Vreme NE ukljucuje pasosku kontrolu - posteno pise.
-    if c.get("map_route"):
+    # Guzva na mapi. Dva formata:
+    # 1) mapPB (prioritet): Google "Share->Embed" pb format sa TACNIM koordinatama
+    #    dve tacke kroz prelaz - JEDINI format koji crta oblacic sa vremenom.
+    #    Sablon i kalibrisane tacke preuzete iz alltrafficcams embed-a (radi).
+    # 2) mapRoute (fallback): saddr/daddr sa imenima granicnih objekata -
+    #    pokazuje rutu i boje guzve, ali bez vremenskog oblacica.
+    if c.get("map_pb"):
+        o_lat, o_lon, d_lat, d_lon = c["map_pb"]
+        mid_lat, mid_lon = (o_lat + d_lat) / 2, (o_lon + d_lon) / 2
+        pb = (f"!1m24!1m12!1m3!1d11672.3!2d{mid_lon}!3d{mid_lat}"
+              f"!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1"
+              f"!4m9!3e0!4m3!3m2!1d{o_lat}!2d{o_lon}!4m3!3m2!1d{d_lat}!2d{d_lon}"
+              f"!5e0!3m2!1ssr!2srs!4v1627540443619!5m2!1ssr!2srs")
+        hero_block += (
+            f'<div class="map-box"><h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:20px;'
+            f'text-transform:uppercase;margin:26px 0 10px">Gu\u017eva na mapi (izlaz iz Srbije)</h2>'
+            f'<iframe src="https://www.google.com/maps/embed?pb={pb}" '
+            f'width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" '
+            f'loading="lazy" title="Gu\u017eva oko prelaza {name} (Google mapa)" allowfullscreen></iframe>'
+            f'<div style="font-size:11px;color:var(--faint);margin-top:6px">Vreme na mapi je procena vo\u017enje kroz zonu prelaza u trenutnoj gu\u017evi \u2014 ne uklju\u010duje pasošku kontrolu.</div></div>'
+        )
+    elif c.get("map_route"):
         import urllib.parse
         a, b = c["map_route"]
         qa, qb = urllib.parse.quote(a), urllib.parse.quote(b)
