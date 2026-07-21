@@ -122,6 +122,20 @@ window.BORDERS = (function () {
       linkOnly: true, noWait: true, feeds: [],
       wait: null,
     },
+    {
+      // MK->GR alternativa Bogorodici - bas prelaz na koji se preusmerava saobracaj
+      // kad je Evzoni zakrcен. Isti obrazac kao Bogorodica: samo kamera (roads.org.mk /
+      // neotel stream), bez pracenja cekanja (nije RS granica). Stream URL potvrdjen
+      // rucno u browseru pre dodavanja (gvozdeno pravilo).
+      id: "dojran", name: "Dojran", from: "MK", to: "GR",
+      pair: "Doirani (GR)", road: "regionalni put (uz Dojransko jezero)", provider: "roads.org.mk",
+      official: "https://roads.org.mk/en/road-network/live-webcast",
+      noWait: true,
+      feeds: [
+        { label: "Kamera (granica)", dir: "out", src: "https://streaming1.neotel.net.mk/stream/dojran.m3u8" },
+      ],
+      wait: null,
+    },
   ];
 
   function pairKey(a, b) { return [a, b].sort().join("-"); }
