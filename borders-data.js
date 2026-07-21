@@ -32,7 +32,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
-      id: "horgos", mapRoute: ["Horgo\u0161, Serbia", "R\u00f6szke, Hungary"], coords: [46.1755, 19.9772], name: "Horgos", from: "RS", to: "HU",
+      id: "horgos", mapRoute: ["Horgoš, Serbia", "Röszke, Hungary"], coords: [46.1755, 19.9772], name: "Horgos", from: "RS", to: "HU",
       pair: "Roszke (HU)", road: "E75", provider: "AMSS",
       official: "https://kamere.amss.org.rs/",
       feeds: [
@@ -62,7 +62,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 300 } },
     },
     {
-      id: "presevo", mapRoute: ["Pre\u0161evo, Serbia", "Tabanovce, North Macedonia"], coords: [42.2436, 21.6433], name: "Presevo", from: "RS", to: "MK",
+      id: "presevo", mapRoute: ["Preševo, Serbia", "Tabanovce, North Macedonia"], coords: [42.2436, 21.6433], name: "Presevo", from: "RS", to: "MK",
       pair: "Tabanovce (MK)", road: "E75", provider: "AMSS / MUP",
       official: "https://kamere.amss.org.rs/",
       feeds: [
@@ -84,7 +84,7 @@ window.BORDERS = (function () {
       wait: null,
     },
     {
-      id: "sremska-raca", mapRoute: ["Sremska Ra\u010da, Serbia", "Ra\u010da, Bosnia and Herzegovina"], coords: [44.9042, 19.2958], name: "Sremska Raca", from: "RS", to: "BA",
+      id: "sremska-raca", mapRoute: ["Sremska Rača, Serbia", "Rača, Bosnia and Herzegovina"], coords: [44.9042, 19.2958], name: "Sremska Raca", from: "RS", to: "BA",
       pair: "Raca (BiH)", road: "E70", provider: "MUP",
       official: "https://kamere.amss.org.rs/",
       feeds: [
@@ -94,7 +94,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 240 } },
     },
     {
-      id: "spiljani", mapRoute: ["\u0160piljani, Serbia", "Dra\u010denovac, Montenegro"], coords: [42.93, 20.35], name: "Spiljani", from: "RS", to: "ME",
+      id: "spiljani", mapRoute: ["Špiljani, Serbia", "Dračenovac, Montenegro"], coords: [42.93, 20.35], name: "Spiljani", from: "RS", to: "ME",
       pair: "Dracenovac (MNE)", road: "E65/E80", provider: "MUP",
       official: "https://kamere.amss.org.rs/",
       feeds: [
@@ -116,7 +116,7 @@ window.BORDERS = (function () {
       // nema kako da prati cekanje ovde, pa nema wait praceenja. Crnogorski MUP ima
       // svoju kamera-stranicu (isti obrazac kao za Gostun), ali je to embed stranica sa
       // vise kamera, ne pojedinacan m3u8 link koji mozemo da ubacimo direktno - linkOnly.
-      id: "debeli-brijeg", mapRoute: ["Sutorina, Montenegro", "Karasovi\u0107i, Croatia"], coords: [42.4617, 18.535], name: "Debeli Brijeg", from: "ME", to: "HR",
+      id: "debeli-brijeg", mapRoute: ["Sutorina, Montenegro", "Karasovići, Croatia"], coords: [42.4617, 18.535], name: "Debeli Brijeg", from: "ME", to: "HR",
       pair: "Karasovici (HR)", road: "Jadranska magistrala (E65)", provider: "MUP Crne Gore",
       official: "http://kamere.mup.gov.me/kamere.php?kamere=Debeli_brijeg",
       linkOnly: true, noWait: true, feeds: [],
