@@ -59,6 +59,8 @@ def parse_crossings(js_text):
         no_wait = bool(re.search(r'noWait:\s*true', chunk))
         cm = re.search(r'coords:\s*\[([\d.]+),\s*([\d.]+)\]', chunk)
         coords = (float(cm.group(1)), float(cm.group(2))) if cm else None
+        rm = re.search(r'mapRoute:\s*\["([^"]+)",\s*"([^"]+)"\]', chunk)
+        map_route = (rm.group(1), rm.group(2)) if rm else None
 
         out.append({
             "id": cid,
@@ -73,6 +75,7 @@ def parse_crossings(js_text):
             "link_only": link_only,
             "no_wait": no_wait,
             "coords": coords,
+            "map_route": map_route,
         })
     return out
 
@@ -325,18 +328,23 @@ def render_page(c, all_c):
     if not c["no_wait"]:
         hero_block += '<div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">U\u010ditavanje trenutnog stanja\u2026</div></div>'
 
-    # Guzva na mapi (Waze embed): besplatan zvanicni iframe, bez API kljuca i
-    # bez kartice - namerno NE Google Maps traffic layer koji trazi placeni
-    # nalog. loading="lazy" da ne usporava ucitavanje stranice.
-    if c.get("coords"):
-        lat, lon = c["coords"]
+    # Guzva na mapi: besplatan Google "directions" embed (output=embed, BEZ API
+    # kljuca i kartice - ovo je stari javni format, isti koji koristi
+    # alltrafficcams). Ruta izmedju mesta sa dve strane prelaza daje i BOJE
+    # guzve i PROCENU VREMENA voznje kroz zonu prelaza - to Waze iframe nema.
+    # Imena mesta umesto koordinata: Google ih sam geokodira tacno, nema
+    # nagadjanih brojeva. Vreme NE ukljucuje pasosku kontrolu - posteno pise.
+    if c.get("map_route"):
+        import urllib.parse
+        a, b = c["map_route"]
+        qa, qb = urllib.parse.quote(a), urllib.parse.quote(b)
         hero_block += (
             f'<div class="map-box"><h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:20px;'
             f'text-transform:uppercase;margin:26px 0 10px">Gu\u017eva na mapi</h2>'
-            f'<iframe src="https://embed.waze.com/iframe?zoom=14&lat={lat}&lon={lon}&pin=1" '
-            f'width="100%" height="320" style="border:1px solid var(--line);border-radius:12px" '
-            f'loading="lazy" title="Gu\u017eva oko prelaza {name} (Waze)" allowfullscreen></iframe>'
-            f'<div style="font-size:11px;color:var(--faint);margin-top:6px">Izvor: Waze live mapa \u2014 boje i prijave gu\u017eve od samih voza\u010da.</div></div>'
+            f'<iframe src="https://maps.google.com/maps?saddr={qa}&daddr={qb}&hl=sr&t=m&z=13&output=embed" '
+            f'width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" '
+            f'loading="lazy" title="Gu\u017eva oko prelaza {name} (Google mapa)" allowfullscreen></iframe>'
+            f'<div style="font-size:11px;color:var(--faint);margin-top:6px">Vreme na mapi je procena vo\u017enje kroz zonu prelaza u trenutnoj gu\u017evi \u2014 ne uklju\u010duje pasošku kontrolu.</div></div>'
         )
 
     alt_line = ""
