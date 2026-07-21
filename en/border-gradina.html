@@ -115,8 +115,9 @@
   .pane .live{position:absolute;top:10px;right:10px;z-index:3;display:none;font-size:10px;letter-spacing:.08em;background:rgba(227,93,79,.9);color:#fff;padding:4px 9px;border-radius:7px;font-weight:700}
   .thumb-link{position:absolute;inset:0;z-index:1;display:block}
   .snap-note{position:absolute;left:10px;bottom:10px;z-index:2;font-size:10.5px;letter-spacing:.04em;background:rgba(7,13,19,.75);color:var(--dim);padding:4px 9px;border-radius:7px}
-  .feeds{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-  .feeds button{font-family:"JetBrains Mono",monospace;font-size:12px;background:var(--panel);color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}
+  .feeds{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .feeds button{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:15px;background:var(--panel);color:var(--dim);border:1px solid var(--line);border-radius:10px;padding:12px 26px;cursor:pointer;flex:1;min-width:120px;max-width:220px;transition:all .15s ease}
+  .feeds button:hover{color:var(--text);border-color:var(--faint)}
   .feeds button.on{background:var(--fuel);color:var(--ink);font-weight:700;border-color:var(--fuel)}
   .no-cam{border:1px dashed var(--line);border-radius:var(--radius);padding:24px;text-align:center;color:var(--dim);background:var(--panel)}
   .wait-box{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:14px;border-radius:var(--radius);overflow:hidden}
@@ -164,7 +165,7 @@
   <h1>Gradina — live camera and waiting time</h1>
   <p class="lead">Gradina connects Serbia and Bulgaria on route E80, opposite Kalotina (BG). Gasolina combines border police data, a live camera and (where available) the neighbouring side for a realistic estimate.</p>
 
-  <div class="pane" id="pane"><span class="badge">AMSS</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="../thumbs/gradina.jpg" alt="Gradina" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div><div class="feeds"><button onclick="playFeed(0)">Ulaz</button><button onclick="playFeed(1)">Izlaz</button></div>
+  <div class="pane" id="pane"><span class="badge">AMSS</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="../thumbs/gradina.jpg" alt="Gradina" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div><div class="feeds"><button onclick="playFeed(0)">Entry</button><button onclick="playFeed(1)">Exit</button></div>
   <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Loading current status…</div></div>
   <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Traffic on the map: Serbia → Bulgaria</h2><iframe src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d11672.3!2d22.8309661!3d42.9980259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d43.0003029!2d22.8241663!4m3!3m2!1d42.9957489!2d22.8377659!5e0!3m2!1sen!2sus!4v1627540443619!5m2!1sen!2sus" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Traffic on the map: Serbia → Bulgaria" allowfullscreen></iframe></div>
@@ -193,7 +194,7 @@
 
 <script>
   const PRELAZ_ID = "gradina";
-  const FEEDS = [{"label": "Ulaz", "src": "https://kamere.amss.org.rs/gradina1/gradina1.m3u8"}, {"label": "Izlaz", "src": "https://kamere.amss.org.rs/gradina2/gradina2.m3u8"}];
+  const FEEDS = [{"label": "Entry", "src": "https://kamere.amss.org.rs/gradina1/gradina1.m3u8"}, {"label": "Exit", "src": "https://kamere.amss.org.rs/gradina2/gradina2.m3u8"}];
   const T = {noQueue: "No queue", noData: "no data"};
 
   // --- wait box ---
