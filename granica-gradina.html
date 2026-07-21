@@ -3,35 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gradina granica — kamera i čekanje uživo | Gasolina</title>
-<meta name="description" content="Kamera uživo i procena čekanja na prelazu Gradina (Srbija → Bugarska), put E80. Proveri gužvu pre polaska.">
+<title>Gradina uživo: kamera i vreme čekanja | Gasolina</title>
+<meta name="description" content="Granični prelaz Gradina (Srbija → Bugarska): kamera uživo, trenutno vreme čekanja za oba smera i gužva na mapi. Bez naloga, besplatno.">
 <link rel="canonical" href="https://gasolina.rs/granica-gradina.html">
+<link rel="alternate" hreflang="sr" href="https://gasolina.rs/granica-gradina.html">
+<link rel="alternate" hreflang="en" href="https://gasolina.rs/en/border-gradina.html">
+<link rel="alternate" hreflang="x-default" href="https://gasolina.rs/granica-gradina.html">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#0d1620">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Gasolina">
 <meta property="og:locale" content="sr_RS">
-<meta property="og:title" content="Gradina granica — kamera i čekanje uživo | Gasolina">
-<meta property="og:description" content="Kamera uživo i procena čekanja na prelazu Gradina (Srbija → Bugarska), put E80. Proveri gužvu pre polaska.">
+<meta property="og:title" content="Gradina uživo: kamera i vreme čekanja | Gasolina">
+<meta property="og:description" content="Granični prelaz Gradina (Srbija → Bugarska): kamera uživo, trenutno vreme čekanja za oba smera i gužva na mapi. Bez naloga, besplatno.">
 <meta property="og:url" content="https://gasolina.rs/granica-gradina.html">
 <meta property="og:image" content="https://gasolina.rs/thumbs/gradina.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Gradina granica — kamera i čekanje uživo | Gasolina">
-<meta name="twitter:description" content="Kamera uživo i procena čekanja na prelazu Gradina (Srbija → Bugarska), put E80. Proveri gužvu pre polaska.">
+<meta name="twitter:title" content="Gradina uživo: kamera i vreme čekanja | Gasolina">
+<meta name="twitter:description" content="Granični prelaz Gradina (Srbija → Bugarska): kamera uživo, trenutno vreme čekanja za oba smera i gužva na mapi. Bez naloga, besplatno.">
 <meta name="twitter:image" content="https://gasolina.rs/thumbs/gradina.jpg">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "Gradina — kamera uživo i vreme čekanja",
+  "name": "Gradina uživo: kamera i vreme čekanja | Gasolina",
   "url": "https://gasolina.rs/granica-gradina.html",
   "inLanguage": "sr-RS",
-  "description": "Kamera uživo i procena čekanja na prelazu Gradina (Srbija → Bugarska), put E80. Proveri gužvu pre polaska.",
+  "description": "Granični prelaz Gradina (Srbija → Bugarska): kamera uživo, trenutno vreme čekanja za oba smera i gužva na mapi. Bez naloga, besplatno.",
   "isPartOf": { "@type": "WebSite", "name": "Gasolina", "url": "https://gasolina.rs/" }
 }
 </script>
@@ -47,14 +50,14 @@
 }
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kolika je gűžva na prelazu Gradina sada?","acceptedAnswer":{"@type":"Answer","text":"Na vrhu stranice prikazujemo trenutnu procenu čekanja za oba smera, plus kameru uživo ako postoji. Za detaljan prikaz sa svih izvora (granična policija, susedna strana, prijave vozača) idi na granice.html."}},{"@type":"Question","name":"Gde vodi prelaz Gradina?","acceptedAnswer":{"@type":"Answer","text":"Gradina povezuje Srbija → Bugarska, naspram Kalotina (BG) na putu E80."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type": "Question", "name": "Kolika je gužva na prelazu Gradina sada?", "acceptedAnswer": {"@type": "Answer", "text": "Na vrhu stranice su kamera uživo i trenutna procena čekanja za oba smera, plus gužva na mapi. Za poređenje svih prelaza idi na stranicu Granice."}},{"@type": "Question", "name": "Gde vodi prelaz Gradina?", "acceptedAnswer": {"@type": "Answer", "text": "Gradina povezuje Srbija → Bugarska, naspram Kalotina (BG) na putu E80."}}]}
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js"></script>
 
-<!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -81,6 +84,7 @@
   .nav{display:flex;align-items:center;gap:4px}
   .nav a{font-size:13px;color:var(--dim);text-decoration:none;padding:7px 11px;border-radius:8px;font-weight:500}
   .nav a:hover{color:var(--text);background:var(--panel)}
+  .nav a.lang{border:1px solid var(--line);font-weight:700}
   @media (max-width:560px){
     .topbar .inner{gap:8px}
     .brand{flex-shrink:0}
@@ -95,15 +99,23 @@
   .crumb a:hover{color:var(--fuel)}
   h1{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:36px;text-transform:uppercase;margin:0 0 12px;line-height:1.05}
   .lead{color:var(--dim);font-size:15px;line-height:1.65;margin:0 0 24px}
-  .hero{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#070d13;aspect-ratio:16/9;display:block;text-decoration:none}
-  .hero img{width:100%;height:100%;object-fit:cover;display:block}
-  .hero .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,rgba(7,13,19,.15),rgba(7,13,19,.75));font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;font-size:16px;color:var(--text)}
-  .hero .play svg{flex:none}
+  .pane{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#070d13;aspect-ratio:16/9}
+  .pane img.thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .pane video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;background:#000}
+  .pane .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,rgba(7,13,19,.15),rgba(7,13,19,.75));font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;font-size:16px;color:var(--text);cursor:pointer;border:none;width:100%}
+  .pane .badge{position:absolute;top:10px;left:10px;z-index:3;font-size:10px;letter-spacing:.06em;background:rgba(7,13,19,.75);color:var(--dim);padding:4px 9px;border-radius:7px}
+  .pane .live{position:absolute;top:10px;right:10px;z-index:3;display:none;font-size:10px;letter-spacing:.08em;background:rgba(227,93,79,.9);color:#fff;padding:4px 9px;border-radius:7px;font-weight:700}
+  .thumb-link{position:absolute;inset:0;z-index:1;display:block}
+  .snap-note{position:absolute;left:10px;bottom:10px;z-index:2;font-size:10.5px;letter-spacing:.04em;background:rgba(7,13,19,.75);color:var(--dim);padding:4px 9px;border-radius:7px}
+  .feeds{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .feeds button{font-family:"JetBrains Mono",monospace;font-size:12px;background:var(--panel);color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}
+  .feeds button.on{background:var(--fuel);color:var(--ink);font-weight:700;border-color:var(--fuel)}
   .no-cam{border:1px dashed var(--line);border-radius:var(--radius);padding:24px;text-align:center;color:var(--dim);background:var(--panel)}
   .wait-box{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:14px;border-radius:var(--radius);overflow:hidden}
   .wcell{background:var(--panel);padding:14px 16px}
   .wlabel{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
   .wval{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:26px;margin-top:4px}
+  .map-box iframe{display:block}
   .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
   .btn{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:14px;color:var(--ink);background:var(--fuel);border:none;border-radius:8px;padding:11px 18px;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
   .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
@@ -133,6 +145,8 @@
       <a href="index.html#kalkulator">Kalkulator</a>
       <a href="granice.html">Granice</a>
       <a href="istorija.html">Istorija</a>
+      <a href="vodici.html">Vodiči</a>
+      <a class="lang" href="en/border-gradina.html" title="Read in English">EN</a>
     </div>
   </div>
 </nav>
@@ -142,10 +156,12 @@
   <h1>Gradina — kamera uživo i vreme čekanja</h1>
   <p class="lead">Gradina povezuje Srbija i Bugarska, na putu E80, naspram Kalotina (BG). Gasolina kombinuje graničnu policiju, kameru uživo i (gde postoji) susednu stranu radi realne procene.</p>
 
-  <a class="hero" href="granice.html#gradina" onclick="track('landing_hero_click', {prelaz:'gradina'})"><img src="thumbs/gradina.jpg" alt="Kamera Gradina" loading="lazy" onerror="this.style.display='none'"><span class="play">▶ Pusti kameru uživo</span></a><div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Učitavanje trenutnog stanja…</div></div><div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Gužva na mapi (izlaz iz Srbije)</h2><iframe src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d11672.3!2d22.8309661!3d42.9980259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d43.0003029!2d22.8241663!4m3!3m2!1d42.9957489!2d22.8377659!5e0!3m2!1ssr!2srs!4v1627540443619!5m2!1ssr!2srs" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Gužva oko prelaza Gradina (Google mapa)" allowfullscreen></iframe><div style="font-size:11px;color:var(--faint);margin-top:6px">Vreme na mapi je procena vožnje kroz zonu prelaza u trenutnoj gužvi — ne uključuje pasošku kontrolu.</div></div>
+  <div class="pane" id="pane"><span class="badge">AMSS</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="thumbs/gradina.jpg" alt="Gradina" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Pusti kameru uživo</button></div><div class="feeds"><button onclick="playFeed(0)">Ulaz</button><button onclick="playFeed(1)">Izlaz</button></div>
+  <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Učitavanje trenutnog stanja…</div></div>
+  <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Gužva na mapi (izlaz iz Srbije)</h2><iframe src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d11672.3!2d22.8309661!3d42.9980259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d43.0003029!2d22.8241663!4m3!3m2!1d42.9957489!2d22.8377659!5e0!3m2!1ssr!2srs!4v1627540443619!5m2!1ssr!2srs" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Gradina" allowfullscreen></iframe><div style="font-size:11px;color:var(--faint);margin-top:6px">Vreme na mapi je procena vožnje kroz zonu prelaza u trenutnoj gužvi — ne uključuje pasošku kontrolu.</div></div>
 
   <div class="cta">
-    <a class="btn" href="granice.html#gradina" onclick="track('landing_cta', {prelaz:'gradina', cilj:'granice'})">Pogledaj sve detalje na granice.html →</a>
+    <a class="btn" href="granice.html" onclick="track('landing_cta', {prelaz:'gradina', cilj:'granice'})">Uporedi sve prelaze →</a>
     <a class="btn ghost" href="index.html#kalkulator" onclick="track('landing_cta', {prelaz:'gradina', cilj:'kalkulator'})">Izračunaj trošak puta →</a>
   </div>
 
@@ -158,8 +174,7 @@
 
   <section class="faq">
     <h2>Česta pitanja o prelazu Gradina</h2>
-    <details><summary>Kolika je gűžva na prelazu Gradina sada?</summary><p>Na vrhu stranice prikazujemo trenutnu procenu čekanja za oba smera, plus kameru uživo ako postoji. Za detaljan prikaz sa svih izvora (granična policija, susedna strana, prijave vozača) idi na granice.html.</p></details>
-    <details><summary>Gde vodi prelaz Gradina?</summary><p>Gradina povezuje Srbija → Bugarska, naspram Kalotina (BG) na putu E80.</p></details>
+    <details><summary>Kolika je gužva na prelazu Gradina sada?</summary><p>Na vrhu stranice su kamera uživo i trenutna procena čekanja za oba smera, plus gužva na mapi. Za poređenje svih prelaza idi na stranicu Granice.</p></details><details><summary>Gde vodi prelaz Gradina?</summary><p>Gradina povezuje Srbija → Bugarska, naspram Kalotina (BG) na putu E80.</p></details>
   </section>
 
   <div class="others">Ostali granični prelazi: <a href="granica-horgos.html">Horgos</a> <a href="granica-kelebija.html">Kelebija</a> <a href="granica-batrovci.html">Batrovci</a> <a href="granica-presevo.html">Presevo</a> <a href="granica-bogorodica.html">Bogorodica</a> <a href="granica-sremska-raca.html">Sremska Raca</a> <a href="granica-spiljani.html">Spiljani</a> <a href="granica-gostun.html">Gostun</a> <a href="granica-debeli-brijeg.html">Debeli Brijeg</a> <a href="granica-dojran.html">Dojran</a></div>
@@ -167,7 +182,10 @@
 
 <script>
   const PRELAZ_ID = "gradina";
-  const NO_WAIT = false;
+  const FEEDS = [{"label": "Ulaz", "src": "https://kamere.amss.org.rs/gradina1/gradina1.m3u8"}, {"label": "Izlaz", "src": "https://kamere.amss.org.rs/gradina2/gradina2.m3u8"}];
+  const T = {noQueue: "Bez guzve", noData: "nema podataka"};
+
+  // --- wait box ---
   (async function(){
     const box = document.getElementById("waitBox");
     if(!box) return;
@@ -176,15 +194,48 @@
       if(!res.ok) throw new Error("no data");
       const data = await res.json();
       const c = (data.crossings || {})[PRELAZ_ID];
-      const fmt = m => (m == null) ? "nema podataka" : (m <= 30 ? "Bez guzve" : (m >= 60 ? Math.floor(m/60)+"h "+(m%60)+"m" : m + " min"));
+      const fmt = m => (m == null) ? T.noData : (m <= 30 ? T.noQueue : (m >= 60 ? Math.floor(m/60)+"h "+(m%60)+"m" : m + " min"));
       const p = (c && c.found && c.putnicka) ? c.putnicka : null;
       box.innerHTML = `
         <div class="wcell"><div class="wlabel">Ulaz u Srbiju</div><div class="wval">${fmt(p ? p.ulaz : null)}</div></div>
         <div class="wcell"><div class="wlabel">Izlaz iz Srbije</div><div class="wval">${fmt(p ? p.izlaz : null)}</div></div>`;
     }catch(e){
-      box.innerHTML = `<div class="wcell" style="grid-column:1/-1;color:var(--faint)">Trenutno stanje nije dostupno - proveri direktno na <a href="granice.html#${PRELAZ_ID}" style="color:var(--fuel)">granice.html</a>.</div>`;
+      box.innerHTML = `<div class="wcell" style="grid-column:1/-1;color:var(--faint)">Trenutno stanje nije dostupno - proveri direktno na <a href="granice.html#gradina" style="color:var(--fuel)">granice.html</a>.</div>`;
     }
   })();
+
+  // --- plejer (isti hls.js kao granice.html) ---
+  let _hls = null;
+  function playFeed(idx, opts){
+    if(!FEEDS.length) return;
+    const pane = document.getElementById("pane");
+    const video = document.getElementById("cam");
+    const overlay = document.getElementById("playOverlay");
+    const liveTag = document.getElementById("liveTag");
+    const src = FEEDS[idx].src;
+    document.querySelectorAll(".feeds button").forEach((b,i)=>b.classList.toggle("on", i===idx));
+    if(overlay) overlay.style.display = "none";
+    video.style.display = "block";
+    if(liveTag) liveTag.style.display = "block";
+    if(_hls){ try{_hls.destroy();}catch(e){} _hls = null; }
+    if(video.canPlayType("application/vnd.apple.mpegurl")){
+      video.src = src;
+    } else if (window.Hls && Hls.isSupported()){
+      _hls = new Hls({maxBufferLength:10});
+      _hls.loadSource(src);
+      _hls.attachMedia(video);
+    } else {
+      video.src = src;
+    }
+    if(opts && opts.muted) video.muted = true;
+    video.play().catch(()=>{});
+    track('kamera_play', {prelaz: PRELAZ_ID, izvor: 'landing'});
+  }
+  // ?play=1 iz granice.html thumb klika: odmah pusti prvu kameru (muted,
+  // browseri ne dozvoljavaju autoplay sa zvukom)
+  if (FEEDS.length && new URLSearchParams(window.location.search).get("play") === "1") {
+    window.addEventListener("load", () => setTimeout(() => playFeed(0, {muted:true}), 120));
+  }
 </script>
 </body>
 </html>
