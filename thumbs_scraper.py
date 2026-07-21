@@ -42,6 +42,20 @@ EXPECTED_IDS = {
     "dojran",
 }
 
+# MUP Crne Gore kamere: nisu m3u8 strimovi nego kratki MP4 klipovi na HTTP
+# serveru koji proverava Referer (direktan link bez njega vraca gresku - Ivan
+# potvrdio i da stranica radi i da direktan link ne radi). Browser embed je
+# nemoguc (HTTP na HTTPS sajtu = mixed content), ali ffmpeg na Actions serveru
+# nema to ogranicenje - povuce klip SA Referer zaglavljem i izvuce kadar.
+# Putanje se NE nagadjaju: uzete su iz Ctrl+U izvora stranice (gvozdeno pravilo).
+MP4_SOURCES = {
+    "gostun": (
+        "http://kamere.mup.gov.me/video/Dobrakovo/Ulaz/Dobrakovo_Ulaz.mp4_1.mp4",
+        "http://kamere.mup.gov.me/kamere.php?kamere=Dobrakovo&lang=me",
+    ),
+    # "debeli-brijeg": ceka Ctrl+U potvrdu putanje sa njegove stranice
+}
+
 
 def parse_crossings(js_text):
     """Vrati [(id, feeds[0].src), ...] za sve prelaze koji imaju kameru.
@@ -62,7 +76,7 @@ def parse_crossings(js_text):
     return out
 
 
-def capture_thumb(url, out_path, force_input_args=None):
+def capture_thumb(url, out_path, force_input_args=None, referer=None):
     # BITNO: privremeni fajl mora da se zavrsava na .jpg (ne .jpg.tmp) -
     # ffmpeg pogadja mux format po ekstenziji, a ".tmp" mu nije poznat pa
     # baca "Error opening output files: Invalid argument" na SVAKOM URL-u.
@@ -72,6 +86,9 @@ def capture_thumb(url, out_path, force_input_args=None):
         cmd += force_input_args
     else:
         cmd += ["-user_agent", "Mozilla/5.0 (Gasolina thumbs bot)"]
+        if referer:
+            # MUP CG server odbija zahteve bez Referer-a sa svoje stranice
+            cmd += ["-headers", f"Referer: {referer}\r\n"]
     cmd += [
         "-i", url,
         "-frames:v", "1",
@@ -170,8 +187,23 @@ def main():
             else:
                 print("  NEMA ni stare ni nove slike - kartica ostaje bez thumb-a dok se ne uhvati jedna")
 
-    print(f"Gotovo: {ok}/{len(crossings)} novih slika, {fail} palo (fallback gde postoji stara).")
-    return 0 if fail < len(crossings) else 1  # crveno u Actions samo ako je SVE palo
+    # MUP CG MP4 izvori (gostun, kasnije debeli-brijeg) - isti fallback princip
+    for cid, (url, referer) in MP4_SOURCES.items():
+        out_path = os.path.join(THUMBS_DIR, f"{cid}.jpg")
+        print(f"{cid}: {url} (MP4 + Referer)")
+        if capture_thumb(url, out_path, referer=referer):
+            print("  [OK]")
+            ok += 1
+        else:
+            fail += 1
+            if os.path.exists(out_path):
+                print("  zadrzana prethodna slika (fallback)")
+            else:
+                print("  NEMA ni stare ni nove slike - kartica ostaje bez thumb-a dok se ne uhvati jedna")
+
+    total = len(crossings) + len(MP4_SOURCES)
+    print(f"Gotovo: {ok}/{total} novih slika, {fail} palo (fallback gde postoji stara).")
+    return 0 if fail < total else 1  # crveno u Actions samo ako je SVE palo
 
 
 if __name__ == "__main__":
