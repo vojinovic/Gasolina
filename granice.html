@@ -144,6 +144,10 @@
 
   /* prava fotografija sa kamere (thumbs/<id>.jpg, hvata je ffmpeg u Actions-ima) */
   .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:0}
+  .thumb-link{position:absolute;inset:0;z-index:1;display:block}
+  .thumb-link .snap-note{position:absolute;left:10px;bottom:10px;z-index:2;font-size:10.5px;letter-spacing:.04em;
+    background:rgba(7,13,19,.75);color:var(--dim);padding:4px 9px;border-radius:7px;font-family:"JetBrains Mono",monospace}
+  .thumb-link:hover .snap-note{color:var(--fuel)}
 
   .poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;z-index:1;
     background:
@@ -505,8 +509,18 @@ function cardHTML(c){
          <p>Za ovaj prelaz ne postoji zvanicna kamera. Prati vreme cekanja ispod.</p>
        </div>`;
   } else {
+    // linkOnly / feed jos nije podesen. Za MUP CG prelaze (gostun, debeli-brijeg)
+    // thumbs_scraper na serveru ipak ume da izvuce periodicnu sliku iz njihovih
+    // MP4 klipova - ako slika postoji, pokazi je (posteno oznaceno kao "poslednja
+    // slika", NE kao uzivo), klik vodi na zvanicnu stranicu. Ako slike nema
+    // (onerror), pada nazad na cist tekstualni prikaz kao do sada.
     paneInner = `<span class="badge">${c.provider}</span>
-       <div class="pmsg" style="display:flex">
+       <a class="thumb-link" href="${c.official}" target="_blank" rel="noopener" aria-label="Otvori zvanicnu kameru ${c.name}">
+         <img class="thumb" src="thumbs/${c.id}.jpg" alt="Poslednja slika sa kamere ${c.name}" loading="lazy"
+              onerror="this.closest('.pane').querySelector('.pmsg').style.display='flex'; this.closest('.thumb-link').remove()">
+         <span class="snap-note">Poslednja slika &middot; klik za zvanicnu kameru ↗</span>
+       </a>
+       <div class="pmsg">
          <p>${c.linkOnly ? 'Kamera se otvara na zvanicnom izvoru.' : 'Live feed jos nije podesen za ovaj prelaz.'}</p>
          <a class="btn" href="${c.official}" target="_blank" rel="noopener">Otvori kameru</a>
        </div>`;
