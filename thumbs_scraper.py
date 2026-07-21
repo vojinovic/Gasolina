@@ -39,6 +39,7 @@ FFMPEG_TIMEOUT = 25  # sekundi po kameri; spor/mrtav strim ne sme da zaglavi ceo
 EXPECTED_IDS = {
     "gradina", "horgos", "kelebija", "batrovci",
     "presevo", "bogorodica", "sremska-raca", "spiljani",
+    "dojran",
 }
 
 
