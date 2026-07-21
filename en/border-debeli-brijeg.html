@@ -194,10 +194,30 @@
       const data = await res.json();
       const c = (data.crossings || {})[PRELAZ_ID];
       const fmt = m => (m == null) ? T.noData : (m <= 30 ? T.noQueue : (m >= 60 ? Math.floor(m/60)+"h "+(m%60)+"m" : m + " min"));
-      const p = (c && c.found && c.putnicka) ? c.putnicka : null;
+      // NAJGORI dostupan podatak po smeru, iz SVIH izvora - identicna logika
+      // kao effective() na granice.html. Sam AMSS cesto kaze "bez zadrzavanja"
+      // i kad prijave vozaca kazu 4h - bez ovoga landing laze "Bez guzve".
+      const eff = (dirKey) => {
+        const cands = [];
+        const p = (c && c.found && c.putnicka) ? c.putnicka[dirKey] : null;
+        if (p != null) cands.push({v: p, src: null});
+        if (c && c.hu) { const v = c.hu[dirKey]; if (v != null && v > 0) cands.push({v, src: "Hungarian side"}); }
+        if (c && c.mk) {
+          const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
+          if (v != null && v > 0) cands.push({v, src: "North Macedonian side"});
+          if (c.mk.opsto != null && c.mk.opsto > 0) cands.push({v: c.mk.opsto, src: "North Macedonian side"});
+        }
+        if (c && c.ba) { const v = c.ba[dirKey]; if (v != null && v > 0) cands.push({v, src: "Driver reports (BorderAlarm)"}); }
+        if (!cands.length) return {v: null, src: null};
+        let best = cands[0];
+        cands.forEach(x => { if (best.v == null || (x.v != null && x.v > best.v)) best = x; });
+        return best;
+      };
+      const eIn = eff('ulaz'), eOut = eff('izlaz');
+      const srcNote = (e) => e.src ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">source: ${e.src}</div>` : '';
       box.innerHTML = `
-        <div class="wcell"><div class="wlabel">Entering Serbia</div><div class="wval">${fmt(p ? p.ulaz : null)}</div></div>
-        <div class="wcell"><div class="wlabel">Exiting Serbia</div><div class="wval">${fmt(p ? p.izlaz : null)}</div></div>`;
+        <div class="wcell"><div class="wlabel">Entering Serbia</div><div class="wval">${fmt(eIn.v)}</div>${srcNote(eIn)}</div>
+        <div class="wcell"><div class="wlabel">Exiting Serbia</div><div class="wval">${fmt(eOut.v)}</div>${srcNote(eOut)}</div>`;
       // dodatni izvori (isti kao na granice.html karticama): prijave vozaca,
       // madjarska/makedonska strana - landing ne sme da bude siromasniji od pregleda
       const srcs = [];
