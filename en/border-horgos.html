@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Horgos border crossing live: camera and waiting time | Gasolina</title>
+<meta name="description" content="Horgos border crossing (Serbia → Hungary): live camera, current waiting time in both directions and traffic on the map. Free, no account needed.">
+<link rel="canonical" href="https://gasolina.rs/en/border-horgos.html">
+<link rel="alternate" hreflang="sr" href="https://gasolina.rs/granica-horgos.html">
+<link rel="alternate" hreflang="en" href="https://gasolina.rs/en/border-horgos.html">
+<link rel="alternate" hreflang="x-default" href="https://gasolina.rs/granica-horgos.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0d1620">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gasolina">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Horgos border crossing live: camera and waiting time | Gasolina">
+<meta property="og:description" content="Horgos border crossing (Serbia → Hungary): live camera, current waiting time in both directions and traffic on the map. Free, no account needed.">
+<meta property="og:url" content="https://gasolina.rs/en/border-horgos.html">
+<meta property="og:image" content="https://gasolina.rs/thumbs/horgos.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Horgos border crossing live: camera and waiting time | Gasolina">
+<meta name="twitter:description" content="Horgos border crossing (Serbia → Hungary): live camera, current waiting time in both directions and traffic on the map. Free, no account needed.">
+<meta name="twitter:image" content="https://gasolina.rs/thumbs/horgos.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Horgos border crossing live: camera and waiting time | Gasolina",
+  "url": "https://gasolina.rs/en/border-horgos.html",
+  "inLanguage": "en",
+  "description": "Horgos border crossing (Serbia → Hungary): live camera, current waiting time in both directions and traffic on the map. Free, no account needed.",
+  "isPartOf": { "@type": "WebSite", "name": "Gasolina", "url": "https://gasolina.rs/" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Gasolina","item":"https://gasolina.rs/"},
+    {"@type":"ListItem","position":2,"name":"Borders","item":"https://gasolina.rs/granice.html"},
+    {"@type":"ListItem","position":3,"name":"Horgos","item":"https://gasolina.rs/en/border-horgos.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type": "Question", "name": "How long is the wait at Horgos right now?", "acceptedAnswer": {"@type": "Answer", "text": "The live camera and the current waiting estimate for both directions are at the top of this page, plus traffic on the map. To compare all crossings, open the Borders page."}},{"@type": "Question", "name": "Where does the Horgos crossing lead?", "acceptedAnswer": {"@type": "Answer", "text": "Horgos connects Serbia → Hungary, opposite Roszke (HU) on route E75."}},{"@type": "Question", "name": "Is there an alternative to Horgos?", "acceptedAnswer": {"@type": "Answer", "text": "Yes - Kelebija leads to the same country. Gasolina's route calculator compares crossings when you plan a trip, and the Borders page shows which one is currently faster."}}]}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4EPLBJE8BL');
+  function track(name, params){ try{ gtag('event', name, params || {}); }catch(e){} }
+</script>
+
+<style>
+  :root{
+    --ink:#0d1620; --panel:#15212e; --panel-2:#1b2a39; --line:#26384a;
+    --text:#e9eff5; --dim:#8aa0b2; --faint:#5d7387;
+    --fuel:#f5a623; --ok:#2fbf71; --warn:#f5a623; --bad:#e35d4f; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:var(--text);font-family:"JetBrains Mono",monospace;line-height:1.5}
+  a{color:inherit}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(13,22,32,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .topbar .inner{max-width:1180px;margin:0 auto;padding:0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+  .brand .mark{width:26px;height:26px;border-radius:7px;background:var(--fuel);display:grid;place-items:center;color:var(--ink);font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:18px}
+  .brand .bname{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;letter-spacing:.04em;text-transform:uppercase;color:var(--text)}
+  .nav{display:flex;align-items:center;gap:4px}
+  .nav a{font-size:13px;color:var(--dim);text-decoration:none;padding:7px 11px;border-radius:8px;font-weight:500}
+  .nav a:hover{color:var(--text);background:var(--panel)}
+  .nav a.lang{border:1px solid var(--line);font-weight:700}
+  @media (max-width:560px){
+    .topbar .inner{gap:8px}
+    .brand{flex-shrink:0}
+    .nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-width:0}
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{padding:6px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
+    .brand .bname{font-size:18px}
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px}
+  .crumb{font-size:11px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+  .crumb a{color:var(--faint);text-decoration:none}
+  .crumb a:hover{color:var(--fuel)}
+  h1{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:36px;text-transform:uppercase;margin:0 0 12px;line-height:1.05}
+  .lead{color:var(--dim);font-size:15px;line-height:1.65;margin:0 0 24px}
+  .pane{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#070d13;aspect-ratio:16/9}
+  .pane img.thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .pane video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;background:#000}
+  .pane .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,rgba(7,13,19,.15),rgba(7,13,19,.75));font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;font-size:16px;color:var(--text);cursor:pointer;border:none;width:100%}
+  .pane .badge{position:absolute;top:10px;left:10px;z-index:3;font-size:10px;letter-spacing:.06em;background:rgba(7,13,19,.75);color:var(--dim);padding:4px 9px;border-radius:7px}
+  .pane .live{position:absolute;top:10px;right:10px;z-index:3;display:none;font-size:10px;letter-spacing:.08em;background:rgba(227,93,79,.9);color:#fff;padding:4px 9px;border-radius:7px;font-weight:700}
+  .thumb-link{position:absolute;inset:0;z-index:1;display:block}
+  .snap-note{position:absolute;left:10px;bottom:10px;z-index:2;font-size:10.5px;letter-spacing:.04em;background:rgba(7,13,19,.75);color:var(--dim);padding:4px 9px;border-radius:7px}
+  .feeds{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .feeds button{font-family:"JetBrains Mono",monospace;font-size:12px;background:var(--panel);color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}
+  .feeds button.on{background:var(--fuel);color:var(--ink);font-weight:700;border-color:var(--fuel)}
+  .no-cam{border:1px dashed var(--line);border-radius:var(--radius);padding:24px;text-align:center;color:var(--dim);background:var(--panel)}
+  .wait-box{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:14px;border-radius:var(--radius);overflow:hidden}
+  .wcell{background:var(--panel);padding:14px 16px}
+  .wlabel{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+  .wval{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:26px;margin-top:4px}
+  .map-box iframe{display:block}
+  .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .btn{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:14px;color:var(--ink);background:var(--fuel);border:none;border-radius:8px;padding:11px 18px;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+  .info{margin-top:28px;border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:var(--dim);display:grid;gap:8px}
+  .info b{color:var(--text)}
+  .faq{margin:36px 0 10px}
+  .faq h2{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;margin:0 0 14px}
+  .faq details{border:1px solid var(--line);border-radius:11px;padding:2px 16px;margin-bottom:10px;background:var(--panel)}
+  .faq summary{cursor:pointer;padding:13px 0;font-weight:600;font-size:14px;list-style:none;font-family:"JetBrains Mono",monospace}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+";color:var(--fuel);font-weight:700;margin-right:10px}
+  .faq details[open] summary::before{content:"\2212"}
+  .faq details p{margin:0 0 15px;color:var(--dim);font-size:13.5px;line-height:1.6}
+  .others{margin-top:30px;font-size:12px;color:var(--faint)}
+  .others a{color:var(--fuel);text-decoration:none;margin-right:10px}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="inner">
+    <a class="brand" href="../index.html">
+      <span class="mark">G</span>
+      <span class="bname">Gasolina</span>
+    </a>
+    <div class="nav">
+      <a href="../index.html">Fuel prices</a>
+      <a href="../index.html#kalkulator">Trip calculator</a>
+      <a href="../granice.html">Borders</a>
+      <a href="../istorija.html">History</a>
+      <a href="../vodici.html">Guides</a>
+      <a class="lang" href="../granica-horgos.html" title="Čitaj na srpskom">SR</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="crumb"><a href="../index.html">Gasolina</a> / <a href="../granice.html">Borders</a> / Horgos</div>
+  <h1>Horgos — live camera and waiting time</h1>
+  <p class="lead">Horgos connects Serbia and Hungary on route E75, opposite Roszke (HU). Gasolina combines border police data, a live camera and (where available) the neighbouring side for a realistic estimate.</p>
+
+  <div class="pane" id="pane"><span class="badge">AMSS</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="../thumbs/horgos.jpg" alt="Horgos" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div><div class="feeds"><button onclick="playFeed(0)">Ulaz</button><button onclick="playFeed(1)">Izlaz</button></div>
+  <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Loading current status…</div></div>
+  <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Traffic on the map (exiting Serbia)</h2><iframe src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d11672.3!2d19.97480125!3d46.1748572!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d46.1662695!2d19.9615223!4m3!3m2!1d46.1834449!2d19.9880802!5e0!3m2!1sen!2sus!4v1627540443619!5m2!1sen!2sus" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Horgos" allowfullscreen></iframe><div style="font-size:11px;color:var(--faint);margin-top:6px">The time on the map is a driving estimate through the crossing zone in current traffic — it does not include passport control.</div></div>
+
+  <div class="cta">
+    <a class="btn" href="../granice.html" onclick="track('landing_cta', {prelaz:'horgos', cilj:'granice'})">Compare all crossings →</a>
+    <a class="btn ghost" href="../index.html#kalkulator" onclick="track('landing_cta', {prelaz:'horgos', cilj:'kalkulator'})">Calculate trip cost →</a>
+  </div>
+
+  <div class="info">
+    <div><b>Direction:</b> 🇷🇸 Serbia → 🇭🇺 Hungary</div>
+    <div><b>Route:</b> E75</div>
+    <div><b>Opposite:</b> Roszke (HU)</div>
+    <div><b>Alternative:</b> <a href="border-kelebija.html" style="color:var(--fuel)">Kelebija</a> leads to the same country</div>
+  </div>
+
+  <section class="faq">
+    <h2>Frequently asked questions about Horgos</h2>
+    <details><summary>How long is the wait at Horgos right now?</summary><p>The live camera and the current waiting estimate for both directions are at the top of this page, plus traffic on the map. To compare all crossings, open the Borders page.</p></details><details><summary>Where does the Horgos crossing lead?</summary><p>Horgos connects Serbia → Hungary, opposite Roszke (HU) on route E75.</p></details><details><summary>Is there an alternative to Horgos?</summary><p>Yes - Kelebija leads to the same country. Gasolina's route calculator compares crossings when you plan a trip, and the Borders page shows which one is currently faster.</p></details>
+  </section>
+
+  <div class="others">Other border crossings: <a href="border-gradina.html">Gradina</a> <a href="border-kelebija.html">Kelebija</a> <a href="border-batrovci.html">Batrovci</a> <a href="border-presevo.html">Presevo</a> <a href="border-bogorodica.html">Bogorodica</a> <a href="border-sremska-raca.html">Sremska Raca</a> <a href="border-spiljani.html">Spiljani</a> <a href="border-gostun.html">Gostun</a> <a href="border-debeli-brijeg.html">Debeli Brijeg</a> <a href="border-dojran.html">Dojran</a></div>
+</div>
+
+<script>
+  const PRELAZ_ID = "horgos";
+  const FEEDS = [{"label": "Ulaz", "src": "https://kamere.amss.org.rs/horgos1/horgos1.m3u8"}, {"label": "Izlaz", "src": "https://kamere.amss.org.rs/horgos2/horgos2.m3u8"}];
+  const T = {noQueue: "No queue", noData: "no data"};
+
+  // --- wait box ---
+  (async function(){
+    const box = document.getElementById("waitBox");
+    if(!box) return;
+    try{
+      const res = await fetch("../granice.json?cb=" + Date.now());
+      if(!res.ok) throw new Error("no data");
+      const data = await res.json();
+      const c = (data.crossings || {})[PRELAZ_ID];
+      const fmt = m => (m == null) ? T.noData : (m <= 30 ? T.noQueue : (m >= 60 ? Math.floor(m/60)+"h "+(m%60)+"m" : m + " min"));
+      const p = (c && c.found && c.putnicka) ? c.putnicka : null;
+      box.innerHTML = `
+        <div class="wcell"><div class="wlabel">Entering Serbia</div><div class="wval">${fmt(p ? p.ulaz : null)}</div></div>
+        <div class="wcell"><div class="wlabel">Exiting Serbia</div><div class="wval">${fmt(p ? p.izlaz : null)}</div></div>`;
+    }catch(e){
+      box.innerHTML = `<div class="wcell" style="grid-column:1/-1;color:var(--faint)">Current status unavailable - check directly on <a href="../granice.html#horgos" style="color:var(--fuel)">the borders page</a>.</div>`;
+    }
+  })();
+
+  // --- plejer (isti hls.js kao granice.html) ---
+  let _hls = null;
+  function playFeed(idx, opts){
+    if(!FEEDS.length) return;
+    const pane = document.getElementById("pane");
+    const video = document.getElementById("cam");
+    const overlay = document.getElementById("playOverlay");
+    const liveTag = document.getElementById("liveTag");
+    const src = FEEDS[idx].src;
+    document.querySelectorAll(".feeds button").forEach((b,i)=>b.classList.toggle("on", i===idx));
+    if(overlay) overlay.style.display = "none";
+    video.style.display = "block";
+    if(liveTag) liveTag.style.display = "block";
+    if(_hls){ try{_hls.destroy();}catch(e){} _hls = null; }
+    if(video.canPlayType("application/vnd.apple.mpegurl")){
+      video.src = src;
+    } else if (window.Hls && Hls.isSupported()){
+      _hls = new Hls({maxBufferLength:10});
+      _hls.loadSource(src);
+      _hls.attachMedia(video);
+    } else {
+      video.src = src;
+    }
+    if(opts && opts.muted) video.muted = true;
+    video.play().catch(()=>{});
+    track('kamera_play', {prelaz: PRELAZ_ID, izvor: 'landing'});
+  }
+  // ?play=1 iz granice.html thumb klika: odmah pusti kameru (muted, browseri
+  // ne dozvoljavaju autoplay sa zvukom). &feed=N bira konkretnu kameru
+  // (Ulaz/Izlaz tabovi sa granice.html vode direktno na pravu).
+  const _params = new URLSearchParams(window.location.search);
+  if (FEEDS.length && _params.get("play") === "1") {
+    const _fi = Math.min(parseInt(_params.get("feed") || "0", 10) || 0, FEEDS.length - 1);
+    window.addEventListener("load", () => setTimeout(() => playFeed(_fi, {muted:true}), 120));
+  }
+</script>
+</body>
+</html>
