@@ -45,7 +45,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js"></script>
 <style>
   :root{
     --ink:#0d1620;
@@ -490,19 +489,17 @@ function cardHTML(c){
 
   let paneInner;
   if(hasVideo){
+    // Klik na thumb sad vodi na POSVECENU stranicu prelaza (granica-<id>.html?play=1)
+    // gde su kamera + cekanja + mapa + FAQ na jednom mestu - umesto pustanja ovde.
+    // Odluka: "ni tamo ni ovamo" raspored (kamera ovde, mapa tamo) niko ne provali.
     paneInner = `<span class="badge">${c.provider}</span>
-       <span class="live"><span class="ld"></span>UZIVO</span>
-       <video playsinline muted></video>
        <img class="thumb" src="thumbs/${c.id}.jpg" alt="Poslednja slika sa kamere ${c.name}" loading="lazy"
             onerror="this.remove(); this.closest('.pane').querySelector('.poster').classList.add('no-thumb')">
-       <button class="poster" aria-label="Pusti kameru ${c.name}">
+       <a class="poster" href="granica-${c.id}.html?play=1" aria-label="Otvori stranicu prelaza ${c.name} sa kamerom uzivo"
+          onclick="track('thumb_klik', {prelaz:'${c.id}'})">
          <span class="play"><svg width="20" height="20" viewBox="0 0 24 24" fill="var(--fuel)"><path d="M8 5v14l11-7z"/></svg></span>
-         <span class="ptext">Pusti kameru</span>
-       </button>
-       <div class="pmsg">
-         <p>Kamera trenutno nije dostupna u ovom prikazu.</p>
-         <a class="btn" href="${c.official}" target="_blank" rel="noopener">Otvori zvanicnu kameru</a>
-       </div>`;
+         <span class="ptext">Kamera uzivo + mapa</span>
+       </a>`;
   } else if(noCamera){
     paneInner = `<span class="badge">samo podaci</span>
        <div class="pmsg" style="display:flex">
@@ -571,103 +568,6 @@ function cardHTML(c){
   </article>`;
 }
 
-/* ---- HLS player ---- */
-function ensureVidControls(card, video){
-  const pane = card.querySelector(".pane");
-  if(pane.querySelector(".vidctl")) return;
-  const ctl = document.createElement("div");
-  ctl.className = "vidctl";
-  ctl.innerHTML = `
-    <button class="vbtn" data-act="fs" title="Ceo ekran">\u26F6</button>
-    <button class="vbtn" data-act="close" title="Zatvori kameru">\u2715</button>`;
-  pane.appendChild(ctl);
-  ctl.querySelector('[data-act="fs"]').addEventListener("click", e=>{
-    e.stopPropagation();
-    const v = pane.querySelector("video");
-    if (v.requestFullscreen) v.requestFullscreen();
-    else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen(); // iOS
-  });
-  ctl.querySelector('[data-act="close"]').addEventListener("click", e=>{
-    e.stopPropagation();
-    stopFeed(card);
-  });
-}
-
-function stopFeed(card){
-  const pane = card.querySelector(".pane");
-  const video = pane.querySelector("video");
-  const poster = pane.querySelector(".poster");
-  const thumb = pane.querySelector(".thumb");
-  const live = pane.querySelector(".live");
-  if(card._hls){ try{card._hls.destroy();}catch(e){} card._hls=null; }
-  video.removeAttribute("src"); video.load();
-  live.style.display="none";
-  const ctl = pane.querySelector(".vidctl"); if(ctl) ctl.remove();
-  if(poster) poster.style.display="";
-  if(thumb) thumb.style.display="";
-  card.classList.remove("expanded");
-}
-
-function playFeed(card, cam, feedIndex){
-  const feed = cam.feeds[feedIndex];
-  if(!feed || !feed.src) return;
-  track('pusti_kameru', { prelaz: cam.id, kamera: feed.label, izvor: cam.provider });
-  const pane = card.querySelector(".pane");
-  const poster = pane.querySelector(".poster");
-  const thumb = pane.querySelector(".thumb");
-  const live = pane.querySelector(".live");
-  const pmsg = pane.querySelector(".pmsg");
-
-  if(poster) poster.style.display="none";
-  if(thumb) thumb.style.display="none";
-  pmsg.style.display="none";
-
-  // rasiri karticu preko celog reda dok kamera radi
-  card.classList.add("expanded");
-  card.scrollIntoView({behavior:"smooth", block:"nearest"});
-
-  // cleanup prethodnog hls-a
-  if(card._hls){ try{card._hls.destroy();}catch(e){} card._hls=null; }
-
-  // Nov <video> element pri SVAKOM pustanju/prebacivanju taba - dva blaza
-  // resetovanja (src+load, pa i puni removeAttribute+load) nisu pomogla na
-  // iOS-u, sto znaci da AVPlayer interno drzi staru sesiju vezanu za sam
-  // <video> DOM element, ne samo za manifest. Svez element to zaobilazi
-  // u korenu: iOS nema sta da "zapamti" jer element doslovno ne postoji
-  // dok se strim ne pusti.
-  const oldVideo = pane.querySelector("video");
-  const video = document.createElement("video");
-  video.setAttribute("playsinline", "");
-  video.muted = true;
-  oldVideo.replaceWith(video);
-
-  const onOk = ()=>{ live.style.display="flex"; ensureVidControls(card, video); video.play().catch(()=>{}); track('kamera_radi', { prelaz: cam.id, kamera: feed.label }); };
-  const onFail = ()=>{
-    track('kamera_pala', { prelaz: cam.id, kamera: feed.label, izvor: cam.provider });
-    live.style.display="none";
-    pmsg.style.display="flex";
-    card.classList.remove("expanded");
-    const ctl = pane.querySelector(".vidctl"); if(ctl) ctl.remove();
-    video.removeAttribute("src"); video.load();
-  };
-  if(video.canPlayType("application/vnd.apple.mpegurl")){
-    // Safari / iOS native HLS
-    video.src = feed.src;
-    video.load();
-    video.addEventListener("loadedmetadata",onOk,{once:true});
-    video.addEventListener("error",onFail,{once:true});
-  } else if(window.Hls && Hls.isSupported()){
-    const hls=new Hls({maxBufferLength:10});
-    card._hls=hls;
-    hls.loadSource(feed.src);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED,onOk);
-    hls.on(Hls.Events.ERROR,(e,d)=>{ if(d.fatal) onFail(); });
-  } else {
-    onFail();
-  }
-}
-
 /* ---- ucitaj prave podatke pa renderuj ---- */
 /* Dativ naziva zemalja, za recenice tipa "Ka Madjarskoj". Samo zemlje koje se
    realno pojavljuju kao par sa vise prelaza (RS->HU: Horgos/Kelebija, RS->ME:
@@ -711,17 +611,12 @@ function wire(){
   CAMERAS.forEach(cam=>{
     const card=grid.querySelector(`[data-id="${cam.id}"]`);
     if(!card) return;
-    const poster=card.querySelector(".poster");
-    if(poster){
-      poster.addEventListener("click",()=>playFeed(card,cam,0));
-      poster.setAttribute("tabindex","0");
-      poster.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();playFeed(card,cam,0);} });
-    }
+    // .poster je sad obican <a> ka granica-<id>.html?play=1 - ne treba mu JS.
+    // Tabovi (Ulaz/Izlaz kamere) vode na istu stranicu sa izabranom kamerom.
     card.querySelectorAll(".tab").forEach(tab=>{
       tab.addEventListener("click",()=>{
-        card.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected","false"));
-        tab.setAttribute("aria-selected","true");
-        playFeed(card,cam,parseInt(tab.dataset.i,10));
+        track('thumb_klik', {prelaz: cam.id, kamera: tab.textContent.trim()});
+        window.location.href = `granica-${cam.id}.html?play=1&feed=${parseInt(tab.dataset.i,10)}`;
       });
     });
   });
@@ -791,19 +686,6 @@ async function init(){
   wire();
   renderComparisons();
   setNote(live, scrapedAt);
-
-  // Ako je stiglo sa landing stranice (granica-<id>.html "Pusti kameru uzivo" ->
-  // granice.html#<id>), ne samo skroluj do kartice (to browser vec radi sam za
-  // #anchor) nego STVARNO pusti kameru - inace je dugme "uzivo" laz, treba
-  // dodatni klik da bi neko video isto ono sto mu je vec obecano.
-  const hashId = (window.location.hash || "").replace("#", "");
-  if (hashId) {
-    const cam = CAMERAS.find(c => c.id === hashId);
-    const card = grid.querySelector(`[data-id="${hashId}"]`);
-    if (cam && card && cam.feeds && cam.feeds.length && !cam.linkOnly) {
-      setTimeout(() => playFeed(card, cam, 0), 150);
-    }
-  }
 }
 init();
 </script>
