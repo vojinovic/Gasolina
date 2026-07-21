@@ -231,10 +231,13 @@
     video.play().catch(()=>{});
     track('kamera_play', {prelaz: PRELAZ_ID, izvor: 'landing'});
   }
-  // ?play=1 iz granice.html thumb klika: odmah pusti prvu kameru (muted,
-  // browseri ne dozvoljavaju autoplay sa zvukom)
-  if (FEEDS.length && new URLSearchParams(window.location.search).get("play") === "1") {
-    window.addEventListener("load", () => setTimeout(() => playFeed(0, {muted:true}), 120));
+  // ?play=1 iz granice.html thumb klika: odmah pusti kameru (muted, browseri
+  // ne dozvoljavaju autoplay sa zvukom). &feed=N bira konkretnu kameru
+  // (Ulaz/Izlaz tabovi sa granice.html vode direktno na pravu).
+  const _params = new URLSearchParams(window.location.search);
+  if (FEEDS.length && _params.get("play") === "1") {
+    const _fi = Math.min(parseInt(_params.get("feed") || "0", 10) || 0, FEEDS.length - 1);
+    window.addEventListener("load", () => setTimeout(() => playFeed(_fi, {muted:true}), 120));
   }
 </script>
 </body>
