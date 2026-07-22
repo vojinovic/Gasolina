@@ -64,6 +64,9 @@ L = {
     "map_h": "Gu\u017eva na mapi: {a} \u2192 {b}",
     "src_ba": "Prijave voza\u010da (BorderAlarm)", "src_hu": "Ma\u0111arska strana", "src_mk": "Makedonska strana",
     "lbl_out": "izlaz", "lbl_in": "ulaz", "src_label": "izvor",
+    "share_label": "Podeli:", "share_copy": "Kopiraj", "share_copied": "Kopirano!",
+    "share_out": "izlaz iz Srbije", "share_in": "ulaz u Srbiju", "share_noq": "bez guzve", "share_nd": "nema podataka",
+    "share_nowait": "kamera dostupna, cekanje se ne prati",
     "map_note": "Vreme na mapi je procena vo\u017enje kroz zonu prelaza u trenutnoj gu\u017evi \u2014 ne uklju\u010duje paso\u0161ku kontrolu.",
     "cta_borders": "Uporedi sve prelaze \u2192",
     "cta_calc": "Izra\u010dunaj tro\u0161ak puta \u2192",
@@ -99,6 +102,9 @@ L = {
     "map_h": "Traffic on the map: {a} \u2192 {b}",
     "src_ba": "Driver reports (BorderAlarm)", "src_hu": "Hungarian side", "src_mk": "North Macedonian side",
     "lbl_out": "exit", "lbl_in": "entry", "src_label": "source",
+    "share_label": "Share:", "share_copy": "Copy", "share_copied": "Copied!",
+    "share_out": "exiting Serbia", "share_in": "entering Serbia", "share_noq": "no queue", "share_nd": "no data",
+    "share_nowait": "camera available, waiting not tracked",
     "map_note": "The time on the map is a driving estimate through the crossing zone in current traffic \u2014 it does not include passport control.",
     "cta_borders": "Compare all crossings \u2192",
     "cta_calc": "Calculate trip cost \u2192",
@@ -268,8 +274,10 @@ PAGE_TMPL = """<!DOCTYPE html>
   .crumb{{font-size:11px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}}
   .crumb a{{color:var(--faint);text-decoration:none}}
   .crumb a:hover{{color:var(--fuel)}}
-  h1{{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:36px;text-transform:uppercase;margin:0 0 12px;line-height:1.05}}
-  .lead{{color:var(--dim);font-size:15px;line-height:1.65;margin:0 0 24px}}
+  h1{{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:36px;text-transform:uppercase;margin:0;line-height:1.05}}
+  .h1row{{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:0 0 16px}}
+  .dirchip{{font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:19px;letter-spacing:.04em;border:1px solid var(--line);border-radius:10px;padding:8px 16px;white-space:nowrap;background:var(--panel)}}
+  .lead{{color:var(--dim);font-size:14px;line-height:1.65;margin:26px 0 0}}
   .pane{{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#070d13;aspect-ratio:16/9}}
   .pane img.thumb{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}}
   .pane video{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;background:#000}}
@@ -279,8 +287,9 @@ PAGE_TMPL = """<!DOCTYPE html>
   .pane .live{{position:absolute;top:10px;right:10px;z-index:3;display:none;font-size:10px;letter-spacing:.08em;background:rgba(227,93,79,.9);color:#fff;padding:4px 9px;border-radius:7px;font-weight:700}}
   .thumb-link{{position:absolute;inset:0;z-index:1;display:block}}
   .snap-note{{position:absolute;left:10px;bottom:10px;z-index:2;font-size:10.5px;letter-spacing:.04em;background:rgba(7,13,19,.75);color:var(--dim);padding:4px 9px;border-radius:7px}}
-  .feeds{{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}}
-  .feeds button{{font-family:"JetBrains Mono",monospace;font-size:12px;background:var(--panel);color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}}
+  .feeds{{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}}
+  .feeds button{{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:15px;background:var(--panel);color:var(--dim);border:1px solid var(--line);border-radius:10px;padding:12px 26px;cursor:pointer;flex:1;min-width:120px;max-width:220px;transition:all .15s ease}}
+  .feeds button:hover{{color:var(--text);border-color:var(--faint)}}
   .feeds button.on{{background:var(--fuel);color:var(--ink);font-weight:700;border-color:var(--fuel)}}
   .no-cam{{border:1px dashed var(--line);border-radius:var(--radius);padding:24px;text-align:center;color:var(--dim);background:var(--panel)}}
   .wait-box{{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:14px;border-radius:var(--radius);overflow:hidden}}
@@ -301,6 +310,10 @@ PAGE_TMPL = """<!DOCTYPE html>
   .faq summary::before{{content:"+";color:var(--fuel);font-weight:700;margin-right:10px}}
   .faq details[open] summary::before{{content:"\\2212"}}
   .faq details p{{margin:0 0 15px;color:var(--dim);font-size:13.5px;line-height:1.6}}
+  .share-row{{display:flex;align-items:center;gap:6px;margin-top:14px;flex-wrap:wrap}}
+  .share-label{{font-size:11px;color:var(--faint)}}
+  .share-btn{{font-family:"JetBrains Mono",monospace;font-size:11.5px;background:var(--panel);color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer}}
+  .share-btn:hover{{color:var(--text);border-color:var(--fuel)}}
   .others{{margin-top:30px;font-size:12px;color:var(--faint)}}
   .others a{{color:var(--fuel);text-decoration:none;margin-right:10px}}
 </style>
@@ -325,10 +338,14 @@ PAGE_TMPL = """<!DOCTYPE html>
 
 <div class="wrap">
   <div class="crumb"><a href="{root}index.html">Gasolina</a> / <a href="{root}granice.html">{crumb_borders}</a> / {name}</div>
-  <h1>{h1}</h1>
-  <p class="lead">{intro}</p>
+  <div class="h1row">
+    <h1>{h1}</h1>
+    <span class="dirchip">{flag_from} {from_code} → {flag_to} {to_code}</span>
+  </div>
 
   {hero_block}
+
+  <p class="lead">{intro}</p>
 
   <div class="cta">
     <a class="btn" href="{root}granice.html" onclick="track('landing_cta', {{prelaz:'{id}', cilj:'granice'}})">{cta_borders}</a>
@@ -354,6 +371,35 @@ PAGE_TMPL = """<!DOCTYPE html>
   const PRELAZ_ID = "{id}";
   const FEEDS = {feeds_json};
   const T = {{noQueue: "{no_queue}", noData: "{no_data}"}};
+  const SHARE = {{label:"{share_label}", copied:"{share_copied}", out:"{share_out}", inn:"{share_in}", noq:"{share_noq}", nd:"{share_nd}", nowait:"{share_nowait}"}};
+  let _waitState = null; // popunjava waitBox IIFE, koristi doShare
+
+  function doShare(kind, btn) {{
+    const url = "https://gasolina.rs/{self_path}";
+    let parts = [];
+    if (_waitState) {{
+      const f = v => v==null ? SHARE.nd : (v<=30 ? SHARE.noq : (v>=60 ? Math.floor(v/60)+"h "+(v%60)+"m" : v+" min"));
+      parts.push(`${{SHARE.out}}: ${{f(_waitState.out)}}`);
+      parts.push(`${{SHARE.inn}}: ${{f(_waitState.inn)}}`);
+    }} else {{
+      parts.push(SHARE.nowait);
+    }}
+    const text = `{name} ({from_c} - {to_c}): ${{parts.join(", ")}}`;
+    track("podeli_granica", {{prelaz: PRELAZ_ID, kanal: kind, izvor: "landing"}});
+    if (kind === "copy") {{
+      navigator.clipboard.writeText(text + " " + url).then(() => {{
+        if (btn) {{ const old = btn.textContent; btn.textContent = SHARE.copied; setTimeout(() => {{ btn.textContent = old; }}, 1500); }}
+      }}).catch(() => {{}});
+      return;
+    }}
+    const et = encodeURIComponent(text), eu = encodeURIComponent(url);
+    const urls = {{
+      viber: `viber://forward?text=${{et}}%20${{eu}}`,
+      whatsapp: `https://wa.me/?text=${{et}}%20${{eu}}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${{eu}}&quote=${{et}}`,
+    }};
+    window.open(urls[kind], "_blank", "noopener");
+  }}
 
   // --- wait box ---
   (async function(){{
@@ -385,6 +431,7 @@ PAGE_TMPL = """<!DOCTYPE html>
         return best;
       }};
       const eIn = eff('ulaz'), eOut = eff('izlaz');
+      _waitState = {{inn: eIn.v, out: eOut.v}};
       const srcNote = (e) => e.src ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">{src_label}: ${{e.src}}</div>` : '';
       box.innerHTML = `
         <div class="wcell"><div class="wlabel">{wait_in}</div><div class="wval">${{fmt(eIn.v)}}</div>${{srcNote(eIn)}}</div>
@@ -435,6 +482,14 @@ PAGE_TMPL = """<!DOCTYPE html>
     }}
     if(opts && opts.muted) video.muted = true;
     video.play().catch(()=>{{}});
+    // upisi stanje u URL (bez reload-a): jezicki prekidac i share link tako
+    // uvek nose "koja kamera trenutno ide"
+    try {{
+      const u = new URL(window.location.href);
+      u.searchParams.set("play", "1");
+      u.searchParams.set("feed", String(idx));
+      history.replaceState(null, "", u.toString());
+    }} catch(e) {{}}
     track('kamera_play', {{prelaz: PRELAZ_ID, izvor: 'landing'}});
   }}
   // ?play=1 iz granice.html thumb klika: odmah pusti kameru (muted, browseri
@@ -444,7 +499,24 @@ PAGE_TMPL = """<!DOCTYPE html>
   if (FEEDS.length && _params.get("play") === "1") {{
     const _fi = Math.min(parseInt(_params.get("feed") || "0", 10) || 0, FEEDS.length - 1);
     document.addEventListener("DOMContentLoaded", () => playFeed(_fi, {{muted:true}}));
+  }} else if (FEEDS.length) {{
+    // bez autoplay-a: vizuelno oznaci prvu kameru kao izabranu, da tabovi
+    // ne izgledaju "mrtvo" pre prvog klika (overlay pusta bas nju)
+    document.addEventListener("DOMContentLoaded", () => {{
+      const first = document.querySelector(".feeds button");
+      if (first) first.classList.add("on");
+    }});
   }}
+  // SR<->EN prekidac: parametre cita U TRENUTKU KLIKA (playFeed ih upisuje u
+  // URL tek kad kamera krene), pa prebacivanje jezika nastavlja istu kameru
+  document.addEventListener("DOMContentLoaded", () => {{
+    const ll = document.querySelector(".nav a.lang");
+    if (!ll) return;
+    const base = ll.getAttribute("href");
+    ll.addEventListener("click", () => {{
+      ll.href = base + window.location.search;
+    }});
+  }});
 </script>
 </body>
 </html>
@@ -460,7 +532,7 @@ def build_hero(c, lang, root):
         btns = ""
         if len(c["feeds"]) > 1:
             btns = '<div class="feeds">' + "".join(
-                f'<button onclick="playFeed({i})">{f["label"]}</button>'
+                f'<button onclick="playFeed({i})">{translate_feed_label(f["label"], lang)}</button>'
                 for i, f in enumerate(c["feeds"])
             ) + "</div>"
         parts.append(
@@ -529,7 +601,27 @@ def build_hero(c, lang, root):
             f'loading="lazy" title="{c["name"]}" allowfullscreen></iframe>'
             f'<div style="font-size:11px;color:var(--faint);margin-top:6px">{t["map_note"]}</div></div>'
         )
+    # share red ide na SVAKU stranicu, nezavisno od tipa mape (bug: ranije je
+    # bio uvucen u elif granu pa se video samo na prelazima sa fallback mapom)
+    parts.append(
+        f'<div class="share-row"><span class="share-label">{t["share_label"]}</span>'
+        f'<button class="share-btn" onclick="doShare(\'viber\', this)">Viber</button>'
+        f'<button class="share-btn" onclick="doShare(\'whatsapp\', this)">WhatsApp</button>'
+        f'<button class="share-btn" onclick="doShare(\'facebook\', this)">Facebook</button>'
+        f'<button class="share-btn" onclick="doShare(\'copy\', this)">{t["share_copy"]}</button></div>'
+    )
     return "\n  ".join(parts)
+
+
+def translate_feed_label(label, lang):
+    """Labele kamera u borders-data.js su na srpskom - za EN stranice prevedi
+    poznate reci, ostatak (AMSS/MUP u zagradi) ostaje isti."""
+    if lang != "en":
+        return label
+    out = label
+    for sr, en in (("Ulaz", "Entry"), ("Izlaz", "Exit"), ("Kamera", "Camera"), ("granica", "border")):
+        out = out.replace(sr, en)
+    return out
 
 
 def render_page(c, all_c, lang):
@@ -590,15 +682,19 @@ def render_page(c, all_c, lang):
         cta_borders=t["cta_borders"], cta_calc=t["cta_calc"],
         dir=t["dir"], road_l=t["road_l"], pair_l=t["pair_l"],
         flag_from=FLAG.get(c["from"], ""), flag_to=FLAG.get(c["to"], ""),
+        from_code=c["from"], to_code=c["to"],
         from_c=from_c, to_c=to_c, road=road, pair=pair,
         alt_line=alt_line,
         faq_h=t["faq_h"].format(**fmtargs), faq_html=faq_html, faq_json=faq_json,
         others=t["others"], other_links=other_links,
         og_image=og_image,
-        feeds_json=json.dumps(c["feeds"], ensure_ascii=False),
+        feeds_json=json.dumps([{"label": translate_feed_label(f["label"], lang), "src": f["src"]} for f in c["feeds"]], ensure_ascii=False),
         no_queue=t["no_queue"], no_data=t["no_data"],
         src_ba=t["src_ba"], src_hu=t["src_hu"], src_mk=t["src_mk"],
         lbl_out=t["lbl_out"], lbl_in=t["lbl_in"], src_label=t["src_label"],
+        share_label=t["share_label"], share_copied=t["share_copied"],
+        share_out=t["share_out"], share_in=t["share_in"],
+        share_noq=t["share_noq"], share_nd=t["share_nd"], share_nowait=t["share_nowait"],
         wait_in=t["wait_in"], wait_out=t["wait_out"],
         wait_loading=t["wait_loading"],
         wait_unavail=t["wait_unavail"].format(root=root, id=c["id"]),
