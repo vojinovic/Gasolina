@@ -321,12 +321,12 @@ PAGE_TMPL = """<!DOCTYPE html>
 <body>
 <nav class="topbar">
   <div class="inner">
-    <a class="brand" href="{root}index.html">
+    <a class="brand" href="{home_href}">
       <span class="mark">G</span>
       <span class="bname">Gasolina</span>
     </a>
     <div class="nav">
-      <a href="{root}index.html">{nav_prices}</a>
+      <a href="{home_href}">{nav_prices}</a>
       <a href="{root}index.html#kalkulator">{nav_calc}</a>
       <a href="{root}granice.html">{nav_borders}</a>
       <a href="{root}istorija.html">{nav_history}</a>
@@ -672,7 +672,7 @@ def render_page(c, all_c, lang):
         description=t["description"].format(**fmtargs),
         h1=t["h1"].format(**fmtargs),
         intro=t["intro"].format(**fmtargs),
-        self_path=self_path, id=c["id"], name=name, root=root,
+        self_path=self_path, id=c["id"], name=name, root=root, home_href="index.html",
         crumb_borders=t["crumb_borders"],
         nav_prices=t["nav_prices"], nav_calc=t["nav_calc"], nav_borders=t["nav_borders"],
         nav_history=t["nav_history"], nav_guides=t["nav_guides"],
