@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Serbia border crossings live — cameras and waiting times | Gasolina</title>
+<meta name="description" content="Live cameras and waiting estimates at Serbian border crossings (Horgoš, Batrovci, Gradina, Preševo, Sremska Rača, Špiljani, Gostun) and towards Greece (Bogorodica). Check the queue before you travel.">
+<link rel="canonical" href="https://gasolina.rs/en/borders.html">
+<link rel="alternate" hreflang="sr" href="https://gasolina.rs/granice.html">
+<link rel="alternate" hreflang="en" href="https://gasolina.rs/en/borders.html">
+<link rel="alternate" hreflang="x-default" href="https://gasolina.rs/granice.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0d1620">
+
+<link rel="manifest" href="../manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gasolina">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gasolina">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Stanje na granicama uživo — kamere i čekanje | Gasolina">
+<meta property="og:description" content="Live cameras and waiting estimates at border crossings towards Hungary, Croatia, Montenegro, Greece and Bulgaria. Check the queue before you travel.">
+<meta property="og:url" content="https://gasolina.rs/granice.html">
+<meta property="og:image" content="https://gasolina.rs/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Stanje na granicama uživo — kamere i čekanje | Gasolina">
+<meta name="twitter:description" content="Live border cameras and waiting estimates. Check the queue before you travel.">
+<meta name="twitter:image" content="https://gasolina.rs/og.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Stanje na granicama uživo — kamere i čekanje",
+  "url": "https://gasolina.rs/granice.html",
+  "inLanguage": "en",
+  "description": "Live cameras and waiting estimates at Serbian border crossings and towards neighbouring countries.",
+  "isPartOf": { "@type": "WebSite", "name": "Gasolina", "url": "https://gasolina.rs/" }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0d1620;
+    --panel:#15212e;
+    --panel-2:#1b2a39;
+    --line:#26384a;
+    --text:#e9eff5;
+    --dim:#8aa0b2;
+    --faint:#5d7387;
+    --fuel:#f5a623;        /* Gasolina brend akcenat */
+    --ok:#2fbf71;
+    --warn:#f5a623;
+    --bad:#e35d4f;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 500px at 80% -10%, rgba(245,166,35,0.08), transparent 60%),
+      var(--ink);
+    color:var(--text);
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    min-height:100dvh; /* sprecava "skakanje" na mobilnom dok adresna traka nestaje/pojavljuje se pri skrolu */
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 18px 60px}
+
+  /* Header */
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--fuel);display:flex;align-items:center;gap:8px;margin-bottom:10px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--fuel);box-shadow:0 0 0 4px rgba(245,166,35,.15)}
+  h1{
+    font-family:"Barlow Condensed",sans-serif;font-weight:700;
+    font-size:clamp(30px,5vw,46px);line-height:.98;letter-spacing:.01em;
+    margin:0 0 8px;text-transform:uppercase;
+  }
+  .lead{color:var(--dim);max-width:62ch;font-size:15px;line-height:1.5;margin:0}
+
+  .note{
+    margin-top:16px;border:1px solid var(--line);border-left:3px solid var(--fuel);
+    background:var(--panel);border-radius:10px;padding:11px 14px;
+    color:var(--dim);font-size:13px;line-height:1.5;
+  }
+  .note b{color:var(--text);font-weight:600}
+
+  .cmp-banner{
+    margin-top:14px;border:1px solid rgba(245,166,35,.35);border-left:3px solid var(--fuel);
+    background:linear-gradient(180deg, rgba(245,166,35,.07), transparent 60%), var(--panel);
+    border-radius:10px;padding:11px 14px;color:var(--text);font-size:13px;line-height:1.5;
+  }
+  .cmp-banner + .cmp-banner{margin-top:8px}
+  .cmp-banner b{font-weight:700}
+  .cmp-banner .cmp-fast{color:var(--ok)}
+
+  /* Grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;margin-top:24px}
+
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;display:flex;flex-direction:column;
+  }
+
+  /* Card head: route */
+  .chead{padding:14px 16px 12px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .route{display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint);letter-spacing:.05em}
+  .route .flag{font-size:15px;filter:saturate(1.1)}
+  .route .arrow{color:var(--fuel)}
+  .cname{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:25px;line-height:1;text-transform:uppercase;margin:6px 0 2px}
+  .cname a{color:inherit;text-decoration:none}
+  .cname a:hover{color:var(--fuel)}
+  .cpair{font-size:12.5px;color:var(--dim)}
+  .road{
+    font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;
+    color:var(--text);border:1px solid var(--line);border-radius:6px;padding:3px 7px;white-space:nowrap;
+    background:var(--panel-2);
+  }
+
+  /* Camera pane */
+  .pane{position:relative;aspect-ratio:16/9;background:#070d13;overflow:hidden}
+  .pane video{width:100%;height:100%;object-fit:cover;display:block;background:#070d13}
+
+  /* rasirena kartica dok kamera radi */
+  .card.expanded{grid-column:1 / -1}
+  .card.expanded .pane{aspect-ratio:21/9}
+  .card.expanded .pane video{object-fit:contain}
+  @media (max-width:760px){ .card.expanded .pane{aspect-ratio:16/9} }
+
+  .vidctl{position:absolute;top:10px;right:10px;display:flex;gap:8px;z-index:3}
+  .vbtn{width:36px;height:36px;border-radius:9px;border:1px solid rgba(255,255,255,.18);background:rgba(7,13,19,.72);color:var(--text);font-size:15px;cursor:pointer;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center}
+  .vbtn:hover{border-color:var(--fuel);color:var(--fuel)}
+
+  /* prava fotografija sa kamere (thumbs/<id>.jpg, hvata je ffmpeg u Actions-ima) */
+  .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:0}
+  .thumb-link{position:absolute;inset:0;z-index:1;display:block}
+  .thumb-link .snap-note{position:absolute;left:10px;bottom:10px;z-index:2;font-size:10.5px;letter-spacing:.04em;
+    background:rgba(7,13,19,.75);color:var(--dim);padding:4px 9px;border-radius:7px;font-family:"JetBrains Mono",monospace}
+  .thumb-link:hover .snap-note{color:var(--fuel)}
+
+  .poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;z-index:1;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px),
+      radial-gradient(420px 220px at 50% 35%, rgba(245,166,35,.10), transparent 70%),
+      linear-gradient(180deg, rgba(7,13,19,.25) 0%, rgba(7,13,19,.55) 55%, rgba(7,13,19,.88) 100%);
+  }
+  /* kartice bez thumb slike (fajl jos ne postoji/pao 404) padaju na staru punu pozadinu */
+  .poster.no-thumb{background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px),
+      radial-gradient(420px 220px at 50% 35%, rgba(245,166,35,.10), transparent 70%),
+      #0a121b;
+  }
+  .poster .play{
+    width:54px;height:54px;border-radius:50%;border:1px solid var(--line);
+    background:rgba(245,166,35,.12);display:grid;place-items:center;transition:transform .15s ease, background .15s ease;
+  }
+  .poster:hover .play{transform:scale(1.06);background:rgba(245,166,35,.2)}
+  .poster .play svg{margin-left:3px}
+  .poster .ptext{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:14px;color:var(--dim)}
+
+  .badge{
+    position:absolute;top:9px;left:9px;z-index:3;
+    font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;letter-spacing:.08em;
+    padding:3px 7px;border-radius:5px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08);color:var(--dim);
+  }
+  .live{
+    position:absolute;top:9px;right:9px;z-index:3;display:none;align-items:center;gap:5px;
+    font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--bad);
+    padding:3px 7px;border-radius:5px;background:rgba(0,0,0,.6);border:1px solid rgba(227,93,79,.4);
+  }
+  .live .ld{width:6px;height:6px;border-radius:50%;background:var(--bad);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+
+  /* error / linkout state inside pane */
+  .pmsg{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:18px;background:#0a121b}
+  .pmsg p{margin:0;color:var(--dim);font-size:13px;line-height:1.5;max-width:32ch}
+  .btn{
+    font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:14px;
+    color:var(--ink);background:var(--fuel);border:none;border-radius:8px;padding:9px 15px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;
+  }
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+  .btn:focus-visible,.poster:focus-visible,.tab:focus-visible{outline:2px solid var(--fuel);outline-offset:2px}
+
+  /* feed tabs */
+  .tabs{display:flex;gap:6px;padding:10px 12px 0}
+  .tab{
+    flex:1;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;
+    background:var(--panel-2);border:1px solid var(--line);color:var(--dim);border-radius:7px;padding:7px 6px;cursor:pointer;text-align:center;
+  }
+  .tab[aria-selected="true"]{color:var(--ink);background:var(--fuel);border-color:var(--fuel);font-weight:700}
+
+  /* wait strip */
+  .wait{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:10px}
+  .wcell{background:var(--panel);padding:11px 13px}
+  .wlabel{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:6px}
+  .wlabel .dir{color:var(--fuel)}
+  .wmin{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:24px;margin:3px 0 1px;line-height:1}
+  .wmin span{font-size:12px;color:var(--dim);font-weight:500}
+  .wmin .wok{font-size:16px;color:inherit;font-weight:700;white-space:nowrap}
+  .wcat{font-size:11px;color:var(--dim)}
+  .wsrc{font-size:11px;color:var(--fuel)}
+  .wtruck{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:5px;display:flex;align-items:center;gap:5px}
+  .wtruck b{color:var(--text);font-weight:700}
+  .hustrip{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:10px;padding-top:9px;border-top:1px dashed var(--line)}
+  .hustrip b{color:var(--text);font-weight:700}
+  .basrc a{color:var(--fuel);text-decoration:none}
+  .basrc a:hover{text-decoration:underline}
+  .nowait{font-size:12px;color:var(--faint);line-height:1.5;margin-top:10px;padding:10px 12px;border:1px dashed var(--line);border-radius:10px}
+  .cfoot-links{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+
+  .share-row{display:flex;align-items:center;gap:6px;padding:0 14px 14px;flex-wrap:wrap}
+  .share-label{font-size:11px;color:var(--faint);font-family:"JetBrains Mono",monospace;margin-right:2px}
+  .share-btn{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:7px;
+    padding:4px 8px;cursor:pointer;text-decoration:none;transition:color .15s ease, border-color .15s ease;
+  }
+  .share-btn:hover{color:var(--text);border-color:var(--fuel)}
+  .wbar{height:4px;border-radius:3px;background:var(--panel-2);margin-top:8px;overflow:hidden}
+  .wbar i{display:block;height:100%;border-radius:3px}
+
+  /* card foot */
+  .cfoot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 14px;border-top:1px solid var(--line)}
+  .src{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--faint);letter-spacing:.04em;line-height:1.4}
+  .link{font-size:12px;color:var(--fuel);text-decoration:none;font-weight:600;white-space:nowrap}
+  .link:hover{text-decoration:underline}
+
+  .updated{margin-top:8px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--faint);letter-spacing:.05em}
+
+  @media (max-width:560px){
+    .grid{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .live .ld{animation:none}
+    .poster:hover .play{transform:none}
+  }
+
+  /* Site nav (zajednicki header) */
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(13,22,32,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .topbar .inner{max-width:1180px;margin:0 auto;padding:0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+  .brand .mark{width:26px;height:26px;border-radius:7px;background:var(--fuel);display:grid;place-items:center;color:var(--ink);font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:18px}
+  .brand .bname{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;letter-spacing:.04em;text-transform:uppercase;color:var(--text)}
+  .nav{display:flex;align-items:center;gap:4px}
+  .nav a{font-size:13px;color:var(--dim);text-decoration:none;padding:7px 11px;border-radius:8px;font-weight:500}
+  .nav a:hover{color:var(--text);background:var(--panel)}
+  .nav a[aria-current="page"]{color:var(--ink);background:var(--fuel);font-weight:600}
+  @media (max-width:560px){
+    .topbar .inner{gap:8px}
+    .brand{flex-shrink:0}
+    .nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-width:0}
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{padding:6px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
+    .brand .bname{font-size:18px}
+  }
+
+  .faq { margin:40px 0 10px; }
+  .faq h2 { font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:24px; text-transform:uppercase; margin:0 0 16px; }
+  .faq details { border:1px solid var(--line); border-radius:11px; padding:2px 16px; margin-bottom:10px; background:var(--panel); }
+  .faq summary { cursor:pointer; padding:14px 0; font-weight:600; font-size:15px; list-style:none; }
+  .faq summary::-webkit-details-marker { display:none; }
+  .faq summary::before { content:"+"; color:var(--fuel); font-weight:700; margin-right:10px; }
+  .faq details[open] summary::before { content:"\2212"; }
+  .faq details p { margin:0 0 16px; color:var(--dim); font-size:14px; line-height:1.65; }
+
+  /* chip sa cekanjem preko slike/videa */
+  .wchips{position:absolute;bottom:10px;right:10px;display:flex;gap:6px;z-index:2}
+  .wchip{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:4px 8px;border-radius:7px;background:rgba(7,13,19,.78);backdrop-filter:blur(3px)}
+</style>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4EPLBJE8BL');
+  function track(name, params){ try{ gtag('event', name, params || {}); }catch(e){} }
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"How long is the wait at Horgos or Batrovci right now?","acceptedAnswer":{"@type":"Answer","text":"Each crossing card shows a waiting estimate for entering and exiting Serbia, along with a live camera. The camera is the most reliable check of the current situation."}},
+    {"@type":"Question","name":"Where does the waiting data come from?","acceptedAnswer":{"@type":"Answer","text":"We combine the Serbian border police (via AMSS), the Hungarian police, the North Macedonian AMSM and driver reports. For each direction we show the worst available estimate, with its source labelled."}},
+    {"@type":"Question","name":"Which crossing is faster, Horgos or Kelebija?","acceptedAnswer":{"@type":"Answer","text":"Both cards show the current wait, and the trip calculator shows the two crossings side by side for routes towards Hungary."}},
+    {"@type":"Question","name":"Kako da vidim kameru na granici uzivo?","acceptedAnswer":{"@type":"Answer","text":"Klikni na dugme za reprodukciju na kartici prelaza. Kamere se ucitavaju sa zvanicnih AMSS i MUP servera; ako se ne ucita, kartica nudi dugme ka zvanicnom izvoru."}}
+  ]
+}
+</script>
+</head>
+<body>
+<nav class="topbar">
+  <div class="inner">
+    <a class="brand" href="index.html">
+      <span class="mark">G</span>
+      <span class="bname">Gasolina</span>
+    </a>
+    <div class="nav">
+      <a href="index.html">Fuel prices</a>
+      <a href="../index.html#kalkulator">Trip calculator</a>
+      <a href="granice.html" aria-current="page">Borders</a>
+      <a href="../istorija.html">History</a>
+      <a href="../vodici.html">Guides</a>
+      <a class="lang" href="../granice.html" title="Čitaj na srpskom" style="border:1px solid var(--line);font-weight:700">SR</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="eyebrow"><span class="dot"></span> Gasolina / Granični prelazi</div>
+  <h1>Serbia border crossings live: cameras and waiting times</h1>
+  <p class="lead">Check live cameras and waiting estimates at Serbian border crossings towards Hungary, Croatia, Bosnia, Montenegro, Bulgaria, North Macedonia and Greece. Data combined from multiple sources: Serbian border police, the Hungarian and Macedonian sides, and driver reports.</p>
+
+  <div class="note">
+    <b>Kako čitati brojke.</b> Prikazujemo najgoru dostupnu procenu iz svih izvora za svaki smer, uz oznaku odakle je podatak. Kamere se vuku sa zvaničnih AMSS i MUP servera, pa video u nekim browserima možda neće da se učita (zavisi od CORS i referer politike izvora). Ako se ne učita, kartica nudi dugme ka zvaničnoj kameri. Kamera je uvek najpouzdanija provera stvarnog stanja.
+  </div>
+
+  <div id="cmp"></div>
+
+  <div class="grid" id="grid"></div>
+
+  <section class="faq">
+    <h2>Česta pitanja o granicama</h2>
+    <details>
+      <summary>Kolika je gužva na Horgošu ili Batrovcima sada?</summary>
+      <p>Each crossing card shows a waiting estimate for entering and exiting Serbia, along with a live camera. For Horgoš and Kelebija we also have data from the Hungarian side, and for Preševo and Bogorodica from the North Macedonian side. The camera is the most reliable check of the current situation.</p>
+    </details>
+    <details>
+      <summary>Where does the waiting data come from?</summary>
+      <p>We combine multiple sources: the Serbian border police (via AMSS), the Hungarian police for crossings towards Hungary, the North Macedonian AMSM for crossings towards North Macedonia, and driver reports. For each direction we show the worst available estimate, with its source labelled.</p>
+    </details>
+    <details>
+      <summary>Which crossing is faster, Horgoš or Kelebija?</summary>
+      <p>Kelebija is a common alternative to Horgoš towards Hungary. Both cards show the current wait, and the trip calculator displays both crossings side by side for routes towards Hungary.</p>
+    </details>
+    <details>
+      <summary>How do I watch a border camera live?</summary>
+      <p>Click the play button on a crossing card. Cameras load directly from the official AMSS and MUP servers. If the video does not load in your browser, the card links to the official camera source.</p>
+    </details>
+  </section>
+</div>
+
+<script src="../borders-data.js"></script>
+<script>
+/* Prelazi se ucitavaju iz deljenog borders-data.js (jedan izvor istine). */
+// Redosled kartica: najprometniji prelazi gore. Ostali zadrzavaju redosled iz borders-data.
+const CAMERA_ORDER = ["presevo", "gradina", "horgos", "batrovci", "kelebija"];
+const CAMERAS = [...BORDERS.CROSSINGS].sort((a, b) => {
+  const ia = CAMERA_ORDER.indexOf(a.id), ib = CAMERA_ORDER.indexOf(b.id);
+  return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+});
+
+/* status iz minuta */
+function waitStatus(min){
+  if(min==null) return {c:"var(--faint)",pct:0,t:"no data"};
+  if(min<=30)  return {c:"var(--ok)",  pct:Math.max(12,min/30*40),  t:"flowing"};
+  if(min<45)   return {c:"var(--warn)",pct:40+(min-30)/15*25,        t:"moderate"};
+  return            {c:"var(--bad)", pct:Math.min(100,65+(min-45)/120*35), t:"heavy queue"};
+}
+function fmtMin(m){ if(m==null) return "-"; if(m>=60){const h=Math.floor(m/60),r=m%60; return r?`${h}h ${r}m`:`${h}h`;} return `${m} min`; }
+function huMin(m){ if(m==null) return "-"; if(m===0) return "No queue"; return fmtMin(m); }
+function cVal(m){
+  if(m==null) return "<b>-</b>";
+  const s = waitStatus(m);
+  return `<b style="color:${s.c}">${huMin(m)}</b>`;
+}
+function hereStrip(c){
+  if(!c.here) return "";
+  const H = c.here;
+  const col = (H.criticality==="critical"||H.criticality==="major") ? "var(--bad)"
+            : (H.criticality==="minor") ? "var(--warn)" : "var(--dim)";
+  const len = H.length_km ? ` (${String(H.length_km).replace(".",",")} km)` : "";
+  const closed = H.closed ? " &middot; <b style=\"color:var(--bad)\">ZATVORENO</b>" : "";
+  return `<div class="hustrip">\uD83D\uDCE1 Saobracaj na prelazu: <b style="color:${col}">${H.category}${len}</b>${closed} <span class="basrc">&middot; HERE</span></div>`;
+}
+function baStrip(c){
+  if(!c.ba) return "";
+  return `<div class="hustrip">\uD83D\uDE97 Driver reports: exit ${cVal(c.ba.izlaz)} &middot; entry ${cVal(c.ba.ulaz)} <span class="basrc">&middot; <a href="https://borderalarm.com/countries/serbia/" target="_blank" rel="noopener">borderalarm.com</a></span></div>`;
+}
+function mkStrip(c){
+  if(!c.mk) return "";
+  const gp = (c.id==="presevo") ? " (Tabanovce)" : "";
+  // smerovi iz ugla MK: izlez = izlazak iz Makedonije, vlez = ulazak u Makedoniju
+  const L = (c.id==="bogorodica")
+    ? { izlez:"ka Grckoj", vlez:"iz Grcke" }
+    : { izlez:"ka Srbiji", vlez:"ka Makedoniji" };
+  let body;
+  if(c.mk.opsto!=null){
+    body = (c.mk.opsto===0) ? `<b style="color:var(--ok)">No queue</b>` : `wait ${cVal(c.mk.opsto)}`;
+  } else {
+    const parts=[];
+    if(c.mk.izlez!=null) parts.push(`${L.izlez}: ${cVal(c.mk.izlez)}`);
+    if(c.mk.vlez!=null)  parts.push(`${L.vlez}: ${cVal(c.mk.vlez)}`);
+    if(!parts.length) return "";
+    body = parts.join(" &middot; ");
+  }
+  return `<div class="hustrip">\uD83C\uDDF2\uD83C\uDDF0 North Macedonian side${gp}: ${body}</div>`;
+}
+
+/* najgori dostupan podatak za smer, iz svih izvora (AMSS default 30 ne maskira prave brojke) */
+function effective(c, dirKey){
+  const cands = [];
+  const p = c.wait && c.wait.putnicka ? c.wait.putnicka[dirKey] : null;
+  if(p!=null) cands.push({v:p, src:null});
+  if(c.hu){ const v=c.hu[dirKey]; if(v!=null && v>0) cands.push({v, src:"madjarska strana"}); }
+  if(c.mk){
+    const v = (dirKey==='izlaz') ? c.mk.vlez : c.mk.izlez;   // ka MK = izlaz iz RS
+    if(v!=null && v>0) cands.push({v, src:"makedonska strana"});
+    if(c.mk.opsto!=null && c.mk.opsto>0) cands.push({v:c.mk.opsto, src:"makedonska strana"});
+  }
+  if(c.ba){ const v=c.ba[dirKey]; if(v!=null && v>0) cands.push({v, src:"prijave vozaca"}); }
+  if(!cands.length) return {v:null, src:null};
+  let best = cands[0];
+  cands.forEach(x=>{ if(best.v==null || (x.v!=null && x.v>best.v)) best=x; });
+  return best;
+}
+
+function shareTextBorder(c){
+  const parts = [];
+  if(c.noWait){
+    parts.push("camera available, waiting not tracked");
+  } else {
+    const iz = effective(c, "izlaz"), ul = effective(c, "ulaz");
+    parts.push(`exiting Serbia: ${iz.v!=null ? (iz.v<=30 ? "no queue" : fmtMin(iz.v)) : "no data"}`);
+    parts.push(`entering Serbia: ${ul.v!=null ? (ul.v<=30 ? "no queue" : fmtMin(ul.v)) : "no data"}`);
+  }
+  return `${c.name} border (${c.from}-${c.to}): ${parts.join(", ")} — gasolina.rs/en/borders.html`;
+}
+function doShareBorder(kind, id, btn){
+  const c = CAMERAS.find(x => x.id === id);
+  if(!c) return;
+  track("podeli_granica", { prelaz: c.id, kanal: kind });
+  const text = shareTextBorder(c);
+  if(kind === "copy"){
+    navigator.clipboard.writeText(text + " https://gasolina.rs/granice.html").then(() => {
+      if(btn){ const old = btn.textContent; btn.textContent = "Copied!"; setTimeout(() => { btn.textContent = old; }, 1500); }
+    }).catch(() => {});
+    return;
+  }
+  const t = encodeURIComponent(text), u = encodeURIComponent("https://gasolina.rs/granice.html");
+  const urls = {
+    viber: `viber://forward?text=${t}%20${u}`,
+    whatsapp: `https://wa.me/?text=${t}%20${u}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${u}&quote=${t}`,
+  };
+  window.open(urls[kind], "_blank", "noopener");
+}
+
+function waitCell(label,dirKey,c){
+  const eff = effective(c, dirKey);
+  const s = waitStatus(eff.v);
+  const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
+  const big = (eff.v==null) ? '-' : (eff.v<=30 ? '<span class="wok">No queue</span>' : fmtMin(eff.v));
+  const srcTag = (eff.src && eff.v>30) ? `<div class="wsrc">source: ${eff.src}</div>` : `<div class="wcat">passenger vehicles</div>`;
+  return `
+    <div class="wcell">
+      <div class="wlabel"><span class="dir">${arrow}</span> ${label}</div>
+      <div class="wmin" style="color:${s.c}">${big}</div>
+      ${srcTag}
+      <div class="wbar"><i style="width:${s.pct}%;background:${s.c}"></i></div>
+    </div>`;
+}
+
+function waitChips(c){
+  if(c.noWait) return "";
+  const u = effective(c, "ulaz"), i = effective(c, "izlaz");
+  if(u.v==null && i.v==null) return "";
+  const chip = (arrow, e) => e.v==null ? "" :
+    `<span class="wchip" style="color:${waitStatus(e.v).c}">${arrow}${e.v>=60?Math.round(e.v/60)+"h":e.v}</span>`;
+  return `<div class="wchips">${chip("\u2191", u)}${chip("\u2193", i)}</div>`;
+}
+
+function cardHTML(c){
+  const hasVideo = c.feeds.some(f=>f.src);
+  const noCamera = c.noCamera === true;
+  const tabs = c.feeds.length>1 && hasVideo
+    ? `<div class="tabs" role="tablist">${c.feeds.map((f,i)=>
+        `<button class="tab" role="tab" data-i="${i}" aria-selected="${i===0}">${f.label}</button>`).join("")}</div>`
+    : "";
+
+  let paneInner;
+  if(hasVideo){
+    // Klik na thumb sad vodi na POSVECENU stranicu prelaza (granica-<id>.html?play=1)
+    // gde su kamera + cekanja + mapa + FAQ na jednom mestu - umesto pustanja ovde.
+    // Odluka: "ni tamo ni ovamo" raspored (kamera ovde, mapa tamo) niko ne provali.
+    paneInner = `<span class="badge">${c.provider}</span>
+       <img class="thumb" src="../thumbs/${c.id}.jpg" alt="Latest snapshot from the ${c.name} camera" loading="lazy"
+            onerror="this.remove(); this.closest('.pane').querySelector('.poster').classList.add('no-thumb')">
+       <a class="poster" href="border-${c.id}.html?play=1" aria-label="Open the ${c.name} crossing page with live camera"
+          onclick="track('thumb_klik', {prelaz:'${c.id}'})">
+         <span class="play"><svg width="20" height="20" viewBox="0 0 24 24" fill="var(--fuel)"><path d="M8 5v14l11-7z"/></svg></span>
+         <span class="ptext">Live camera + map</span>
+       </a>`;
+  } else if(noCamera){
+    paneInner = `<span class="badge">data only</span>
+       <div class="pmsg" style="display:flex">
+         <p>There is no official camera for this crossing. Follow the waiting time below.</p>
+       </div>`;
+  } else {
+    // linkOnly / feed jos nije podesen. Za MUP CG prelaze (gostun, debeli-brijeg)
+    // thumbs_scraper na serveru ipak ume da izvuce periodicnu sliku iz njihovih
+    // MP4 klipova - ako slika postoji, pokazi je (posteno oznaceno kao "poslednja
+    // slika", NE kao uzivo), klik vodi na zvanicnu stranicu. Ako slike nema
+    // (onerror), pada nazad na cist tekstualni prikaz kao do sada.
+    paneInner = `<span class="badge">${c.provider}</span>
+       <a class="thumb-link" href="${c.official}" target="_blank" rel="noopener" aria-label="Open the official ${c.name} camera">
+         <img class="thumb" src="../thumbs/${c.id}.jpg" alt="Latest snapshot from the ${c.name} camera" loading="lazy"
+              onerror="this.closest('.pane').querySelector('.pmsg').style.display='flex'; this.closest('.thumb-link').remove()">
+         <span class="snap-note">Latest snapshot &middot; click for the official camera ↗</span>
+       </a>
+       <div class="pmsg">
+         <p>${c.linkOnly ? 'The camera opens on the official source.' : 'Live feed is not set up for this crossing yet.'}</p>
+         <a class="btn" href="${c.official}" target="_blank" rel="noopener">Open camera</a>
+       </div>`;
+  }
+
+  return `
+  <article class="card" id="${c.id}" data-id="${c.id}">
+    <div class="chead">
+      <div>
+        <div class="route">
+          <span class="flag">${BORDERS.FLAG[c.from]}</span> ${c.from}
+          <span class="arrow">\u2192</span>
+          <span class="flag">${BORDERS.FLAG[c.to]}</span> ${c.to}
+        </div>
+        <div class="cname"><a href="border-${c.id}.html">${c.name}</a></div>
+        <div class="cpair">opposite ${c.pair}</div>
+      </div>
+      <div class="road">${c.road}</div>
+    </div>
+
+    <div class="pane">${paneInner}${waitChips(c)}</div>
+    ${tabs}
+
+    ${c.noWait ? ((c.mk||c.here) ? (mkStrip(c) + hereStrip(c)) : `<div class="nowait">${c.from}\u2013${c.to} border. Waiting time is not tracked here; use the camera above.</div>`) : `
+    <div class="wait">
+      ${waitCell("Entering Serbia","ulaz",c)}
+      ${waitCell("Exiting Serbia","izlaz",c)}
+    </div>
+    ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Hungarian side: entry ${cVal(c.hu.ulaz)} &middot; exit ${cVal(c.hu.izlaz)}</div>` : ''}
+    ${mkStrip(c)}
+    ${baStrip(c)}
+    ${hereStrip(c)}`}
+
+    <div class="cfoot">
+      <div class="src">${c.noWait ? `Camera: ${c.provider}` : `Source: Serbian border police<br>Camera: ${c.provider}`}</div>
+      <div class="cfoot-links">
+        <a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>
+        ${c.official2 ? `<a class="link" href="${c.official2.url}" target="_blank" rel="noopener">${c.official2.label}</a>` : ''}
+      </div>
+    </div>
+    <div class="share-row">
+      <span class="share-label">Share:</span>
+      <button class="share-btn" type="button" onclick="doShareBorder('viber','${c.id}')">Viber</button>
+      <button class="share-btn" type="button" onclick="doShareBorder('whatsapp','${c.id}')">WhatsApp</button>
+      <button class="share-btn" type="button" onclick="doShareBorder('facebook','${c.id}')">Facebook</button>
+      <button class="share-btn" type="button" onclick="doShareBorder('copy','${c.id}', this)">Copy</button>
+    </div>
+  </article>`;
+}
+
+/* ---- ucitaj prave podatke pa renderuj ---- */
+/* Dativ naziva zemalja, za recenice tipa "Ka Madjarskoj". Samo zemlje koje se
+   realno pojavljuju kao par sa vise prelaza (RS->HU: Horgos/Kelebija, RS->ME:
+   Spiljani/Gostun) - dopuni po potrebi ako se doda novi dupli prelaz. */
+const CN_DATIVE = { HU:"Hungary", ME:"Montenegro", HR:"Croatia", BG:"Bulgaria", MK:"North Macedonia", BA:"Bosnia", GR:"Greece", RO:"Romania" };
+
+/* Kad postoji vise prelaza ka istoj zemlji (npr. Horgos i Kelebija ka Madjarskoj),
+   prikazi direktno poredjenje umesto da korisnik sam racuna dve odvojene kartice.
+   Prag od 10 min je namerno - manja razlika nije vredna isticanja, samo sum. */
+function renderComparisons(){
+  const cmp = document.getElementById("cmp");
+  if(!cmp) return;
+  const groups = {};
+  CAMERAS.forEach(c => {
+    const key = BORDERS.pairKey(c.from, c.to);
+    (groups[key] = groups[key] || []).push(c);
+  });
+  const banners = [];
+  Object.values(groups).forEach(list => {
+    if(list.length < 2) return;
+    const withWait = list
+      .map(c => ({ c, eff: effective(c, "izlaz") }))
+      .filter(x => x.eff.v != null);
+    if(withWait.length < 2) return;
+    withWait.sort((a, b) => a.eff.v - b.eff.v);
+    const fastest = withWait[0], slowest = withWait[withWait.length - 1];
+    const diff = slowest.eff.v - fastest.eff.v;
+    if(diff < 10) return;
+    const toName = CN_DATIVE[list[0].to] || list[0].to;
+    banners.push(`
+      <div class="cmp-banner">
+        \uD83D\uDCA1 Ka ${BORDERS.FLAG[list[0].to]} <b>${toName}</b>: <b class="cmp-fast">${fastest.c.name}</b> currently faster by <b>${fmtMin(diff)}</b> than ${slowest.c.name} (${fmtMin(fastest.eff.v)} : ${fmtMin(slowest.eff.v)}).
+      </div>`);
+  });
+  cmp.innerHTML = banners.join("");
+}
+
+const grid=document.getElementById("grid");
+
+function wire(){
+  CAMERAS.forEach(cam=>{
+    const card=grid.querySelector(`[data-id="${cam.id}"]`);
+    if(!card) return;
+    // .poster je sad obican <a> ka granica-<id>.html?play=1 - ne treba mu JS.
+    // Tabovi (Ulaz/Izlaz kamere) vode na istu stranicu sa izabranom kamerom.
+    card.querySelectorAll(".tab").forEach(tab=>{
+      tab.addEventListener("click",()=>{
+        track('thumb_klik', {prelaz: cam.id, kamera: tab.textContent.trim()});
+        window.location.href = `border-${cam.id}.html?play=1&feed=${parseInt(tab.dataset.i,10)}`;
+      });
+    });
+  });
+}
+
+function setNote(live, scrapedAt){
+  const note=document.querySelector(".note");
+  if(live){
+    let when="";
+    if(scrapedAt){
+      const d=new Date(scrapedAt);
+      const hh=String(d.getHours()).padStart(2,"0"), mm=String(d.getMinutes()).padStart(2,"0");
+      const dd=String(d.getDate()).padStart(2,"0"), mo=String(d.getMonth()+1).padStart(2,"0");
+      when=` Updated ${dd}.${mo}. at ${hh}:${mm}.`;
+    }
+    note.innerHTML=`<b>Live waiting times.</b> Source: Serbian border police (via AMSS).${when} Cameras stream from AMSS and MUP servers, so video may not load in every environment. If it fails, the card links to the official camera.`;
+  } else {
+    note.innerHTML=`<b>Demo prototype.</b> Waiting times are illustrative because granice.json has not loaded yet. Cameras stream from AMSS and MUP servers, so video may not load in every environment.`;
+  }
+}
+
+// odlazni klikovi (zvanicna kamera, borderalarm, CG kamera)
+document.addEventListener('click', function(e){
+  const a = e.target.closest('a[target="_blank"]');
+  if(!a) return;
+  const card = a.closest('.card');
+  track('odlazni_klik', {
+    url: a.href,
+    prelaz: card ? (card.dataset.id || '') : '',
+  });
+}, true);
+
+async function init(){
+  let live=false, scrapedAt=null;
+  try{
+    const res=await fetch("../granice.json?cb="+Date.now());
+    if(res.ok){
+      const data=await res.json();
+      scrapedAt=data.scraped_at||null;
+      const cr=data.crossings||{};
+      CAMERAS.forEach(cam=>{
+        const c=cr[cam.id];
+        if(c && c.found && c.putnicka){
+          cam.wait={ putnicka:c.putnicka, teretna:c.teretna||null };
+          live=true;
+        } else {
+          cam.wait=null;   // nema zvanicnog podatka -> "no data", ne demo
+        }
+        cam.hu = (c && c.hu) ? c.hu : null;
+        cam.mk = (c && c.mk) ? c.mk : null;
+        cam.ba = (c && c.ba) ? c.ba : null;
+        cam.here = null;
+      });
+    }
+  }catch(e){ /* nema fajla, ostaju demo brojke */ }
+
+  try{
+    const rh = await fetch("granice_here.json?cb="+Date.now());
+    if(rh.ok){
+      const hj = await rh.json();
+      const hc = hj.crossings || {};
+      CAMERAS.forEach(cam=>{ if(hc[cam.id]) cam.here = hc[cam.id]; });
+    }
+  }catch(e){ /* nema HERE podataka */ }
+
+  grid.innerHTML=CAMERAS.map(cardHTML).join("");
+  wire();
+  renderComparisons();
+  setNote(live, scrapedAt);
+}
+init();
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
+
+<footer style="max-width:1180px;margin:50px auto 0;padding:22px 18px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace">
+  Questions, feedback, error reports: <a href="mailto:kontakt@gasolina.rs" style="color:var(--faint);text-decoration:underline">kontakt@gasolina.rs</a>
+</footer>
+</body>
+</html>
