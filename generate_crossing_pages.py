@@ -63,6 +63,7 @@ L = {
     "no_queue": "Bez guzve", "no_data": "nema podataka",
     "map_h": "Gu\u017eva na mapi: {a} \u2192 {b}",
     "src_ba": "Prijave voza\u010da (BorderAlarm)", "src_hu": "Ma\u0111arska strana", "src_mk": "Makedonska strana",
+    "src_tt": "Mapa saobra\u0107aja", "tt_note": "bez paso\u0161ke kontrole", "tt_kolona": "kolona",
     "lbl_out": "izlaz", "lbl_in": "ulaz", "src_label": "izvor",
     "share_label": "Podeli:", "share_copy": "Kopiraj", "share_copied": "Kopirano!",
     "share_out": "izlaz iz Srbije", "share_in": "ulaz u Srbiju", "share_noq": "bez guzve", "share_nd": "nema podataka",
@@ -101,6 +102,7 @@ L = {
     "no_queue": "No queue", "no_data": "no data",
     "map_h": "Traffic on the map: {a} \u2192 {b}",
     "src_ba": "Driver reports (BorderAlarm)", "src_hu": "Hungarian side", "src_mk": "North Macedonian side",
+    "src_tt": "Traffic map", "tt_note": "excludes passport control", "tt_kolona": "queue",
     "lbl_out": "exit", "lbl_in": "entry", "src_label": "source",
     "share_label": "Share:", "share_copy": "Copy", "share_copied": "Copied!",
     "share_out": "exiting Serbia", "share_in": "entering Serbia", "share_noq": "no queue", "share_nd": "no data",
@@ -421,12 +423,17 @@ PAGE_TMPL = """<!DOCTYPE html>
         const p = (c && c.found && c.putnicka) ? c.putnicka[dirKey] : null;
         if (p != null) cands.push({{v: p, src: null}});
         if (c && c.hu) {{ const v = c.hu[dirKey]; if (v != null && v > 0) cands.push({{v, src: "{src_hu}"}}); }}
-        if (c && c.mk) {{
+        if (c && c.tt && (c.tt.izlaz != null || c.tt.ulaz != null)) {{
+        const km = (m) => m ? ` ({tt_kolona} ~${{m}}m)` : "";
+        srcs.push(`🗺️ <b>{src_tt}:</b> {lbl_out} ${{mfmt(c.tt.izlaz)}}${{km(c.tt.izlaz_kolona_m)}} \u00b7 {lbl_in} ${{mfmt(c.tt.ulaz)}}${{km(c.tt.ulaz_kolona_m)}} \u00b7 {tt_note}`);
+      }}
+      if (c && c.mk) {{
           const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
           if (v != null && v > 0) cands.push({{v, src: "{src_mk}"}});
           if (c.mk.opsto != null && c.mk.opsto > 0) cands.push({{v: c.mk.opsto, src: "{src_mk}"}});
         }}
         if (c && c.ba) {{ const v = c.ba[dirKey]; if (v != null && v > 0) cands.push({{v, src: "{src_ba}"}}); }}
+        if (c && c.tt) {{ const v = c.tt[dirKey]; if (v != null && v > 0) cands.push({{v, src: "{src_tt}"}}); }}
         if (!cands.length) return {{v: null, src: null}};
         let best = cands[0];
         cands.forEach(x => {{ if (best.v == null || (x.v != null && x.v > best.v)) best = x; }});
@@ -699,6 +706,7 @@ def render_page(c, all_c, lang):
         feeds_json=json.dumps([{"label": translate_feed_label(f["label"], lang), "src": f["src"]} for f in c["feeds"]], ensure_ascii=False),
         no_queue=t["no_queue"], no_data=t["no_data"],
         src_ba=t["src_ba"], src_hu=t["src_hu"], src_mk=t["src_mk"],
+        src_tt=t["src_tt"], tt_note=t["tt_note"], tt_kolona=t["tt_kolona"],
         lbl_out=t["lbl_out"], lbl_in=t["lbl_in"], src_label=t["src_label"],
         share_label=t["share_label"], share_copied=t["share_copied"],
         share_out=t["share_out"], share_in=t["share_in"],
