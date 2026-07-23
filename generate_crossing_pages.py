@@ -423,11 +423,7 @@ PAGE_TMPL = """<!DOCTYPE html>
         const p = (c && c.found && c.putnicka) ? c.putnicka[dirKey] : null;
         if (p != null) cands.push({{v: p, src: null}});
         if (c && c.hu) {{ const v = c.hu[dirKey]; if (v != null && v > 0) cands.push({{v, src: "{src_hu}"}}); }}
-        if (c && c.tt && (c.tt.izlaz != null || c.tt.ulaz != null)) {{
-        const km = (m) => m ? ` ({tt_kolona} ~${{m}}m)` : "";
-        srcs.push(`🗺️ <b>{src_tt}:</b> {lbl_out} ${{mfmt(c.tt.izlaz)}}${{km(c.tt.izlaz_kolona_m)}} \u00b7 {lbl_in} ${{mfmt(c.tt.ulaz)}}${{km(c.tt.ulaz_kolona_m)}} \u00b7 {tt_note}`);
-      }}
-      if (c && c.mk) {{
+        if (c && c.mk) {{
           const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
           if (v != null && v > 0) cands.push({{v, src: "{src_mk}"}});
           if (c.mk.opsto != null && c.mk.opsto > 0) cands.push({{v: c.mk.opsto, src: "{src_mk}"}});
@@ -451,6 +447,10 @@ PAGE_TMPL = """<!DOCTYPE html>
       const mfmt = m => (m == null) ? "-" : (m + " min");
       if (c && c.ba) srcs.push(`\\uD83D\\uDE97 <b>{src_ba}:</b> {lbl_out} ${{mfmt(c.ba.izlaz)}} \\u00b7 {lbl_in} ${{mfmt(c.ba.ulaz)}}`);
       if (c && c.hu) srcs.push(`\\uD83C\\uDDED\\uD83C\\uDDFA <b>{src_hu}:</b> {lbl_in} ${{fmt(c.hu.ulaz)}} \\u00b7 {lbl_out} ${{fmt(c.hu.izlaz)}}`);
+      if (c && c.tt && (c.tt.izlaz != null || c.tt.ulaz != null)) {{
+        const km = (m) => m ? ` ({tt_kolona} ~${{m}}m)` : "";
+        srcs.push(`🗺️ <b>{src_tt}:</b> {lbl_out} ${{mfmt(c.tt.izlaz)}}${{km(c.tt.izlaz_kolona_m)}} \u00b7 {lbl_in} ${{mfmt(c.tt.ulaz)}}${{km(c.tt.ulaz_kolona_m)}} \u00b7 {tt_note}`);
+      }}
       if (c && c.mk) {{
         const mkTxt = (c.mk.opsto != null) ? ("~" + c.mk.opsto + " min")
           : ["vlez: " + mfmt(c.mk.vlez), "izlez: " + mfmt(c.mk.izlez)].join(" \\u00b7 ");
