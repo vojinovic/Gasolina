@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-23T22:08:59+00:00",
+  "scraped_at": "2026-07-23T23:30:01+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -19,12 +19,12 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 35,
-        "ulaz": 45
+        "izlaz": 30,
+        "ulaz": 40
       },
       "tt": {
-        "izlaz": 8,
-        "izlaz_kolona_m": 137,
+        "izlaz": 11,
+        "izlaz_kolona_m": 203,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -41,18 +41,18 @@
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
-        "ulaz": 60,
+        "ulaz": 30,
         "izlaz": 30
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 360
+        "ulaz": 60
       },
       "tt": {
-        "izlaz": 10,
-        "izlaz_kolona_m": 459,
-        "ulaz": 12,
-        "ulaz_kolona_m": 991
+        "izlaz": 1,
+        "izlaz_kolona_m": 220,
+        "ulaz": 18,
+        "ulaz_kolona_m": 725
       }
     },
     "kelebija": {
@@ -71,8 +71,8 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 10
+        "izlaz": 5,
+        "ulaz": 5
       },
       "tt": {
         "izlaz": 0,
@@ -93,14 +93,14 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 60,
+        "izlaz": 300,
         "ulaz": 60
       },
       "tt": {
-        "izlaz": 6,
-        "izlaz_kolona_m": 211,
-        "ulaz": 20,
-        "ulaz_kolona_m": 731
+        "izlaz": 2,
+        "izlaz_kolona_m": 368,
+        "ulaz": 16,
+        "ulaz_kolona_m": 384
       }
     },
     "presevo": {
@@ -120,8 +120,8 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 10
+        "izlaz": 15,
+        "ulaz": 5
       },
       "tt": {
         "izlaz": 0,
