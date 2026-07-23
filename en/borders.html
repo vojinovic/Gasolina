@@ -422,6 +422,8 @@ function effective(c, dirKey){
     if(c.mk.opsto!=null && c.mk.opsto>0) cands.push({v:c.mk.opsto, src:"makedonska strana"});
   }
   if(c.ba){ const v=c.ba[dirKey]; if(v!=null && v>0) cands.push({v, src:"prijave vozaca"}); }
+  // TomTom zastoj voznje - DONJA granica (ne vidi kolonu koja stoji na pasoskoj)
+  if(c.tt){ const v=c.tt[dirKey]; if(v!=null && v>0) cands.push({v, src:"traffic map"}); }
   if(!cands.length) return {v:null, src:null};
   let best = cands[0];
   cands.forEach(x=>{ if(best.v==null || (x.v!=null && x.v>best.v)) best=x; });
@@ -553,6 +555,7 @@ function cardHTML(c){
     ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Hungarian side: entry ${cVal(c.hu.ulaz)} &middot; exit ${cVal(c.hu.izlaz)}</div>` : ''}
     ${mkStrip(c)}
     ${baStrip(c)}
+    ${c.tt && (c.tt.izlaz!=null || c.tt.ulaz!=null) ? `<div class="hustrip">\uD83D\uDDFA\uFE0F Traffic map: exit delay ${cVal(c.tt.izlaz)}${c.tt.izlaz_kolona_m ? ` (queue ~${c.tt.izlaz_kolona_m}m)` : ``} &middot; entry ${cVal(c.tt.ulaz)}${c.tt.ulaz_kolona_m ? ` (queue ~${c.tt.ulaz_kolona_m}m)` : ``} <span class="basrc">&middot; excludes passport control</span></div>` : ``}
     ${hereStrip(c)}`}
 
     <div class="cfoot">
@@ -672,6 +675,7 @@ async function init(){
         cam.hu = (c && c.hu) ? c.hu : null;
         cam.mk = (c && c.mk) ? c.mk : null;
         cam.ba = (c && c.ba) ? c.ba : null;
+        cam.tt = (c && c.tt) ? c.tt : null;
         cam.here = null;
       });
     }
