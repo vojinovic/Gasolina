@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-23T17:36:25+00:00",
+  "scraped_at": "2026-07-23T19:26:54+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -19,14 +19,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 55,
-        "ulaz": 120
+        "izlaz": 50,
+        "ulaz": 60
       },
       "tt": {
-        "izlaz": 7,
-        "izlaz_kolona_m": 358,
-        "ulaz": 2,
-        "ulaz_kolona_m": 122
+        "izlaz": 8,
+        "izlaz_kolona_m": 580,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "horgos": {
@@ -45,14 +45,14 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 30,
-        "ulaz": 330
+        "izlaz": 20,
+        "ulaz": 360
       },
       "tt": {
-        "izlaz": 2,
-        "izlaz_kolona_m": 111,
-        "ulaz": 11,
-        "ulaz_kolona_m": 860
+        "izlaz": 9,
+        "izlaz_kolona_m": 1261,
+        "ulaz": 5,
+        "ulaz_kolona_m": 476
       }
     },
     "kelebija": {
@@ -71,8 +71,8 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 10
+        "izlaz": 15,
+        "ulaz": 15
       },
       "tt": {
         "izlaz": 0,
@@ -93,14 +93,14 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 90,
-        "ulaz": 120
+        "izlaz": 150,
+        "ulaz": 270
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
-        "ulaz": 0,
-        "ulaz_kolona_m": 1587
+        "izlaz": 1,
+        "izlaz_kolona_m": 254,
+        "ulaz": 3,
+        "ulaz_kolona_m": 1545
       }
     },
     "presevo": {
@@ -120,8 +120,8 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 15
+        "izlaz": 5,
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
