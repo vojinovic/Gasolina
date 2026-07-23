@@ -14,6 +14,7 @@ dovoljno, jer AMSS i sam azurira retko.
 Izlaz: granice.json u rootu repoa.
 """
 
+import os
 import re
 import csv
 import sys
@@ -41,6 +42,90 @@ BA_TARGETS = {
     "batrovci": r"batrovci\s*/\s*bajakovo",
 }
 OUT = "granice.json"
+
+# --- TomTom Routing: objektivan zastoj kroz koridor prelaza ----------------
+# Racuna (vreme voznje SA saobracajem - vreme BEZ saobracaja) kroz iste
+# kalibrisane tacke koje koriste mape na landing stranicama (borders-data.js,
+# mapPB = izlaz, mapPBin = ulaz). VAZNO za tumacenje: TomTom vidi vozila koja
+# se KRECU - kolona koja stoji na pasoskoj kontroli je za njega "parkirana",
+# pa je ovo DONJA granica zastoja, ne ukupno cekanje. Zato u prikazu ide kao
+# jos jedan kandidat u "najgori od svih", nikad kao jedini broj.
+# Kljuc: GitHub Secret TOMTOM_KEY (registracija bez kartice na
+# developer.tomtom.com, freemium 2500 zahteva/dan - trosimo ~530).
+TT_KEY = os.environ.get("TOMTOM_KEY", "").strip()
+TT_ENABLED = bool(TT_KEY)
+BORDERS_DATA_PATH = "borders-data.js"
+
+
+def parse_tt_corridors(js_path=BORDERS_DATA_PATH):
+    """Iz borders-data.js izvuci koridore za TomTom: {id: {'izlaz': (4 koord),
+    'ulaz': (4 koord)|None}}. 'ulaz' SAMO gde postoji kalibrisan mapPBin -
+    obrnute tacke izlaza rutaju obilazno (jednosmerne trake na stanicama)
+    pa bi zastoj bio djubre, bolje nista nego pogresan broj."""
+    try:
+        js = open(js_path, encoding="utf-8").read()
+    except OSError as e:
+        print(f"Upozorenje: {js_path} nije dostupan za TomTom koridore: {e}")
+        return {}
+    out = {}
+    for m in re.finditer(r'id:\s*"([a-z-]+)"([^\n]*(?:\n(?!\s*\{)[^\n]*)*)', js):
+        cid, chunk = m.group(1), m.group(2)
+        pb = re.search(r'mapPB:\s*\[([\d.]+),\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)\]', chunk)
+        pbin = re.search(r'mapPBin:\s*\[([\d.]+),\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)\]', chunk)
+        if pb:
+            out[cid] = {
+                "izlaz": tuple(float(x) for x in pb.groups()),
+                "ulaz": tuple(float(x) for x in pbin.groups()) if pbin else None,
+            }
+    return out
+
+
+def fetch_tt_delay(o_lat, o_lon, d_lat, d_lon):
+    """Vrati zastoj u minutima kroz koridor (sa saobracajem vs bez), ili None."""
+    url = (f"https://api.tomtom.com/routing/1/calculateRoute/"
+           f"{o_lat},{o_lon}:{d_lat},{d_lon}/json"
+           f"?key={TT_KEY}&traffic=true&computeTravelTimeFor=all&routeType=fastest")
+    req = urllib.request.Request(url, headers={
+        "User-Agent": "Gasolina/1.0 (+https://gasolina.rs)"
+    })
+    with urllib.request.urlopen(req, timeout=20) as r:
+        data = json.loads(r.read().decode("utf-8"))
+    return tt_delay_from_response(data)
+
+
+def tt_delay_from_response(data):
+    """Odvojen od mreze radi selftesta. None ako odgovor nema ocekivana polja."""
+    try:
+        s = data["routes"][0]["summary"]
+        with_traffic = s["travelTimeInSeconds"]
+        no_traffic = s.get("noTrafficTravelTimeInSeconds")
+        if no_traffic is None:
+            return None
+        delay = max(0, with_traffic - no_traffic)
+        return round(delay / 60)
+    except (KeyError, IndexError, TypeError):
+        return None
+
+
+def collect_tt(corridors):
+    """{id: {'izlaz': min|None, 'ulaz': min|None}} za sve koridore."""
+    res = {}
+    for cid, dirs in corridors.items():
+        entry = {}
+        for smer in ("izlaz", "ulaz"):
+            pts = dirs.get(smer)
+            if not pts:
+                entry[smer] = None
+                continue
+            try:
+                entry[smer] = fetch_tt_delay(*pts)
+            except Exception as e:
+                print(f"Upozorenje: TomTom {cid}/{smer} nije uspeo: {e}")
+                entry[smer] = None
+        if entry.get("izlaz") is not None or entry.get("ulaz") is not None:
+            res[cid] = entry
+            print(f"TomTom: {cid} -> izlaz={entry['izlaz']} ulaz={entry['ulaz']} (zastoj u min)")
+    return res
 
 # --- Prijave vozaca preko Gasolina Google forme -----------------------------
 # Odvojeno od BorderAlarm-a iznad - ovo je NASA sopstvena forma, ne njihova.
@@ -419,12 +504,13 @@ def fetch_hu():
         return r.read().decode("utf-8", "replace")
 
 
-def build(text, hu_text=None, mk_text=None, ba_text=None, user_reports=None):
+def build(text, hu_text=None, mk_text=None, ba_text=None, user_reports=None, tt_data=None):
     blocks = split_blocks(text)
     hu = parse_hu(hu_text) if hu_text else {}
     mk = parse_mk(mk_text) if mk_text else {}
     ba = parse_ba(ba_text) if ba_text else {}
     user = user_reports or {}
+    tt = tt_data or {}
     crossings = {}
     for cid, kw in TARGETS.items():
         name, body = match_target(blocks, kw)
@@ -442,6 +528,8 @@ def build(text, hu_text=None, mk_text=None, ba_text=None, user_reports=None):
             entry["ba"] = ba[cid]
         if cid in user:
             entry["user"] = user[cid]
+        if cid in tt:
+            entry["tt"] = tt[cid]
         crossings[cid] = entry
     # bogorodica nije na AMSS mapi (MK-GR granica), ali MK podatak treba da udje
     if "bogorodica" in mk and "bogorodica" not in crossings:
@@ -458,6 +546,7 @@ def build(text, hu_text=None, mk_text=None, ba_text=None, user_reports=None):
         "source_mk": "AMSM (amsm.mk) - makedonska strana",
         "source_ba": "BorderAlarm (borderalarm.com) - prijave vozaca",
         "source_user": "Prijave vozaca (Gasolina forma, poslednjih 90 min)",
+        "source_tt": "TomTom saobracaj - zastoj voznje kroz koridor (donja granica, bez pasoske)",
         "crossings": crossings,
     }
 
@@ -715,6 +804,23 @@ def selftest():
         ok = False
     print(f"[{'OK ' if ba_p_ok else 'FAIL'}] presevo.ba: got={ba_p} exp={ba_p_exp}")
     ok = ok and ur_ok
+
+    # TomTom: parsiranje odgovora (fixture = struktura pravog API odgovora) + koridori
+    tt_fixture = {"routes": [{"summary": {
+        "travelTimeInSeconds": 2900, "noTrafficTravelTimeInSeconds": 200,
+        "lengthInMeters": 1300}}]}
+    tt_ok = tt_delay_from_response(tt_fixture) == 45  # (2900-200)/60 = 45
+    tt_ok = tt_ok and tt_delay_from_response({"routes": []}) is None
+    tt_ok = tt_ok and tt_delay_from_response({"routes": [{"summary": {"travelTimeInSeconds": 100}}]}) is None
+    corr = parse_tt_corridors()
+    # gradina mora da ima OBA smera (mapPB + mapPBin), presevo samo izlaz
+    if corr:
+        g = corr.get("gradina", {})
+        p = corr.get("presevo", {})
+        tt_ok = tt_ok and g.get("izlaz") is not None and g.get("ulaz") is not None
+        tt_ok = tt_ok and p.get("izlaz") is not None and p.get("ulaz") is None
+    print(f"[{'OK ' if tt_ok else 'FAIL'}] tomtom (parsiranje odgovora + koridora): {len(corr)} koridora")
+    ok = ok and tt_ok
     print("\nSELFTEST:", "PASS" if ok else "FAIL")
     return 0 if ok else 1
 
@@ -797,7 +903,12 @@ def main():
             user_reports = parse_user_reports(fetch_user_reports())
         except Exception as e:
             print("Upozorenje: Gasolina forma (CSV) nije dostupna:", e)
-    result = build(text, hu_text, mk_text, ba_text, user_reports)
+    tt_data = {}
+    if TT_ENABLED:
+        tt_data = collect_tt(parse_tt_corridors())
+    else:
+        print("TomTom: preskocen (nema TOMTOM_KEY u okruzenju)")
+    result = build(text, hu_text, mk_text, ba_text, user_reports, tt_data)
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
