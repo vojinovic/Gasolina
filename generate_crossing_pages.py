@@ -140,6 +140,8 @@ def parse_crossings(js_text):
         no_wait = bool(re.search(r'noWait:\s*true', chunk))
         pm = re.search(r'mapPB:\s*\[([\d.]+),\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)\]', chunk)
         map_pb = tuple(float(x) for x in pm.groups()) if pm else None
+        pim = re.search(r'mapPBin:\s*\[([\d.]+),\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)\]', chunk)
+        map_pb_in = tuple(float(x) for x in pim.groups()) if pim else None
         rm = re.search(r'mapRoute:\s*\["([^"]+)",\s*"([^"]+)"\]', chunk)
         map_route = (rm.group(1), rm.group(2)) if rm else None
 
@@ -150,7 +152,7 @@ def parse_crossings(js_text):
             "pair": field("pair", ""), "road": field("road", ""),
             "provider": field("provider", ""), "official": field("official", "#"),
             "feeds": feeds, "link_only": link_only, "no_wait": no_wait,
-            "map_pb": map_pb, "map_route": map_route,
+            "map_pb": map_pb, "map_pb_in": map_pb_in, "map_route": map_route,
         })
     return out
 
@@ -582,9 +584,15 @@ def build_hero(c, lang, root):
                 f'loading="lazy" title="{heading}" allowfullscreen></iframe></div>'
             )
 
-        # smer 1 (kako je kalibrisano, npr izlaz iz RS) + smer 2 (obrnute tacke)
+        # smer 1 (kalibrisan izlaz) + smer 2: poseban kalibrisan ULAZNI par ako
+        # postoji (mapPBin - trake na stanicama su jednosmerne pa obrnute tacke
+        # rutaju obilazno i oblacic sa vremenom ode van kadra), inace obrnute tacke
         parts.append(pb_iframe(o_lat, o_lon, d_lat, d_lon, t["map_h"].format(a=from_c, b=to_c)))
-        parts.append(pb_iframe(d_lat, d_lon, o_lat, o_lon, t["map_h"].format(a=to_c, b=from_c)))
+        if c.get("map_pb_in"):
+            i_olat, i_olon, i_dlat, i_dlon = c["map_pb_in"]
+            parts.append(pb_iframe(i_olat, i_olon, i_dlat, i_dlon, t["map_h"].format(a=to_c, b=from_c)))
+        else:
+            parts.append(pb_iframe(d_lat, d_lon, o_lat, o_lon, t["map_h"].format(a=to_c, b=from_c)))
         parts.append(f'<div style="font-size:11px;color:var(--faint);margin-top:6px">{t["map_note"]}</div>')
     elif c.get("map_route"):
         from_c2 = COUNTRY[lang].get(c["from"], c["from"])
