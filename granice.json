@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-23T15:33:01+00:00",
+  "scraped_at": "2026-07-23T17:36:25+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -19,14 +19,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 90,
-        "ulaz": 35
+        "izlaz": 55,
+        "ulaz": 120
       },
       "tt": {
-        "izlaz": 29,
-        "izlaz_kolona_m": 606,
+        "izlaz": 7,
+        "izlaz_kolona_m": 358,
         "ulaz": 2,
-        "ulaz_kolona_m": 97
+        "ulaz_kolona_m": 122
       }
     },
     "horgos": {
@@ -45,14 +45,14 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 40,
-        "ulaz": 390
+        "izlaz": 30,
+        "ulaz": 330
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
-        "ulaz": 15,
-        "ulaz_kolona_m": 959
+        "izlaz": 2,
+        "izlaz_kolona_m": 111,
+        "ulaz": 11,
+        "ulaz_kolona_m": 860
       }
     },
     "kelebija": {
@@ -77,8 +77,8 @@
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
-        "ulaz": 3,
-        "ulaz_kolona_m": 228
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "batrovci": {
@@ -93,14 +93,14 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 120,
-        "ulaz": 5
+        "izlaz": 90,
+        "ulaz": 120
       },
       "tt": {
-        "izlaz": 16,
-        "izlaz_kolona_m": 433,
-        "ulaz": 6,
-        "ulaz_kolona_m": 1200
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
+        "ulaz": 0,
+        "ulaz_kolona_m": 1587
       }
     },
     "presevo": {
@@ -120,8 +120,8 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 210,
-        "ulaz": 10
+        "izlaz": 10,
+        "ulaz": 15
       },
       "tt": {
         "izlaz": 0,
