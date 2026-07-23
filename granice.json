@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-23T09:34:06+00:00",
+  "scraped_at": "2026-07-23T09:48:18+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -21,6 +21,12 @@
       "ba": {
         "izlaz": 20,
         "ulaz": 90
+      },
+      "tt": {
+        "izlaz": null,
+        "izlaz_kolona_m": null,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "horgos": {
@@ -40,7 +46,13 @@
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 30
+        "ulaz": 240
+      },
+      "tt": {
+        "izlaz": 6,
+        "izlaz_kolona_m": 301,
+        "ulaz": 12,
+        "ulaz_kolona_m": 446
       }
     },
     "kelebija": {
@@ -61,6 +73,12 @@
       "ba": {
         "izlaz": 5,
         "ulaz": 15
+      },
+      "tt": {
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "batrovci": {
@@ -76,7 +94,7 @@
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
         "izlaz": 10,
-        "ulaz": 180
+        "ulaz": 15
       }
     },
     "presevo": {
@@ -96,7 +114,7 @@
         "opsto": 0
       },
       "ba": {
-        "izlaz": 240,
+        "izlaz": 60,
         "ulaz": 15
       }
     },
