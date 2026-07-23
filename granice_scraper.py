@@ -16,6 +16,8 @@ Izlaz: granice.json u rootu repoa.
 
 import os
 import re
+import time
+import urllib.error
 import csv
 import sys
 import json
@@ -84,16 +86,28 @@ def fetch_tt_delay(o_lat, o_lon, d_lat, d_lon):
     """Vrati (zastoj_min, kolona_m) kroz koridor, ili (None, None).
     Orbis Routing endpoint (nova TomTom platforma, my.tomtom.com kljucevi) -
     stari /routing/1/ vraca Forbidden za nove naloge. Parametri su Orbis
-    imena: traffic=live (ne true), routeType=fast (ne fastest)."""
+    imena: traffic=live (ne true), routeType=fast (ne fastest).
+    Retry sa pauzom: kljuc ima QPS limit 5, pa rafal zahteva vraca 429
+    (a ume i 403) - jedan neuspeh nije kraj, probamo jos dvaput."""
     url = (f"https://api.tomtom.com/maps/orbis/routing/calculateRoute/"
            f"{o_lat},{o_lon}:{d_lat},{d_lon}/json"
            f"?key={TT_KEY}&apiVersion=2&traffic=live&routeType=fast")
     req = urllib.request.Request(url, headers={
         "User-Agent": "Gasolina/1.0 (+https://gasolina.rs)"
     })
-    with urllib.request.urlopen(req, timeout=20) as r:
-        data = json.loads(r.read().decode("utf-8"))
-    return tt_delay_from_response(data)
+    last_err = None
+    for attempt, backoff in enumerate((0, 2, 5)):
+        if backoff:
+            time.sleep(backoff)
+        try:
+            with urllib.request.urlopen(req, timeout=20) as r:
+                data = json.loads(r.read().decode("utf-8"))
+            return tt_delay_from_response(data)
+        except urllib.error.HTTPError as e:
+            last_err = e
+            if e.code not in (429, 403):
+                raise  # prava greska, ne rate-limit - nema svrhe ponavljati
+    raise last_err
 
 
 def tt_delay_from_response(data):
@@ -129,6 +143,7 @@ def collect_tt(corridors):
             except Exception as e:
                 print(f"Upozorenje: TomTom {cid}/{smer} nije uspeo: {e}")
                 delay, kolona = None, None
+            time.sleep(1)  # QPS limit 5 na kljucu - ne pucaj u rafalu
             entry[smer] = delay
             entry[f"{smer}_kolona_m"] = kolona
         if entry.get("izlaz") is not None or entry.get("ulaz") is not None:
