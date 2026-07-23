@@ -24,6 +24,8 @@ jobs:
 
       - name: Scrape border wait times
         run: python granice_scraper.py
+        env:
+          TOMTOM_KEY: ${{ secrets.TOMTOM_KEY }}
 
       - name: Commit if changed
         run: |
