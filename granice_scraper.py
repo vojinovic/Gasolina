@@ -81,10 +81,13 @@ def parse_tt_corridors(js_path=BORDERS_DATA_PATH):
 
 
 def fetch_tt_delay(o_lat, o_lon, d_lat, d_lon):
-    """Vrati zastoj u minutima kroz koridor (sa saobracajem vs bez), ili None."""
-    url = (f"https://api.tomtom.com/routing/1/calculateRoute/"
+    """Vrati (zastoj_min, kolona_m) kroz koridor, ili (None, None).
+    Orbis Routing endpoint (nova TomTom platforma, my.tomtom.com kljucevi) -
+    stari /routing/1/ vraca Forbidden za nove naloge. Parametri su Orbis
+    imena: traffic=live (ne true), routeType=fast (ne fastest)."""
+    url = (f"https://api.tomtom.com/maps/orbis/routing/calculateRoute/"
            f"{o_lat},{o_lon}:{d_lat},{d_lon}/json"
-           f"?key={TT_KEY}&traffic=true&computeTravelTimeFor=all&routeType=fastest")
+           f"?key={TT_KEY}&apiVersion=2&traffic=live&routeType=fast")
     req = urllib.request.Request(url, headers={
         "User-Agent": "Gasolina/1.0 (+https://gasolina.rs)"
     })
@@ -94,21 +97,24 @@ def fetch_tt_delay(o_lat, o_lon, d_lat, d_lon):
 
 
 def tt_delay_from_response(data):
-    """Odvojen od mreze radi selftesta. None ako odgovor nema ocekivana polja."""
+    """Odvojen od mreze radi selftesta. (zastoj_min, kolona_m) ili (None, None).
+    Orbis summary daje trafficDelayInSeconds direktno + trafficLengthInMeters
+    (duzina zakrcene deonice = priblizna duzina kolone, podatak koji nijedan
+    drugi izvor nema)."""
     try:
         s = data["routes"][0]["summary"]
-        with_traffic = s["travelTimeInSeconds"]
-        no_traffic = s.get("noTrafficTravelTimeInSeconds")
-        if no_traffic is None:
-            return None
-        delay = max(0, with_traffic - no_traffic)
-        return round(delay / 60)
+        delay = s.get("trafficDelayInSeconds")
+        if delay is None:
+            return None, None
+        kolona = s.get("trafficLengthInMeters")
+        return round(max(0, delay) / 60), kolona
     except (KeyError, IndexError, TypeError):
-        return None
+        return None, None
 
 
 def collect_tt(corridors):
-    """{id: {'izlaz': min|None, 'ulaz': min|None}} za sve koridore."""
+    """{id: {'izlaz': min|None, 'ulaz': min|None, 'izlaz_kolona_m': m|None,
+    'ulaz_kolona_m': m|None}} za sve koridore."""
     res = {}
     for cid, dirs in corridors.items():
         entry = {}
@@ -116,15 +122,19 @@ def collect_tt(corridors):
             pts = dirs.get(smer)
             if not pts:
                 entry[smer] = None
+                entry[f"{smer}_kolona_m"] = None
                 continue
             try:
-                entry[smer] = fetch_tt_delay(*pts)
+                delay, kolona = fetch_tt_delay(*pts)
             except Exception as e:
                 print(f"Upozorenje: TomTom {cid}/{smer} nije uspeo: {e}")
-                entry[smer] = None
+                delay, kolona = None, None
+            entry[smer] = delay
+            entry[f"{smer}_kolona_m"] = kolona
         if entry.get("izlaz") is not None or entry.get("ulaz") is not None:
             res[cid] = entry
-            print(f"TomTom: {cid} -> izlaz={entry['izlaz']} ulaz={entry['ulaz']} (zastoj u min)")
+            print(f"TomTom: {cid} -> izlaz={entry['izlaz']}min/kolona {entry['izlaz_kolona_m']}m "
+                  f"ulaz={entry['ulaz']}min/kolona {entry['ulaz_kolona_m']}m")
     return res
 
 # --- Prijave vozaca preko Gasolina Google forme -----------------------------
@@ -805,13 +815,14 @@ def selftest():
     print(f"[{'OK ' if ba_p_ok else 'FAIL'}] presevo.ba: got={ba_p} exp={ba_p_exp}")
     ok = ok and ur_ok
 
-    # TomTom: parsiranje odgovora (fixture = struktura pravog API odgovora) + koridori
-    tt_fixture = {"routes": [{"summary": {
-        "travelTimeInSeconds": 2900, "noTrafficTravelTimeInSeconds": 200,
-        "lengthInMeters": 1300}}]}
-    tt_ok = tt_delay_from_response(tt_fixture) == 45  # (2900-200)/60 = 45
-    tt_ok = tt_ok and tt_delay_from_response({"routes": []}) is None
-    tt_ok = tt_ok and tt_delay_from_response({"routes": [{"summary": {"travelTimeInSeconds": 100}}]}) is None
+    # TomTom: parsiranje Orbis odgovora (fixture = struktura PRAVOG odgovora
+    # sa Gradine, skraceno) + koridori
+    tt_fixture = {"formatVersion": "0.0.12", "routes": [{"summary": {
+        "lengthInMeters": 1226, "travelTimeInSeconds": 1341,
+        "trafficDelayInSeconds": 1119, "trafficLengthInMeters": 717}}]}
+    tt_ok = tt_delay_from_response(tt_fixture) == (19, 717)  # 1119/60 = 18.65 -> 19
+    tt_ok = tt_ok and tt_delay_from_response({"routes": []}) == (None, None)
+    tt_ok = tt_ok and tt_delay_from_response({"routes": [{"summary": {"travelTimeInSeconds": 100}}]}) == (None, None)
     corr = parse_tt_corridors()
     # gradina mora da ima OBA smera (mapPB + mapPBin), presevo samo izlaz
     if corr:
