@@ -255,12 +255,17 @@
         const p = (c && c.found && c.putnicka) ? c.putnicka[dirKey] : null;
         if (p != null) cands.push({v: p, src: null});
         if (c && c.hu) { const v = c.hu[dirKey]; if (v != null && v > 0) cands.push({v, src: "Hungarian side"}); }
-        if (c && c.mk) {
+        if (c && c.tt && (c.tt.izlaz != null || c.tt.ulaz != null)) {
+        const km = (m) => m ? ` (queue ~${m}m)` : "";
+        srcs.push(`🗺️ <b>Traffic map:</b> exit ${mfmt(c.tt.izlaz)}${km(c.tt.izlaz_kolona_m)} · entry ${mfmt(c.tt.ulaz)}${km(c.tt.ulaz_kolona_m)} · excludes passport control`);
+      }
+      if (c && c.mk) {
           const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
           if (v != null && v > 0) cands.push({v, src: "North Macedonian side"});
           if (c.mk.opsto != null && c.mk.opsto > 0) cands.push({v: c.mk.opsto, src: "North Macedonian side"});
         }
         if (c && c.ba) { const v = c.ba[dirKey]; if (v != null && v > 0) cands.push({v, src: "Driver reports (BorderAlarm)"}); }
+        if (c && c.tt) { const v = c.tt[dirKey]; if (v != null && v > 0) cands.push({v, src: "Traffic map"}); }
         if (!cands.length) return {v: null, src: null};
         let best = cands[0];
         cands.forEach(x => { if (best.v == null || (x.v != null && x.v > best.v)) best = x; });
