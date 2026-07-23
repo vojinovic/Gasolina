@@ -22,7 +22,7 @@ window.BORDERS = (function () {
 
   const CROSSINGS = [
     {
-      id: "gradina", mapPB: [43.0003029, 22.8241663, 42.9957489, 22.8377659], mapRoute: ["Granični prelaz Gradina", "ГКПП Калотина"], coords: [43.0125, 22.8231], name: "Gradina", from: "RS", to: "BG",
+      id: "gradina", mapPBin: [42.993661, 22.8438965, 43.0003028, 22.8248447], mapPB: [43.0003029, 22.8241663, 42.9957489, 22.8377659], mapRoute: ["Granični prelaz Gradina", "ГКПП Калотина"], coords: [43.0125, 22.8231], name: "Gradina", from: "RS", to: "BG",
       pair: "Kalotina (BG)", road: "E80", provider: "AMSS",
       official: "https://kamere.amss.org.rs/",
       feeds: [
@@ -32,7 +32,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
-      id: "horgos", mapPB: [46.1662695, 19.9615223, 46.1834449, 19.9880802], mapRoute: ["Granični prelaz Horgoš", "Röszke határátkelőhely"], coords: [46.1755, 19.9772], name: "Horgos", from: "RS", to: "HU",
+      id: "horgos", mapPBin: [46.1827699, 19.9869952, 46.1696718, 19.9712071], mapPB: [46.1662695, 19.9615223, 46.1834449, 19.9880802], mapRoute: ["Granični prelaz Horgoš", "Röszke határátkelőhely"], coords: [46.1755, 19.9772], name: "Horgos", from: "RS", to: "HU",
       pair: "Roszke (HU)", road: "E75", provider: "AMSS",
       official: "https://kamere.amss.org.rs/",
       feeds: [
@@ -42,7 +42,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
-      id: "kelebija", mapPB: [46.1642685, 19.5626338, 46.1704754, 19.5563793], mapRoute: ["Granični prelaz Kelebija", "Tompa határátkelőhely"], coords: [46.191, 19.541], name: "Kelebija", from: "RS", to: "HU",
+      id: "kelebija", mapPBin: [46.1693418, 19.5574239, 46.1670921, 19.5612977], mapPB: [46.1642685, 19.5626338, 46.1704754, 19.5563793], mapRoute: ["Granični prelaz Kelebija", "Tompa határátkelőhely"], coords: [46.191, 19.541], name: "Kelebija", from: "RS", to: "HU",
       pair: "Tompa (HU)", road: "M17/E75", provider: "MUP",
       official: "https://kamere.amss.org.rs/",
       feeds: [
@@ -52,7 +52,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
-      id: "batrovci", mapPB: [45.0455054, 19.1216508, 45.048986, 19.0847306], mapRoute: ["Granični prelaz Batrovci", "Granični prijelaz Bajakovo"], coords: [45.0492, 19.0989], name: "Batrovci", from: "RS", to: "HR",
+      id: "batrovci", mapPBin: [45.0487588, 19.0878578, 45.0453227, 19.1216674], mapPB: [45.0455054, 19.1216508, 45.048986, 19.0847306], mapRoute: ["Granični prelaz Batrovci", "Granični prijelaz Bajakovo"], coords: [45.0492, 19.0989], name: "Batrovci", from: "RS", to: "HR",
       pair: "Bajakovo (HR)", road: "E70", provider: "AMSS",
       official: "https://kamere.amss.org.rs/",
       feeds: [
