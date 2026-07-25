@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-25T18:28:30+00:00",
+  "scraped_at": "2026-07-25T19:47:57+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -19,12 +19,12 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 150,
-        "ulaz": 55
+        "izlaz": 90,
+        "ulaz": 45
       },
       "tt": {
-        "izlaz": 39,
-        "izlaz_kolona_m": 689,
+        "izlaz": 21,
+        "izlaz_kolona_m": 382,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -45,14 +45,14 @@
         "izlaz": 60
       },
       "ba": {
-        "izlaz": 120,
-        "ulaz": 45
+        "izlaz": 60,
+        "ulaz": 30
       },
       "tt": {
-        "izlaz": 2,
-        "izlaz_kolona_m": 127,
-        "ulaz": 25,
-        "ulaz_kolona_m": 1338
+        "izlaz": 7,
+        "izlaz_kolona_m": 774,
+        "ulaz": 23,
+        "ulaz_kolona_m": 619
       }
     },
     "kelebija": {
@@ -71,8 +71,8 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 25
+        "izlaz": 15,
+        "ulaz": 30
       },
       "tt": {
         "izlaz": 0,
@@ -93,14 +93,14 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 270,
-        "ulaz": 120
+        "izlaz": 90,
+        "ulaz": 90
       },
       "tt": {
-        "izlaz": 5,
-        "izlaz_kolona_m": 1414,
-        "ulaz": 32,
-        "ulaz_kolona_m": 1200
+        "izlaz": 8,
+        "izlaz_kolona_m": 563,
+        "ulaz": 16,
+        "ulaz_kolona_m": 981
       }
     },
     "presevo": {
@@ -120,12 +120,12 @@
         "opsto": 0
       },
       "ba": {
-        "izlaz": 40,
-        "ulaz": 40
+        "izlaz": 90,
+        "ulaz": 35
       },
       "tt": {
-        "izlaz": 13,
-        "izlaz_kolona_m": 703,
+        "izlaz": 7,
+        "izlaz_kolona_m": 231,
         "ulaz": null,
         "ulaz_kolona_m": null
       }
