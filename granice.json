@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-25T03:50:10+00:00",
+  "scraped_at": "2026-07-25T06:23:00+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -19,14 +19,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 60,
+        "izlaz": 50,
         "ulaz": 5
       },
       "tt": {
-        "izlaz": 19,
-        "izlaz_kolona_m": 340,
-        "ulaz": 0,
-        "ulaz_kolona_m": 0
+        "izlaz": 24,
+        "izlaz_kolona_m": 689,
+        "ulaz": 6,
+        "ulaz_kolona_m": 223
       }
     },
     "horgos": {
@@ -46,13 +46,13 @@
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 360
+        "ulaz": 270
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
-        "ulaz": 23,
-        "ulaz_kolona_m": 966
+        "izlaz": 8,
+        "izlaz_kolona_m": 148,
+        "ulaz": 20,
+        "ulaz_kolona_m": 796
       }
     },
     "kelebija": {
@@ -71,14 +71,14 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 30
+        "izlaz": 50,
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
-        "ulaz": 0,
-        "ulaz_kolona_m": 0
+        "ulaz": 5,
+        "ulaz_kolona_m": 214
       }
     },
     "batrovci": {
@@ -94,13 +94,13 @@
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
         "izlaz": 120,
-        "ulaz": 390
+        "ulaz": 300
       },
       "tt": {
-        "izlaz": 3,
-        "izlaz_kolona_m": 407,
-        "ulaz": 14,
-        "ulaz_kolona_m": 1994
+        "izlaz": 8,
+        "izlaz_kolona_m": 719,
+        "ulaz": 13,
+        "ulaz_kolona_m": 1288
       }
     },
     "presevo": {
@@ -115,7 +115,7 @@
       "found": true,
       "amss_name": "PREŠEVO Srbija - Severna Makedonija AP E 75 M1",
       "mk": {
-        "vlez": 40,
+        "vlez": 30,
         "izlez": null,
         "opsto": null
       },
@@ -136,7 +136,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 60,
+        "izlaz": 30,
         "ulaz": 30
       },
       "found": true,
