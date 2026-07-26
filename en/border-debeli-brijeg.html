@@ -251,10 +251,6 @@
         const p = (c && c.found && c.putnicka) ? c.putnicka[dirKey] : null;
         if (p != null) cands.push({v: p, src: null});
         if (c && c.hu) { const v = c.hu[dirKey]; if (v != null && v > 0) cands.push({v, src: "Hungarian side"}); }
-        if (c && c.tt && (c.tt.izlaz != null || c.tt.ulaz != null)) {
-        const km = (m) => m ? ` (queue ~${m}m)` : "";
-        srcs.push(`🗺️ <b>Traffic map:</b> exit ${mfmt(c.tt.izlaz)}${km(c.tt.izlaz_kolona_m)} · entry ${mfmt(c.tt.ulaz)}${km(c.tt.ulaz_kolona_m)} · excludes passport control`);
-      }
       if (c && c.mk) {
           const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
           if (v != null && v > 0) cands.push({v, src: "North Macedonian side"});
@@ -283,6 +279,10 @@
         const mkTxt = (c.mk.opsto != null) ? ("~" + c.mk.opsto + " min")
           : ["vlez: " + mfmt(c.mk.vlez), "izlez: " + mfmt(c.mk.izlez)].join(" \u00b7 ");
         srcs.push(`\uD83C\uDDF2\uD83C\uDDF0 <b>North Macedonian side:</b> ${mkTxt}`);
+      }
+      if (c && c.tt && (c.tt.izlaz != null || c.tt.ulaz != null)) {
+      const km = (m) => m ? ` (queue ~${m}m)` : "";
+      srcs.push(`🗺️ <b>Traffic map:</b> exit ${mfmt(c.tt.izlaz)}${km(c.tt.izlaz_kolona_m)} · entry ${mfmt(c.tt.ulaz)}${km(c.tt.ulaz_kolona_m)} · excludes passport control`);
       }
       const sbox = document.getElementById("sources");
       if (sbox && srcs.length) {
