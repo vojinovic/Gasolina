@@ -74,7 +74,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
-      id: "bogorodica", mapPBin: [41.1276257, 22.5516536, 41.134253, 22.5490008], mapPB: [41.134253, 22.5490008, 41.1276257, 22.5516536], mapRoute: ["Граничен премин Богородица", "Border Crossing Point of Evzoni"], coords: [41.1264, 22.5092], name: "Bogorodica", from: "MK", to: "GR",
+      id: "bogorodica", pbId: ["", "0x135626c88b4d3907%3A0xc81c83269be4c289"], pbIdIn: ["0x135626c88b4d3907%3A0xc81c83269be4c289", "0x135626c9f9dda211%3A0x5d10bb96bd3d13f7"], mapPBin: [41.1276257, 22.5516536, 41.134253, 22.5490008], mapPB: [41.135969, 22.5464805, 41.1276257, 22.5516536], mapRoute: ["Граничен премин Богородица", "Border Crossing Point of Evzoni"], coords: [41.1264, 22.5092], name: "Bogorodica", from: "MK", to: "GR",
       pair: "Evzoni (GR)", road: "E75", provider: "roads.org.mk",
       official: "https://alltrafficcams.com/live/border-crossings/north-macedonia/greece/bogorodica-evzonoi/",
       noWait: true,
