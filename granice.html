@@ -221,14 +221,39 @@
   .nowait{font-size:12px;color:var(--faint);line-height:1.5;margin-top:10px;padding:10px 12px;border:1px dashed var(--line);border-radius:10px}
   .cfoot-links{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
 
-  .share-row{display:flex;align-items:center;gap:6px;padding:0 14px 14px;flex-wrap:wrap}
-  .share-label{font-size:11px;color:var(--faint);font-family:"JetBrains Mono",monospace;margin-right:2px}
+  /* "Svi izvori": pojedinacni izvori su sklopljeni, vidljive ostaju samo wait
+     celije i duzina kolone. Summary preuzima izgled .faq summary (bez markera,
+     +/- prefiks), ali u .hustrip tipografiji jer stoji u nizu tih redova. */
+  .srcbox{margin-top:10px;border-top:1px dashed var(--line)}
+  .srcbox > summary{
+    font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--dim);
+    cursor:pointer;list-style:none;padding:10px 0 9px;
+  }
+  .srcbox > summary::-webkit-details-marker{display:none}
+  .srcbox > summary::before{content:"+";color:var(--fuel);font-weight:700;margin-right:8px}
+  .srcbox[open] > summary::before{content:"\2212"}
+  .srcbox > summary:hover{color:var(--text)}
+  .srcbox .cfoot{margin-top:2px}
+
+  /* Cetiri dugmeta + labela moraju u jedan red na sirini kartice: stegnut je
+     gap i horizontalni padding dugmeta. Font ostaje 12px, a vertikalni padding
+     9px drzi visinu na 35px - dodirna meta se ne sme smanjivati. */
+  .share-row{display:flex;align-items:center;gap:4px;padding:0 12px 14px;flex-wrap:wrap}
+  .share-label{font-size:11px;color:var(--faint);font-family:"JetBrains Mono",monospace;margin-right:0}
   .share-btn{
     font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--dim);
     background:var(--panel-2);border:1px solid var(--line);border-radius:7px;
-    padding:9px 13px;cursor:pointer;text-decoration:none;transition:color .15s ease, border-color .15s ease;
+    padding:9px 5px;cursor:pointer;text-decoration:none;white-space:nowrap;
+    transition:color .15s ease, border-color .15s ease;
   }
   .share-btn:hover{color:var(--text);border-color:var(--fuel)}
+  /* Na uskim telefonima (kartica ~324px) i stegnuti red je za dlaku preduzak,
+     pa tu ide jos malo sa gap-a i bocnog padinga - font i visina dugmeta
+     ostaju isti, dodirna meta se ne dira. */
+  @media (max-width:400px){
+    .share-row{gap:3px;padding-left:10px;padding-right:10px}
+    .share-btn{padding:9px 4px}
+  }
   .wbar{height:4px;border-radius:3px;background:var(--panel-2);margin-top:8px;overflow:hidden}
   .wbar i{display:block;height:100%;border-radius:3px}
 
@@ -410,6 +435,62 @@ function mkStrip(c){
   return `<div class="hustrip">\uD83C\uDDF2\uD83C\uDDF0 Makedonska strana${gp}: ${body}</div>`;
 }
 
+/* Duzina kolone je jedini MEREN podatak koji imamo (TomTom je stvarno izmeri na
+   putu, za razliku od procena u minutima), pa jedina ostaje vidljiva pored wait
+   celija - potvrdjuje krupne brojke iznad. Prag otvara red: dovoljno je da ga
+   JEDAN smer predje, pa se prikazuju oba (kratka kolona u drugom smeru je tu
+   korisna - pokazuje da guzva nije obostrana). Izostavlja se samo smer za koji
+   nema merenja. */
+const QUEUE_MIN_M = 300;
+function queueRow(c){
+  if(!c.tt) return "";
+  const iz = c.tt.izlaz_kolona_m, ul = c.tt.ulaz_kolona_m;
+  if(!(iz >= QUEUE_MIN_M || ul >= QUEUE_MIN_M)) return "";
+  const parts = [];
+  if(iz != null) parts.push(`izlaz <b>~${iz} m</b>`);
+  if(ul != null) parts.push(`ulaz <b>~${ul} m</b>`);
+  return `<div class="hustrip">\uD83D\uDDFA\uFE0F Kolona: ${parts.join(" &middot; ")}</div>`;
+}
+
+/* Jedan smer u redu "Mapa saobracaja". Kad je zastoj mali a kolona duga,
+   "Bez guzve (kolona ~725m)" je protivrecno - vozila se krecu, ali red postoji;
+   u tom slucaju se pise sta se stvarno vidi. */
+function ttDir(min, kolona, prefix){
+  if(min!=null && min<=30 && kolona>=QUEUE_MIN_M){
+    return `<b style="color:var(--warn)">protocno, ali kolona ~${kolona} m</b>`;
+  }
+  return `${prefix}${cVal(min)}${kolona ? ` (kolona ~${kolona}m)` : ``}`;
+}
+function ttStrip(c){
+  if(!c.tt || (c.tt.izlaz==null && c.tt.ulaz==null)) return "";
+  return `<div class="hustrip">\uD83D\uDDFA\uFE0F Mapa saobracaja: izlaz ${ttDir(c.tt.izlaz, c.tt.izlaz_kolona_m, "zastoj ")} &middot; ulaz ${ttDir(c.tt.ulaz, c.tt.ulaz_kolona_m, "")} <span class="basrc">&middot; bez pasoske kontrole</span></div>`;
+}
+
+/* Svi pojedinacni izvori idu u sklopljen blok: ista brojka se ranije ponavljala
+   i do pet puta ispod thumba. Vidljivo ostaje samo ono sto se ne ponavlja -
+   wait celije i duzina kolone. */
+function sourcesDetails(c){
+  const rows = [
+    c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Madjarska strana: ulaz ${cVal(c.hu.ulaz)} &middot; izlaz ${cVal(c.hu.izlaz)}</div>` : '',
+    mkStrip(c),
+    baStrip(c),
+    ttStrip(c),
+    hereStrip(c),
+  ].join("");
+  return `
+    <details class="srcbox">
+      <summary>Svi izvori</summary>
+      ${rows}
+      <div class="cfoot">
+        <div class="src">${c.noCamera ? `Izvor: mapa saobracaja / granicna policija RS` : (c.noWait ? `Kamera: ${c.provider}` : `Izvor: Uprava granicne policije RS<br>Kamera: ${c.provider}`)}</div>
+        <div class="cfoot-links">
+          ${c.noCamera ? `` : `<a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>`}
+          ${c.official2 ? `<a class="link" href="${c.official2.url}" target="_blank" rel="noopener">${c.official2.label}</a>` : ''}
+        </div>
+      </div>
+    </details>`;
+}
+
 /* najgori dostupan podatak za smer, iz svih izvora (AMSS default 30 ne maskira prave brojke) */
 function effective(c, dirKey){
   const cands = [];
@@ -505,7 +586,7 @@ function cardHTML(c){
     // Odluka: "ni tamo ni ovamo" raspored (kamera ovde, mapa tamo) niko ne provali.
     paneInner = `<span class="badge">${c.provider}</span>
        <img class="thumb" src="thumbs/${c.id}.jpg" alt="Poslednja slika sa kamere ${c.name}" loading="lazy"
-            onerror="this.remove(); this.closest('.pane').querySelector('.poster').classList.add('no-thumb')">
+            onerror="this.closest('.pane').querySelector('.poster').classList.add('no-thumb'); this.remove()">
        <a class="poster" href="granica-${c.id}.html?play=1" aria-label="Otvori stranicu prelaza ${c.name} sa kamerom uzivo"
           onclick="track('thumb_klik', {prelaz:'${c.id}'})">
          <span class="play"><svg width="20" height="20" viewBox="0 0 24 24" fill="var(--fuel)"><path d="M8 5v14l11-7z"/></svg></span>
@@ -555,24 +636,15 @@ function cardHTML(c){
     <div class="pane">${paneInner}${waitChips(c)}</div>
     ${tabs}
 
-    ${c.noWait ? ((c.mk||c.here) ? (mkStrip(c) + hereStrip(c)) : `<div class="nowait">Granica ${c.from}\u2013${c.to}. Vreme cekanja se ovde ne prati; iskoristi kameru iznad.</div>`) : `
+    ${c.noWait
+      ? ((c.mk||c.here) ? `` : `<div class="nowait">Granica ${c.from}\u2013${c.to}. Vreme cekanja se ovde ne prati; iskoristi kameru iznad.</div>`)
+      : `
     <div class="wait">
       ${waitCell("Ulaz u Srbiju","ulaz",c)}
       ${waitCell("Izlaz iz Srbije","izlaz",c)}
-    </div>
-    ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Madjarska strana: ulaz ${cVal(c.hu.ulaz)} &middot; izlaz ${cVal(c.hu.izlaz)}</div>` : ''}
-    ${mkStrip(c)}
-    ${baStrip(c)}
-    ${c.tt && (c.tt.izlaz!=null || c.tt.ulaz!=null) ? `<div class="hustrip">\uD83D\uDDFA\uFE0F Mapa saobracaja: izlaz zastoj ${cVal(c.tt.izlaz)}${c.tt.izlaz_kolona_m ? ` (kolona ~${c.tt.izlaz_kolona_m}m)` : ``} &middot; ulaz ${cVal(c.tt.ulaz)}${c.tt.ulaz_kolona_m ? ` (kolona ~${c.tt.ulaz_kolona_m}m)` : ``} <span class="basrc">&middot; bez pasoske kontrole</span></div>` : ``}
-    ${hereStrip(c)}`}
-
-    <div class="cfoot">
-      <div class="src">${c.noCamera ? `Izvor: mapa saobracaja / granicna policija RS` : (c.noWait ? `Kamera: ${c.provider}` : `Izvor: Uprava granicne policije RS<br>Kamera: ${c.provider}`)}</div>
-      <div class="cfoot-links">
-        ${c.noCamera ? `` : `<a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>`}
-        ${c.official2 ? `<a class="link" href="${c.official2.url}" target="_blank" rel="noopener">${c.official2.label}</a>` : ''}
-      </div>
-    </div>
+    </div>`}
+    ${queueRow(c)}
+    ${sourcesDetails(c)}
     <div class="share-row">
       <span class="share-label">Podeli:</span>
       <button class="share-btn" type="button" onclick="doShareBorder('viber','${c.id}')">Viber</button>
