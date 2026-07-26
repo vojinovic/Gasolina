@@ -513,6 +513,10 @@ function cardHTML(c){
        </a>`;
   } else if(noCamera){
     paneInner = `<span class="badge">samo podaci</span>
+       <a class="poster" href="granica-${c.id}.html" aria-label="Otvori stranicu prelaza ${c.name}"
+          onclick="track('thumb_klik', {prelaz:'${c.id}'})" style="position:static;background:none">
+         <span class="ptext">Mapa saobraćaja + čekanja</span>
+       </a>
        <div class="pmsg" style="display:flex">
          <p>Za ovaj prelaz ne postoji zvanicna kamera. Prati vreme cekanja ispod.</p>
        </div>`;
@@ -564,9 +568,9 @@ function cardHTML(c){
     ${hereStrip(c)}`}
 
     <div class="cfoot">
-      <div class="src">${c.noWait ? `Kamera: ${c.provider}` : `Izvor: Uprava granicne policije RS<br>Kamera: ${c.provider}`}</div>
+      <div class="src">${c.noCamera ? `Izvor: mapa saobracaja / granicna policija RS` : (c.noWait ? `Kamera: ${c.provider}` : `Izvor: Uprava granicne policije RS<br>Kamera: ${c.provider}`)}</div>
       <div class="cfoot-links">
-        <a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>
+        ${c.noCamera ? `` : `<a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>`}
         ${c.official2 ? `<a class="link" href="${c.official2.url}" target="_blank" rel="noopener">${c.official2.label}</a>` : ''}
       </div>
     </div>
