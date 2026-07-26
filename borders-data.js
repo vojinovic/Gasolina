@@ -105,6 +105,23 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
+      // Alternativa Presevu kad se tamo stvore kolone. Nema kamere (nije ni na MUP
+      // ni na AMSS spisku, provereno 26.07.2026) - stranica radi na mapi saobracaja.
+      // Koridor: 42.314123,21.886043 (RS, ~300 m pre rampe iz pravca Vranja) ->
+      // 42.311669,21.878821 (MK, iza policijske stanice Pelince). Jedan kolovoz,
+      // pa mapPBin nije potreban - generator sam okrene tacke.
+      id: "prohor-pcinjski",
+      mapPB: [42.314123, 21.886043, 42.311669, 21.878821],
+      mapRoute: ["Granični prelaz Prohor Pčinjski", "Граничен премин Пелинце"],
+      coords: [42.3132, 21.8824], name: "Prohor Pcinjski", from: "RS", to: "MK",
+      pair: "Pelince (MK)", road: "233 / R1207", provider: "",
+      official: "https://www.mup.gov.rs/",
+      feeds: [],
+      intro: "Prohor Pčinjski je mali prelaz ka Severnoj Makedoniji, uz istoimeni manastir, i najčešća alternativa Preševu kad se tamo stvore kolone. Otvoren je 24 časa, ali samo za putnička i manja kombi vozila. Kamere nema — Gasolina ovde prikazuje procenu iz mape saobraćaja. Makedonska kontrola je oko kilometar južno od granice, pa računajte na dva zaustavljanja.",
+      introEn: "Prohor Pcinjski is a small crossing into North Macedonia next to the monastery of the same name, and the usual alternative to Presevo when queues build up there. Open 24 hours, but for cars and small vans only. There is no camera — Gasolina shows a traffic-map estimate instead. Macedonian control sits about a kilometre south of the border, so expect two stops.",
+      wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
+    },
+    {
       id: "gostun", mapRoute: ["Granični prelaz Gostun", "Granični prelaz Dobrakovo"], coords: [43.3, 19.66], name: "Gostun", from: "RS", to: "ME",
       pair: "Dobrakovo (MNE)", road: "E763", provider: "MUP Crne Gore",
       official: "http://kamere.mup.gov.me/kamere.php?kamere=Dobrakovo&lang=me",
