@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-26T12:38:35+00:00",
+  "scraped_at": "2026-07-26T12:39:48+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -49,7 +49,7 @@
         "ulaz": 270
       },
       "tt": {
-        "izlaz": 20,
+        "izlaz": 22,
         "izlaz_kolona_m": 1893,
         "ulaz": 7,
         "ulaz_kolona_m": 136
@@ -99,8 +99,8 @@
       "tt": {
         "izlaz": 14,
         "izlaz_kolona_m": 1132,
-        "ulaz": 23,
-        "ulaz_kolona_m": 762
+        "ulaz": 24,
+        "ulaz_kolona_m": 775
       }
     },
     "presevo": {
