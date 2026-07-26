@@ -969,6 +969,20 @@
       const spanDays = Math.max(1, Math.round((pool[pool.length - 1].ts - pool[0].ts) / (24 * 60 * 60 * 1000)));
       return { min, max, spanDays };
     }
+    // Kad izvor za neku zemlju pukne (HR: cijenegoriva.hr DNS mrtav, BiH: goriva.ba
+    // promenio raspored), scraper zadrzi POSLEDNJE poznate cene i stari datum.
+    // Bez oznake to izgleda kao svez podatak - zato se posle 7 dana jasno kaze
+    // da cena mozda nije aktuelna, a posle 30 se dodatno istakne.
+    function staleNote(updated){
+      if(!updated) return "Ažurirano: -";
+      const d = new Date(String(updated).replace(" UTC","Z").replace(" ","T"));
+      if(isNaN(d)) return "Ažurirano: " + updated;
+      const dana = Math.floor((Date.now() - d.getTime()) / 86400000);
+      if(dana < 7) return "Ažurirano: " + updated;
+      const boja = dana >= 30 ? "var(--bad, #d64e44)" : "var(--fuel)";
+      return `Ažurirano: ${updated}<br><span style="color:${boja}">⚠ pre ${dana} dana — izvor trenutno nedostupan, cena možda nije aktuelna</span>`;
+    }
+
     function rangeHint(c, fuelKey) {
       const r = priceRange(c.name, fuelKey);
       if (!r) return '';
@@ -1000,7 +1014,7 @@
             <button class="share-btn" type="button" onclick="doShare('facebook','${c.name}')">Facebook</button>
             <button class="share-btn" type="button" onclick="doShare('copy','${c.name}', this)">Kopiraj</button>
           </div>
-          <div class="updated">Ažurirano: ${c.updated || '-'}</div>`;
+          <div class="updated">${staleNote(c.updated)}</div>`;
         cards.appendChild(card);
       });
     }
