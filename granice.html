@@ -424,9 +424,13 @@ function effective(c, dirKey){
   if(c.ba){ const v=c.ba[dirKey]; if(v!=null && v>0) cands.push({v, src:"prijave vozaca"}); }
   // TomTom zastoj voznje - DONJA granica (ne vidi kolonu koja stoji na pasoskoj)
   if(c.tt){ const v=c.tt[dirKey]; if(v!=null && v>0) cands.push({v, src:"mapa saobracaja"}); }
-  if(!cands.length) return {v:null, src:null};
+  if(!cands.length) return {v:null, src:null, samAmss:false};
   let best = cands[0];
   cands.forEach(x=>{ if(best.v==null || (x.v!=null && x.v>best.v)) best=x; });
+  // AMSS-ovih 30 je njihova PODRAZUMEVANA vrednost ("bez zadrzavanja"), ne merenje.
+  // Kad je to jedini kandidat, "Bez guzve" je obecanje koje podaci ne nose - zato
+  // se uz brojku ispisuje odakle dolazi, da citalac zna koliko da joj veruje.
+  best.samAmss = (cands.length === 1 && best.src === null && best.v === 30);
   return best;
 }
 
@@ -466,7 +470,8 @@ function waitCell(label,dirKey,c){
   const s = waitStatus(eff.v);
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
   const big = (eff.v==null) ? '-' : (eff.v<=30 ? '<span class="wok">Bez guzve</span>' : fmtMin(eff.v));
-  const srcTag = (eff.src && eff.v>30) ? `<div class="wsrc">izvor: ${eff.src}</div>` : `<div class="wcat">putnicka vozila</div>`;
+  const srcTag = (eff.src && eff.v>30) ? `<div class="wsrc">izvor: ${eff.src}</div>`
+    : (eff.samAmss ? `<div class="wsrc">jedini izvor: AMSS (podrazumevana vrednost)</div>` : `<div class="wcat">putnicka vozila</div>`);
   return `
     <div class="wcell">
       <div class="wlabel"><span class="dir">${arrow}</span> ${label}</div>
