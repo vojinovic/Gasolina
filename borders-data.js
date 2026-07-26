@@ -84,6 +84,18 @@ window.BORDERS = (function () {
       wait: null,
     },
     {
+      // Koridor je trenutno svega 455 m - prekratak da TomTom uhvati kolonu,
+      // pa ceka razvlacenje tacaka.
+      id: "medzitlija", pbId: ["0x13573d6cb8ecbd0d%3A0xc6a3c89b4649d5d6", "0x13573c302bc67dbd%3A0xc5ee65e054690921"], pbIdIn: ["0x13573c302bc67dbd%3A0xc5ee65e054690921", "0x13573d6cb8ecbd0d%3A0xc6a3c89b4649d5d6"], mapPB: [40.919858, 21.416662, 40.9160515, 21.4186403], mapPBin: [40.9160515, 21.4186403, 40.919858, 21.416662], mapRoute: ["Граничен премин Меџитлија", "Niki Customs"], coords: [40.9199, 21.4167], name: "Medzitlija", from: "MK", to: "GR",
+      pair: "Niki (GR)", road: "E65", provider: "neotel.net.mk",
+      official: "https://alltrafficcams.com/live/border-crossings/north-macedonia/greece/medzitlija-niki/",
+      noWait: true,
+      feeds: [
+        { label: "Ulaz (ka Makedoniji)", dir: "in", src: "https://streaming1.neotel.net.mk/stream/medzitlija.m3u8" },
+      ],
+      wait: null,
+    },
+    {
       id: "sremska-raca", mapRoute: ["Granični prelaz Sremska Rača", "Granični prelaz Rača"], coords: [44.9042, 19.2958], name: "Sremska Raca", from: "RS", to: "BA",
       pair: "Raca (BiH)", road: "E70", provider: "MUP",
       official: "https://kamere.amss.org.rs/",

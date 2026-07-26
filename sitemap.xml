@@ -55,6 +55,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://gasolina.rs/granica-medzitlija.html</loc>
+    <lastmod>2026-07-26</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://gasolina.rs/granica-sremska-raca.html</loc>
     <lastmod>2026-07-15</lastmod>
     <changefreq>daily</changefreq>
@@ -147,6 +153,12 @@
   <url>
     <loc>https://gasolina.rs/en/border-bogorodica.html</loc>
     <lastmod>2026-07-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://gasolina.rs/en/border-medzitlija.html</loc>
+    <lastmod>2026-07-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
