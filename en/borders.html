@@ -221,14 +221,39 @@
   .nowait{font-size:12px;color:var(--faint);line-height:1.5;margin-top:10px;padding:10px 12px;border:1px dashed var(--line);border-radius:10px}
   .cfoot-links{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
 
-  .share-row{display:flex;align-items:center;gap:6px;padding:0 14px 14px;flex-wrap:wrap}
-  .share-label{font-size:11px;color:var(--faint);font-family:"JetBrains Mono",monospace;margin-right:2px}
+  /* "All sources": individual sources are collapsed, only the wait cells and the
+     queue length stay visible. The summary borrows the .faq summary look (no
+     marker, +/- prefix) but in .hustrip typography, since it sits among those rows. */
+  .srcbox{margin-top:10px;border-top:1px dashed var(--line)}
+  .srcbox > summary{
+    font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--dim);
+    cursor:pointer;list-style:none;padding:10px 0 9px;
+  }
+  .srcbox > summary::-webkit-details-marker{display:none}
+  .srcbox > summary::before{content:"+";color:var(--fuel);font-weight:700;margin-right:8px}
+  .srcbox[open] > summary::before{content:"\2212"}
+  .srcbox > summary:hover{color:var(--text)}
+  .srcbox .cfoot{margin-top:2px}
+
+  /* Four buttons plus the label must fit on one line at card width: the gap and
+     the buttons' horizontal padding are tightened. Font stays 12px and the 9px
+     vertical padding keeps the height at 35px - the touch target is untouched. */
+  .share-row{display:flex;align-items:center;gap:4px;padding:0 12px 14px;flex-wrap:wrap}
+  .share-label{font-size:11px;color:var(--faint);font-family:"JetBrains Mono",monospace;margin-right:0}
   .share-btn{
     font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--dim);
     background:var(--panel-2);border:1px solid var(--line);border-radius:7px;
-    padding:9px 13px;cursor:pointer;text-decoration:none;transition:color .15s ease, border-color .15s ease;
+    padding:9px 5px;cursor:pointer;text-decoration:none;white-space:nowrap;
+    transition:color .15s ease, border-color .15s ease;
   }
   .share-btn:hover{color:var(--text);border-color:var(--fuel)}
+  /* On narrow phones (card ~324px) even the tightened row is a hair too wide, so
+     a little more comes off the gap and side padding - font size and button
+     height stay put, the touch target is not reduced. */
+  @media (max-width:400px){
+    .share-row{gap:3px;padding-left:10px;padding-right:10px}
+    .share-btn{padding:9px 4px}
+  }
   .wbar{height:4px;border-radius:3px;background:var(--panel-2);margin-top:8px;overflow:hidden}
   .wbar i{display:block;height:100%;border-radius:3px}
 
@@ -410,6 +435,60 @@ function mkStrip(c){
   return `<div class="hustrip">\uD83C\uDDF2\uD83C\uDDF0 North Macedonian side${gp}: ${body}</div>`;
 }
 
+/* Queue length is the only MEASURED figure we have (TomTom actually measures it
+   on the road, unlike the minute estimates), so it is the only one that stays
+   visible next to the wait cells - it backs up the big numbers above. Below the
+   threshold it is noise: that direction is dropped, and if neither direction
+   clears it, the row is not rendered at all. */
+const QUEUE_MIN_M = 300;
+function queueRow(c){
+  if(!c.tt) return "";
+  const parts = [];
+  if(c.tt.izlaz_kolona_m >= QUEUE_MIN_M) parts.push(`exit <b>~${c.tt.izlaz_kolona_m} m</b>`);
+  if(c.tt.ulaz_kolona_m  >= QUEUE_MIN_M) parts.push(`entry <b>~${c.tt.ulaz_kolona_m} m</b>`);
+  if(!parts.length) return "";
+  return `<div class="hustrip">\uD83D\uDDFA\uFE0F Queue: ${parts.join(" &middot; ")}</div>`;
+}
+
+/* One direction of the "Traffic map" row. When the delay is small but the queue
+   is long, "No queue (queue ~725m)" contradicts itself - traffic moves, yet a
+   line exists; in that case we write what is actually observed. */
+function ttDir(min, kolona, prefix){
+  if(min!=null && min<=30 && kolona>=QUEUE_MIN_M){
+    return `<b style="color:var(--warn)">flowing, but queue ~${kolona} m</b>`;
+  }
+  return `${prefix}${cVal(min)}${kolona ? ` (queue ~${kolona}m)` : ``}`;
+}
+function ttStrip(c){
+  if(!c.tt || (c.tt.izlaz==null && c.tt.ulaz==null)) return "";
+  return `<div class="hustrip">\uD83D\uDDFA\uFE0F Traffic map: exit ${ttDir(c.tt.izlaz, c.tt.izlaz_kolona_m, "delay ")} &middot; entry ${ttDir(c.tt.ulaz, c.tt.ulaz_kolona_m, "")} <span class="basrc">&middot; excludes passport control</span></div>`;
+}
+
+/* Every individual source moves into a collapsed block: the same figure used to
+   repeat up to five times below the thumb. Only what does not repeat stays
+   visible - the wait cells and the queue length. */
+function sourcesDetails(c){
+  const rows = [
+    c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Hungarian side: entry ${cVal(c.hu.ulaz)} &middot; exit ${cVal(c.hu.izlaz)}</div>` : '',
+    mkStrip(c),
+    baStrip(c),
+    ttStrip(c),
+    hereStrip(c),
+  ].join("");
+  return `
+    <details class="srcbox">
+      <summary>All sources</summary>
+      ${rows}
+      <div class="cfoot">
+        <div class="src">${c.noCamera ? `Source: traffic map / Serbian border police` : (c.noWait ? `Camera: ${c.provider}` : `Source: Serbian border police<br>Camera: ${c.provider}`)}</div>
+        <div class="cfoot-links">
+          ${c.noCamera ? `` : `<a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>`}
+          ${c.official2 ? `<a class="link" href="${c.official2.url}" target="_blank" rel="noopener">${c.official2.label}</a>` : ''}
+        </div>
+      </div>
+    </details>`;
+}
+
 /* najgori dostupan podatak za smer, iz svih izvora (AMSS default 30 ne maskira prave brojke) */
 function effective(c, dirKey){
   const cands = [];
@@ -553,24 +632,15 @@ function cardHTML(c){
     <div class="pane">${paneInner}${waitChips(c)}</div>
     ${tabs}
 
-    ${c.noWait ? ((c.mk||c.here) ? (mkStrip(c) + hereStrip(c)) : `<div class="nowait">${c.from}\u2013${c.to} border. Waiting time is not tracked here; use the camera above.</div>`) : `
+    ${c.noWait
+      ? ((c.mk||c.here) ? `` : `<div class="nowait">${c.from}\u2013${c.to} border. Waiting time is not tracked here; use the camera above.</div>`)
+      : `
     <div class="wait">
       ${waitCell("Entering Serbia","ulaz",c)}
       ${waitCell("Exiting Serbia","izlaz",c)}
-    </div>
-    ${c.hu ? `<div class="hustrip">\uD83C\uDDED\uD83C\uDDFA Hungarian side: entry ${cVal(c.hu.ulaz)} &middot; exit ${cVal(c.hu.izlaz)}</div>` : ''}
-    ${mkStrip(c)}
-    ${baStrip(c)}
-    ${c.tt && (c.tt.izlaz!=null || c.tt.ulaz!=null) ? `<div class="hustrip">\uD83D\uDDFA\uFE0F Traffic map: exit delay ${cVal(c.tt.izlaz)}${c.tt.izlaz_kolona_m ? ` (queue ~${c.tt.izlaz_kolona_m}m)` : ``} &middot; entry ${cVal(c.tt.ulaz)}${c.tt.ulaz_kolona_m ? ` (queue ~${c.tt.ulaz_kolona_m}m)` : ``} <span class="basrc">&middot; excludes passport control</span></div>` : ``}
-    ${hereStrip(c)}`}
-
-    <div class="cfoot">
-      <div class="src">${c.noCamera ? `Source: traffic map / Serbian border police` : (c.noWait ? `Camera: ${c.provider}` : `Source: Serbian border police<br>Camera: ${c.provider}`)}</div>
-      <div class="cfoot-links">
-        ${c.noCamera ? `` : `<a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>`}
-        ${c.official2 ? `<a class="link" href="${c.official2.url}" target="_blank" rel="noopener">${c.official2.label}</a>` : ''}
-      </div>
-    </div>
+    </div>`}
+    ${queueRow(c)}
+    ${sourcesDetails(c)}
     <div class="share-row">
       <span class="share-label">Share:</span>
       <button class="share-btn" type="button" onclick="doShareBorder('viber','${c.id}')">Viber</button>
