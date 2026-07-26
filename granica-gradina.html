@@ -56,11 +56,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-<!-- hls.js se ucitava tek na prvi klik na kameru (ensureHls) - stedi ~150 KB na svakom otvaranju stranice -->
+
 
 <script>
-  // pre renderovanja: ako je autoplay zatrazen, sakrij "pusti" overlay odmah
-  // (inace blesne na ~100ms dok video ne krene)
+  
+  
   if (new URLSearchParams(location.search).get("play") === "1") {
     document.documentElement.classList.add("autoplay");
   }
@@ -208,7 +208,7 @@
   const FEEDS = [{"label": "Ulaz", "src": "https://kamere.amss.org.rs/gradina1/gradina1.m3u8"}, {"label": "Izlaz", "src": "https://kamere.amss.org.rs/gradina2/gradina2.m3u8"}];
   const T = {noQueue: "Bez guzve", noData: "nema podataka"};
   const SHARE = {label:"Podeli:", copied:"Kopirano!", out:"izlaz iz Srbije", inn:"ulaz u Srbiju", noq:"bez guzve", nd:"nema podataka", nowait:"kamera dostupna, cekanje se ne prati"};
-  let _waitState = null; // popunjava waitBox IIFE, koristi doShare
+  let _waitState = null; 
 
   function doShare(kind, btn) {
     const url = "https://gasolina.rs/granica-gradina.html";
@@ -237,7 +237,7 @@
     window.open(urls[kind], "_blank", "noopener");
   }
 
-  // --- wait box ---
+  
   (async function(){
     const box = document.getElementById("waitBox");
     if(!box) return;
@@ -247,9 +247,9 @@
       const data = await res.json();
       const c = (data.crossings || {})[PRELAZ_ID];
       const fmt = m => (m == null) ? T.noData : (m <= 30 ? T.noQueue : (m >= 60 ? Math.floor(m/60)+"h "+(m%60)+"m" : m + " min"));
-      // NAJGORI dostupan podatak po smeru, iz SVIH izvora - identicna logika
-      // kao effective() na granice.html. Sam AMSS cesto kaze "bez zadrzavanja"
-      // i kad prijave vozaca kazu 4h - bez ovoga landing laze "Bez guzve".
+      
+      
+      
       const eff = (dirKey) => {
         const cands = [];
         const p = (c && c.found && c.putnicka) ? c.putnicka[dirKey] : null;
@@ -265,8 +265,8 @@
         if (!cands.length) return {v: null, src: null, samAmss: false};
         let best = cands[0];
         cands.forEach(x => { if (best.v == null || (x.v != null && x.v > best.v)) best = x; });
-        // AMSS-ovih 30 je podrazumevana vrednost ("bez zadrzavanja"), ne merenje.
-        // Kad je jedini kandidat, uz brojku se ispisuje odakle dolazi.
+        
+        
         best.samAmss = (cands.length === 1 && best.src === null && best.v === 30);
         return best;
       };
@@ -278,8 +278,8 @@
       box.innerHTML = `
         <div class="wcell"><div class="wlabel">Ulaz u Srbiju</div><div class="wval">${fmt(eIn.v)}</div>${srcNote(eIn)}</div>
         <div class="wcell"><div class="wlabel">Izlaz iz Srbije</div><div class="wval">${fmt(eOut.v)}</div>${srcNote(eOut)}</div>`;
-      // dodatni izvori (isti kao na granice.html karticama): prijave vozaca,
-      // madjarska/makedonska strana - landing ne sme da bude siromasniji od pregleda
+      
+      
       const srcs = [];
       const mfmt = m => (m == null) ? "-" : (m + " min");
       if (c && c.ba) srcs.push(`\uD83D\uDE97 <b>Prijave vozača (BorderAlarm):</b> izlaz ${mfmt(c.ba.izlaz)} \u00b7 ulaz ${mfmt(c.ba.ulaz)}`);
@@ -303,11 +303,11 @@
     }
   })();
 
-  // --- plejer (isti hls.js kao granice.html) ---
+  
   let _hls = null;
-  // hls.js (~150 KB) se ne ucitava unapred: stranica se cesto otvara na granici
-  // gde je mobilna mreza zakrcena, a kamera krece tek na klik. Povlaci se ovde,
-  // jednom, i to samo ako browser nema nativni HLS (Safari/iOS ga ima).
+  
+  
+  
   let _hlsLoad = null;
   function ensureHls(){
     if (window.Hls) return Promise.resolve();
@@ -316,7 +316,7 @@
       const s = document.createElement("script");
       s.src = "https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js";
       s.onload = () => res();
-      s.onerror = () => res();   // pad na video.src kao i do sada
+      s.onerror = () => res();   
       document.head.appendChild(s);
     });
     return _hlsLoad;
@@ -344,8 +344,8 @@
     }
     if(opts && opts.muted) video.muted = true;
     video.play().catch(()=>{});
-    // upisi stanje u URL (bez reload-a): jezicki prekidac i share link tako
-    // uvek nose "koja kamera trenutno ide"
+    
+    
     try {
       const u = new URL(window.location.href);
       u.searchParams.set("play", "1");
@@ -354,23 +354,23 @@
     } catch(e) {}
     track('kamera_play', {prelaz: PRELAZ_ID, izvor: 'landing'});
   }
-  // ?play=1 iz granice.html thumb klika: odmah pusti kameru (muted, browseri
-  // ne dozvoljavaju autoplay sa zvukom). &feed=N bira konkretnu kameru
-  // (Ulaz/Izlaz tabovi sa granice.html vode direktno na pravu).
+  
+  
+  
   const _params = new URLSearchParams(window.location.search);
   if (FEEDS.length && _params.get("play") === "1") {
     const _fi = Math.min(parseInt(_params.get("feed") || "0", 10) || 0, FEEDS.length - 1);
     document.addEventListener("DOMContentLoaded", () => playFeed(_fi, {muted:true}));
   } else if (FEEDS.length) {
-    // bez autoplay-a: vizuelno oznaci prvu kameru kao izabranu, da tabovi
-    // ne izgledaju "mrtvo" pre prvog klika (overlay pusta bas nju)
+    
+    
     document.addEventListener("DOMContentLoaded", () => {
       const first = document.querySelector(".feeds button");
       if (first) first.classList.add("on");
     });
   }
-  // SR<->EN prekidac: parametre cita U TRENUTKU KLIKA (playFeed ih upisuje u
-  // URL tek kad kamera krene), pa prebacivanje jezika nastavlja istu kameru
+  
+  
   document.addEventListener("DOMContentLoaded", () => {
     const ll = document.querySelector(".nav a.lang");
     if (!ll) return;
