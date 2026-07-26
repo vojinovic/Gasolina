@@ -62,7 +62,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 300 } },
     },
     {
-      id: "presevo", mapPB: [42.2398219, 21.7026983, 42.2314251, 21.704081], mapRoute: ["Granični prelaz Preševo", "Граничен премин Табановце"], coords: [42.2436, 21.6433], name: "Presevo", from: "RS", to: "MK",
+      id: "presevo", mapPBin: [42.235423, 21.704292, 42.242780, 21.702422], mapPB: [42.2398219, 21.7026983, 42.2314251, 21.704081], mapRoute: ["Granični prelaz Preševo", "Граничен премин Табановце"], coords: [42.2436, 21.6433], name: "Presevo", from: "RS", to: "MK",
       pair: "Tabanovce (MK)", road: "E75", provider: "AMSS / MUP",
       official: "https://kamere.amss.org.rs/",
       feeds: [
