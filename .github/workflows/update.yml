@@ -22,6 +22,17 @@ jobs:
         with:
           persist-credentials: true
 
+      # Python skripte zive u privatnom repou gasolina-engine. Ovde se povlace
+      # u podfolder engine/ koji NE ide u commit (vidi .gitignore). Minuti se
+      # naplacuju repou u kom se workflow izvrsava - a ovaj je javan, pa su
+      # besplatni. Token: fine-grained, samo Contents:read na engine repou.
+      - name: Checkout engine (private)
+        uses: actions/checkout@v4
+        with:
+          repository: vojinovic/gasolina-engine
+          token: ${{ secrets.ENGINE_TOKEN }}
+          path: engine
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -32,8 +43,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
+      # Skripta se pokrece IZ korena javnog repoa (da nadje fuel_prices.json
+      # i cene_istorija.csv), ali sam kod dolazi iz engine/.
       - name: Run scraper
-        run: python scraper.py
+        run: python engine/scraper.py
 
       - name: Commit changes
         run: |
