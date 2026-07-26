@@ -252,7 +252,7 @@ PAGE_TMPL = """<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js"></script>
+<!-- hls.js se ucitava tek na prvi klik na kameru (ensureHls) - stedi ~150 KB na svakom otvaranju stranice -->
 
 <script>
   // pre renderovanja: ako je autoplay zatrazen, sakrij "pusti" overlay odmah
@@ -338,7 +338,7 @@ PAGE_TMPL = """<!DOCTYPE html>
   .faq details p{{margin:0 0 15px;color:var(--dim);font-size:13.5px;line-height:1.6}}
   .share-row{{display:flex;align-items:center;gap:6px;margin-top:14px;flex-wrap:wrap}}
   .share-label{{font-size:11px;color:var(--faint)}}
-  .share-btn{{font-family:"JetBrains Mono",monospace;font-size:11.5px;background:var(--panel);color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer}}
+  .share-btn{{font-family:"JetBrains Mono",monospace;font-size:12.5px;background:var(--panel);color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:11px 15px;cursor:pointer}}
   .share-btn:hover{{color:var(--text);border-color:var(--fuel)}}
   .others{{margin-top:30px;font-size:12px;color:var(--faint)}}
   .others a{{color:var(--fuel);text-decoration:none;margin-right:10px}}
@@ -495,7 +495,23 @@ PAGE_TMPL = """<!DOCTYPE html>
 
   // --- plejer (isti hls.js kao granice.html) ---
   let _hls = null;
-  function playFeed(idx, opts){{
+  // hls.js (~150 KB) se ne ucitava unapred: stranica se cesto otvara na granici
+  // gde je mobilna mreza zakrcena, a kamera krece tek na klik. Povlaci se ovde,
+  // jednom, i to samo ako browser nema nativni HLS (Safari/iOS ga ima).
+  let _hlsLoad = null;
+  function ensureHls(){{
+    if (window.Hls) return Promise.resolve();
+    if (_hlsLoad) return _hlsLoad;
+    _hlsLoad = new Promise((res) => {{
+      const s = document.createElement("script");
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js";
+      s.onload = () => res();
+      s.onerror = () => res();   // pad na video.src kao i do sada
+      document.head.appendChild(s);
+    }});
+    return _hlsLoad;
+  }}
+  async function playFeed(idx, opts){{
     if(!FEEDS.length) return;
     const pane = document.getElementById("pane");
     const video = document.getElementById("cam");
@@ -509,7 +525,7 @@ PAGE_TMPL = """<!DOCTYPE html>
     if(_hls){{ try{{_hls.destroy();}}catch(e){{}} _hls = null; }}
     if(video.canPlayType("application/vnd.apple.mpegurl")){{
       video.src = src;
-    }} else if (window.Hls && Hls.isSupported()){{
+    }} else if ((await ensureHls(), window.Hls && Hls.isSupported())){{
       _hls = new Hls({{maxBufferLength:10}});
       _hls.loadSource(src);
       _hls.attachMedia(video);
