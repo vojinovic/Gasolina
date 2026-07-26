@@ -18,6 +18,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Python skripte zive u privatnom repou gasolina-engine. Povlace se u
+      # engine/ koji je u .gitignore, pa ne moze da zavrsi u javnom commitu.
+      # Minuti se naplacuju repou u kom se workflow izvrsava (ovaj je javan).
+      - name: Checkout engine (private)
+        uses: actions/checkout@v4
+        with:
+          repository: vojinovic/gasolina-engine
+          token: ${{ secrets.ENGINE_TOKEN }}
+          path: engine
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -25,7 +35,7 @@ jobs:
       - name: Scrape HERE traffic at border crossings
         env:
           HERE_KEY: ${{ secrets.HERE_KEY }}
-        run: python putevi_scraper.py
+        run: python engine/putevi_scraper.py
 
       - name: Commit if changed
         run: |
