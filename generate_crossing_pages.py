@@ -144,6 +144,12 @@ def parse_crossings(js_text):
         map_pb = tuple(float(x) for x in pm.groups()) if pm else None
         pim = re.search(r'mapPBin:\s*\[([\d.]+),\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)\]', chunk)
         map_pb_in = tuple(float(x) for x in pim.groups()) if pim else None
+        # Opcioni uvodni tekst po prelazu. Podrazumevani govori o "kameri uzivo",
+        # sto za prelaze bez kamere nije tacno - "posten prikaz je brend".
+        im = re.search(r'intro:\s*"([^"]+)"', chunk)
+        intro_sr = im.group(1) if im else None
+        ime = re.search(r'introEn:\s*"([^"]+)"', chunk)
+        intro_en = ime.group(1) if ime else None
         rm = re.search(r'mapRoute:\s*\["([^"]+)",\s*"([^"]+)"\]', chunk)
         map_route = (rm.group(1), rm.group(2)) if rm else None
         # Opcioni Google place ID-jevi za pb mapu (preuzeti VERBATIM sa
@@ -168,6 +174,7 @@ def parse_crossings(js_text):
             "feeds": feeds, "link_only": link_only, "no_wait": no_wait,
             "map_pb": map_pb, "map_pb_in": map_pb_in, "map_route": map_route,
             "pb_id": pb_id, "pb_id_in": pb_id_in,
+            "intro_sr": intro_sr, "intro_en": intro_en,
         })
     return out
 
@@ -723,7 +730,7 @@ def render_page(c, all_c, lang):
         title=t["title"].format(**fmtargs),
         description=t["description"].format(**fmtargs),
         h1=t["h1"].format(**fmtargs),
-        intro=t["intro"].format(**fmtargs),
+        intro=(c.get("intro_sr") if lang == "sr" else c.get("intro_en")) or t["intro"].format(**fmtargs),
         self_path=self_path, id=c["id"], name=name, root=root, home_href="index.html",
         crumb_borders=t["crumb_borders"],
         nav_prices=t["nav_prices"], nav_calc=t["nav_calc"], nav_borders=t["nav_borders"],
