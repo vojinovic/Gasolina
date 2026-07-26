@@ -42,7 +42,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
-      id: "kelebija", mapPBin: [46.1693418, 19.5574239, 46.1670921, 19.5612977], mapPB: [46.1642685, 19.5626338, 46.1704754, 19.5563793], mapRoute: ["Granični prelaz Kelebija", "Tompa határátkelőhely"], coords: [46.191, 19.541], name: "Kelebija", from: "RS", to: "HU",
+      id: "kelebija", mapPBin: [46.172760, 19.554454, 46.163229, 19.563629], mapPB: [46.1642685, 19.5626338, 46.1704754, 19.5563793], mapRoute: ["Granični prelaz Kelebija", "Tompa határátkelőhely"], coords: [46.191, 19.541], name: "Kelebija", from: "RS", to: "HU",
       pair: "Tompa (HU)", road: "M17/E75", provider: "MUP",
       official: "https://kamere.amss.org.rs/",
       feeds: [
