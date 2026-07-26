@@ -18,7 +18,7 @@
         "eur": 0.9
       },
       "price_source": "nafta.hr",
-      "updated": "2026-07-26 20:19 UTC"
+      "updated": "2026-07-26 20:59 UTC"
     },
     {
       "name": "Croatia",
@@ -37,7 +37,7 @@
         "local": 0.0,
         "eur": 0.0
       },
-      "updated": "2026-07-26 20:19 UTC"
+      "updated": "2026-07-26 20:59 UTC"
     },
     {
       "name": "Bosnia and Herzegovina",
@@ -56,7 +56,7 @@
         "local": 1.36,
         "eur": 0.7
       },
-      "updated": "2026-07-26 20:19 UTC"
+      "updated": "2026-07-26 20:59 UTC"
     },
     {
       "name": "Montenegro",
@@ -72,7 +72,7 @@
         "eur": 1.65
       },
       "lpg": null,
-      "updated": "2026-07-26 20:19 UTC"
+      "updated": "2026-07-26 20:59 UTC"
     },
     {
       "name": "Slovenia",
@@ -91,7 +91,7 @@
         "local": 0.94,
         "eur": 0.94
       },
-      "updated": "2026-07-26 20:19 UTC"
+      "updated": "2026-07-26 20:59 UTC"
     },
     {
       "name": "North Macedonia",
@@ -110,7 +110,7 @@
         "local": 47.0,
         "eur": 0.76
       },
-      "updated": "2026-07-26 20:19 UTC"
+      "updated": "2026-07-26 20:59 UTC"
     },
     {
       "name": "Hungary",
@@ -129,7 +129,7 @@
         "local": 1.01,
         "eur": 1.01
       },
-      "updated": "2026-07-26 20:19 UTC"
+      "updated": "2026-07-26 20:59 UTC"
     },
     {
       "name": "Bulgaria",
@@ -164,7 +164,7 @@
         "local": 69.0,
         "eur": 0.69
       },
-      "updated": "2026-07-26 20:19 UTC"
+      "updated": "2026-07-26 20:59 UTC"
     },
     {
       "name": "Greece",
@@ -212,7 +212,7 @@
         "eur": 1.5
       },
       "lpg": null,
-      "updated": "2026-07-26 20:19 UTC"
+      "updated": "2026-07-26 20:59 UTC"
     }
   ]
 }
