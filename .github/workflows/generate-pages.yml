@@ -24,6 +24,16 @@ jobs:
         with:
           persist-credentials: true
 
+      # Python skripte zive u privatnom repou gasolina-engine. Povlace se u
+      # engine/ koji je u .gitignore, pa ne moze da zavrsi u javnom commitu.
+      # Minuti se naplacuju repou u kom se workflow izvrsava (ovaj je javan).
+      - name: Checkout engine (private)
+        uses: actions/checkout@v4
+        with:
+          repository: vojinovic/gasolina-engine
+          token: ${{ secrets.ENGINE_TOKEN }}
+          path: engine
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -32,7 +42,7 @@ jobs:
       # generator koristi samo standardnu biblioteku - nema pip install
 
       - name: Generate pages
-        run: python generate_crossing_pages.py
+        run: python engine/generate_crossing_pages.py
 
       - name: Commit if changed
         run: |
