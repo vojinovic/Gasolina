@@ -215,23 +215,58 @@ def scrape_croatia():
     }
 
 
+def _km_eur_row(soup, fuel_keywords, exclude=()):
+    """nafta.hr BiH tabela: GORIVO | CIJENA | PROMJENA, a cena je u JEDNOJ celiji
+    kao '3,13 KM / 1,60 EUR' - zato ne moze find_row_in_single_table.
+    Vraca (km, eur) ili None. `exclude` cuva od toga da 'Benzin Premium 95'
+    slucajno uhvati red 'Benzin Super 98' i obrnuto.
+    """
+    for table in soup.find_all("table"):
+        for row in table.find_all("tr"):
+            cells = row.find_all(["td", "th"])
+            if len(cells) < 2:
+                continue
+            label = cells[0].get_text(" ", strip=True).lower()
+            if not any(k.lower() in label for k in fuel_keywords):
+                continue
+            if any(x.lower() in label for x in exclude):
+                continue
+            txt = cells[1].get_text(" ", strip=True)
+            m = re.search(r"([0-9]+[.,][0-9]+)\s*KM\s*/\s*([0-9]+[.,][0-9]+)\s*EUR", txt, re.I)
+            if m:
+                return to_float(m.group(1)), to_float(m.group(2))
+    return None
+
+
 def scrape_bosnia():
-    r = requests.get("https://goriva.ba/", headers=HEADERS, timeout=20)
-    r.raise_for_status()
-    text = BeautifulSoup(r.text, "html.parser").get_text(" ", strip=True)
-    def grab(label):
-        m = re.search(label + r"\s*(\d+[.,]\d+)\s*KM", text, re.IGNORECASE)
-        if not m: raise ValueError(f"BiH: {label}")
-        return float(m.group(1).replace(",", "."))
-    petrol_loc = grab(r"Benzin\s*95")
-    diesel_loc = grab(r"\bDizel\b")
-    lpg_loc    = grab(r"\bLPG\b")
+    # goriva.ba je od ~05/2026 prazan (server vraca "0 pumpi u 0 gradova" - njihov
+    # lanac iz FMT FBiH / MTT RS je pukao), pa BiH ide preko nafta.hr, istog sajta
+    # koji vec hrani HR/RS/ME/SI/MK/HU.
+    soup = fetch_soup("https://nafta.hr/cijene-goriva-bih/")
+
+    petrol = _km_eur_row(soup, ["Benzin Premium 95", "Premium 95", "Benzin 95"], exclude=["98", "100"])
+    diesel = _km_eur_row(soup, ["Dizel D5", "Dizel", "Dizel"], exclude=["premium"])
+    lpg    = _km_eur_row(soup, ["Autoplin", "LPG", "UNP"])
+
+    if not (petrol and diesel):
+        raise RuntimeError(f"BiH: petrol={petrol}, diesel={diesel}, lpg={lpg}")
+
+    def par(x):
+        if not x:
+            return {"local": 0.0, "eur": 0.0}
+        km, eur_sa_sajta = x
+        eur = round(km / BAM_TO_EUR, 2)
+        # sajt vec daje EUR; ako se razilazi vise od 2 centa, nesto smo lose procitali
+        if abs(eur - eur_sa_sajta) > 0.02:
+            raise RuntimeError(f"BiH: {km} KM -> {eur} EUR, a sajt kaze {eur_sa_sajta}")
+        return {"local": km, "eur": eur}
+
     return {
-        "name": "Bosnia and Herzegovina", "flag": "🇧🇦", "currency": "BAM",
+        "name": "Bosnia and Herzegovina", "flag": "\U0001F1E7\U0001F1E6", "currency": "BAM",
         "fx_rate_eur": BAM_TO_EUR,
-        "petrol95": {"local": petrol_loc, "eur": round(petrol_loc / BAM_TO_EUR, 2)},
-        "diesel":   {"local": diesel_loc, "eur": round(diesel_loc / BAM_TO_EUR, 2)},
-        "lpg":      {"local": lpg_loc,    "eur": round(lpg_loc    / BAM_TO_EUR, 2)},
+        "petrol95": par(petrol),
+        "diesel":   par(diesel),
+        "lpg":      par(lpg),
         "updated":  now_utc(),
     }
 
@@ -596,6 +631,29 @@ def selftest():
       <table><tr><th>Obveznik</th><th>Gorivo</th><th>Cijena EUR</th></tr>
         <tr><td>INA d.d.</td><td>AUTOPLIN</td><td>0,70 &euro;</td></tr>
       </table>"""
+    # BiH tabela sa nafta.hr - fixture preslikan sa zive stranice (26.07.2026).
+    # Kljucno: cena je "3,13 KM / 1,60 EUR" u jednoj celiji, a red "Benzin Super 98"
+    # ne sme da se pomesa sa "Benzin Premium 95".
+    ba_html = """
+      <h2>Cijene goriva BiH</h2>
+      <table>
+        <tr><th>GORIVO</th><th>CIJENA</th><th>PROMJENA</th></tr>
+        <tr><td>Dizel D5</td><td>3,13 KM / 1,60 EUR</td><td>9,51 centa</td></tr>
+        <tr><td>Benzin Super 98</td><td>3,07 KM / 1,57 EUR</td><td>1,49 centa</td></tr>
+        <tr><td>Benzin Premium 95</td><td>2,84 KM / 1,45 EUR</td><td>2,88 centa</td></tr>
+        <tr><td>Autoplin</td><td>1,36 KM / 0,70 EUR</td><td>0,27 centa</td></tr>
+        <tr><td>Lo&#382; ulje</td><td>2,62 KM / 1,34 EUR</td><td>1,09 centa</td></tr>
+      </table>"""
+    ba_soup = BeautifulSoup(ba_html, "html.parser")
+    ba_p = _km_eur_row(ba_soup, ["Benzin Premium 95", "Premium 95", "Benzin 95"], exclude=["98", "100"])
+    ba_d = _km_eur_row(ba_soup, ["Dizel D5", "Dizel"], exclude=["premium"])
+    ba_l = _km_eur_row(ba_soup, ["Autoplin", "LPG", "UNP"])
+    ba_ok = (ba_p == (2.84, 1.45) and ba_d == (3.13, 1.60) and ba_l == (1.36, 0.70))
+    if not ba_ok:
+        ok = False
+    print(f"[{'OK ' if ba_ok else 'FAIL'}] BiH nafta.hr: benzin95={ba_p} dizel={ba_d} autoplin={ba_l} "
+          f"(Super 98 ne sme da se uvuce u 95)")
+
     hr_soup = BeautifulSoup(hr_html, "html.parser")
     hr_p = _median_eur_in_section(hr_soup, ["Eurosuper 95"])
     hr_d = _median_eur_in_section(hr_soup, ["Eurodizel", "Dizel"])
