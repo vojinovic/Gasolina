@@ -152,6 +152,30 @@
     }
 
     .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+
+    /* --- Kamere na granici (naslovna) --- */
+    .topcams { margin-top: 34px; }
+    .topcams-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .topcams-head h2 { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 24px;
+      text-transform: uppercase; letter-spacing: .02em; margin: 0; }
+    .topcams-all { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--fuel); text-decoration: none; }
+    .topcams-all:hover { text-decoration: underline; }
+    .topcams-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+    .tc { display: block; text-decoration: none; color: inherit; background: var(--panel);
+      border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .tc:hover { border-color: var(--fuel); }
+    .tc-pane { position: relative; aspect-ratio: 16/9; background: #070d13; }
+    .tc-pane img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tc-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(180deg, rgba(7,13,19,.15) 0%, rgba(7,13,19,.75) 100%); }
+    .tc-play span { width: 42px; height: 42px; border-radius: 50%; background: rgba(7,13,19,.72);
+      border: 1px solid rgba(255,255,255,.22); display: flex; align-items: center; justify-content: center; }
+    .tc-body { padding: 12px 14px 14px; }
+    .tc-name { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 20px; text-transform: uppercase; }
+    .tc-pair { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--faint); margin-top: 2px; }
+    .tc-waits { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+    .tc-lab { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--faint); text-transform: uppercase; }
+    .tc-val { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 22px; }
     .card {
       background: var(--panel); border-radius: 14px; padding: 22px;
       border: 1px solid var(--line); transition: transform .15s ease, border-color .15s ease;
@@ -410,6 +434,18 @@
         </div>
       </div>
       <div class="cards" id="cards"></div>
+
+      <!-- Tri najprometnija prelaza: slicica sa kamere + trenutno cekanje.
+           Fiksan izbor (Presevo, Horgos, Gradina) - nije "najgori trenutno",
+           nego "oni koje ljudi najcesce traze". Slicice pravi thumbs_scraper
+           u Actions-ima, pa ovde ne ide nijedan dodatni zahtev osim slike. -->
+      <section class="topcams" id="topCams" style="display:none">
+        <div class="topcams-head">
+          <h2>Kamere na granici</h2>
+          <a class="topcams-all" href="granice.html">svi prelazi &rarr;</a>
+        </div>
+        <div class="topcams-grid" id="topCamsGrid"></div>
+      </section>
     </section>
     <!-- (kraj home/prices sekcije) -->
 
@@ -1160,6 +1196,8 @@
         if (w.mk.opsto != null && w.mk.opsto > 0) cands.push({ v: w.mk.opsto, src: 'makedonska strana' });
       }
       if (w.ba) { const v = w.ba[dirKey]; if (v != null && v > 0) cands.push({ v, src: 'prijave vozaca' }); }
+      // TomTom zastoj kroz koridor - DONJA granica (ne vidi kolonu na pasoskoj)
+      if (w.tt) { const v = w.tt[dirKey]; if (v != null && v > 0) cands.push({ v, src: 'mapa saobracaja' }); }
       if (hereCrossings[cid]) cands.push({ v: null, src: 'HERE', here: hereCrossings[cid] });
       const nums = cands.filter(x => x.v != null);
       if (!nums.length) return { v: null, src: null, here: (hereCrossings[cid] || null) };
@@ -1167,6 +1205,52 @@
       nums.forEach(x => { if (x.v > best.v) best = x; });
       best.here = hereCrossings[cid] || null;
       return best;
+    }
+
+    // --- Kamere na granici (naslovna) ---------------------------------
+    // Fiksne tri: najprometniji prelazi, ne "trenutno najgori". Razlog: zimi
+    // bi dinamicki izbor izbacio prazne prelaze bez ijednog pravog izvora
+    // (AMSS-ovih 30 je podrazumevana vrednost, ne merenje).
+    const TOP_CAMS = ['presevo', 'horgos', 'gradina'];
+
+    function renderTopCams() {
+      const wrap = document.getElementById('topCams');
+      const grid = document.getElementById('topCamsGrid');
+      if (!wrap || !grid || typeof BORDERS === 'undefined') return;
+      const items = TOP_CAMS
+        .map(id => BORDERS.byId(id))
+        .filter(Boolean);
+      if (!items.length) return;
+      grid.innerHTML = items.map(cx => {
+        const eIn = effWait(cx.id, 'ulaz'), eOut = effWait(cx.id, 'izlaz');
+        const sIn = bStatus(eIn.v), sOut = bStatus(eOut.v);
+        return `
+        <a class="tc" href="granica-${cx.id}.html?play=1"
+           onclick="track('naslovna_kamera', {prelaz:'${cx.id}'})">
+          <div class="tc-pane">
+            <img src="thumbs/${cx.id}.jpg" alt="Kamera ${cx.name}" loading="lazy"
+                 onerror="this.style.display='none'">
+            <div class="tc-play"><span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--fuel)"><path d="M8 5v14l11-7z"/></svg>
+            </span></div>
+          </div>
+          <div class="tc-body">
+            <div class="tc-name">${cx.name}</div>
+            <div class="tc-pair">naspram ${cx.pair}</div>
+            <div class="tc-waits">
+              <div>
+                <div class="tc-lab">&rarr; ulaz</div>
+                <div class="tc-val" style="color:${sIn.c}">${bText(eIn.v)}</div>
+              </div>
+              <div>
+                <div class="tc-lab">&larr; izlaz</div>
+                <div class="tc-val" style="color:${sOut.c}">${bText(eOut.v)}</div>
+              </div>
+            </div>
+          </div>
+        </a>`;
+      }).join('');
+      wrap.style.display = '';
     }
 
     // Kratka preporuka brenda za korak "kupi u Srbiji" u pametnoj strategiji.
@@ -1586,7 +1670,7 @@
           `${dataCache.countries.length} zemalja · poslednje ažuriranje: ${dates[0] || '-'}`;
         populateRoutes();
         renderPrices();
-        renderShowcase();
+        renderShowcase(); renderTopCams();
         if (location.hash === '#kalkulator') setTab('calc');
         try {
           const r2 = await fetch('granice.json?cb=' + Date.now());
@@ -1601,9 +1685,10 @@
                 putnicka: (c.found && c.putnicka) ? c.putnicka : null,
                 teretna: (c.found && c.teretna) ? c.teretna : null,
                 hu: c.hu || null, mk: c.mk || null, ba: c.ba || null,
+                tt: c.tt || null,
               };
             });
-            renderShowcase();
+            renderShowcase(); renderTopCams();
             if (currentTab === 'calc') renderCalc();
           }
         } catch (e) { /* nema granice.json, ostaju demo brojke */ }
@@ -1612,7 +1697,7 @@
           if (rh.ok) {
             const hj = await rh.json();
             hereCrossings = hj.crossings || {};
-            renderShowcase();
+            renderShowcase(); renderTopCams();
             if (currentTab === 'calc') renderCalc();
           }
         } catch (e) { /* nema HERE podataka */ }
