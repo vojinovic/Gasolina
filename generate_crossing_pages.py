@@ -785,6 +785,19 @@ def render_page(c, all_c, lang):
     )
 
 
+def _strip_published(html):
+    """Komentari u sablonu objasnjavaju ZASTO je nesto tako uradjeno. To je
+    korisno u repou, ali objavljena stranica ih ne treba - browser ih pokazuje
+    svakome kroz Ctrl+U. Izvor (ovaj fajl) ostaje pun komentara.
+    Ako strip_comments.py nije prisutan, generise se kao i pre - bez pada."""
+    try:
+        from strip_comments import process_html
+    except ImportError:
+        return html
+    ocisceno, _, _ = process_html(html)
+    return ocisceno
+
+
 def main():
     js = open(SRC, encoding="utf-8").read()
     crossings = parse_crossings(js)
@@ -796,7 +809,7 @@ def main():
         for lang in ("sr", "en"):
             path = f"en/border-{c['id']}.html" if lang == "en" else f"granica-{c['id']}.html"
             with open(path, "w", encoding="utf-8") as f:
-                f.write(render_page(c, crossings, lang))
+                f.write(_strip_published(render_page(c, crossings, lang)))
             print(f"Napisano: {path}")
     print(f"Gotovo: {len(crossings)} prelaza x 2 jezika = {len(crossings)*2} stranica.")
     return 0

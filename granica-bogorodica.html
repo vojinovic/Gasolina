@@ -50,7 +50,7 @@
 }
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type": "Question", "name": "Kolika je gužva na prelazu Bogorodica sada?", "acceptedAnswer": {"@type": "Answer", "text": "Na vrhu stranice su kamera uživo i trenutna procena čekanja za oba smera, plus gužva na mapi. Za poređenje svih prelaza idi na stranicu Granice."}},{"@type": "Question", "name": "Gde vodi prelaz Bogorodica?", "acceptedAnswer": {"@type": "Answer", "text": "Bogorodica povezuje Severna Makedonija → Grčka, naspram Evzoni (GR) na putu E75."}},{"@type": "Question", "name": "Postoji li alternativa prelazu Bogorodica?", "acceptedAnswer": {"@type": "Answer", "text": "Da - Dojran vodi ka istoj zemlji. Kalkulator rute na Gasolini poredi prelaze kad planiraš put, a stranica Granice direktno pokazuje koji je trenutno brži."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type": "Question", "name": "Kolika je gužva na prelazu Bogorodica sada?", "acceptedAnswer": {"@type": "Answer", "text": "Na vrhu stranice su kamera uživo i trenutna procena čekanja za oba smera, plus gužva na mapi. Za poređenje svih prelaza idi na stranicu Granice."}},{"@type": "Question", "name": "Gde vodi prelaz Bogorodica?", "acceptedAnswer": {"@type": "Answer", "text": "Bogorodica povezuje Severna Makedonija → Grčka, naspram Evzoni (GR) na putu E75."}},{"@type": "Question", "name": "Postoji li alternativa prelazu Bogorodica?", "acceptedAnswer": {"@type": "Answer", "text": "Da - Medzitlija, Dojran vodi ka istoj zemlji. Kalkulator rute na Gasolini poredi prelaze kad planiraš put, a stranica Granice direktno pokazuje koji je trenutno brži."}}]}
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -174,6 +174,8 @@
   </div>
 
   <div class="pane" id="pane"><span class="badge">roads.org.mk</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="thumbs/bogorodica.jpg" alt="Bogorodica" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Pusti kameru uživo</button></div>
+  <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Učitavanje trenutnog stanja…</div></div>
+  <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Gužva na mapi: Severna Makedonija → Grčka</h2><iframe src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d11672.3!2d22.54906705!3d41.13179735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e0!4m3!3m2!1d41.135969!2d22.5464805!4m5!1s0x135626c88b4d3907%3A0xc81c83269be4c289!2sBorder%20Crossing%20Point%20of%20Evzoni!3m2!1d41.1276257!2d22.5516536!5e0!3m2!1ssr!2srs!4v1627540443619!5m2!1ssr!2srs" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Gužva na mapi: Severna Makedonija → Grčka" allowfullscreen></iframe></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Gužva na mapi: Grčka → Severna Makedonija</h2><iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d11672.3!2d22.54906705!3d41.13179735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x135626c88b4d3907%3A0xc81c83269be4c289!2sBorder%20Crossing%20Point%20of%20Evzoni!3m2!1d41.1276257!2d22.5516536!4m5!1s0x135626c9f9dda211%3A0x5d10bb96bd3d13f7!2sBorder%20Crossing%20Point%20of%20Evzoni!3m2!1d41.134253!2d22.5490008!5e0!3m2!1ssr!2srs!4v1627540443619!5m2!1ssr!2srs" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Gužva na mapi: Grčka → Severna Makedonija" allowfullscreen></iframe></div>
   <div style="font-size:11px;color:var(--faint);margin-top:6px">Vreme na mapi je procena vožnje kroz zonu prelaza u trenutnoj gužvi — ne uključuje pasošku kontrolu.</div>
@@ -190,15 +192,15 @@
     <div><b>Pravac:</b> 🇲🇰 Severna Makedonija → 🇬🇷 Grčka</div>
     <div><b>Put:</b> E75</div>
     <div><b>Naspram:</b> Evzoni (GR)</div>
-    <div><b>Alternativa:</b> <a href="granica-dojran.html" style="color:var(--fuel)">Dojran</a> vodi ka istoj zemlji</div>
+    <div><b>Alternativa:</b> <a href="granica-medzitlija.html" style="color:var(--fuel)">Medzitlija</a>, <a href="granica-dojran.html" style="color:var(--fuel)">Dojran</a> vodi ka istoj zemlji</div>
   </div>
 
   <section class="faq">
     <h2>Česta pitanja o prelazu Bogorodica</h2>
-    <details><summary>Kolika je gužva na prelazu Bogorodica sada?</summary><p>Na vrhu stranice su kamera uživo i trenutna procena čekanja za oba smera, plus gužva na mapi. Za poređenje svih prelaza idi na stranicu Granice.</p></details><details><summary>Gde vodi prelaz Bogorodica?</summary><p>Bogorodica povezuje Severna Makedonija → Grčka, naspram Evzoni (GR) na putu E75.</p></details><details><summary>Postoji li alternativa prelazu Bogorodica?</summary><p>Da - Dojran vodi ka istoj zemlji. Kalkulator rute na Gasolini poredi prelaze kad planiraš put, a stranica Granice direktno pokazuje koji je trenutno brži.</p></details>
+    <details><summary>Kolika je gužva na prelazu Bogorodica sada?</summary><p>Na vrhu stranice su kamera uživo i trenutna procena čekanja za oba smera, plus gužva na mapi. Za poređenje svih prelaza idi na stranicu Granice.</p></details><details><summary>Gde vodi prelaz Bogorodica?</summary><p>Bogorodica povezuje Severna Makedonija → Grčka, naspram Evzoni (GR) na putu E75.</p></details><details><summary>Postoji li alternativa prelazu Bogorodica?</summary><p>Da - Medzitlija, Dojran vodi ka istoj zemlji. Kalkulator rute na Gasolini poredi prelaze kad planiraš put, a stranica Granice direktno pokazuje koji je trenutno brži.</p></details>
   </section>
 
-  <div class="others">Ostali granični prelazi: <a href="granica-gradina.html">Gradina</a> <a href="granica-horgos.html">Horgos</a> <a href="granica-kelebija.html">Kelebija</a> <a href="granica-batrovci.html">Batrovci</a> <a href="granica-presevo.html">Presevo</a> <a href="granica-sremska-raca.html">Sremska Raca</a> <a href="granica-spiljani.html">Spiljani</a> <a href="granica-prohor-pcinjski.html">Prohor Pcinjski</a> <a href="granica-gostun.html">Gostun</a> <a href="granica-debeli-brijeg.html">Debeli Brijeg</a> <a href="granica-dojran.html">Dojran</a></div>
+  <div class="others">Ostali granični prelazi: <a href="granica-gradina.html">Gradina</a> <a href="granica-horgos.html">Horgos</a> <a href="granica-kelebija.html">Kelebija</a> <a href="granica-batrovci.html">Batrovci</a> <a href="granica-presevo.html">Presevo</a> <a href="granica-medzitlija.html">Medzitlija</a> <a href="granica-sremska-raca.html">Sremska Raca</a> <a href="granica-spiljani.html">Spiljani</a> <a href="granica-prohor-pcinjski.html">Prohor Pcinjski</a> <a href="granica-gostun.html">Gostun</a> <a href="granica-debeli-brijeg.html">Debeli Brijeg</a> <a href="granica-dojran.html">Dojran</a></div>
 </div>
 
 <script>
