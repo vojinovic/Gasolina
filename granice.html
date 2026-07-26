@@ -512,14 +512,13 @@ function cardHTML(c){
          <span class="ptext">Kamera uzivo + mapa</span>
        </a>`;
   } else if(noCamera){
+    // Nema kamere, ali ceo panel je i dalje klikabilan i vodi na stranicu prelaza
+    // (mapa saobracaja + cekanja + FAQ) - isto ponasanje kao thumb kod ostalih.
     paneInner = `<span class="badge">samo podaci</span>
-       <a class="poster" href="granica-${c.id}.html" aria-label="Otvori stranicu prelaza ${c.name}"
-          onclick="track('thumb_klik', {prelaz:'${c.id}'})" style="position:static;background:none">
-         <span class="ptext">Mapa saobraćaja + čekanja</span>
-       </a>
-       <div class="pmsg" style="display:flex">
-         <p>Za ovaj prelaz ne postoji zvanicna kamera. Prati vreme cekanja ispod.</p>
-       </div>`;
+       <a class="poster no-thumb" href="granica-${c.id}.html" aria-label="Otvori stranicu prelaza ${c.name}"
+          onclick="track('thumb_klik', {prelaz:'${c.id}'})">
+         <span class="ptext">Nema kamere &middot; otvori mapu saobracaja i cekanja</span>
+       </a>`;
   } else {
     // linkOnly / feed jos nije podesen. Za MUP CG prelaze (gostun, debeli-brijeg)
     // thumbs_scraper na serveru ipak ume da izvuce periodicnu sliku iz njihovih
