@@ -4,6 +4,10 @@ name: CI
 # node --check za JS (samostalni .js + inline blokovi u HTML-u),
 # json.loads za JSON-LD blokove i .json fajlove.
 # Sve provere su OFFLINE — ne trose TomTom/ORS kvote i ne zavise od zivih sajtova.
+#
+# Python zivi u privatnom repou gasolina-engine. Selftestovi se vrte nad engine/
+# kodom, a ci_checks.py se pokrece iz korena javnog repoa jer proverava njegove
+# HTML/JS/JSON fajlove.
 
 on:
   push:
@@ -17,23 +21,41 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # PR-ovi sa forkova nemaju pristup Secrets-ima. Tada se engine ne povuce,
+      # pa se Python provere preskacu umesto da ceo CI padne.
+      - name: Checkout engine (private)
+        id: engine
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: vojinovic/gasolina-engine
+          token: ${{ secrets.ENGINE_TOKEN }}
+          path: engine
+
       - name: Zavisnosti (requests, bs4, ffmpeg za thumbs selftest)
         run: |
           pip install requests beautifulsoup4
           sudo apt-get update -q && sudo apt-get install -y -q ffmpeg
 
       - name: py_compile svih .py
-        run: python3 -m py_compile *.py
+        if: steps.engine.outcome == 'success'
+        run: python3 -m py_compile engine/*.py
 
       - name: Selftestovi (svih 5 scrapera, offline)
+        if: steps.engine.outcome == 'success'
         run: |
-          python3 granice_scraper.py --selftest
-          python3 scraper.py --selftest
-          python3 pumpe_scraper.py --selftest
-          python3 putevi_scraper.py --selftest
-          python3 thumbs_scraper.py --selftest
+          python3 engine/granice_scraper.py --selftest
+          python3 engine/scraper.py --selftest
+          python3 engine/pumpe_scraper.py --selftest
+          python3 engine/putevi_scraper.py --selftest
+          python3 engine/thumbs_scraper.py --selftest
 
       - name: JS + JSON-LD + JSON provere (ci_checks.py)
+        if: steps.engine.outcome == 'success'
         run: |
-          python3 ci_checks.py --selftest
-          python3 ci_checks.py
+          python3 engine/ci_checks.py --selftest
+          python3 engine/ci_checks.py
+
+      - name: Upozorenje ako engine nije dostupan
+        if: steps.engine.outcome != 'success'
+        run: echo "::warning::gasolina-engine nije povucen - Python provere preskocene."
