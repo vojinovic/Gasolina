@@ -77,19 +77,19 @@ window.BORDERS = (function () {
       id: "bogorodica", pbId: ["", "0x135626c88b4d3907%3A0xc81c83269be4c289"], pbIdIn: ["0x135626c88b4d3907%3A0xc81c83269be4c289", "0x135626c9f9dda211%3A0x5d10bb96bd3d13f7"], mapPBin: [41.1276257, 22.5516536, 41.134253, 22.5490008], mapPB: [41.135969, 22.5464805, 41.1276257, 22.5516536], mapRoute: ["Граничен премин Богородица", "Border Crossing Point of Evzoni"], coords: [41.1264, 22.5092], name: "Bogorodica", from: "MK", to: "GR",
       pair: "Evzoni (GR)", road: "E75", provider: "roads.org.mk",
       official: "https://alltrafficcams.com/live/border-crossings/north-macedonia/greece/bogorodica-evzonoi/",
-      noWait: true,
       feeds: [
         { label: "Izlaz (ka Grckoj)", dir: "out", src: "https://streaming1.neotel.net.mk/stream/bogorodica.m3u8" },
       ],
       wait: null,
     },
     {
-      // Koridor je trenutno svega 455 m - prekratak da TomTom uhvati kolonu,
-      // pa ceka razvlacenje tacaka.
-      id: "medzitlija", pbId: ["0x13573d6cb8ecbd0d%3A0xc6a3c89b4649d5d6", "0x13573c302bc67dbd%3A0xc5ee65e054690921"], pbIdIn: ["0x13573c302bc67dbd%3A0xc5ee65e054690921", "0x13573d6cb8ecbd0d%3A0xc6a3c89b4649d5d6"], mapPB: [40.919858, 21.416662, 40.9160515, 21.4186403], mapPBin: [40.9160515, 21.4186403, 40.919858, 21.416662], mapRoute: ["Граничен премин Меџитлија", "Niki Customs"], coords: [40.9199, 21.4167], name: "Medzitlija", from: "MK", to: "GR",
+      // Koridor kalibrisan 26.07.2026 - tacke su IZVAN obe stanice (selo
+      // Medzitlija i Kaoil pumpa), 1425 m vazdusno / 1.5 km rutom, odnos 1.05,
+      // bez petlje. Stare tacke (same stanice, 455 m) davale su 6.4 km jer su
+      // bile sa suprotnih strana rampi.
+      id: "medzitlija", mapPB: [40.925092, 21.417021, 40.912327, 21.418543], mapPBin: [40.912327, 21.418543, 40.925092, 21.417021], mapRoute: ["Граничен премин Меџитлија", "Niki Customs"], coords: [40.9199, 21.4167], name: "Medzitlija", from: "MK", to: "GR",
       pair: "Niki (GR)", road: "E65", provider: "neotel.net.mk",
       official: "https://alltrafficcams.com/live/border-crossings/north-macedonia/greece/medzitlija-niki/",
-      noWait: true,
       feeds: [
         { label: "Ulaz (ka Makedoniji)", dir: "in", src: "https://streaming1.neotel.net.mk/stream/medzitlija.m3u8" },
       ],
