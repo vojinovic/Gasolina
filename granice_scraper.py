@@ -867,10 +867,10 @@ def selftest():
     tt_ok = tt_ok and tt_delay_from_response({"routes": []}) == (None, None)
     tt_ok = tt_ok and tt_delay_from_response({"routes": [{"summary": {"travelTimeInSeconds": 100}}]}) == (None, None)
     corr = parse_tt_corridors()
-    # gradina i bogorodica imaju OBA smera (bogorodica dobila mapPBin iz
-    # alltrafficcams drugog embed-a 24.07.2026, Ivan potvrdio: 1 km pravo kroz stanicu).
-    # presevo i dojran NEMAJU ulaz: obrnuti par za presevo rutira 15 km obilazno
-    # (Tabanovce -> Presevo, provereno 24.07.2026) - ceka drugacije tacke.
+    # gradina, bogorodica i presevo imaju OBA smera. Ulazni parovi su birani tako
+    # da NE petljaju: tacke moraju biti na kolovozu ka Srbiji/Makedoniji, inace
+    # Google/TomTom rutaju preko okretnice (presevo je sa lose tacke davao 15 km
+    # za 900 m vazdusne linije). Dojran i dalje samo izlaz.
     if corr:
         g = corr.get("gradina", {})
         p = corr.get("presevo", {})
@@ -878,7 +878,7 @@ def selftest():
         d = corr.get("dojran", {})
         tt_ok = tt_ok and g.get("izlaz") is not None and g.get("ulaz") is not None
         tt_ok = tt_ok and b.get("izlaz") is not None and b.get("ulaz") is not None
-        tt_ok = tt_ok and p.get("izlaz") is not None and p.get("ulaz") is None
+        tt_ok = tt_ok and p.get("izlaz") is not None and p.get("ulaz") is not None
         tt_ok = tt_ok and d.get("izlaz") is not None and d.get("ulaz") is None
     print(f"[{'OK ' if tt_ok else 'FAIL'}] tomtom (parsiranje odgovora + koridora): {len(corr)} koridora")
     ok = ok and tt_ok
