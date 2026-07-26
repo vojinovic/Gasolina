@@ -1,0 +1,82 @@
+Copyright (c) 2026 Ivan Vojinović. Sva prava zadržana.
+All rights reserved.
+
+--------------------------------------------------------------------------
+SRPSKI
+--------------------------------------------------------------------------
+
+Ovaj repozitorijum i sav njegov sadržaj — izvorni kod, skripte, HTML/CSS/JS
+datoteke, tekstovi, dizajn, kalibrisane koordinate graničnih koridora, kao i
+struktura i organizacija podataka — vlasništvo su autora i zaštićeni su
+zakonom o autorskom i srodnim pravima.
+
+NIJE DOZVOLJENO, bez prethodne pisane saglasnosti autora:
+
+  1. Kopiranje, umnožavanje ili distribucija koda ili bilo kog njegovog dela.
+  2. Izmena, prevođenje ili izrada izvedenih dela.
+  3. Komercijalna ili nekomercijalna upotreba u drugim projektima.
+  4. Automatsko preuzimanje podataka (scraping, crawling) sa gasolina.rs,
+     uključujući datoteke granice.json, fuel_prices.json i thumbs/,
+     kao i njihovo dalje objavljivanje ili preprodaja.
+  5. Zaobilaženje tehničkih ograničenja pristupa.
+
+DOZVOLJENO JE:
+
+  - Korišćenje sajta gasolina.rs u lične, nekomercijalne svrhe.
+  - Deljenje linkova ka stranicama sajta.
+  - Citiranje pojedinačnih podataka uz jasno navođenje izvora i vidljiv
+    link ka gasolina.rs.
+
+NAPOMENA O PODACIMA TREĆIH STRANA
+
+Sajt prikazuje podatke iz javno dostupnih izvora (AMSS, Uprava granične
+policije RS, MUP, mađarska policija, AMSM, BorderAlarm, TomTom, Ministarstvo
+unutrašnje i spoljne trgovine RS, nafta.hr i drugi). Ti podaci pripadaju
+svojim vlasnicima i ova licenca se na njih ne odnosi. Autorsko pravo iz ove
+licence odnosi se na kod, dizajn, obradu, kalibraciju i način prikaza.
+
+Podaci se prikazuju informativno, bez garancije tačnosti i potpunosti.
+Autor ne odgovara za odluke donete na osnovu prikazanih podataka.
+
+Za dozvole, saradnju i pitanja: gasolina.rs
+
+--------------------------------------------------------------------------
+ENGLISH
+--------------------------------------------------------------------------
+
+This repository and all of its contents — source code, scripts, HTML/CSS/JS
+files, texts, design, calibrated border corridor coordinates, and the
+structure and organisation of the data — are the property of the author and
+are protected by copyright law.
+
+WITHOUT PRIOR WRITTEN PERMISSION FROM THE AUTHOR, YOU MAY NOT:
+
+  1. Copy, reproduce or distribute the code or any part of it.
+  2. Modify, translate or create derivative works.
+  3. Use it in other projects, commercially or otherwise.
+  4. Automatically harvest data (scraping, crawling) from gasolina.rs,
+     including granice.json, fuel_prices.json and thumbs/, nor republish
+     or resell such data.
+  5. Circumvent technical access restrictions.
+
+YOU MAY:
+
+  - Use the gasolina.rs website for personal, non-commercial purposes.
+  - Share links to pages on the site.
+  - Quote individual data points with clear attribution and a visible link
+    to gasolina.rs.
+
+THIRD-PARTY DATA
+
+The site displays data from publicly available sources (AMSS, Serbian Border
+Police, Ministry of Interior, Hungarian Police, AMSM, BorderAlarm, TomTom,
+the Serbian Ministry of Internal and Foreign Trade, nafta.hr and others).
+That data belongs to its respective owners and is not covered by this
+licence, which applies to the code, design, processing, calibration and
+presentation.
+
+Data is provided for information only, without warranty of accuracy or
+completeness. The author accepts no liability for decisions made on the
+basis of the displayed data.
+
+Permissions and enquiries: gasolina.rs
