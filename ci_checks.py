@@ -46,9 +46,26 @@ def check_node(code, label, problems):
         os.remove(tmp)
 
 
+def check_tdz(path, text, problems):
+    """Hvata upotrebu `srcs.push(...)` PRE `const srcs = []` u istom skriptu.
+    Sintaksno je ispravno, pa node --check to propusti, ali u browseru puca kao
+    ReferenceError (temporal dead zone) i obori CEO try blok - wait-box onda
+    pise "Trenutno stanje nije dostupno". Desilo se 26.07.2026 na svih 22
+    landing stranice kad je TT blok zavrsio unutar eff()."""
+    decl = text.find("const srcs = []")
+    if decl == -1:
+        return
+    use = text.find("srcs.push(")
+    if use != -1 and use < decl:
+        line = text.count("\n", 0, use) + 1
+        problems.append(f"{path}: srcs.push() na liniji {line} je PRE `const srcs = []` "
+                        f"(linija {text.count(chr(10), 0, decl) + 1}) - puca u browseru")
+
+
 def check_html(path, problems):
     with open(path, encoding="utf-8") as f:
         text = f.read()
+    check_tdz(path, text, problems)
     n_js = n_ld = 0
     for m in SCRIPT_RE.finditer(text):
         attrs, body = m.group(1), m.group(2)
