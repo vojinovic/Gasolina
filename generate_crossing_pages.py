@@ -61,6 +61,7 @@ L = {
     "wait_loading": "U\u010ditavanje trenutnog stanja\u2026",
     "wait_unavail": 'Trenutno stanje nije dostupno - proveri direktno na <a href="{root}granice.html#{id}" style="color:var(--fuel)">granice.html</a>.',
     "no_queue": "Bez guzve", "no_data": "nema podataka",
+    "src_amss_only": "jedini izvor: AMSS (podrazumevana vrednost)",
     "map_h": "Gu\u017eva na mapi: {a} \u2192 {b}",
     "src_ba": "Prijave voza\u010da (BorderAlarm)", "src_hu": "Ma\u0111arska strana", "src_mk": "Makedonska strana",
     "src_tt": "Mapa saobra\u0107aja", "tt_note": "bez paso\u0161ke kontrole", "tt_kolona": "kolona",
@@ -100,6 +101,7 @@ L = {
     "wait_loading": "Loading current status\u2026",
     "wait_unavail": 'Current status unavailable - check directly on <a href="{root}granice.html#{id}" style="color:var(--fuel)">the borders page</a>.',
     "no_queue": "No queue", "no_data": "no data",
+    "src_amss_only": "only source: AMSS (default value)",
     "map_h": "Traffic on the map: {a} \u2192 {b}",
     "src_ba": "Driver reports (BorderAlarm)", "src_hu": "Hungarian side", "src_mk": "North Macedonian side",
     "src_tt": "Traffic map", "tt_note": "excludes passport control", "tt_kolona": "queue",
@@ -450,14 +452,19 @@ PAGE_TMPL = """<!DOCTYPE html>
         }}
         if (c && c.ba) {{ const v = c.ba[dirKey]; if (v != null && v > 0) cands.push({{v, src: "{src_ba}"}}); }}
         if (c && c.tt) {{ const v = c.tt[dirKey]; if (v != null && v > 0) cands.push({{v, src: "{src_tt}"}}); }}
-        if (!cands.length) return {{v: null, src: null}};
+        if (!cands.length) return {{v: null, src: null, samAmss: false}};
         let best = cands[0];
         cands.forEach(x => {{ if (best.v == null || (x.v != null && x.v > best.v)) best = x; }});
+        // AMSS-ovih 30 je podrazumevana vrednost ("bez zadrzavanja"), ne merenje.
+        // Kad je jedini kandidat, uz brojku se ispisuje odakle dolazi.
+        best.samAmss = (cands.length === 1 && best.src === null && best.v === 30);
         return best;
       }};
       const eIn = eff('ulaz'), eOut = eff('izlaz');
       _waitState = {{inn: eIn.v, out: eOut.v}};
-      const srcNote = (e) => e.src ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">{src_label}: ${{e.src}}</div>` : '';
+      const srcNote = (e) => e.src
+        ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">{src_label}: ${{e.src}}</div>`
+        : (e.samAmss ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">{src_amss_only}</div>` : '');
       box.innerHTML = `
         <div class="wcell"><div class="wlabel">{wait_in}</div><div class="wval">${{fmt(eIn.v)}}</div>${{srcNote(eIn)}}</div>
         <div class="wcell"><div class="wlabel">{wait_out}</div><div class="wval">${{fmt(eOut.v)}}</div>${{srcNote(eOut)}}</div>`;
@@ -749,6 +756,7 @@ def render_page(c, all_c, lang):
         og_image=og_image,
         feeds_json=json.dumps([{"label": translate_feed_label(f["label"], lang), "src": f["src"]} for f in c["feeds"]], ensure_ascii=False),
         no_queue=t["no_queue"], no_data=t["no_data"],
+        src_amss_only=t["src_amss_only"],
         src_ba=t["src_ba"], src_hu=t["src_hu"], src_mk=t["src_mk"],
         src_tt=t["src_tt"], tt_note=t["tt_note"], tt_kolona=t["tt_kolona"],
         lbl_out=t["lbl_out"], lbl_in=t["lbl_in"], src_label=t["src_label"],
