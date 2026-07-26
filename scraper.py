@@ -350,12 +350,35 @@ def scrape_hungary():
     }
 
 
+def fetch_text(url):
+    """GET za text/plain izvore (fuel-prices.eu llms.txt).
+
+    26.07.2026: sva tri poziva (BG/GR/RO) vratila su 415 Unsupported Media Type
+    iako je sadrzaj nepromenjen - server je poceo da trazi Accept zaglavlje.
+    Zato saljemo Accept i probamo par varijanti pre nego sto odustanemo.
+    """
+    varijante = (
+        {**HEADERS, "Accept": "text/plain, text/*;q=0.9, */*;q=0.8",
+         "Accept-Language": "en-US,en;q=0.9"},
+        {**HEADERS, "Accept": "*/*"},
+        {"User-Agent": "curl/8.5.0", "Accept": "*/*"},
+    )
+    poslednja = None
+    for h in varijante:
+        try:
+            r = requests.get(url, headers=h, timeout=20)
+            r.raise_for_status()
+            return r.text
+        except Exception as e:
+            poslednja = e
+            continue
+    raise poslednja
+
+
 def scrape_bulgaria():
     """fuel-prices.eu/Bulgaria/llms.txt - clean machine-readable format from EU Oil Bulletin."""
     url = "https://www.fuel-prices.eu/Bulgaria/llms.txt"
-    r = requests.get(url, headers=HEADERS, timeout=20)
-    r.raise_for_status()
-    text = r.text
+    text = fetch_text(url)
 
     def grab(label):
         m = re.search(rf"^{label}\s+€\s*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
@@ -441,9 +464,7 @@ def scrape_albania():
 def scrape_greece():
     """fuel-prices.eu/Greece/llms.txt - same EU Oil Bulletin format as Bulgaria."""
     url = "https://www.fuel-prices.eu/Greece/llms.txt"
-    r = requests.get(url, headers=HEADERS, timeout=20)
-    r.raise_for_status()
-    text = r.text
+    text = fetch_text(url)
 
     def grab(label):
         m = re.search(rf"^{label}\s+€\s*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
@@ -468,9 +489,7 @@ def scrape_romania():
     """fuel-prices.eu/Romania/llms.txt - EU Oil Bulletin, isti format kao Bugarska.
     Cene su u evrima; lokalna valuta je RON, pa preracunavamo preko kursa."""
     url = "https://www.fuel-prices.eu/Romania/llms.txt"
-    r = requests.get(url, headers=HEADERS, timeout=20)
-    r.raise_for_status()
-    text = r.text
+    text = fetch_text(url)
 
     def grab(label):
         m = re.search(rf"^{label}\s+€\s*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
