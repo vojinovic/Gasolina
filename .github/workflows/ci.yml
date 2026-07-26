@@ -1,0 +1,39 @@
+name: CI
+
+# Na svaki push i PR: py_compile svih .py, svi --selftest-ovi,
+# node --check za JS (samostalni .js + inline blokovi u HTML-u),
+# json.loads za JSON-LD blokove i .json fajlove.
+# Sve provere su OFFLINE — ne trose TomTom/ORS kvote i ne zavise od zivih sajtova.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Zavisnosti (requests, bs4, ffmpeg za thumbs selftest)
+        run: |
+          pip install requests beautifulsoup4
+          sudo apt-get update -q && sudo apt-get install -y -q ffmpeg
+
+      - name: py_compile svih .py
+        run: python3 -m py_compile *.py
+
+      - name: Selftestovi (svih 5 scrapera, offline)
+        run: |
+          python3 granice_scraper.py --selftest
+          python3 scraper.py --selftest
+          python3 pumpe_scraper.py --selftest
+          python3 putevi_scraper.py --selftest
+          python3 thumbs_scraper.py --selftest
+
+      - name: JS + JSON-LD + JSON provere (ci_checks.py)
+        run: |
+          python3 ci_checks.py --selftest
+          python3 ci_checks.py
