@@ -368,7 +368,13 @@ def fetch_text(url):
         try:
             r = requests.get(url, headers=h, timeout=20)
             r.raise_for_status()
-            return r.text
+            # Bez charset-a u zaglavlju requests pretpostavi ISO-8859-1 i znak
+            # EUR se raspadne, pa regex sa "\u20ac" ne pogadja (26.07.2026).
+            r.encoding = "utf-8"
+            txt = r.text
+            if "Euro 95" not in txt and "Euro95" not in txt:
+                continue   # verovatno HTML umesto text/plain - probaj sledeca zaglavlja
+            return txt
         except Exception as e:
             poslednja = e
             continue
@@ -381,7 +387,8 @@ def scrape_bulgaria():
     text = fetch_text(url)
 
     def grab(label):
-        m = re.search(rf"^{label}\s+€\s*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
+        # Ne oslanjaj se na znak valute: preskoci sve sto nije cifra do prvog broja.
+        m = re.search(rf"^{label}\s+[^\d\n]*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
         if not m:
             raise ValueError(f"Bulgaria: missing {label}")
         return float(m.group(1).replace(",", "."))
@@ -467,7 +474,8 @@ def scrape_greece():
     text = fetch_text(url)
 
     def grab(label):
-        m = re.search(rf"^{label}\s+€\s*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
+        # Ne oslanjaj se na znak valute: preskoci sve sto nije cifra do prvog broja.
+        m = re.search(rf"^{label}\s+[^\d\n]*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
         if not m:
             raise ValueError(f"Greece: missing {label}")
         return float(m.group(1).replace(",", "."))
@@ -492,7 +500,8 @@ def scrape_romania():
     text = fetch_text(url)
 
     def grab(label):
-        m = re.search(rf"^{label}\s+€\s*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
+        # Ne oslanjaj se na znak valute: preskoci sve sto nije cifra do prvog broja.
+        m = re.search(rf"^{label}\s+[^\d\n]*(\d+[.,]\d+)", text, re.IGNORECASE | re.MULTILINE)
         if not m:
             raise ValueError(f"Romania: missing {label}")
         return float(m.group(1).replace(",", "."))
@@ -658,6 +667,23 @@ def selftest():
         <tr><td>Hrvatska</td><td>91,85 &euro;</td><td>102,85 &euro;</td></tr>
       </table>"""
     hr_soup = BeautifulSoup(hr_html, "html.parser")
+    # EU Oil Bulletin (BG/GR/RO): parser ne sme da zavisi od znaka valute -
+    # 26.07.2026 je server prestao da salje charset, EUR se raspao i sva tri
+    # su pala. Fixture pokriva sve tri varijante dekodiranja.
+    eu_ok = True
+    for naziv, uzorak in (
+        ("utf-8", "Euro 95     \u20ac1.462      \u20ac5.53\nDiesel      \u20ac1.478"),
+        ("raspadnut", "Euro 95     \u00e2\u0082\u00ac1.462   x\nDiesel      \u00e2\u0082\u00ac1.478"),
+        ("bez valute", "Euro 95     1.462   5.53\nDiesel      1.478"),
+    ):
+        for lab, exp in ((r"Euro\s*95", 1.462), (r"Diesel", 1.478)):
+            m = re.search(rf"^{lab}\s+[^\d\n]*(\d+[.,]\d+)", uzorak, re.I | re.M)
+            if not m or float(m.group(1)) != exp:
+                eu_ok = False
+    if not eu_ok:
+        ok = False
+    print(f"[{'OK ' if eu_ok else 'FAIL'}] EU Oil Bulletin regex (3 varijante dekodiranja EUR)")
+
     hr_par = _region_row_eur(hr_soup, "Hrvatska")
     hr_ok = (hr_par == (1.67, 1.87))
     if not hr_ok:
