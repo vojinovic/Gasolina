@@ -146,6 +146,18 @@ def parse_crossings(js_text):
         map_pb_in = tuple(float(x) for x in pim.groups()) if pim else None
         rm = re.search(r'mapRoute:\s*\["([^"]+)",\s*"([^"]+)"\]', chunk)
         map_route = (rm.group(1), rm.group(2)) if rm else None
+        # Opcioni Google place ID-jevi za pb mapu (preuzeti VERBATIM sa
+        # alltrafficcams embed-a, nikad izmisljeni). Bez njih Google reverse-
+        # geokodira tacku na najblizi POI - kod bogorodice je to bila spedicija
+        # "Blue Bell Customs Broker" umesto same granicne stanice.
+        # Format: pbId: ["0x...%3A0x...", "0x...%3A0x..."] (A = nasa strana, B = susedna)
+        idm = re.search(r'pbId:\s*\["([^"]*)",\s*"([^"]*)"\]', chunk)
+        pb_id = (idm.group(1) or None, idm.group(2) or None) if idm else None
+        # Ulazna mapa moze da ima DRUGI par ID-jeva: mapPB i mapPBin pokazuju na
+        # razlicite tacke (jednosmerne trake), pa se i place ID kaci gde odgovara.
+        # Prazan string = bez ID-ja (koristi se gola koordinata).
+        idim = re.search(r'pbIdIn:\s*\["([^"]*)",\s*"([^"]*)"\]', chunk)
+        pb_id_in = (idim.group(1) or None, idim.group(2) or None) if idim else None
 
         out.append({
             "id": cid,
@@ -155,6 +167,7 @@ def parse_crossings(js_text):
             "provider": field("provider", ""), "official": field("official", "#"),
             "feeds": feeds, "link_only": link_only, "no_wait": no_wait,
             "map_pb": map_pb, "map_pb_in": map_pb_in, "map_route": map_route,
+            "pb_id": pb_id, "pb_id_in": pb_id_in,
         })
     return out
 
@@ -423,7 +436,11 @@ PAGE_TMPL = """<!DOCTYPE html>
         const p = (c && c.found && c.putnicka) ? c.putnicka[dirKey] : null;
         if (p != null) cands.push({{v: p, src: null}});
         if (c && c.hu) {{ const v = c.hu[dirKey]; if (v != null && v > 0) cands.push({{v, src: "{src_hu}"}}); }}
-        if (c && c.mk) {{
+        if (c && c.tt && (c.tt.izlaz != null || c.tt.ulaz != null)) {{
+        const km = (m) => m ? ` ({tt_kolona} ~${{m}}m)` : "";
+        srcs.push(`🗺️ <b>{src_tt}:</b> {lbl_out} ${{mfmt(c.tt.izlaz)}}${{km(c.tt.izlaz_kolona_m)}} \u00b7 {lbl_in} ${{mfmt(c.tt.ulaz)}}${{km(c.tt.ulaz_kolona_m)}} \u00b7 {tt_note}`);
+      }}
+      if (c && c.mk) {{
           const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
           if (v != null && v > 0) cands.push({{v, src: "{src_mk}"}});
           if (c.mk.opsto != null && c.mk.opsto > 0) cands.push({{v: c.mk.opsto, src: "{src_mk}"}});
@@ -447,10 +464,6 @@ PAGE_TMPL = """<!DOCTYPE html>
       const mfmt = m => (m == null) ? "-" : (m + " min");
       if (c && c.ba) srcs.push(`\\uD83D\\uDE97 <b>{src_ba}:</b> {lbl_out} ${{mfmt(c.ba.izlaz)}} \\u00b7 {lbl_in} ${{mfmt(c.ba.ulaz)}}`);
       if (c && c.hu) srcs.push(`\\uD83C\\uDDED\\uD83C\\uDDFA <b>{src_hu}:</b> {lbl_in} ${{fmt(c.hu.ulaz)}} \\u00b7 {lbl_out} ${{fmt(c.hu.izlaz)}}`);
-      if (c && c.tt && (c.tt.izlaz != null || c.tt.ulaz != null)) {{
-        const km = (m) => m ? ` ({tt_kolona} ~${{m}}m)` : "";
-        srcs.push(`🗺️ <b>{src_tt}:</b> {lbl_out} ${{mfmt(c.tt.izlaz)}}${{km(c.tt.izlaz_kolona_m)}} \u00b7 {lbl_in} ${{mfmt(c.tt.ulaz)}}${{km(c.tt.ulaz_kolona_m)}} \u00b7 {tt_note}`);
-      }}
       if (c && c.mk) {{
         const mkTxt = (c.mk.opsto != null) ? ("~" + c.mk.opsto + " min")
           : ["vlez: " + mfmt(c.mk.vlez), "izlez: " + mfmt(c.mk.izlez)].join(" \\u00b7 ");
@@ -578,10 +591,29 @@ def build_hero(c, lang, root):
         mid_lat, mid_lon = (o_lat + d_lat) / 2, (o_lon + d_lon) / 2
         lp = "!1ssr!2srs" if lang == "sr" else "!1sen!2sus"
 
-        def pb_iframe(a_lat, a_lon, b_lat, b_lon, heading):
-            pb = (f"!1m24!1m12!1m3!1d11672.3!2d{mid_lon}!3d{mid_lat}"
+        def pb_iframe(a_lat, a_lon, b_lat, b_lon, heading, a_id=None, b_id=None):
+            # Tacka bez place ID-ja: !4m3!3m2!1d..!2d.. (Google sam trazi najblizi POI).
+            # Tacka sa ID-jem:      !4m5!1s<id>!2s<ime>!3m2!1d..!2d..
+            # Brojaci moraju da prate: svaki ID dodaje +2 i unutrasnjem (!4mN)
+            # i spoljnom (!1mN) brojacu - inace Google odbaci ceo pb.
+            names = c.get("map_route") or ("", "")
+            label_by_id = {}
+            for pair in (c.get("pb_id"), c.get("pb_id_in")):
+                if pair:
+                    for pid, nm in zip(pair, names):
+                        if pid:
+                            label_by_id.setdefault(pid, nm)
+
+            def point(lat, lon, pid):
+                if not pid:
+                    return f"!4m3!3m2!1d{lat}!2d{lon}"
+                lbl = urllib.parse.quote(label_by_id.get(pid, ""))
+                return f"!4m5!1s{pid}!2s{lbl}!3m2!1d{lat}!2d{lon}"
+
+            extra = (2 if a_id else 0) + (2 if b_id else 0)
+            pb = (f"!1m{24 + extra}!1m12!1m3!1d11672.3!2d{mid_lon}!3d{mid_lat}"
                   f"!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1"
-                  f"!4m9!3e0!4m3!3m2!1d{a_lat}!2d{a_lon}!4m3!3m2!1d{b_lat}!2d{b_lon}"
+                  f"!4m{9 + extra}!3e0{point(a_lat, a_lon, a_id)}{point(b_lat, b_lon, b_id)}"
                   f"!5e0!3m2{lp}!4v1627540443619!5m2{lp}")
             return (
                 f'<div class="map-box"><h2 style="font-family:\'Barlow Condensed\',sans-serif;font-size:20px;'
@@ -594,12 +626,17 @@ def build_hero(c, lang, root):
         # smer 1 (kalibrisan izlaz) + smer 2: poseban kalibrisan ULAZNI par ako
         # postoji (mapPBin - trake na stanicama su jednosmerne pa obrnute tacke
         # rutaju obilazno i oblacic sa vremenom ode van kadra), inace obrnute tacke
-        parts.append(pb_iframe(o_lat, o_lon, d_lat, d_lon, t["map_h"].format(a=from_c, b=to_c)))
+        id_a, id_b = c.get("pb_id") or (None, None)
+        parts.append(pb_iframe(o_lat, o_lon, d_lat, d_lon, t["map_h"].format(a=from_c, b=to_c),
+                               id_a, id_b))
         if c.get("map_pb_in"):
             i_olat, i_olon, i_dlat, i_dlon = c["map_pb_in"]
-            parts.append(pb_iframe(i_olat, i_olon, i_dlat, i_dlon, t["map_h"].format(a=to_c, b=from_c)))
+            in_a, in_b = c.get("pb_id_in") or (id_b, id_a)
+            parts.append(pb_iframe(i_olat, i_olon, i_dlat, i_dlon, t["map_h"].format(a=to_c, b=from_c),
+                                   in_a, in_b))
         else:
-            parts.append(pb_iframe(d_lat, d_lon, o_lat, o_lon, t["map_h"].format(a=to_c, b=from_c)))
+            parts.append(pb_iframe(d_lat, d_lon, o_lat, o_lon, t["map_h"].format(a=to_c, b=from_c),
+                                   id_b, id_a))
         parts.append(f'<div style="font-size:11px;color:var(--faint);margin-top:6px">{t["map_note"]}</div>')
     elif c.get("map_route"):
         from_c2 = COUNTRY[lang].get(c["from"], c["from"])
