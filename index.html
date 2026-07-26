@@ -146,7 +146,9 @@
     .sort-wrap { display: inline-flex; align-items: center; gap: 10px; color: var(--dim); font-size: 14px; }
     .sort-wrap select, .calc-input select, .calc-input input {
       background: var(--panel); color: var(--text); border: 1px solid var(--line);
-      border-radius: 8px; padding: 8px 12px; font-size: 14px; cursor: pointer;
+      /* 16px je donja granica: ispod toga iOS Safari sam zumira stranicu na fokus
+         polja i korisnik ostane zumiran - najcesca mobilna zamerka kalkulatoru */
+      border-radius: 8px; padding: 10px 12px; font-size: 16px; cursor: pointer;
     }
 
     .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
@@ -248,7 +250,7 @@
     .home-hero { padding: 26px 0 24px; }
     .home-hero .subtitle { max-width: 58ch; font-size: 16px; margin-bottom: 0; }
     .route-pick { display: flex; gap: 10px; margin-top: 18px; max-width: 640px; flex-wrap: wrap; }
-    .route-pick select { flex: 1; min-width: 230px; background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 13px 14px; font-size: 15px; cursor: pointer; }
+    .route-pick select { flex: 1; min-width: 230px; background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 13px 14px; font-size: 16px; cursor: pointer; }
     .route-btn { background: var(--fuel); color: var(--ink); border: none; border-radius: 10px; padding: 13px 20px; font-family: "Barlow Condensed",sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: 16px; cursor: pointer; white-space: nowrap; }
     .route-btn:hover { filter: brightness(1.06); }
 
