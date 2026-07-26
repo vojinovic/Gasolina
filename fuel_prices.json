@@ -18,7 +18,7 @@
         "eur": 0.9
       },
       "price_source": "nafta.hr",
-      "updated": "2026-07-25 08:54 UTC"
+      "updated": "2026-07-26 19:54 UTC"
     },
     {
       "name": "Croatia",
@@ -45,18 +45,18 @@
       "currency": "BAM",
       "fx_rate_eur": 1.95583,
       "petrol95": {
-        "local": 2.44,
-        "eur": 1.25
+        "local": 2.84,
+        "eur": 1.45
       },
       "diesel": {
-        "local": 2.47,
-        "eur": 1.26
+        "local": 3.13,
+        "eur": 1.6
       },
       "lpg": {
-        "local": 1.35,
-        "eur": 0.69
+        "local": 1.36,
+        "eur": 0.7
       },
-      "updated": "2026-05-15 19:42 UTC"
+      "updated": "2026-07-26 19:54 UTC"
     },
     {
       "name": "Montenegro",
@@ -72,7 +72,7 @@
         "eur": 1.65
       },
       "lpg": null,
-      "updated": "2026-07-25 08:54 UTC"
+      "updated": "2026-07-26 19:54 UTC"
     },
     {
       "name": "Slovenia",
@@ -91,7 +91,7 @@
         "local": 0.94,
         "eur": 0.94
       },
-      "updated": "2026-07-25 08:54 UTC"
+      "updated": "2026-07-26 19:54 UTC"
     },
     {
       "name": "North Macedonia",
@@ -110,7 +110,7 @@
         "local": 47.0,
         "eur": 0.76
       },
-      "updated": "2026-07-25 08:54 UTC"
+      "updated": "2026-07-26 19:54 UTC"
     },
     {
       "name": "Hungary",
@@ -129,7 +129,7 @@
         "local": 1.01,
         "eur": 1.01
       },
-      "updated": "2026-07-25 08:54 UTC"
+      "updated": "2026-07-26 19:54 UTC"
     },
     {
       "name": "Bulgaria",
@@ -145,7 +145,7 @@
         "eur": 1.578
       },
       "lpg": null,
-      "updated": "2026-07-25 08:54 UTC"
+      "updated": "2026-07-26 19:54 UTC"
     },
     {
       "name": "Albania",
@@ -164,7 +164,7 @@
         "local": 69.0,
         "eur": 0.69
       },
-      "updated": "2026-07-25 08:54 UTC"
+      "updated": "2026-07-26 19:54 UTC"
     },
     {
       "name": "Greece",
@@ -180,7 +180,7 @@
         "eur": 1.95
       },
       "lpg": null,
-      "updated": "2026-07-25 08:54 UTC"
+      "updated": "2026-07-26 19:54 UTC"
     },
     {
       "name": "Romania",
@@ -196,7 +196,7 @@
         "eur": 1.888
       },
       "lpg": null,
-      "updated": "2026-07-25 08:54 UTC"
+      "updated": "2026-07-26 19:54 UTC"
     },
     {
       "name": "Kosovo",
@@ -212,7 +212,7 @@
         "eur": 1.5
       },
       "lpg": null,
-      "updated": "2026-07-25 08:54 UTC"
+      "updated": "2026-07-26 19:54 UTC"
     }
   ]
 }
