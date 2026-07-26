@@ -513,8 +513,12 @@ function cardHTML(c){
        </a>`;
   } else if(noCamera){
     paneInner = `<span class="badge">data only</span>
+       <a class="poster" href="border-${c.id}.html" aria-label="Open the ${c.name} crossing page"
+          onclick="track('thumb_klik', {prelaz:'${c.id}'})" style="position:static;background:none">
+         <span class="ptext">Traffic map + waiting times</span>
+       </a>
        <div class="pmsg" style="display:flex">
-         <p>There is no official camera for this crossing. Follow the waiting time below.</p>
+         <p>There is no official camera for this crossing. Waiting times below.</p>
        </div>`;
   } else {
     // linkOnly / feed jos nije podesen. Za MUP CG prelaze (gostun, debeli-brijeg)
@@ -564,9 +568,9 @@ function cardHTML(c){
     ${hereStrip(c)}`}
 
     <div class="cfoot">
-      <div class="src">${c.noWait ? `Camera: ${c.provider}` : `Source: Serbian border police<br>Camera: ${c.provider}`}</div>
+      <div class="src">${c.noCamera ? `Source: traffic map / Serbian border police` : (c.noWait ? `Camera: ${c.provider}` : `Source: Serbian border police<br>Camera: ${c.provider}`)}</div>
       <div class="cfoot-links">
-        <a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>
+        ${c.noCamera ? `` : `<a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>`}
         ${c.official2 ? `<a class="link" href="${c.official2.url}" target="_blank" rel="noopener">${c.official2.label}</a>` : ''}
       </div>
     </div>
