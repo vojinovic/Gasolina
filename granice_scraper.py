@@ -556,9 +556,17 @@ def build(text, hu_text=None, mk_text=None, ba_text=None, user_reports=None, tt_
         if cid in tt:
             entry["tt"] = tt[cid]
         crossings[cid] = entry
-    # bogorodica nije na AMSS mapi (MK-GR granica), ali MK podatak treba da udje
-    if "bogorodica" in mk and "bogorodica" not in crossings:
-        crossings["bogorodica"] = {"found": False, "mk": mk["bogorodica"]}
+    # Prelazi van AMSS mape (MK-GR granica: bogorodica, dojran) - MK i TomTom
+    # podaci moraju da udju iako AMSS ne zna za njih. Genericki: sve sto ima
+    # mk ili tt, a nije proslo kroz AMSS petlju iznad. (Ranije je specijalna
+    # grana za bogorodicu kacila SAMO mk, pa se TomTom zastoj/kolona gubio -
+    # zato je stranica pokazivala "30 min" dok je realna kolona bila sati.)
+    for cid in sorted(set(mk) | set(tt)):
+        entry = crossings.setdefault(cid, {"found": False})
+        if cid in mk and "mk" not in entry:
+            entry["mk"] = mk[cid]
+        if cid in tt and "tt" not in entry:
+            entry["tt"] = tt[cid]
     # gostun je linkOnly (nema AMSS/kamera), ali korisnicke prijave i dalje
     # mogu da postoje za njega - ne sme da ostane potpuno bez unosa u tom slucaju.
     if "gostun" in user:
@@ -771,7 +779,15 @@ def selftest():
         ur_ok = False  # oba horgos reda su nevazeca, ne sme da prodje nijedan broj
     print(f"[{'OK ' if ur_ok else 'FAIL'}] user_reports (prijave vozaca preko forme): {user_reports}")
 
-    result = build(SELFTEST_FIXTURE, HU_FIXTURE, MK_FIXTURE, BA_FIXTURE, user_reports)
+    # tt fixture: gradina je i na AMSS (spaja se u petlji), bogorodica i dojran
+    # NISU na AMSS - regresioni test da tt vise ne ispada iz JSON-a za njih.
+    tt_fixture = {
+        "gradina": {"izlaz": 12, "ulaz": 5, "izlaz_kolona_m": 380, "ulaz_kolona_m": None},
+        "bogorodica": {"izlaz": 25, "ulaz": None, "izlaz_kolona_m": 900, "ulaz_kolona_m": None},
+        "dojran": {"izlaz": 3, "ulaz": None, "izlaz_kolona_m": 0, "ulaz_kolona_m": None},
+    }
+    result = build(SELFTEST_FIXTURE, HU_FIXTURE, MK_FIXTURE, BA_FIXTURE, user_reports,
+                   tt_fixture)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     c = result["crossings"]
     ok = True
@@ -828,6 +844,18 @@ def selftest():
     if not ba_p_ok:
         ok = False
     print(f"[{'OK ' if ba_p_ok else 'FAIL'}] presevo.ba: got={ba_p} exp={ba_p_exp}")
+    # TT mora da udje i za AMSS prelaz (gradina) i za van-AMSS (bogorodica, dojran)
+    for cid in ("gradina", "bogorodica", "dojran"):
+        got_tt = c.get(cid, {}).get("tt")
+        exp_tt = tt_fixture[cid]
+        tt_ok = got_tt == exp_tt
+        if not tt_ok:
+            ok = False
+        print(f"[{'OK ' if tt_ok else 'FAIL'}] {cid}.tt: got={got_tt} exp={exp_tt}")
+    # ...i bogorodica pored tt zadrzava mk (ranija specijalna grana je pokrivala samo mk)
+    if c["bogorodica"].get("mk") != mk_b_exp:
+        ok = False
+        print(f"[FAIL] bogorodica.mk posle tt spajanja: {c['bogorodica'].get('mk')}")
     ok = ok and ur_ok
 
     # TomTom: parsiranje Orbis odgovora (fixture = struktura PRAVOG odgovora
@@ -839,12 +867,19 @@ def selftest():
     tt_ok = tt_ok and tt_delay_from_response({"routes": []}) == (None, None)
     tt_ok = tt_ok and tt_delay_from_response({"routes": [{"summary": {"travelTimeInSeconds": 100}}]}) == (None, None)
     corr = parse_tt_corridors()
-    # gradina mora da ima OBA smera (mapPB + mapPBin), presevo samo izlaz
+    # gradina i bogorodica imaju OBA smera (bogorodica dobila mapPBin iz
+    # alltrafficcams drugog embed-a 24.07.2026, Ivan potvrdio: 1 km pravo kroz stanicu).
+    # presevo i dojran NEMAJU ulaz: obrnuti par za presevo rutira 15 km obilazno
+    # (Tabanovce -> Presevo, provereno 24.07.2026) - ceka drugacije tacke.
     if corr:
         g = corr.get("gradina", {})
         p = corr.get("presevo", {})
+        b = corr.get("bogorodica", {})
+        d = corr.get("dojran", {})
         tt_ok = tt_ok and g.get("izlaz") is not None and g.get("ulaz") is not None
+        tt_ok = tt_ok and b.get("izlaz") is not None and b.get("ulaz") is not None
         tt_ok = tt_ok and p.get("izlaz") is not None and p.get("ulaz") is None
+        tt_ok = tt_ok and d.get("izlaz") is not None and d.get("ulaz") is None
     print(f"[{'OK ' if tt_ok else 'FAIL'}] tomtom (parsiranje odgovora + koridora): {len(corr)} koridora")
     ok = ok and tt_ok
     print("\nSELFTEST:", "PASS" if ok else "FAIL")
