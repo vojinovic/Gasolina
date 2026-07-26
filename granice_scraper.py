@@ -36,12 +36,20 @@ MK_URL = "https://amsm.mk/sostojba-na-patishta/dnevni-informacii/"
 # Iskljucuje se jednim flagom. Podatak se prikazuje uz atribuciju i link.
 BA_ENABLED = True
 BA_URL = "https://borderalarm.com/countries/serbia/"
+BA_URL_MK = "https://borderalarm.com/countries/northmacedonia/"
 BA_TARGETS = {
     "gradina":  r"dragina\s*/\s*kalotina",   # njihov (pogresan) naziv za Gradinu
     "presevo":  r"presevo\s*/\s*tabanovce",
     "horgos":   r"horgos\s*/\s*roszke",
     "kelebija": r"kelebija\s*/\s*tompa",
     "batrovci": r"batrovci\s*/\s*bajakovo",
+}
+# S. Makedonija ima zasebnu BorderAlarm stranicu (MK-GR granica). Redosled
+# vremena je isti kao nas (prvo MK->GR = izlaz, pa GR->MK = ulaz), pa parser
+# radi bez izmena - samo mu se prosledi drugi skup meta.
+BA_TARGETS_MK = {
+    "medzitlija": r"medzitlija\s*/\s*niki",
+    "bogorodica": r"bogorodica\s*/\s*evzoni",
 }
 OUT = "granice.json"
 
@@ -416,7 +424,7 @@ def fetch_mk():
         return r.read().decode("utf-8", "replace")
 
 
-def parse_ba(text):
+def parse_ba(text, targets=None):
     """Vraca {id: {'izlaz':m,'ulaz':m}} sa BorderAlarm liste za Srbiju, u minutima.
     Format po prelazu: ime, pa prvi 'N min.'/'N h.' = Srbija->X (izlaz),
     drugi 'N min.'/'N h.' = X->Srbija (ulaz). BorderAlarm prikazuje vreme u
@@ -426,7 +434,7 @@ def parse_ba(text):
     prelaza na listi) - otud pogresni/nepovezani brojevi kad je cekanje dugo."""
     low = fold(text).lower()
     res = {}
-    for cid, name in BA_TARGETS.items():
+    for cid, name in (targets or BA_TARGETS).items():
         mm = re.search(name, low)
         if mm is None:
             print(f"BA: {cid} ({name}) nije nadjen")
@@ -447,8 +455,8 @@ def parse_ba(text):
     return res
 
 
-def fetch_ba():
-    req = urllib.request.Request(BA_URL, headers={
+def fetch_ba(url=BA_URL):
+    req = urllib.request.Request(url, headers={
         "User-Agent": "Gasolina/1.0 (+https://vojinovic.github.io/Gasolina)"
     })
     with urllib.request.urlopen(req, timeout=30) as r:
@@ -533,11 +541,13 @@ def fetch_hu():
         return r.read().decode("utf-8", "replace")
 
 
-def build(text, hu_text=None, mk_text=None, ba_text=None, user_reports=None, tt_data=None):
+def build(text, hu_text=None, mk_text=None, ba_text=None, ba_text_mk=None, user_reports=None, tt_data=None):
     blocks = split_blocks(text)
     hu = parse_hu(hu_text) if hu_text else {}
     mk = parse_mk(mk_text) if mk_text else {}
     ba = parse_ba(ba_text) if ba_text else {}
+    if ba_text_mk:
+        ba.update(parse_ba(ba_text_mk, BA_TARGETS_MK))
     user = user_reports or {}
     tt = tt_data or {}
     crossings = {}
@@ -560,17 +570,22 @@ def build(text, hu_text=None, mk_text=None, ba_text=None, user_reports=None, tt_
         if cid in tt:
             entry["tt"] = tt[cid]
         crossings[cid] = entry
-    # Prelazi van AMSS mape (MK-GR granica: bogorodica, dojran) - MK i TomTom
-    # podaci moraju da udju iako AMSS ne zna za njih. Genericki: sve sto ima
-    # mk ili tt, a nije proslo kroz AMSS petlju iznad. (Ranije je specijalna
-    # grana za bogorodicu kacila SAMO mk, pa se TomTom zastoj/kolona gubio -
-    # zato je stranica pokazivala "30 min" dok je realna kolona bila sati.)
-    for cid in sorted(set(mk) | set(tt)):
+    # Prelazi van AMSS mape (MK-GR granica: bogorodica, medzitlija, dojran) -
+    # podaci iz svih ne-AMSS izvora moraju da udju iako AMSS ne zna za njih.
+    # Genericki: sve sto ima mk, tt, ba ili hu, a nije proslo kroz AMSS petlju
+    # iznad. (Ranije je grana spajala SAMO mk i tt, pa je BorderAlarm podatak za
+    # medzitliju/bogorodicu tiho ispadao - prelaz nije u TARGETS, pa ga AMSS
+    # petlja ne obradi, a ovde nije bio pokriven.)
+    for cid in sorted(set(mk) | set(tt) | set(ba) | set(hu)):
         entry = crossings.setdefault(cid, {"found": False})
         if cid in mk and "mk" not in entry:
             entry["mk"] = mk[cid]
         if cid in tt and "tt" not in entry:
             entry["tt"] = tt[cid]
+        if cid in ba and "ba" not in entry:
+            entry["ba"] = ba[cid]
+        if cid in hu and "hu" not in entry:
+            entry["hu"] = hu[cid]
     # gostun je linkOnly (nema AMSS/kamera), ali korisnicke prijave i dalje
     # mogu da postoje za njega - ne sme da ostane potpuno bez unosa u tom slucaju.
     if "gostun" in user:
@@ -753,6 +768,28 @@ Serbia
 """
 
 
+# Ziva BorderAlarm stranica za S. Makedoniju (MK-GR granica). Redosled je isti
+# kao na srpskoj: prvo MK->GR (izlaz), pa GR->MK (ulaz).
+BA_MK_FIXTURE = """
+GR
+Medzitlija / Niki Open
+15 min.
+North Macedonia \u2794
+Greece
+10 min.
+Greece \u2794
+North Macedonia
+GR
+Bogorodica / Evzoni Open
+5 min.
+North Macedonia \u2794
+Greece
+35 min.
+Greece \u2794
+North Macedonia
+"""
+
+
 def _fmt_ts(minutes_ago):
     ts = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None) - datetime.timedelta(minutes=minutes_ago)
     return ts.strftime("%m/%d/%Y %H:%M:%S")
@@ -790,8 +827,8 @@ def selftest():
         "bogorodica": {"izlaz": 25, "ulaz": None, "izlaz_kolona_m": 900, "ulaz_kolona_m": None},
         "dojran": {"izlaz": 3, "ulaz": None, "izlaz_kolona_m": 0, "ulaz_kolona_m": None},
     }
-    result = build(SELFTEST_FIXTURE, HU_FIXTURE, MK_FIXTURE, BA_FIXTURE, user_reports,
-                   tt_fixture)
+    result = build(SELFTEST_FIXTURE, HU_FIXTURE, MK_FIXTURE, BA_FIXTURE, BA_MK_FIXTURE,
+                   user_reports, tt_fixture)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     c = result["crossings"]
     ok = True
@@ -848,6 +885,15 @@ def selftest():
     if not ba_p_ok:
         ok = False
     print(f"[{'OK ' if ba_p_ok else 'FAIL'}] presevo.ba: got={ba_p} exp={ba_p_exp}")
+    # BorderAlarm S. Makedonija: medzitlija (van AMSS, mora da udje kroz genericku
+    # granu) i bogorodica (pored mk/tt zadrzava i ba)
+    for label, cid, exp in (("medzitlija.ba", "medzitlija", {"izlaz": 15, "ulaz": 10}),
+                            ("bogorodica.ba", "bogorodica", {"izlaz": 5, "ulaz": 35})):
+        got = c.get(cid, {}).get("ba")
+        good = got == exp
+        if not good:
+            ok = False
+        print(f"[{'OK ' if good else 'FAIL'}] {label}: got={got} exp={exp}")
     # TT mora da udje i za AMSS prelaz (gradina) i za van-AMSS (bogorodica, dojran)
     for cid in ("gradina", "bogorodica", "dojran"):
         got_tt = c.get(cid, {}).get("tt")
@@ -957,11 +1003,16 @@ def main():
         print("Upozorenje: amsm.mk nije dostupan:", e)
         mk_text = None
     ba_text = None
+    ba_text_mk = None
     if BA_ENABLED:
         try:
             ba_text = html_to_text(fetch_ba())
         except Exception as e:
-            print("Upozorenje: borderalarm.com nije dostupan:", e)
+            print("Upozorenje: borderalarm.com (Srbija) nije dostupan:", e)
+        try:
+            ba_text_mk = html_to_text(fetch_ba(BA_URL_MK))
+        except Exception as e:
+            print("Upozorenje: borderalarm.com (S. Makedonija) nije dostupan:", e)
     user_reports = {}
     if USER_REPORTS_ENABLED:
         try:
@@ -973,7 +1024,7 @@ def main():
         tt_data = collect_tt(parse_tt_corridors())
     else:
         print("TomTom: preskocen (nema TOMTOM_KEY u okruzenju)")
-    result = build(text, hu_text, mk_text, ba_text, user_reports, tt_data)
+    result = build(text, hu_text, mk_text, ba_text, ba_text_mk, user_reports, tt_data)
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
