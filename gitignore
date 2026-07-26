@@ -1,0 +1,7 @@
+# Privatan kod (gasolina-engine) se povlaci u ovaj folder tokom workflow-a.
+# NE SME da zavrsi u commit-u javnog repoa - to bi ponistilo celu poentu.
+engine/
+
+# Python smece
+__pycache__/
+*.pyc
