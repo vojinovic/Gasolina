@@ -513,13 +513,10 @@ function cardHTML(c){
        </a>`;
   } else if(noCamera){
     paneInner = `<span class="badge">data only</span>
-       <a class="poster" href="border-${c.id}.html" aria-label="Open the ${c.name} crossing page"
-          onclick="track('thumb_klik', {prelaz:'${c.id}'})" style="position:static;background:none">
-         <span class="ptext">Traffic map + waiting times</span>
-       </a>
-       <div class="pmsg" style="display:flex">
-         <p>There is no official camera for this crossing. Waiting times below.</p>
-       </div>`;
+       <a class="poster no-thumb" href="border-${c.id}.html" aria-label="Open the ${c.name} crossing page"
+          onclick="track('thumb_klik', {prelaz:'${c.id}'})">
+         <span class="ptext">No camera &middot; open traffic map and waiting times</span>
+       </a>`;
   } else {
     // linkOnly / feed jos nije podesen. Za MUP CG prelaze (gostun, debeli-brijeg)
     // thumbs_scraper na serveru ipak ume da izvuce periodicnu sliku iz njihovih
