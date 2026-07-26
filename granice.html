@@ -437,15 +437,18 @@ function mkStrip(c){
 
 /* Duzina kolone je jedini MEREN podatak koji imamo (TomTom je stvarno izmeri na
    putu, za razliku od procena u minutima), pa jedina ostaje vidljiva pored wait
-   celija - potvrdjuje krupne brojke iznad. Ispod praga je sum, taj smer se
-   izostavlja; ako nijedan smer ne prelazi prag, reda nema. */
+   celija - potvrdjuje krupne brojke iznad. Prag otvara red: dovoljno je da ga
+   JEDAN smer predje, pa se prikazuju oba (kratka kolona u drugom smeru je tu
+   korisna - pokazuje da guzva nije obostrana). Izostavlja se samo smer za koji
+   nema merenja. */
 const QUEUE_MIN_M = 300;
 function queueRow(c){
   if(!c.tt) return "";
+  const iz = c.tt.izlaz_kolona_m, ul = c.tt.ulaz_kolona_m;
+  if(!(iz >= QUEUE_MIN_M || ul >= QUEUE_MIN_M)) return "";
   const parts = [];
-  if(c.tt.izlaz_kolona_m >= QUEUE_MIN_M) parts.push(`izlaz <b>~${c.tt.izlaz_kolona_m} m</b>`);
-  if(c.tt.ulaz_kolona_m  >= QUEUE_MIN_M) parts.push(`ulaz <b>~${c.tt.ulaz_kolona_m} m</b>`);
-  if(!parts.length) return "";
+  if(iz != null) parts.push(`izlaz <b>~${iz} m</b>`);
+  if(ul != null) parts.push(`ulaz <b>~${ul} m</b>`);
   return `<div class="hustrip">\uD83D\uDDFA\uFE0F Kolona: ${parts.join(" &middot; ")}</div>`;
 }
 
@@ -583,7 +586,7 @@ function cardHTML(c){
     // Odluka: "ni tamo ni ovamo" raspored (kamera ovde, mapa tamo) niko ne provali.
     paneInner = `<span class="badge">${c.provider}</span>
        <img class="thumb" src="thumbs/${c.id}.jpg" alt="Poslednja slika sa kamere ${c.name}" loading="lazy"
-            onerror="this.remove(); this.closest('.pane').querySelector('.poster').classList.add('no-thumb')">
+            onerror="this.closest('.pane').querySelector('.poster').classList.add('no-thumb'); this.remove()">
        <a class="poster" href="granica-${c.id}.html?play=1" aria-label="Otvori stranicu prelaza ${c.name} sa kamerom uzivo"
           onclick="track('thumb_klik', {prelaz:'${c.id}'})">
          <span class="play"><svg width="20" height="20" viewBox="0 0 24 24" fill="var(--fuel)"><path d="M8 5v14l11-7z"/></svg></span>
