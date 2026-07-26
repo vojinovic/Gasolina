@@ -175,6 +175,10 @@ USER_COMMENTS_PER_CROSSING = 3
 # id prelaza (mora da se poklapa sa CAMERAS u granice.html) -> kljucna rec
 # u AMSS naslovu (folovano, bez kvacica, velikim slovima)
 TARGETS = {
+    # Prohor Pcinjski: nije potvrdjeno da AMSS prati ovaj prelaz (njihov domen
+    # nije dostupan iz sandboxa). Ako kljuc ne uhvati nista, prelaz ostaje
+    # found=False i stranica radi samo na TomTom podatku - nista se ne kvari.
+    "prohor-pcinjski": "PROHOR",
     "gradina":      "GRADINA",
     "horgos":       "HORGOS",
     "kelebija":     "KELEBIJA",
