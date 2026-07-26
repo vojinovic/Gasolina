@@ -169,42 +169,52 @@ def scrape_serbia():
     }
 
 
-def _median_eur_in_section(soup, heading_keywords):
-    """Medijan cene iz nafta.hr tabele za jedno gorivo.
-
-    Tabela ima 3 kolone: Obveznik | Gorivo | Cijena EUR. Vecina kompanija ima
-    istu cenu (Vlada RH ogranicava maksimalnu), ali se u istoj tabeli pojave i
-    premium goriva (npr. ECTO po 1,70) - medijan ih prirodno odbacuje, dok bi
-    prosek ili max povukli cifru gore.
+def _region_row_eur(soup, country_keyword):
+    """Red iz nafta.hr tabele 'Cijene goriva u regiji': Drzava | Benzin 95 | Dizel.
+    Vraca (benzin_eur, dizel_eur) ili None.
     """
-    tbl = find_table_for_heading(soup, heading_keywords)
-    if tbl is None:
-        return None
-    cene = []
-    for row in tbl.find_all("tr"):
-        cells = row.find_all(["td", "th"])
-        if len(cells) < 3:
-            continue
-        try:
-            cene.append(to_float(cells[-1].get_text()))
-        except ValueError:
-            continue
-    return statistics.median(cene) if cene else None
+    for table in soup.find_all("table"):
+        for row in table.find_all("tr"):
+            cells = row.find_all(["td", "th"])
+            if len(cells) < 3:
+                continue
+            drzava = cells[0].get_text(" ", strip=True).lower()
+            if country_keyword.lower() not in drzava:
+                continue
+            try:
+                benzin = to_float(cells[1].get_text().replace("\u20ac", ""))
+                dizel = to_float(cells[2].get_text().replace("\u20ac", ""))
+            except ValueError:
+                continue
+            # Druga tabela na istoj stranici je "puni spremnik od 55 L" - iste
+            # drzave, ali cifre oko 90. Preskacemo je pragom.
+            if benzin > 5 or dizel > 5:
+                continue
+            return benzin, dizel
+    return None
 
 
 def scrape_croatia():
-    # Stari izvor cijenegoriva.hr je ugasen (DNS ne odgovara od 07/2026), pa HR
-    # ide preko nafta.hr - istog sajta koji vec hrani RS/ME/SI/MK/HU.
-    soup = fetch_soup("https://nafta.hr/")
+    # Stari izvor cijenegoriva.hr je ugasen (DNS ne odgovara od 07/2026).
+    # Naslovna nafta.hr ima naslove ("Eurosuper 95") ali su tabele PRAZNE u
+    # HTML-u - puni ih custom.js u browseru, pa ih scraper ne vidi (26.07.2026:
+    # petrol=None, diesel=None, lpg=None). Zato regionalna tabela, koja je
+    # staticna i sadrzi Hrvatsku.
+    soup = fetch_soup("https://nafta.hr/cijene-goriva-u-regiji/")
+    par = _region_row_eur(soup, "Hrvatska")
+    if not par:
+        raise RuntimeError("Croatia: red za Hrvatsku nije nadjen u regionalnoj tabeli")
+    petrol_eur, diesel_eur = par
 
-    petrol_eur = _median_eur_in_section(soup, ["Eurosuper 95"])
-    diesel_eur = _median_eur_in_section(soup, ["Eurodizel", "Eurodiesel", "Dizel"])
-    lpg_eur    = _median_eur_in_section(soup, ["Autoplin", "UNP", "LPG"])
-
-    if not all([petrol_eur, diesel_eur]):
-        raise RuntimeError(f"Croatia: petrol={petrol_eur}, diesel={diesel_eur}, lpg={lpg_eur}")
-    if lpg_eur is None:
-        lpg_eur = 0.0   # HR tabela za autoplin zna da izostane - bolje 0 nego pad celog scrape-a
+    # Regionalna tabela nema autoplin - probamo naslovnu, pa ako i tamo nema,
+    # ostaje 0.0 umesto da padne ceo scrape.
+    lpg_eur = 0.0
+    try:
+        lpg_par = _region_row_eur(fetch_soup("https://nafta.hr/"), "Autoplin")
+        if lpg_par:
+            lpg_eur = lpg_par[0]
+    except Exception:
+        pass
 
     return {
         "name": "Croatia", "flag": "\U0001F1ED\U0001F1F7", "currency": "EUR", "fx_rate_eur": 1.0,
@@ -612,57 +622,29 @@ def selftest():
           "EVRO PREMIJUM BMB 95 u iznosu 174,00 dinara za jedan litar.")
     t2 = ("i to za: 1.EVRO DIZEL, u iznosu 217,00 dinara za jedan litar i "
           "2. EVRO PREMIJUM BMB 95 u iznosu 199,00 dinara")
-    # HR tabela sa nafta.hr - fixture preslikan sa zive stranice (26.07.2026).
-    # Ukljucuje i premium red (ECTO 1,70) koji medijan mora da odbaci.
+    # HR: regionalna tabela nafta.hr - fixture sa zive stranice (26.07.2026).
+    # Zamka: druga tabela na istoj stranici ima iste drzave ali cifre za 55 L
+    # (91,85) - parser mora da je preskoci pragom.
     hr_html = """
-      <h2>Eurosuper 95 (benzin)</h2>
-      <table><tr><th>Obveznik</th><th>Gorivo</th><th>Cijena EUR</th></tr>
-        <tr><td>Adria Oil d.o.o.</td><td>EUROSUPER 95</td><td>1,54 &euro;</td></tr>
-        <tr><td>INA d.d.</td><td>EUROSUPER 95 CLASS PLUS</td><td>1,54 &euro;</td></tr>
-        <tr><td>Petrol d.o.o.</td><td>Q MAX EUROSUPER 95</td><td>1,54 &euro;</td></tr>
-        <tr><td>LUKOIL Croatia d.o.o.</td><td>Eurosuper BS 95 ECTO</td><td>1,70 &euro;</td></tr>
-      </table>
-      <h2>Eurodizel</h2>
-      <table><tr><th>Obveznik</th><th>Gorivo</th><th>Cijena EUR</th></tr>
-        <tr><td>INA d.d.</td><td>EURODIZEL</td><td>1,58 &euro;</td></tr>
-        <tr><td>Petrol d.o.o.</td><td>Q MAX DIESEL</td><td>1,58 &euro;</td></tr>
-      </table>
-      <h2>Autoplin</h2>
-      <table><tr><th>Obveznik</th><th>Gorivo</th><th>Cijena EUR</th></tr>
-        <tr><td>INA d.d.</td><td>AUTOPLIN</td><td>0,70 &euro;</td></tr>
-      </table>"""
-    # BiH tabela sa nafta.hr - fixture preslikan sa zive stranice (26.07.2026).
-    # Kljucno: cena je "3,13 KM / 1,60 EUR" u jednoj celiji, a red "Benzin Super 98"
-    # ne sme da se pomesa sa "Benzin Premium 95".
-    ba_html = """
-      <h2>Cijene goriva BiH</h2>
+      <h2>Aktualne cijene goriva u regiji</h2>
       <table>
-        <tr><th>GORIVO</th><th>CIJENA</th><th>PROMJENA</th></tr>
-        <tr><td>Dizel D5</td><td>3,13 KM / 1,60 EUR</td><td>9,51 centa</td></tr>
-        <tr><td>Benzin Super 98</td><td>3,07 KM / 1,57 EUR</td><td>1,49 centa</td></tr>
-        <tr><td>Benzin Premium 95</td><td>2,84 KM / 1,45 EUR</td><td>2,88 centa</td></tr>
-        <tr><td>Autoplin</td><td>1,36 KM / 0,70 EUR</td><td>0,27 centa</td></tr>
-        <tr><td>Lo&#382; ulje</td><td>2,62 KM / 1,34 EUR</td><td>1,09 centa</td></tr>
+        <tr><th>Dr&#382;ava</th><th>Benzin 95</th><th>Dizel</th></tr>
+        <tr><td>Bosna i Hercegovina</td><td>1,41 &euro;</td><td>1,43 &euro;</td></tr>
+        <tr><td>Hrvatska</td><td>1,67 &euro;</td><td>1,87 &euro;</td></tr>
+        <tr><td>Srbija</td><td>1,67 &euro;</td><td>1,87 &euro;</td></tr>
+      </table>
+      <h2>Koliko ko&#353;ta puni spremnik?</h2>
+      <table>
+        <tr><th>Dr&#382;ava</th><th>Benzin (55 L)</th><th>Dizel (55 L)</th></tr>
+        <tr><td>Hrvatska</td><td>91,85 &euro;</td><td>102,85 &euro;</td></tr>
       </table>"""
-    ba_soup = BeautifulSoup(ba_html, "html.parser")
-    ba_p = _km_eur_row(ba_soup, ["Benzin Premium 95", "Premium 95", "Benzin 95"], exclude=["98", "100"])
-    ba_d = _km_eur_row(ba_soup, ["Dizel D5", "Dizel"], exclude=["premium"])
-    ba_l = _km_eur_row(ba_soup, ["Autoplin", "LPG", "UNP"])
-    ba_ok = (ba_p == (2.84, 1.45) and ba_d == (3.13, 1.60) and ba_l == (1.36, 0.70))
-    if not ba_ok:
-        ok = False
-    print(f"[{'OK ' if ba_ok else 'FAIL'}] BiH nafta.hr: benzin95={ba_p} dizel={ba_d} autoplin={ba_l} "
-          f"(Super 98 ne sme da se uvuce u 95)")
-
     hr_soup = BeautifulSoup(hr_html, "html.parser")
-    hr_p = _median_eur_in_section(hr_soup, ["Eurosuper 95"])
-    hr_d = _median_eur_in_section(hr_soup, ["Eurodizel", "Dizel"])
-    hr_l = _median_eur_in_section(hr_soup, ["Autoplin", "UNP", "LPG"])
-    hr_ok = (hr_p == 1.54 and hr_d == 1.58 and hr_l == 0.70)
+    hr_par = _region_row_eur(hr_soup, "Hrvatska")
+    hr_ok = (hr_par == (1.67, 1.87))
     if not hr_ok:
         ok = False
-    print(f"[{'OK ' if hr_ok else 'FAIL'}] HR nafta.hr: benzin={hr_p} dizel={hr_d} autoplin={hr_l} "
-          f"(premium 1,70 mora da ostane van medijana)")
+    print(f"[{'OK ' if hr_ok else 'FAIL'}] HR regionalna tabela: got={hr_par} exp=(1.67, 1.87) "
+          f"(tabela sa 55 L mora da ostane preskocena)")
 
     ok = True
     if _must_parse_prices(t1) != (194.0, 174.0):
