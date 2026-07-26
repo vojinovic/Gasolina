@@ -57,7 +57,7 @@ L = {
     "cam_official_btn": "Otvori kameru",
     "snap_note": "Poslednja slika \u00b7 klik za zvani\u010dnu kameru \u2197",
     "no_cam": "Za ovaj prelaz jo\u0161 nema javno dostupne kamere.",
-    "wait_in": "Ulaz u Srbiju", "wait_out": "Izlaz iz Srbije",
+    "wait_in": "Ulaz u {kuca}", "wait_out": "Izlaz iz {kuca}",
     "wait_loading": "U\u010ditavanje trenutnog stanja\u2026",
     "wait_unavail": 'Trenutno stanje nije dostupno - proveri direktno na <a href="{root}granice.html#{id}" style="color:var(--fuel)">granice.html</a>.',
     "no_queue": "Bez guzve", "no_data": "nema podataka",
@@ -97,7 +97,7 @@ L = {
     "cam_official_btn": "Open camera",
     "snap_note": "Latest snapshot \u00b7 click for the official camera \u2197",
     "no_cam": "No publicly available camera for this crossing yet.",
-    "wait_in": "Entering Serbia", "wait_out": "Exiting Serbia",
+    "wait_in": "Entering {kuca}", "wait_out": "Exiting {kuca}",
     "wait_loading": "Loading current status\u2026",
     "wait_unavail": 'Current status unavailable - check directly on <a href="{root}granice.html#{id}" style="color:var(--fuel)">the borders page</a>.',
     "no_queue": "No queue", "no_data": "no data",
@@ -706,12 +706,21 @@ def translate_feed_label(label, lang):
     return out
 
 
+AKUZATIV = {"Srbija": "Srbiju", "Severna Makedonija": "Severnu Makedoniju",
+            "Crna Gora": "Crnu Goru", "Bosna i Hercegovina": "Bosnu i Hercegovinu"}
+GENITIV = {"Srbija": "Srbije", "Severna Makedonija": "Severne Makedonije",
+           "Crna Gora": "Crne Gore", "Bosna i Hercegovina": "Bosne i Hercegovine"}
+
+
 def render_page(c, all_c, lang):
     t = L[lang]
     root = "../" if lang == "en" else ""
     self_path = f"en/border-{c['id']}.html" if lang == "en" else f"granica-{c['id']}.html"
     from_c = COUNTRY[lang].get(c["from"], c["from"])
     to_c = COUNTRY[lang].get(c["to"], c["to"])
+    # EN nema padeze, SR ima - a nazivi zemalja se u wait-boxu menjaju po prelazu
+    kuca_akuzativ = from_c if lang == "en" else AKUZATIV.get(from_c, from_c)
+    kuca_genitiv = from_c if lang == "en" else GENITIV.get(from_c, from_c)
     name = c["name"]
     road = c["road"] or "-"
     pair = c["pair"] or "-"
@@ -779,7 +788,10 @@ def render_page(c, all_c, lang):
         share_label=t["share_label"], share_copied=t["share_copied"],
         share_out=t["share_out"], share_in=t["share_in"],
         share_noq=t["share_noq"], share_nd=t["share_nd"], share_nowait=t["share_nowait"],
-        wait_in=t["wait_in"], wait_out=t["wait_out"],
+        # Natpisi smerova prate ZEMLJU PRELAZA, ne Srbiju: Bogorodica, Dojran i
+        # Medzitlija su MK->GR i tamo je "Ulaz u Srbiju" bio besmislen.
+        wait_in=t["wait_in"].format(kuca=kuca_akuzativ),
+        wait_out=t["wait_out"].format(kuca=kuca_genitiv),
         wait_loading=t["wait_loading"],
         wait_unavail=t["wait_unavail"].format(root=root, id=c["id"]),
     )
