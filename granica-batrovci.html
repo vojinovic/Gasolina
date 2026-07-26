@@ -262,14 +262,19 @@
         }
         if (c && c.ba) { const v = c.ba[dirKey]; if (v != null && v > 0) cands.push({v, src: "Prijave vozača (BorderAlarm)"}); }
         if (c && c.tt) { const v = c.tt[dirKey]; if (v != null && v > 0) cands.push({v, src: "Mapa saobraćaja"}); }
-        if (!cands.length) return {v: null, src: null};
+        if (!cands.length) return {v: null, src: null, samAmss: false};
         let best = cands[0];
         cands.forEach(x => { if (best.v == null || (x.v != null && x.v > best.v)) best = x; });
+        // AMSS-ovih 30 je podrazumevana vrednost ("bez zadrzavanja"), ne merenje.
+        // Kad je jedini kandidat, uz brojku se ispisuje odakle dolazi.
+        best.samAmss = (cands.length === 1 && best.src === null && best.v === 30);
         return best;
       };
       const eIn = eff('ulaz'), eOut = eff('izlaz');
       _waitState = {inn: eIn.v, out: eOut.v};
-      const srcNote = (e) => e.src ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">izvor: ${e.src}</div>` : '';
+      const srcNote = (e) => e.src
+        ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">izvor: ${e.src}</div>`
+        : (e.samAmss ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">jedini izvor: AMSS (podrazumevana vrednost)</div>` : '');
       box.innerHTML = `
         <div class="wcell"><div class="wlabel">Ulaz u Srbiju</div><div class="wval">${fmt(eIn.v)}</div>${srcNote(eIn)}</div>
         <div class="wcell"><div class="wlabel">Izlaz iz Srbije</div><div class="wval">${fmt(eOut.v)}</div>${srcNote(eOut)}</div>`;
