@@ -8,10 +8,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Python skripte zive u privatnom repou gasolina-engine. Povlace se u
+      # engine/ koji je u .gitignore, pa ne moze da zavrsi u javnom commitu.
+      # Minuti se naplacuju repou u kom se workflow izvrsava (ovaj je javan).
+      - name: Checkout engine (private)
+        uses: actions/checkout@v4
+        with:
+          repository: vojinovic/gasolina-engine
+          token: ${{ secrets.ENGINE_TOKEN }}
+          path: engine
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Probe TomTom endpoints
         env:
           TOMTOM_KEY: ${{ secrets.TOMTOM_KEY }}
-        run: python putevi_scraper.py --probe
+        run: python engine/putevi_scraper.py --probe
