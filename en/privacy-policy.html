@@ -45,6 +45,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
+<!-- Pristanak na kolacice - MORA pre gtag/js, bez async/defer -->
+<script src="/consent.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -127,7 +129,7 @@
   <p class="stamp">Last updated: 27 July 2026</p>
 
   <div class="box">
-    <p><b>In short:</b> Gasolina has no accounts, no sign-up and no passwords, and sells data to nobody. Anonymous traffic statistics are collected through Google Analytics, the site uses cookies (its own and Google's, including advertising ones), and whatever you type into the trip calculator is sent to a routing service so the route can be calculated. None of it is tied to your name.</p>
+    <p><b>In short:</b> Gasolina has no accounts, no sign-up and no passwords, and sells data to nobody. Anonymous traffic statistics are collected through Google Analytics, the site uses cookies (its own and Google's, including advertising ones), and whatever you type into the trip calculator is sent to a routing service so the route can be calculated. None of it is tied to your name. Analytics and advertising cookies are not set until you accept them in the banner shown on your first visit, and you can change your choice at any time through the “Cookies” link in the footer.</p>
   </div>
 
   <div class="toc">
@@ -203,6 +205,9 @@
       <td><code>NID</code>, <code>IDE</code></td><td>Google / doubleclick.net</td><td>Ad personalisation across Google's network</td><td>up to 13 months (EU) / 2 years</td>
     </tr>
     <tr>
+      <td><code>gasolina_consent</code></td><td>Gasolina</td><td><b>Not a cookie</b> — a browser local-storage entry remembering your choice in the cookie banner, so the banner does not reappear on every visit</td><td>until you clear browser data</td>
+    </tr>
+    <tr>
       <td><code>gasolina_install_dismissed</code></td><td>Gasolina</td><td><b>Not a cookie</b> — a browser local-storage entry remembering that you dismissed the prompt to add the site to your home screen, so it does not reappear</td><td>until you clear browser data</td>
     </tr>
     <tr>
@@ -268,7 +273,7 @@
   <ul>
     <li><b>Legitimate interest</b> (Art. 6(1)(f) GDPR) — keeping basic traffic statistics and keeping the site secure and working.</li>
     <li><b>Performing the service you asked for</b> — when you type an origin and destination, processing that input is necessary for the calculator to do what you asked of it.</li>
-    <li><b>Consent</b> (Art. 6(1)(a) GDPR) — for analytics and personalised advertising cookies for visitors from the European Economic Area, the United Kingdom and Switzerland. You give or refuse consent through the consent mechanism and may withdraw it at any time.</li>
+    <li><b>Consent</b> (Art. 6(1)(a) GDPR) — for analytics and personalised advertising cookies for visitors from the European Economic Area, the United Kingdom and Switzerland. You give or refuse consent in the banner shown on your first visit, and you may withdraw or change it at any time through the “Cookies” link in the footer of every page. Until you choose, Google Consent Mode keeps analytics and advertising cookies switched off.</li>
   </ul>
 
   <h2 id="retention">7. How long data is kept</h2>
@@ -298,10 +303,11 @@
 
   <h2 id="opt-out">10. How to opt out of tracking</h2>
   <ul>
+    <li><b>Cookie banner</b> — the “Cookies” link in the footer of every page reopens the banner. This is the quickest route: it covers both analytics and ads, and applies to this browser until you clear the site's data.</li>
     <li><b>Google Analytics</b> — install the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Add-on</a> or block <code>googletagmanager.com</code> in your browser.</li>
     <li><b>Personalised ads</b> — <a href="https://adssettings.google.com/" target="_blank" rel="noopener">adssettings.google.com</a>, <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>, <a href="https://www.youronlinechoices.eu/" target="_blank" rel="noopener">youronlinechoices.eu</a>.</li>
     <li><b>All cookies</b> — your browser settings let you block third-party cookies or delete existing ones. The site keeps working; the only thing lost is the memory that you dismissed the install prompt.</li>
-    <li><b>Local storage and cache</b> — clearing site data in your browser also clears <code>gasolina_install_dismissed</code> and the service worker cache.</li>
+    <li><b>Local storage and cache</b> — clearing site data in your browser also clears <code>gasolina_consent</code>, <code>gasolina_install_dismissed</code> and the service worker cache — after that the banner appears again.</li>
   </ul>
 
   <h2 id="children">11. Children</h2>
