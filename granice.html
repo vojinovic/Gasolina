@@ -571,12 +571,26 @@ function waitChips(c){
   return `<div class="wchips">${chip("\u2191", u)}${chip("\u2193", i)}</div>`;
 }
 
+function outFeedParam(c){
+  // Klik na sliku pusta IZLAZNU kameru. Bez ovoga bi stranica sama birala izlaz,
+  // ali samo kad nema ?feed - a thumb link ga do 27.07.2026 uopste nije slao,
+  // pa je uvek isla prva (ulazna) kamera.
+  const i = (c.feeds||[]).findIndex(f=>f.dir==="out" && f.src);
+  return i > 0 ? `&feed=${i}` : "";
+}
+
 function cardHTML(c){
   const hasVideo = c.feeds.some(f=>f.src);
   const noCamera = c.noCamera === true;
+  // Izlazne kamere idu prve: sajt opsluzuje onoga ko tek krece na put, pa mu se
+  // prvo nudi smer kojim izlazi. data-i i dalje nosi PRAVI indeks u c.feeds -
+  // menja se samo redosled prikaza, ne i veza sa strimom.
+  const orderedFeeds = c.feeds
+    .map((f,i)=>({f, i}))
+    .sort((a,b)=> (a.f.dir==="out"?0:1) - (b.f.dir==="out"?0:1));
   const tabs = c.feeds.length>1 && hasVideo
-    ? `<div class="tabs" role="tablist">${c.feeds.map((f,i)=>
-        `<button class="tab" role="tab" data-i="${i}" aria-selected="${i===0}">${f.label}</button>`).join("")}</div>`
+    ? `<div class="tabs" role="tablist">${orderedFeeds.map(({f,i},pos)=>
+        `<button class="tab" role="tab" data-i="${i}" aria-selected="${pos===0}">${f.label}</button>`).join("")}</div>`
     : "";
 
   let paneInner;
@@ -587,7 +601,7 @@ function cardHTML(c){
     paneInner = `<span class="badge">${c.provider}</span>
        <img class="thumb" src="thumbs/${c.id}.jpg" alt="Poslednja slika sa kamere ${c.name}" loading="lazy"
             onerror="this.closest('.pane').querySelector('.poster').classList.add('no-thumb'); this.remove()">
-       <a class="poster" href="granica-${c.id}.html?play=1" aria-label="Otvori stranicu prelaza ${c.name} sa kamerom uzivo"
+       <a class="poster" href="granica-${c.id}.html?play=1${outFeedParam(c)}" aria-label="Otvori stranicu prelaza ${c.name} sa kamerom uzivo"
           onclick="track('thumb_klik', {prelaz:'${c.id}'})">
          <span class="play"><svg width="20" height="20" viewBox="0 0 24 24" fill="var(--fuel)"><path d="M8 5v14l11-7z"/></svg></span>
          <span class="ptext">Kamera uzivo + mapa</span>
