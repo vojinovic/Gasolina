@@ -173,7 +173,7 @@
     <span class="dirchip">🇷🇸 RS → 🇭🇷 HR</span>
   </div>
 
-  <div class="pane" id="pane"><span class="badge">AMSS</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="../thumbs/batrovci.jpg" alt="Batrovci" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div><div class="feeds"><button onclick="playFeed(1)">Exit</button><button onclick="playFeed(0)">Entry</button></div>
+  <div class="pane" id="pane"><span class="badge">AMSS</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="../thumbs/batrovci.jpg" alt="Batrovci" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div><div class="feeds"><button data-i="1" onclick="playFeed(1)">Exit</button><button data-i="0" onclick="playFeed(0)">Entry</button></div>
   <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Loading current status…</div></div>
   <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Traffic on the map: Serbia → Croatia</h2><iframe src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d11672.3!2d19.1031907!3d45.047245700000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d45.0455054!2d19.1216508!4m3!3m2!1d45.048986!2d19.0847306!5e0!3m2!1sen!2sus!4v1627540443619!5m2!1sen!2sus" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Traffic on the map: Serbia → Croatia" allowfullscreen></iframe></div>
@@ -332,7 +332,10 @@
     const overlay = document.getElementById("playOverlay");
     const liveTag = document.getElementById("liveTag");
     const src = FEEDS[idx].src;
-    document.querySelectorAll(".feeds button").forEach((b,i)=>b.classList.toggle("on", i===idx));
+    
+    
+    document.querySelectorAll(".feeds button").forEach(b =>
+      b.classList.toggle("on", parseInt(b.dataset.i, 10) === idx));
     if(overlay) overlay.style.display = "none";
     video.style.display = "block";
     if(liveTag) liveTag.style.display = "block";
@@ -373,8 +376,8 @@
     document.addEventListener("DOMContentLoaded", () => {
       const outIdx = FEEDS.findIndex(f => f.dir === "out");
       const idx = outIdx >= 0 ? outIdx : 0;
-      const btns = document.querySelectorAll(".feeds button");
-      if (btns[idx]) btns[idx].classList.add("on");
+      const btn = document.querySelector('.feeds button[data-i="' + idx + '"]');
+      if (btn) btn.classList.add("on");
       
       
       const ov = document.getElementById("playOverlay");

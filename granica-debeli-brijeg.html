@@ -328,7 +328,10 @@
     const overlay = document.getElementById("playOverlay");
     const liveTag = document.getElementById("liveTag");
     const src = FEEDS[idx].src;
-    document.querySelectorAll(".feeds button").forEach((b,i)=>b.classList.toggle("on", i===idx));
+    
+    
+    document.querySelectorAll(".feeds button").forEach(b =>
+      b.classList.toggle("on", parseInt(b.dataset.i, 10) === idx));
     if(overlay) overlay.style.display = "none";
     video.style.display = "block";
     if(liveTag) liveTag.style.display = "block";
@@ -369,8 +372,8 @@
     document.addEventListener("DOMContentLoaded", () => {
       const outIdx = FEEDS.findIndex(f => f.dir === "out");
       const idx = outIdx >= 0 ? outIdx : 0;
-      const btns = document.querySelectorAll(".feeds button");
-      if (btns[idx]) btns[idx].classList.add("on");
+      const btn = document.querySelector('.feeds button[data-i="' + idx + '"]');
+      if (btn) btn.classList.add("on");
       
       
       const ov = document.getElementById("playOverlay");
