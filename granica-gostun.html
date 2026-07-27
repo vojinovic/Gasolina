@@ -362,9 +362,17 @@
   } else if (FEEDS.length) {
     
     
+    
+    
     document.addEventListener("DOMContentLoaded", () => {
-      const first = document.querySelector(".feeds button");
-      if (first) first.classList.add("on");
+      const outIdx = FEEDS.findIndex(f => f.dir === "out");
+      const idx = outIdx >= 0 ? outIdx : 0;
+      const btns = document.querySelectorAll(".feeds button");
+      if (btns[idx]) btns[idx].classList.add("on");
+      
+      
+      const ov = document.getElementById("playOverlay");
+      if (ov) ov.setAttribute("onclick", "playFeed(" + idx + ")");
     });
   }
   
