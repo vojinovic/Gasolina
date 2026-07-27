@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stanje na granicama uživo — kamere i čekanje | Gasolina</title>
-<meta name="description" content="Kamere uživo i procena čekanja na 13 graničnih prelaza — Horgoš, Batrovci, Gradina, Preševo, Bogorodica i drugi. Proveri gužvu pre nego što kreneš.">
+<meta name="description" content="Kamere uživo i procena čekanja na graničnim prelazima Srbije (Horgoš, Batrovci, Gradina, Preševo, Sremska Rača, Špiljani, Gostun) i ka Grčkoj (Bogorodica). Proveri gužvu pre puta.">
 <link rel="canonical" href="https://gasolina.rs/granice.html">
 <link rel="alternate" hreflang="sr" href="https://gasolina.rs/granice.html">
 <link rel="alternate" hreflang="en" href="https://gasolina.rs/en/borders.html">
@@ -546,6 +546,21 @@ function doShareBorder(kind, id, btn){
   window.open(urls[kind], "_blank", "noopener");
 }
 
+const AKUZATIV = {"Srbija":"Srbiju","Severna Makedonija":"Severnu Makedoniju",
+  "Crna Gora":"Crnu Goru","Bosna i Hercegovina":"Bosnu i Hercegovinu"};
+const GENITIV = {"Srbija":"Srbije","Severna Makedonija":"Severne Makedonije",
+  "Crna Gora":"Crne Gore","Bosna i Hercegovina":"Bosne i Hercegovine"};
+const ZEMLJA = {RS:"Srbija", ME:"Crna Gora", HR:"Hrvatska", HU:"Mađarska",
+  MK:"Severna Makedonija", BA:"Bosna i Hercegovina", BG:"Bugarska", RO:"Rumunija", GR:"Grčka"};
+// Natpisi prate ZEMLJU PRELAZA, ne Srbiju: Bogorodica, Dojran i Medžitlija su
+// MK->GR pa je "Ulaz u Srbiju" bio netačan (isto smo sredili na landing stranicama).
+function smerLabel(c, dirKey){
+  const kuca = ZEMLJA[c.from] || c.from;
+  return dirKey === "ulaz"
+    ? "Ulaz u " + (AKUZATIV[kuca] || kuca)
+    : "Izlaz iz " + (GENITIV[kuca] || kuca);
+}
+
 function waitCell(label,dirKey,c){
   const eff = effective(c, dirKey);
   const s = waitStatus(eff.v);
@@ -654,8 +669,8 @@ function cardHTML(c){
       ? ((c.mk||c.here) ? `` : `<div class="nowait">Granica ${c.from}\u2013${c.to}. Vreme cekanja se ovde ne prati; iskoristi kameru iznad.</div>`)
       : `
     <div class="wait">
-      ${waitCell("Ulaz u Srbiju","ulaz",c)}
-      ${waitCell("Izlaz iz Srbije","izlaz",c)}
+      ${waitCell(smerLabel(c,"izlaz"),"izlaz",c)}
+      ${waitCell(smerLabel(c,"ulaz"),"ulaz",c)}
     </div>`}
     ${queueRow(c)}
     ${sourcesDetails(c)}
