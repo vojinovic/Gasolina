@@ -173,7 +173,7 @@
     <span class="dirchip">🇷🇸 RS → 🇲🇪 ME</span>
   </div>
 
-  <div class="pane" id="pane"><span class="badge">MUP</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="../thumbs/spiljani.jpg" alt="Spiljani" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div><div class="feeds"><button onclick="playFeed(0)">Entry</button><button onclick="playFeed(1)">Exit</button></div>
+  <div class="pane" id="pane"><span class="badge">MUP</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="../thumbs/spiljani.jpg" alt="Spiljani" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div><div class="feeds"><button onclick="playFeed(1)">Exit</button><button onclick="playFeed(0)">Entry</button></div>
   <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Loading current status…</div></div>
   <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Traffic on the map: Serbia → Montenegro</h2><iframe src="https://maps.google.com/maps?saddr=Grani%C4%8Dni%20prelaz%20%C5%A0piljani&daddr=Grani%C4%8Dni%20prelaz%20Dra%C4%8Denovac&hl=en&t=m&z=13&output=embed" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Spiljani" allowfullscreen></iframe><div style="font-size:11px;color:var(--faint);margin-top:6px">The time on the map is a driving estimate through the crossing zone in current traffic — it does not include passport control.</div></div>
@@ -274,8 +274,8 @@
         ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">source: ${e.src}</div>`
         : (e.samAmss ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">only source: AMSS (default value)</div>` : '');
       box.innerHTML = `
-        <div class="wcell"><div class="wlabel">Entering Serbia</div><div class="wval">${fmt(eIn.v)}</div>${srcNote(eIn)}</div>
-        <div class="wcell"><div class="wlabel">Exiting Serbia</div><div class="wval">${fmt(eOut.v)}</div>${srcNote(eOut)}</div>`;
+        <div class="wcell"><div class="wlabel">Exiting Serbia</div><div class="wval">${fmt(eOut.v)}</div>${srcNote(eOut)}</div>
+        <div class="wcell"><div class="wlabel">Entering Serbia</div><div class="wval">${fmt(eIn.v)}</div>${srcNote(eIn)}</div>`;
       
       
       const srcs = [];

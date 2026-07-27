@@ -276,8 +276,8 @@
         ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">izvor: ${e.src}</div>`
         : (e.samAmss ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">jedini izvor: AMSS (podrazumevana vrednost)</div>` : '');
       box.innerHTML = `
-        <div class="wcell"><div class="wlabel">Ulaz u Severnu Makedoniju</div><div class="wval">${fmt(eIn.v)}</div>${srcNote(eIn)}</div>
-        <div class="wcell"><div class="wlabel">Izlaz iz Severne Makedonije</div><div class="wval">${fmt(eOut.v)}</div>${srcNote(eOut)}</div>`;
+        <div class="wcell"><div class="wlabel">Izlaz iz Severne Makedonije</div><div class="wval">${fmt(eOut.v)}</div>${srcNote(eOut)}</div>
+        <div class="wcell"><div class="wlabel">Ulaz u Severnu Makedoniju</div><div class="wval">${fmt(eIn.v)}</div>${srcNote(eIn)}</div>`;
       
       
       const srcs = [];

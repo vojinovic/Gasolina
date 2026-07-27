@@ -173,7 +173,7 @@
     <span class="dirchip">🇷🇸 RS → 🇧🇦 BA</span>
   </div>
 
-  <div class="pane" id="pane"><span class="badge">MUP</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="thumbs/sremska-raca.jpg" alt="Sremska Raca" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Pusti kameru uživo</button></div><div class="feeds"><button onclick="playFeed(0)">Ulaz</button><button onclick="playFeed(1)">Izlaz</button></div>
+  <div class="pane" id="pane"><span class="badge">MUP</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="thumbs/sremska-raca.jpg" alt="Sremska Raca" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Pusti kameru uživo</button></div><div class="feeds"><button onclick="playFeed(1)">Izlaz</button><button onclick="playFeed(0)">Ulaz</button></div>
   <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Učitavanje trenutnog stanja…</div></div>
   <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Gužva na mapi: Srbija → Bosna i Hercegovina</h2><iframe src="https://maps.google.com/maps?saddr=Grani%C4%8Dni%20prelaz%20Sremska%20Ra%C4%8Da&daddr=Grani%C4%8Dni%20prelaz%20Ra%C4%8Da&hl=sr&t=m&z=13&output=embed" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Sremska Raca" allowfullscreen></iframe><div style="font-size:11px;color:var(--faint);margin-top:6px">Vreme na mapi je procena vožnje kroz zonu prelaza u trenutnoj gužvi — ne uključuje pasošku kontrolu.</div></div>
@@ -274,8 +274,8 @@
         ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">izvor: ${e.src}</div>`
         : (e.samAmss ? `<div style="font-size:10px;color:var(--faint);margin-top:3px">jedini izvor: AMSS (podrazumevana vrednost)</div>` : '');
       box.innerHTML = `
-        <div class="wcell"><div class="wlabel">Ulaz u Srbiju</div><div class="wval">${fmt(eIn.v)}</div>${srcNote(eIn)}</div>
-        <div class="wcell"><div class="wlabel">Izlaz iz Srbije</div><div class="wval">${fmt(eOut.v)}</div>${srcNote(eOut)}</div>`;
+        <div class="wcell"><div class="wlabel">Izlaz iz Srbije</div><div class="wval">${fmt(eOut.v)}</div>${srcNote(eOut)}</div>
+        <div class="wcell"><div class="wlabel">Ulaz u Srbiju</div><div class="wval">${fmt(eIn.v)}</div>${srcNote(eIn)}</div>`;
       
       
       const srcs = [];
