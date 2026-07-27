@@ -45,6 +45,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
+<!-- Pristanak na kolacice - MORA pre gtag/js, bez async/defer -->
+<script src="/consent.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -127,7 +129,7 @@
   <p class="stamp">Poslednja izmena: 27. jul 2026.</p>
 
   <div class="box">
-    <p><b>Ukratko:</b> Gasolina nema naloge, registraciju ni lozinke i ne prodaje podatke nikome. Prikuplja se anonimna statistika posećenosti preko Google Analytics-a, sajt koristi kolačiće (svoje i Googleove, uključujući oglasne), a ono što upišeš u kalkulator puta šalje se servisu za rutiranje da bi ruta mogla da se izračuna. Ništa od toga se ne vezuje za tvoje ime.</p>
+    <p><b>Ukratko:</b> Gasolina nema naloge, registraciju ni lozinke i ne prodaje podatke nikome. Prikuplja se anonimna statistika posećenosti preko Google Analytics-a, sajt koristi kolačiće (svoje i Googleove, uključujući oglasne), a ono što upišeš u kalkulator puta šalje se servisu za rutiranje da bi ruta mogla da se izračuna. Ništa od toga se ne vezuje za tvoje ime. Analitički i oglasni kolačići se ne postavljaju dok ih ne prihvatiš u baneru koji se pojavi pri prvoj poseti, a izbor možeš promeniti kad god želiš preko linka „Kolačići“ u podnožju.</p>
   </div>
 
   <div class="toc">
@@ -203,6 +205,9 @@
       <td><code>NID</code>, <code>IDE</code></td><td>Google / doubleclick.net</td><td>Personalizacija oglasa preko Googleove mreže</td><td>do 13 meseci (EU) / 2 godine</td>
     </tr>
     <tr>
+      <td><code>gasolina_consent</code></td><td>Gasolina</td><td><b>Nije kolačić</b> — zapis u lokalnom skladištu pregledača koji pamti tvoj izbor u baneru za kolačiće, da se baner ne ponavlja pri svakoj poseti</td><td>do brisanja podataka pregledača</td>
+    </tr>
+    <tr>
       <td><code>gasolina_install_dismissed</code></td><td>Gasolina</td><td><b>Nije kolačić</b> — zapis u lokalnom skladištu pregledača koji pamti da si zatvorio poziv da dodaš sajt na početni ekran, da se ne ponavlja</td><td>do brisanja podataka pregledača</td>
     </tr>
     <tr>
@@ -268,7 +273,7 @@
   <ul>
     <li><b>Legitimni interes</b> (član 6. stav 1. tačka f GDPR) — vođenje osnovne statistike posećenosti i održavanje sajta bezbednim i funkcionalnim.</li>
     <li><b>Izvršenje usluge koju si sam pokrenuo</b> — kada upišeš polazište i odredište, obrada tog unosa je potrebna da bi kalkulator uradio ono što od njega tražiš.</li>
-    <li><b>Saglasnost</b> (član 6. stav 1. tačka a GDPR) — za kolačiće analitike i personalizovanog oglašavanja kod posetilaca iz Evropske ekonomske zone, Ujedinjenog Kraljevstva i Švajcarske. Saglasnost daješ ili odbijaš kroz mehanizam za pristanak i možeš je povući u svakom trenutku.</li>
+    <li><b>Saglasnost</b> (član 6. stav 1. tačka a GDPR) — za kolačiće analitike i personalizovanog oglašavanja kod posetilaca iz Evropske ekonomske zone, Ujedinjenog Kraljevstva i Švajcarske. Saglasnost daješ ili odbijaš u baneru koji se pojavljuje pri prvoj poseti, a možeš je povući ili promeniti u svakom trenutku preko linka „Kolačići“ u podnožju svake stranice. Do tvog izbora Google Consent Mode drži analitičke i oglasne kolačiće isključenim.</li>
   </ul>
 
   <h2 id="rokovi">7. Koliko se podaci čuvaju</h2>
@@ -298,10 +303,11 @@
 
   <h2 id="iskljucivanje">10. Kako da isključiš praćenje</h2>
   <ul>
+    <li><b>Baner za kolačiće</b> — link „Kolačići“ u podnožju svake stranice ponovo otvara baner. To je najbrži način: pokriva i analitiku i oglase, i važi za ovaj pregledač do brisanja podataka sajta.</li>
     <li><b>Google Analytics</b> — instaliraj <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out dodatak</a> ili blokiraj <code>googletagmanager.com</code> u pregledaču.</li>
     <li><b>Personalizovani oglasi</b> — <a href="https://adssettings.google.com/" target="_blank" rel="noopener">adssettings.google.com</a>, <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>, <a href="https://www.youronlinechoices.eu/" target="_blank" rel="noopener">youronlinechoices.eu</a>.</li>
     <li><b>Svi kolačići</b> — u postavkama pregledača možeš blokirati kolačiće trećih strana ili obrisati postojeće. Sajt i dalje radi; izgubiće se samo pamćenje da si zatvorio poziv za instalaciju.</li>
-    <li><b>Lokalno skladište i keš</b> — brisanjem podataka sajta u pregledaču briše se i <code>gasolina_install_dismissed</code> i keš servisnog radnika.</li>
+    <li><b>Lokalno skladište i keš</b> — brisanjem podataka sajta u pregledaču briše se i <code>gasolina_consent</code>, <code>gasolina_install_dismissed</code> i keš servisnog radnika — posle toga baner se pojavljuje ponovo.</li>
   </ul>
 
   <h2 id="deca">11. Deca</h2>
