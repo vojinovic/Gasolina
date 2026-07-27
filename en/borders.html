@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Border crossings live — cameras and waiting times | Gasolina</title>
-<meta name="description" content="Live cameras and waiting estimates at 13 border crossings — Horgoš, Batrovci, Gradina, Preševo, Bogorodica and more. Check the queue before you travel.">
+<title>Serbia border crossings live — cameras and waiting times | Gasolina</title>
+<meta name="description" content="Live cameras and waiting estimates at Serbian border crossings (Horgoš, Batrovci, Gradina, Preševo, Sremska Rača, Špiljani, Gostun) and towards Greece (Bogorodica). Check the queue before you travel.">
 <link rel="canonical" href="https://gasolina.rs/en/borders.html">
 <link rel="alternate" hreflang="sr" href="https://gasolina.rs/granice.html">
 <link rel="alternate" hreflang="en" href="https://gasolina.rs/en/borders.html">
@@ -22,7 +22,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Gasolina">
 <meta property="og:locale" content="en_US">
-<meta property="og:title" content="Border crossings live — cameras and waiting times | Gasolina">
+<meta property="og:title" content="Serbia border crossings live — cameras and waiting times | Gasolina">
 <meta property="og:description" content="Live cameras and waiting estimates at border crossings towards Hungary, Croatia, Montenegro, Greece and Bulgaria. Check the queue before you travel.">
 <meta property="og:url" content="https://gasolina.rs/en/borders.html">
 <meta property="og:image" content="https://gasolina.rs/og.png">
@@ -30,7 +30,7 @@
 <meta property="og:image:height" content="630">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Border crossings live — cameras and waiting times | Gasolina">
+<meta name="twitter:title" content="Serbia border crossings live — cameras and waiting times | Gasolina">
 <meta name="twitter:description" content="Live border cameras and waiting estimates. Check the queue before you travel.">
 <meta name="twitter:image" content="https://gasolina.rs/og.png">
 
@@ -546,6 +546,15 @@ function doShareBorder(kind, id, btn){
   window.open(urls[kind], "_blank", "noopener");
 }
 
+const COUNTRY_EN = {RS:"Serbia", ME:"Montenegro", HR:"Croatia", HU:"Hungary",
+  MK:"North Macedonia", BA:"Bosnia and Herzegovina", BG:"Bulgaria", RO:"Romania", GR:"Greece"};
+// Labels follow the CROSSING's country, not Serbia: Bogorodica, Dojran and
+// Medzitlija are MK->GR, so "Entering Serbia" was simply wrong.
+function smerLabel(c, dirKey){
+  const home = COUNTRY_EN[c.from] || c.from;
+  return dirKey === "ulaz" ? "Entering " + home : "Exiting " + home;
+}
+
 function waitCell(label,dirKey,c){
   const eff = effective(c, dirKey);
   const s = waitStatus(eff.v);
@@ -652,8 +661,8 @@ function cardHTML(c){
       ? ((c.mk||c.here) ? `` : `<div class="nowait">${c.from}\u2013${c.to} border. Waiting time is not tracked here; use the camera above.</div>`)
       : `
     <div class="wait">
-      ${waitCell("Entering Serbia","ulaz",c)}
-      ${waitCell("Exiting Serbia","izlaz",c)}
+      ${waitCell(smerLabel(c,"izlaz"),"izlaz",c)}
+      ${waitCell(smerLabel(c,"ulaz"),"ulaz",c)}
     </div>`}
     ${queueRow(c)}
     ${sourcesDetails(c)}
