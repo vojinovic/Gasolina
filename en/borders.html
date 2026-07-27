@@ -289,6 +289,7 @@
     .nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-width:0}
     .nav::-webkit-scrollbar{display:none}
     .nav a{padding:6px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
+    .nav::after{content:"";position:sticky;right:0;align-self:stretch;flex:0 0 28px;margin-left:-28px;pointer-events:none;background:linear-gradient(to right, transparent, var(--ink))}
     .brand .bname{font-size:18px}
   }
 
