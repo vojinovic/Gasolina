@@ -91,19 +91,31 @@
   }
   .lead{color:var(--dim);max-width:62ch;font-size:15px;line-height:1.5;margin:0}
 
+  /* Traka stanja umesto nekadasnjeg okvira. Ovde je bio disclaimer o CORS-u i
+     zvanicnoj kameri - 141 px na telefonu, iznad kamera, a isto to je vec cetvrto
+     FAQ pitanje. Ostaje samo ono sto se ne moze procitati nigde drugde: da su
+     podaci zivi i koliko su stari. */
   .note{
-    margin-top:16px;border:1px solid var(--line);border-left:3px solid var(--fuel);
-    background:var(--panel);border-radius:10px;padding:11px 14px;
-    color:var(--dim);font-size:13px;line-height:1.5;
+    margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:11.5px;
+    line-height:1.5;color:var(--dim);letter-spacing:.03em;
   }
-  .note b{color:var(--text);font-weight:600}
+  .note b{color:var(--text);font-weight:700}
+  .note .ldot{display:inline-block;vertical-align:middle;width:7px;height:7px;
+    border-radius:50%;background:var(--ok);margin-right:8px;
+    box-shadow:0 0 0 3px rgba(47,191,113,.15)}
+  .note.demo .ldot{background:var(--warn);box-shadow:0 0 0 3px rgba(245,166,35,.15)}
+
+  /* Puna uvodna recenica je premestena ISPOD grida: Google indeksira ceo
+     renderovan DOM bez obzira na poziciju, a korisnik koji trazi kameru ne treba
+     da skroluje preko cetiri reda teksta. Brisanje bi bio gubitak, premestanje nije. */
+  .about{margin:34px 0 0;color:var(--dim);font-size:14px;line-height:1.6;max-width:72ch}
 
   .cmp-banner{
-    margin-top:14px;border:1px solid rgba(245,166,35,.35);border-left:3px solid var(--fuel);
+    margin-top:10px;border:1px solid rgba(245,166,35,.35);border-left:3px solid var(--fuel);
     background:linear-gradient(180deg, rgba(245,166,35,.07), transparent 60%), var(--panel);
-    border-radius:10px;padding:11px 14px;color:var(--text);font-size:13px;line-height:1.5;
+    border-radius:9px;padding:8px 12px;color:var(--text);font-size:12.5px;line-height:1.45;
   }
-  .cmp-banner + .cmp-banner{margin-top:8px}
+  .cmp-banner + .cmp-banner{margin-top:6px}
   .cmp-banner b{font-weight:700}
   .cmp-banner .cmp-fast{color:var(--ok)}
 
@@ -323,6 +335,7 @@
   "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
     {"@type":"Question","name":"Kolika je guzva na Horgosu ili Batrovcima sada?","acceptedAnswer":{"@type":"Answer","text":"Na svakoj kartici prelaza prikazujemo procenu cekanja za ulaz i izlaz iz Srbije, uz kameru uzivo. Kamera je najsigurnija provera trenutnog stanja."}},
     {"@type":"Question","name":"Odakle dolaze podaci o cekanju?","acceptedAnswer":{"@type":"Answer","text":"Kombinujemo granicnu policiju RS (preko AMSS-a), madjarsku policiju, makedonski AMSM i prijave vozaca. Za svaki smer prikazujemo najgoru dostupnu procenu, sa oznakom izvora."}},
+    {"@type":"Question","name":"Sta tacno znaci Bez guzve?","acceptedAnswer":{"@type":"Answer","text":"Bez guzve pisemo samo kad je procena do 15 minuta. Od 16 minuta navise prikazujemo broj i izvor iz kog dolazi. Kad mapa saobracaja izmeri kolonu od 200 metara ili duzu, ne pisemo bez guzve bez obzira na minute. Kad AMSS javi svojih podrazumevanih 30 minuta a nijedan drugi izvor ne javlja nista, pisemo da nema podataka."}},
     {"@type":"Question","name":"Koji prelaz je brzi, Horgos ili Kelebija?","acceptedAnswer":{"@type":"Answer","text":"Na obe kartice vidis aktuelno cekanje, a u kalkulatoru puta se za rutu ka Madjarskoj prikazuju oba prelaza jedan pored drugog radi poredjenja."}},
     {"@type":"Question","name":"Kako da vidim kameru na granici uzivo?","acceptedAnswer":{"@type":"Answer","text":"Klikni na dugme za reprodukciju na kartici prelaza. Kamere se ucitavaju sa zvanicnih AMSS i MUP servera; ako se ne ucita, kartica nudi dugme ka zvanicnom izvoru."}}
   ]
@@ -350,15 +363,15 @@
 <div class="wrap">
   <div class="eyebrow"><span class="dot"></span> Gasolina / Granični prelazi</div>
   <h1>Gužve na granici uživo: kamere i vreme čekanja</h1>
-  <p class="lead">Pre polaska proveri kameru uživo i procenu čekanja na graničnim prelazima Srbije ka Mađarskoj, Hrvatskoj, Bosni, Crnoj Gori, Bugarskoj, Makedoniji i Grčkoj. Podaci se kombinuju iz više izvora: granična policija RS, mađarska i makedonska strana, i prijave vozača.</p>
+  <p class="lead">Kamere uživo i procena čekanja na graničnim prelazima Srbije i regiona.</p>
 
-  <div class="note">
-    <b>Kako čitati brojke.</b> Prikazujemo najgoru dostupnu procenu iz svih izvora za svaki smer, uz oznaku odakle je podatak. „Bez gužve“ pišemo samo do 15 minuta; preko toga se vidi broj, a merena kolona od 200 m naviše obara „bez gužve“ bez obzira na minute. Kamere se vuku sa zvaničnih AMSS i MUP servera, pa video u nekim browserima možda neće da se učita (zavisi od CORS i referer politike izvora). Ako se ne učita, kartica nudi dugme ka zvaničnoj kameri. Kamera je uvek najpouzdanija provera stvarnog stanja.
-  </div>
+  <div class="note"><span class="ldot"></span><b>Uživo</b> &middot; podaci se učitavaju&hellip;</div>
 
   <div id="cmp"></div>
 
   <div class="grid" id="grid"></div>
+
+  <p class="about">Pre polaska proveri kameru uživo i procenu čekanja na graničnim prelazima Srbije ka Mađarskoj, Hrvatskoj, Bosni, Crnoj Gori, Bugarskoj, Makedoniji i Grčkoj. Podaci se kombinuju iz više izvora: granična policija RS (preko AMSS-a), mađarska i makedonska strana, prijave vozača i mapa saobraćaja. Za svaki smer prikazujemo najgoru dostupnu procenu, uz oznaku odakle je podatak. Kamere se učitavaju direktno sa zvaničnih AMSS i MUP servera, pa video u nekim browserima možda neće da se učita — u tom slučaju kartica nudi dugme ka zvaničnoj kameri. Kamera je uvek najpouzdanija provera stvarnog stanja.</p>
 
   <section class="faq">
     <h2>Česta pitanja o granicama</h2>
@@ -369,6 +382,10 @@
     <details>
       <summary>Odakle dolaze podaci o čekanju?</summary>
       <p>Kombinujemo više izvora: Uprava granične policije RS (preko AMSS-a), mađarska policija za prelaze ka Mađarskoj, makedonski AMSM za prelaze ka Makedoniji, i prijave vozača. Za svaki smer prikazujemo najgoru dostupnu procenu, sa oznakom izvora.</p>
+    </details>
+    <details>
+      <summary>Šta tačno znači „Bez gužve“?</summary>
+      <p>„Bez gužve“ pišemo samo kad je procena do 15 minuta. Od 16 minuta naviše prikazujemo broj i izvor iz kog dolazi. Kad mapa saobraćaja izmeri kolonu od 200 metara ili dužu, ne pišemo „bez gužve“ bez obzira na minute — izmerena kolona je jači dokaz od procene. A kad AMSS javi svojih podrazumevanih 30 minuta, a nijedan drugi izvor ne javlja ništa, pišemo da nema podataka umesto da prikažemo broj koji niko nije izmerio.</p>
     </details>
     <details>
       <summary>Koji prelaz je brži, Horgoš ili Kelebija?</summary>
@@ -749,7 +766,9 @@ const CN_DATIVE = { HU:"Mađarskoj", ME:"Crnoj Gori", HR:"Hrvatskoj", BG:"Bugars
 
 /* Kad postoji vise prelaza ka istoj zemlji (npr. Horgos i Kelebija ka Madjarskoj),
    prikazi direktno poredjenje umesto da korisnik sam racuna dve odvojene kartice.
-   Prag od 10 min je namerno - manja razlika nije vredna isticanja, samo sum. */
+   Prag od 10 min je namerno - manja razlika nije vredna isticanja, samo sum.
+   Formulacija "ceka krace" je namerna: "brzi" je gresio rod na Kelebiji,
+   Bogorodici i Medzitliji, a imena prelaza su i muskog i zenskog roda. */
 function renderComparisons(){
   const cmp = document.getElementById("cmp");
   if(!cmp) return;
@@ -772,10 +791,12 @@ function renderComparisons(){
     const toName = CN_DATIVE[list[0].to] || list[0].to;
     banners.push(`
       <div class="cmp-banner">
-        \uD83D\uDCA1 Ka ${BORDERS.FLAG[list[0].to]} <b>${toName}</b>: <b class="cmp-fast">${fastest.c.name}</b> trenutno brži za <b>${fmtMin(diff)}</b> nego ${slowest.c.name} (${fmtMin(fastest.eff.v)} : ${fmtMin(slowest.eff.v)}).
+        \uD83D\uDCA1 Ka ${BORDERS.FLAG[list[0].to]} ${toName}: <b class="cmp-fast">${fastest.c.name}</b> čeka <b>${fmtMin(diff)}</b> kraće nego ${slowest.c.name} &middot; ${fmtMin(fastest.eff.v)} : ${fmtMin(slowest.eff.v)}
       </div>`);
   });
-  cmp.innerHTML = banners.join("");
+  // Najvise dva - treci baner bi kamere gurnuo ispod preloma, a to je tacno ono
+  // sto ova stranica ne sme da radi.
+  cmp.innerHTML = banners.slice(0, 2).join("");
 }
 
 const grid=document.getElementById("grid");
@@ -803,11 +824,13 @@ function setNote(live, scrapedAt){
       const d=new Date(scrapedAt);
       const hh=String(d.getHours()).padStart(2,"0"), mm=String(d.getMinutes()).padStart(2,"0");
       const dd=String(d.getDate()).padStart(2,"0"), mo=String(d.getMonth()+1).padStart(2,"0");
-      when=` Azurirano ${dd}.${mo}. u ${hh}:${mm}.`;
+      when=` &middot; azurirano ${dd}.${mo}. u ${hh}:${mm}`;
     }
-    note.innerHTML=`<b>Vreme cekanja uzivo.</b> Izvor: Uprava granicne policije RS (preko AMSS).${when} Kamere se vuku sa AMSS i MUP servera, pa video mozda nece da se ucita u svakom okruzenju. Ako ne radi, kartica nudi dugme ka zvanicnoj kameri.`;
+    note.classList.remove("demo");
+    note.innerHTML=`<span class="ldot"></span><b>Uzivo</b>${when}`;
   } else {
-    note.innerHTML=`<b>Demo prototip.</b> Vremena cekanja su ilustrativna jer granice.json jos nije ucitan. Kamere se vuku sa AMSS i MUP servera, pa video mozda nece da se ucita u svakom okruzenju.`;
+    note.classList.add("demo");
+    note.innerHTML=`<span class="ldot"></span><b>Demo prototip</b> &middot; brojke su ilustrativne`;
   }
 }
 
