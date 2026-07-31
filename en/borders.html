@@ -91,19 +91,31 @@
   }
   .lead{color:var(--dim);max-width:62ch;font-size:15px;line-height:1.5;margin:0}
 
+  /* Status strip, replacing what used to be a boxed disclaimer. The CORS/official
+     camera note lived here - 141 px on a phone, above the cameras, and the same
+     thing is already the fourth FAQ answer. Only what cannot be read anywhere
+     else stays: that the data is live, and how old it is. */
   .note{
-    margin-top:16px;border:1px solid var(--line);border-left:3px solid var(--fuel);
-    background:var(--panel);border-radius:10px;padding:11px 14px;
-    color:var(--dim);font-size:13px;line-height:1.5;
+    margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:11.5px;
+    line-height:1.5;color:var(--dim);letter-spacing:.03em;
   }
-  .note b{color:var(--text);font-weight:600}
+  .note b{color:var(--text);font-weight:700}
+  .note .ldot{display:inline-block;vertical-align:middle;width:7px;height:7px;
+    border-radius:50%;background:var(--ok);margin-right:8px;
+    box-shadow:0 0 0 3px rgba(47,191,113,.15)}
+  .note.demo .ldot{background:var(--warn);box-shadow:0 0 0 3px rgba(245,166,35,.15)}
+
+  /* The full intro sentence moved BELOW the grid: Google indexes the whole
+     rendered DOM regardless of position, and someone looking for a camera should
+     not scroll past four lines of prose. Deleting would cost; moving does not. */
+  .about{margin:34px 0 0;color:var(--dim);font-size:14px;line-height:1.6;max-width:72ch}
 
   .cmp-banner{
-    margin-top:14px;border:1px solid rgba(245,166,35,.35);border-left:3px solid var(--fuel);
+    margin-top:10px;border:1px solid rgba(245,166,35,.35);border-left:3px solid var(--fuel);
     background:linear-gradient(180deg, rgba(245,166,35,.07), transparent 60%), var(--panel);
-    border-radius:10px;padding:11px 14px;color:var(--text);font-size:13px;line-height:1.5;
+    border-radius:9px;padding:8px 12px;color:var(--text);font-size:12.5px;line-height:1.45;
   }
-  .cmp-banner + .cmp-banner{margin-top:8px}
+  .cmp-banner + .cmp-banner{margin-top:6px}
   .cmp-banner b{font-weight:700}
   .cmp-banner .cmp-fast{color:var(--ok)}
 
@@ -323,6 +335,7 @@
   "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
     {"@type":"Question","name":"How long is the wait at Horgos or Batrovci right now?","acceptedAnswer":{"@type":"Answer","text":"Each crossing card shows a waiting estimate for entering and exiting Serbia, along with a live camera. The camera is the most reliable check of the current situation."}},
     {"@type":"Question","name":"Where does the waiting data come from?","acceptedAnswer":{"@type":"Answer","text":"We combine the Serbian border police (via AMSS), the Hungarian police, the North Macedonian AMSM and driver reports. For each direction we show the worst available estimate, with its source labelled."}},
+    {"@type":"Question","name":"What exactly does No queue mean?","acceptedAnswer":{"@type":"Answer","text":"We only write No queue when the estimate is 15 minutes or less. From 16 minutes upwards we show the number and its source. When the traffic map measures a queue of 200 metres or more we never write no queue, whatever the minutes say. When AMSS reports its default 30 minutes and no other source reports anything, we say there is no data rather than show a number nobody measured."}},
     {"@type":"Question","name":"Which crossing is faster, Horgos or Kelebija?","acceptedAnswer":{"@type":"Answer","text":"Both cards show the current wait, and the trip calculator shows the two crossings side by side for routes towards Hungary."}},
     {"@type":"Question","name":"How do I watch a border camera live?","acceptedAnswer":{"@type":"Answer","text":"Press the play button on the crossing card. Cameras stream from the official AMSS and Ministry of Interior servers; if a stream fails to load, the card offers a link to the official source."}}
   ]
@@ -350,15 +363,15 @@
 <div class="wrap">
   <div class="eyebrow"><span class="dot"></span> Gasolina / Border crossings</div>
   <h1>Serbia border crossings live: cameras and waiting times</h1>
-  <p class="lead">Check live cameras and waiting estimates at Serbian border crossings towards Hungary, Croatia, Bosnia, Montenegro, Bulgaria, North Macedonia and Greece. Data combined from multiple sources: Serbian border police, the Hungarian and Macedonian sides, and driver reports.</p>
+  <p class="lead">Live cameras and waiting estimates at border crossings in Serbia and the region.</p>
 
-  <div class="note">
-    <b>How to read the numbers.</b> We show the worst available estimate across all sources for each direction, labelled with where it came from. A wait is only called <i>No queue</i> up to 15 minutes; above that the number is shown, and a measured queue of 200 m or more overrides <i>No queue</i> whatever the minutes say. Cameras stream from the official AMSS and MUP servers, so the video may not load in every browser (it depends on the source's CORS and referer policy). If it fails, the card links to the official camera. The camera is always the most reliable check of the real situation.
-  </div>
+  <div class="note"><span class="ldot"></span><b>Live</b> &middot; loading data&hellip;</div>
 
   <div id="cmp"></div>
 
   <div class="grid" id="grid"></div>
+
+  <p class="about">Check live cameras and waiting estimates at Serbian border crossings towards Hungary, Croatia, Bosnia, Montenegro, Bulgaria, North Macedonia and Greece. Data is combined from multiple sources: the Serbian border police (via AMSS), the Hungarian and North Macedonian sides, driver reports and the traffic map. For each direction we show the worst available estimate, labelled with where it came from. Cameras stream directly from the official AMSS and MUP servers, so the video may not load in every browser — in that case the card links to the official camera. The camera is always the most reliable check of the real situation.</p>
 
   <section class="faq">
     <h2>Border crossing FAQ</h2>
@@ -369,6 +382,10 @@
     <details>
       <summary>Where does the waiting data come from?</summary>
       <p>We combine multiple sources: the Serbian border police (via AMSS), the Hungarian police for crossings towards Hungary, the North Macedonian AMSM for crossings towards North Macedonia, and driver reports. For each direction we show the worst available estimate, with its source labelled.</p>
+    </details>
+    <details>
+      <summary>What exactly does “No queue” mean?</summary>
+      <p>We only write “No queue” when the estimate is 15 minutes or less. From 16 minutes upwards we show the number and the source it came from. When the traffic map measures a queue of 200 metres or more, we never write “no queue” whatever the minutes say — a measured queue is stronger evidence than an estimate. And when AMSS reports its default 30 minutes while no other source reports anything, we say there is no data rather than show a number nobody measured.</p>
     </details>
     <details>
       <summary>Which crossing is faster, Horgoš or Kelebija?</summary>
@@ -778,10 +795,12 @@ function renderComparisons(){
     const toName = CN_DATIVE[list[0].to] || list[0].to;
     banners.push(`
       <div class="cmp-banner">
-        \uD83D\uDCA1 Towards ${BORDERS.FLAG[list[0].to]} <b>${toName}</b>: <b class="cmp-fast">${fastest.c.name}</b> currently faster by <b>${fmtMin(diff)}</b> than ${slowest.c.name} (${fmtMin(fastest.eff.v)} : ${fmtMin(slowest.eff.v)}).
+        \uD83D\uDCA1 Towards ${BORDERS.FLAG[list[0].to]} ${toName}: <b class="cmp-fast">${fastest.c.name}</b> waits <b>${fmtMin(diff)}</b> less than ${slowest.c.name} &middot; ${fmtMin(fastest.eff.v)} : ${fmtMin(slowest.eff.v)}
       </div>`);
   });
-  cmp.innerHTML = banners.join("");
+  // At most two - a third banner would push the cameras below the fold, which is
+  // exactly what this page must not do.
+  cmp.innerHTML = banners.slice(0, 2).join("");
 }
 
 const grid=document.getElementById("grid");
@@ -809,11 +828,13 @@ function setNote(live, scrapedAt){
       const d=new Date(scrapedAt);
       const hh=String(d.getHours()).padStart(2,"0"), mm=String(d.getMinutes()).padStart(2,"0");
       const dd=String(d.getDate()).padStart(2,"0"), mo=String(d.getMonth()+1).padStart(2,"0");
-      when=` Updated ${dd}.${mo}. at ${hh}:${mm}.`;
+      when=` &middot; updated ${dd}.${mo}. at ${hh}:${mm}`;
     }
-    note.innerHTML=`<b>Live waiting times.</b> Source: Serbian border police (via AMSS).${when} Cameras stream from AMSS and MUP servers, so video may not load in every environment. If it fails, the card links to the official camera.`;
+    note.classList.remove("demo");
+    note.innerHTML=`<span class="ldot"></span><b>Live</b>${when}`;
   } else {
-    note.innerHTML=`<b>Demo prototype.</b> Waiting times are illustrative because granice.json has not loaded yet. Cameras stream from AMSS and MUP servers, so video may not load in every environment.`;
+    note.classList.add("demo");
+    note.innerHTML=`<span class="ldot"></span><b>Demo prototype</b> &middot; figures are illustrative`;
   }
 }
 
