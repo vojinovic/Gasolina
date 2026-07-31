@@ -210,6 +210,7 @@
   .wmin{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:24px;margin:3px 0 1px;line-height:1}
   .wmin span{font-size:12px;color:var(--dim);font-weight:500}
   .wmin .wok{font-size:16px;color:inherit;font-weight:700;white-space:nowrap}
+  .wmin .wq{font-size:14px;color:inherit;font-weight:700;white-space:nowrap}
   .wcat{font-size:11px;color:var(--dim)}
   .wsrc{font-size:11px;color:var(--fuel)}
   .wtruck{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:5px;display:flex;align-items:center;gap:5px}
@@ -347,12 +348,12 @@
 </nav>
 
 <div class="wrap">
-  <div class="eyebrow"><span class="dot"></span> Gasolina / Granični prelazi</div>
+  <div class="eyebrow"><span class="dot"></span> Gasolina / Border crossings</div>
   <h1>Serbia border crossings live: cameras and waiting times</h1>
   <p class="lead">Check live cameras and waiting estimates at Serbian border crossings towards Hungary, Croatia, Bosnia, Montenegro, Bulgaria, North Macedonia and Greece. Data combined from multiple sources: Serbian border police, the Hungarian and Macedonian sides, and driver reports.</p>
 
   <div class="note">
-    <b>Kako čitati brojke.</b> Prikazujemo najgoru dostupnu procenu iz svih izvora za svaki smer, uz oznaku odakle je podatak. Kamere se vuku sa zvaničnih AMSS i MUP servera, pa video u nekim browserima možda neće da se učita (zavisi od CORS i referer politike izvora). Ako se ne učita, kartica nudi dugme ka zvaničnoj kameri. Kamera je uvek najpouzdanija provera stvarnog stanja.
+    <b>How to read the numbers.</b> We show the worst available estimate across all sources for each direction, labelled with where it came from. A wait is only called <i>No queue</i> up to 15 minutes; above that the number is shown, and a measured queue of 200 m or more overrides <i>No queue</i> whatever the minutes say. Cameras stream from the official AMSS and MUP servers, so the video may not load in every browser (it depends on the source's CORS and referer policy). If it fails, the card links to the official camera. The camera is always the most reliable check of the real situation.
   </div>
 
   <div id="cmp"></div>
@@ -360,9 +361,9 @@
   <div class="grid" id="grid"></div>
 
   <section class="faq">
-    <h2>Česta pitanja o granicama</h2>
+    <h2>Border crossing FAQ</h2>
     <details>
-      <summary>Kolika je gužva na Horgošu ili Batrovcima sada?</summary>
+      <summary>How long is the wait at Horgoš or Batrovci right now?</summary>
       <p>Each crossing card shows a waiting estimate for entering and exiting Serbia, along with a live camera. For Horgoš and Kelebija we also have data from the Hungarian side, and for Preševo and Bogorodica from the North Macedonian side. The camera is the most reliable check of the current situation.</p>
     </details>
     <details>
@@ -390,7 +391,41 @@ const CAMERAS = [...BORDERS.CROSSINGS].sort((a, b) => {
   return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
 });
 
-/* status iz minuta */
+/* DISPLAY THRESHOLDS (changed 31.07.2026)
+
+   "No queue" used to run up to 30 min, which is exactly the AMSS default value,
+   so the label sat just under the line even while real sources reported a queue.
+   Gradina, 29.07.: AMSS 30 (default), BorderAlarm 25, TomTom 11 with a 203 m
+   queue -> worst candidate wins (30) -> "No queue", while the camera showed a
+   jammed crossing.
+
+   Three rules that pull those apart:
+   1. "No queue" only up to NO_QUEUE_MAX. 16-30 prints the number (colours are
+      unchanged: green to 30, amber 31-44, red 45+).
+   2. An AMSS value of EXACTLY 30 is not a candidate while any real source exists.
+   3. A measured queue of QUEUE_HARD_M or more overrides "no queue" whatever the
+      minutes say. The threshold deliberately matches QUEUE_MIN_M (the "Queue" row),
+      so a queue printed below the cell can never sit under a "No queue" label. */
+const NO_QUEUE_MAX   = 15;   // min, upper bound for the "No queue" label
+const AMSS_DEFAULT_MIN = 30; // the AMSS default value, not a measurement
+const QUEUE_HARD_M   = 200;  // m, measured queue that overrides "No queue"
+
+// Feed labels come from the shared borders-data.js and are Serbian there - the
+// EN page translates them at render time, so the data does not fork per language.
+// Anything not on the list falls through unchanged rather than breaking the tab.
+const FEED_LABEL_EN_MAP = {
+  "Ulaz":"Entry", "Izlaz":"Exit",
+  "Ulaz (AMSS)":"Entry (AMSS)", "Izlaz (AMSS)":"Exit (AMSS)",
+  "Ulaz (MUP)":"Entry (MUP)",   "Izlaz (MUP)":"Exit (MUP)",
+  "Ulaz (ka Makedoniji)":"Entry (towards North Macedonia)",
+  "Izlaz (ka Grckoj)":"Exit (towards Greece)",
+  "Kamera (granica)":"Camera (border)",
+  "kamera CG strane (Dracenovac) \u2197":"camera on the Montenegrin side (Dracenovac) \u2197",
+};
+const feedLabelEN = l => FEED_LABEL_EN_MAP[l] || l;
+
+/* status from minutes - colours and the bar keep the old cuts (30 / 45).
+   Only the LABEL moves, not the scale: 20 min is still green, but not "no queue". */
 function waitStatus(min){
   if(min==null) return {c:"var(--faint)",pct:0,t:"no data"};
   if(min<=30)  return {c:"var(--ok)",  pct:Math.max(12,min/30*40),  t:"flowing"};
@@ -411,7 +446,7 @@ function hereStrip(c){
             : (H.criticality==="minor") ? "var(--warn)" : "var(--dim)";
   const len = H.length_km ? ` (${String(H.length_km).replace(".",",")} km)` : "";
   const closed = H.closed ? " &middot; <b style=\"color:var(--bad)\">ZATVORENO</b>" : "";
-  return `<div class="hustrip">\uD83D\uDCE1 Saobracaj na prelazu: <b style="color:${col}">${H.category}${len}</b>${closed} <span class="basrc">&middot; HERE</span></div>`;
+  return `<div class="hustrip">\uD83D\uDCE1 Traffic at the crossing: <b style="color:${col}">${H.category}${len}</b>${closed} <span class="basrc">&middot; HERE</span></div>`;
 }
 function baStrip(c){
   if(!c.ba) return "";
@@ -443,7 +478,7 @@ function mkStrip(c){
    threshold only opens the row: ONE direction clearing it is enough, and then
    both are shown (a short queue the other way is informative - it shows the
    jam is one-directional). Only a direction with no measurement is dropped. */
-const QUEUE_MIN_M = 300;
+const QUEUE_MIN_M = QUEUE_HARD_M;
 function queueRow(c){
   if(!c.tt) return "";
   const iz = c.tt.izlaz_kolona_m, ul = c.tt.ulaz_kolona_m;
@@ -458,7 +493,7 @@ function queueRow(c){
    is long, "No queue (queue ~725m)" contradicts itself - traffic moves, yet a
    line exists; in that case we write what is actually observed. */
 function ttDir(min, kolona, prefix){
-  if(min!=null && min<=30 && kolona>=QUEUE_MIN_M){
+  if(min!=null && min<=NO_QUEUE_MAX && kolona>=QUEUE_MIN_M){
     return `<b style="color:var(--warn)">flowing, but queue ~${kolona} m</b>`;
   }
   return `${prefix}${cVal(min)}${kolona ? ` (queue ~${kolona}m)` : ``}`;
@@ -486,34 +521,48 @@ function sourcesDetails(c){
       <div class="cfoot">
         <div class="src">${c.noCamera ? `Source: traffic map / Serbian border police` : (c.noWait ? `Camera: ${c.provider}` : `Source: Serbian border police<br>Camera: ${c.provider}`)}</div>
         <div class="cfoot-links">
-          ${c.noCamera ? `` : `<a class="link" href="${c.official}" target="_blank" rel="noopener">zvanicna kamera \u2197</a>`}
-          ${c.official2 ? `<a class="link" href="${c.official2.url}" target="_blank" rel="noopener">${c.official2.label}</a>` : ''}
+          ${c.noCamera ? `` : `<a class="link" href="${c.official}" target="_blank" rel="noopener">official camera \u2197</a>`}
+          ${c.official2 ? `<a class="link" href="${c.official2.url}" target="_blank" rel="noopener">${feedLabelEN(c.official2.label)}</a>` : ''}
         </div>
       </div>
     </details>`;
 }
 
-/* najgori dostupan podatak za smer, iz svih izvora (AMSS default 30 ne maskira prave brojke) */
+/* Worst available figure for a direction, across all sources.
+
+   An AMSS value of EXACTLY 30 is skipped while any real source exists: it is
+   their default, and since the WORST candidate wins, that default swallowed every
+   smaller real number. Any other AMSS value stays a full candidate - that one is
+   a measurement. With no real source the default does not come back either: the
+   cell says "no data" (samAmss) rather than invent a half-hour wait. */
 function effective(c, dirKey){
   const cands = [];
   const p = c.wait && c.wait.putnicka ? c.wait.putnicka[dirKey] : null;
-  if(p!=null) cands.push({v:p, src:null});
-  if(c.hu){ const v=c.hu[dirKey]; if(v!=null && v>0) cands.push({v, src:"madjarska strana"}); }
+  const amssDefault = (p === AMSS_DEFAULT_MIN);
+  if(p!=null && !amssDefault) cands.push({v:p, src:null});
+  if(c.hu){ const v=c.hu[dirKey]; if(v!=null && v>0) cands.push({v, src:"Hungarian side"}); }
   if(c.mk){
     const v = (dirKey==='izlaz') ? c.mk.vlez : c.mk.izlez;   // ka MK = izlaz iz RS
-    if(v!=null && v>0) cands.push({v, src:"makedonska strana"});
-    if(c.mk.opsto!=null && c.mk.opsto>0) cands.push({v:c.mk.opsto, src:"makedonska strana"});
+    if(v!=null && v>0) cands.push({v, src:"North Macedonian side"});
+    if(c.mk.opsto!=null && c.mk.opsto>0) cands.push({v:c.mk.opsto, src:"North Macedonian side"});
   }
-  if(c.ba){ const v=c.ba[dirKey]; if(v!=null && v>0) cands.push({v, src:"prijave vozaca"}); }
+  if(c.ba){ const v=c.ba[dirKey]; if(v!=null && v>0) cands.push({v, src:"driver reports"}); }
   // TomTom zastoj voznje - DONJA granica (ne vidi kolonu koja stoji na pasoskoj)
   if(c.tt){ const v=c.tt[dirKey]; if(v!=null && v>0) cands.push({v, src:"traffic map"}); }
-  if(!cands.length) return {v:null, src:null, samAmss:false};
+  // Queue length is the only MEASURED figure (TomTom measures it on the road).
+  // At or above the threshold it overrides "No queue" whatever the minutes say:
+  // minutes are an estimate, the queue is not.
+  const kolona = (c.tt && c.tt[dirKey+"_kolona_m"]!=null) ? c.tt[dirKey+"_kolona_m"] : null;
+  const dugaKolona = (kolona!=null && kolona >= QUEUE_HARD_M);
+
+  // The AMSS default NEVER becomes a displayed number: "30 min" would assert a
+  // half-hour wait nobody measured. samAmss carries that message into the cell.
+  if(!cands.length) return {v:null, src:null, samAmss:amssDefault, kolona, dugaKolona};
   let best = cands[0];
   cands.forEach(x=>{ if(best.v==null || (x.v!=null && x.v>best.v)) best=x; });
-  // AMSS-ovih 30 je njihova PODRAZUMEVANA vrednost ("bez zadrzavanja"), ne merenje.
-  // Kad je to jedini kandidat, "Bez guzve" je obecanje koje podaci ne nose - zato
-  // se uz brojku ispisuje odakle dolazi, da citalac zna koliko da joj veruje.
-  best.samAmss = (cands.length === 1 && best.src === null && best.v === 30);
+  best.samAmss = false;   // only reached when at least one real candidate exists
+  best.kolona = kolona;
+  best.dugaKolona = dugaKolona;
   return best;
 }
 
@@ -523,8 +572,12 @@ function shareTextBorder(c){
     parts.push("camera available, waiting not tracked");
   } else {
     const iz = effective(c, "izlaz"), ul = effective(c, "ulaz");
-    parts.push(`exiting Serbia: ${iz.v!=null ? (iz.v<=30 ? "no queue" : fmtMin(iz.v)) : "no data"}`);
-    parts.push(`entering Serbia: ${ul.v!=null ? (ul.v<=30 ? "no queue" : fmtMin(ul.v)) : "no data"}`);
+    // Same thresholds as the card - shared text must not claim more than the page.
+    const say = e => (e.v==null)
+      ? (e.dugaKolona ? `queue ~${e.kolona} m` : "no data")
+      : ((e.v<=NO_QUEUE_MAX && !e.dugaKolona) ? "no queue" : fmtMin(e.v));
+    parts.push(`exiting Serbia: ${say(iz)}`);
+    parts.push(`entering Serbia: ${say(ul)}`);
   }
   return `${c.name} border (${c.from}-${c.to}): ${parts.join(", ")} — gasolina.rs/en/borders.html`;
 }
@@ -559,11 +612,27 @@ function smerLabel(c, dirKey){
 
 function waitCell(label,dirKey,c){
   const eff = effective(c, dirKey);
-  const s = waitStatus(eff.v);
+  let s = waitStatus(eff.v);
+  // A measured queue must not stay green: 11 min with 537 m of queue is not "flowing".
+  if(eff.dugaKolona && s.c === "var(--ok)") s = {c:"var(--warn)", pct:Math.max(40, s.pct), t:"queue"};
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
-  const big = (eff.v==null) ? '-' : (eff.v<=30 ? '<span class="wok">No queue</span>' : fmtMin(eff.v));
-  const srcTag = (eff.src && eff.v>30) ? `<div class="wsrc">source: ${eff.src}</div>`
-    : (eff.samAmss ? `<div class="wsrc">only source: AMSS (default value)</div>` : `<div class="wcat">passenger vehicles</div>`);
+  const big = (eff.v==null)
+    ? (eff.dugaKolona ? `<span class="wq">queue ~${eff.kolona} m</span>`
+       : (eff.samAmss ? '<span class="wq">no data</span>' : '-'))
+    : ((eff.v<=NO_QUEUE_MAX && !eff.dugaKolona) ? '<span class="wok">No queue</span>' : fmtMin(eff.v));
+  // When a number is printed its origin goes with it - otherwise 25 min from
+  // BorderAlarm reads like an official figure. And when it was the queue that
+  // overrode "No queue", that has to be said, or the number looks like a bug.
+  let srcTag;
+  if(eff.src && eff.v!=null && eff.v>NO_QUEUE_MAX){
+    srcTag = `<div class="wsrc">source: ${eff.src}${eff.dugaKolona ? ` &middot; queue ~${eff.kolona} m` : ``}</div>`;
+  } else if(eff.dugaKolona){
+    srcTag = `<div class="wsrc">${eff.v==null ? `source: traffic map` : `measured queue ~${eff.kolona} m`}</div>`;
+  } else if(eff.samAmss){
+    srcTag = `<div class="wsrc">AMSS reports no delay &mdash; check the camera</div>`;
+  } else {
+    srcTag = `<div class="wcat">passenger vehicles</div>`;
+  }
   return `
     <div class="wcell">
       <div class="wlabel"><span class="dir">${arrow}</span> ${label}</div>
@@ -601,7 +670,7 @@ function cardHTML(c){
     .sort((a,b)=> (a.f.dir==="out"?0:1) - (b.f.dir==="out"?0:1));
   const tabs = c.feeds.length>1 && hasVideo
     ? `<div class="tabs" role="tablist">${orderedFeeds.map(({f,i},pos)=>
-        `<button class="tab" role="tab" data-i="${i}" aria-selected="${pos===0}">${f.label}</button>`).join("")}</div>`
+        `<button class="tab" role="tab" data-i="${i}" aria-selected="${pos===0}">${feedLabelEN(f.label)}</button>`).join("")}</div>`
     : "";
 
   let paneInner;
@@ -709,7 +778,7 @@ function renderComparisons(){
     const toName = CN_DATIVE[list[0].to] || list[0].to;
     banners.push(`
       <div class="cmp-banner">
-        \uD83D\uDCA1 Ka ${BORDERS.FLAG[list[0].to]} <b>${toName}</b>: <b class="cmp-fast">${fastest.c.name}</b> currently faster by <b>${fmtMin(diff)}</b> than ${slowest.c.name} (${fmtMin(fastest.eff.v)} : ${fmtMin(slowest.eff.v)}).
+        \uD83D\uDCA1 Towards ${BORDERS.FLAG[list[0].to]} <b>${toName}</b>: <b class="cmp-fast">${fastest.c.name}</b> currently faster by <b>${fmtMin(diff)}</b> than ${slowest.c.name} (${fmtMin(fastest.eff.v)} : ${fmtMin(slowest.eff.v)}).
       </div>`);
   });
   cmp.innerHTML = banners.join("");
