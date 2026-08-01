@@ -225,6 +225,8 @@
   .wmin .wq{font-size:14px;color:inherit;font-weight:700;white-space:nowrap}
   .wcat{font-size:11px;color:var(--dim)}
   .wsrc{font-size:11px;color:var(--fuel)}
+  .wpre{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--faint);display:block;margin-bottom:-2px}
   .wtruck{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:5px;display:flex;align-items:center;gap:5px}
   .wtruck b{color:var(--text);font-weight:700}
   .hustrip{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:10px;padding-top:9px;border-top:1px dashed var(--line)}
@@ -545,76 +547,118 @@ function sourcesDetails(c){
     </details>`;
 }
 
-/* Prijava vozaca protiv merenja (01.08.2026).
+// ---------------------------------------------------------------------------
+// Izbor onoga sto se prikazuje za jedan prelaz i jedan smer.
+//
+// NACELO (01.08.2026, posle dva incidenta i spoljne provere):
+// izvori se dele na one koji mere UKUPNO CEKANJE i one koji mere SAOBRACAJ.
+// Samo prvi smeju da daju krupnu brojku.
+//
+//   ukupno cekanje : AMSS (osim tacno 30), police.hu, AMSM, prijave vozača
+//   saobracaj      : TomTom zastoj + izmerena duzina kolone
+//
+// TomTom po konstrukciji vidi samo vozila koja se KRECU. Kolona koja STOJI na
+// pasoskoj kontroli mu je nevidljiva. Zato on sme da POTVRDI gujvu i da stavi
+// veto na natpis "Bez guzve", ali nikad da bude ukupno cekanje niti da obori
+// tudju tvrdnju. Presevo 01.08.: prijava 2h oborena, TomTomova 1 minuta postala
+// naslov, ispalo "Bez guzve" - a kamera puna kolona.
+// ---------------------------------------------------------------------------
+const BA_PROVERA_MIN   = 120;  // min, od koliko prijava mora da izdrzi proveru
+const TT_MIRNO_MIN     = 5;    // min, TomTom zastoj ispod kog nema pokretne kolone
 
-   Medzitlija je 01.08. pisala 4h u OBA smera, dok je TomTom u istom trenutku
-   merio 0 minuta zastoja i 0 metara kolone, a kamera pokazivala prazan put.
-   Jedna prijava vozaca bila je jedini izvor i postala krupna crvena brojka.
-   Ljudi su to javno ismejali - s pravom.
-
-   Od BA_PROVERA_MIN navise prijava mora da izdrzi proveru: ako TomTom za taj
-   smer meri zastoj do TT_MIRNO_MIN i kolonu kracu od QUEUE_HARD_M, merenje joj
-   protivreci i prijava gubi pravo na krupnu brojku. Ne brise se - ispisuje se
-   ispod kao tvrdnja koju merenje ne potvrdjuje, jer ume da bude i tacna: kolona
-   koja STOJI na pasoskoj kontroli je TomTomu nevidljiva, pa je TT donja granica.
-
-   Prag je namerno visok. Na istoriji od 436 snimaka (24.06-31.07) pravilo
-   pogadja 1,3% celija - skalpel, ne redizajn. Ispod 2h se ne dira nista. */
-const BA_PROVERA_MIN = 120;  // min, od koliko prijava mora da izdrzi proveru
-const TT_MIRNO_MIN   = 5;    // min, TomTom zastoj ispod kog je put prohodan
-function baProtivMerenja(c, dirKey, v){
-  if(v == null || v < BA_PROVERA_MIN) return false;
-  if(!c.tt) return false;                       // nema cime da se ospori
-  const d = c.tt[dirKey];
-  if(d == null) return false;                   // taj smer nije meren
-  const k = c.tt[dirKey + "_kolona_m"];
-  return d <= TT_MIRNO_MIN && (k == null || k < QUEUE_HARD_M);
-}
-
-/* Worst available figure for a direction, across all sources.
-
-   An AMSS value of EXACTLY 30 is skipped while any real source exists: it is
-   their default, and since the WORST candidate wins, that default swallowed every
-   smaller real number. Any other AMSS value stays a full candidate - that one is
-   a measurement. With no real source the default does not come back either: the
-   cell says "no data" (samAmss) rather than invent a half-hour wait. */
 function effective(c, dirKey){
-  const cands = [];
+  // --- saobracajni signal (nikad krupna brojka) ---
+  const ttMin  = (c.tt && c.tt[dirKey] != null) ? c.tt[dirKey] : null;
+  const kolona = (c.tt && c.tt[dirKey + "_kolona_m"] != null) ? c.tt[dirKey + "_kolona_m"] : null;
+  const dugaKolona = (kolona != null && kolona >= QUEUE_HARD_M);
+
+  // --- kandidati za UKUPNO cekanje ---
+  const cands = [];              // {v, src, tip}
+  let kratkoZvanicno = false;    // zvanicni izvor izricito kaze "nema cekanja"
+
   const p = c.wait && c.wait.putnicka ? c.wait.putnicka[dirKey] : null;
   const amssDefault = (p === AMSS_DEFAULT_MIN);
-  if(p!=null && !amssDefault) cands.push({v:p, src:null});
-  if(c.hu){ const v=c.hu[dirKey]; if(v!=null && v>0) cands.push({v, src:"Hungarian side"}); }
-  if(c.mk){
-    const v = (dirKey==='izlaz') ? c.mk.vlez : c.mk.izlez;   // ka MK = izlaz iz RS
-    if(v!=null && v>0) cands.push({v, src:"North Macedonian side"});
-    if(c.mk.opsto!=null && c.mk.opsto>0) cands.push({v:c.mk.opsto, src:"North Macedonian side"});
+  if (p != null && !amssDefault) {
+    if (p > 0) cands.push({v: p, src: "granična policija", tip: "zvanicni"});
+    else kratkoZvanicno = true;
   }
+  if (c.hu) {
+    const v = c.hu[dirKey];
+    if (v != null) { if (v > 0) cands.push({v, src: "mađarska strana", tip: "zvanicni"});
+                     else kratkoZvanicno = true; }
+  }
+  if (c.mk) {
+    const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
+    if (v != null) { if (v > 0) cands.push({v, src: "makedonska strana", tip: "zvanicni"});
+                     else kratkoZvanicno = true; }
+    if (c.mk.opsto != null) { if (c.mk.opsto > 0) cands.push({v: c.mk.opsto, src: "makedonska strana", tip: "zvanicni"});
+                              else kratkoZvanicno = true; }
+  }
+  // sopstvena forma: medijana vec izracunata u scraperu; broj prijava nosi tezinu
+  let user = null;
+  if (c.user && c.user[dirKey] != null) {
+    user = c.user[dirKey];
+    cands.push({v: user, src: "prijave sa sajta", tip: "prijava"});
+  }
+
+  // --- prijava vozaca, uz proveru merenjem ---
+  // Merenje sme da ospori SAMO ekstremnu prijavu, i samo tako sto joj oduzme
+  // pravo na krupnu brojku - nikad tako sto svoju vrednost stavi umesto nje.
   let baOsporen = null;
-  if(c.ba){
-    const v=c.ba[dirKey];
-    if(v!=null && v>0){
-      if(baProtivMerenja(c, dirKey, v)) baOsporen = v;
-      else cands.push({v, src:"driver reports"});
+  if (c.ba) {
+    const v = c.ba[dirKey];
+    if (v != null && v > 0) {
+      const merenjeMirno = (ttMin != null && ttMin <= TT_MIRNO_MIN && !dugaKolona);
+      if (v >= BA_PROVERA_MIN && merenjeMirno) baOsporen = v;
+      else cands.push({v, src: "prijave vozača", tip: "prijava"});
     }
   }
-  // TomTom zastoj voznje - DONJA granica (ne vidi kolonu koja stoji na pasoskoj)
-  if(c.tt){ const v=c.tt[dirKey]; if(v!=null && v>0) cands.push({v, src:"traffic map"}); }
-  // Queue length is the only MEASURED figure (TomTom measures it on the road).
-  // At or above the threshold it overrides "No queue" whatever the minutes say:
-  // minutes are an estimate, the queue is not.
-  const kolona = (c.tt && c.tt[dirKey+"_kolona_m"]!=null) ? c.tt[dirKey+"_kolona_m"] : null;
-  const dugaKolona = (kolona!=null && kolona >= QUEUE_HARD_M);
 
-  // The AMSS default NEVER becomes a displayed number: "30 min" would assert a
-  // half-hour wait nobody measured. samAmss carries that message into the cell.
-  if(!cands.length) return {v:null, src:null, samAmss:amssDefault, kolona, dugaKolona, baOsporen};
-  let best = cands[0];
-  cands.forEach(x=>{ if(best.v==null || (x.v!=null && x.v>best.v)) best=x; });
-  best.samAmss = false;   // only reached when at least one real candidate exists
-  best.kolona = kolona;
-  best.dugaKolona = dugaKolona;
-  return best;
+  const zvanicniPostoji = cands.some(x => x.tip === "zvanicni");
+
+  // --- odluka ---
+  // 1. Osporena ekstremna prijava, a nema zvanicnog izvora da preuzme:
+  //    ne izmisljamo broj, upucujemo na kameru. TomTom OVDE NE PREUZIMA NASLOV.
+  if (baOsporen != null && !zvanicniPostoji)
+    return {stanje: "proveri", baOsporen, kolona, dugaKolona, ttMin};
+
+  if (cands.length) {
+    let best = cands[0];
+    cands.forEach(x => { if (x.v > best.v) best = x; });
+
+    // 2. Zvanicni izvor kaze kratko, a prijava kaze dugo -> dva izvora iste
+    //    vrste se ne slazu. Ni jedno ni drugo se ne proglasava istinom.
+    if (kratkoZvanicno && best.tip === "prijava" && best.v >= BA_PROVERA_MIN)
+      return {stanje: "proveri", baOsporen: best.v, kolona, dugaKolona, ttMin};
+
+    // 2b. Izmerena duga kolona obara svaki umirujuci naslov. Gradina 01.08.:
+    //     prijava 10 min uz izmerenih 1.478 m kolone - to nije "10 minuta".
+    //     Ovde merenje POTVRDJUJE guzvu, sto donja granica sme; ne opovrgava.
+    if (dugaKolona && best.v <= NO_QUEUE_MAX)
+      return {stanje: "kolona", v: best.v, src: best.src, kolona, dugaKolona, ttMin};
+
+    if (best.v <= NO_QUEUE_MAX && !dugaKolona) {
+      // 3. "Bez guzve" trazi POZITIVAN dokaz: zvanican izvor. Jedna prijava od
+      //    10 minuta nije dokaz da je prelaz prohodan - 94% dosadasnjih "Bez
+      //    guzve" prikaza pocivalo je bas na tome.
+      if (best.tip === "zvanicni" || kratkoZvanicno)
+        return {stanje: "bez-guzve", src: best.src, kolona, dugaKolona, ttMin};
+      return {stanje: "kratko-prijava", v: best.v, src: best.src, kolona, dugaKolona, ttMin};
+    }
+    // 4. Prijava koja prodje: broj ostaje, ali rec "prijavljeno" ide UZ brojku,
+    //    ne sitno ispod. Kolona od 734 m potvrdjuje da guzva postoji, ne da
+    //    traje bas 8 sati.
+    if (best.tip === "prijava")
+      return {stanje: "prijavljeno", v: best.v, src: best.src, kolona, dugaKolona, ttMin};
+    return {stanje: "broj", v: best.v, src: best.src, kolona, dugaKolona, ttMin};
+  }
+
+  // 5. Nema nijednog izvora ukupnog cekanja. TomTom sme samo da javi kolonu.
+  if (dugaKolona) return {stanje: "kolona", kolona, dugaKolona, ttMin};
+  if (baOsporen != null) return {stanje: "proveri", baOsporen, kolona, dugaKolona, ttMin};
+  return {stanje: "nema", samAmss: amssDefault, kolona, dugaKolona, ttMin};
 }
+
 
 function shareTextBorder(c){
   const parts = [];
@@ -662,42 +706,50 @@ function smerLabel(c, dirKey){
 
 function waitCell(label,dirKey,c){
   const eff = effective(c, dirKey);
-  let s = waitStatus(eff.v);
-  // A measured queue must not stay green: 11 min with 537 m of queue is not "flowing".
-  if(eff.dugaKolona && s.c === "var(--ok)") s = {c:"var(--warn)", pct:Math.max(40, s.pct), t:"queue"};
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
-  // Osporena prijava NE SME da postane umirujuca brojka, ni preko sopstvene
-  // grane ni preko malog TomTom kandidata koji ostane iza nje. TomTom ne vidi
-  // kolonu koja STOJI na pasoskoj kontroli - Presevo 01.08.: ba 120 min,
-  // tt 1 min / 53 m, a kamera puna kolona. Kad se izvori ne slazu, naslov
-  // upucuje na kameru, jedini izvor koji covek proveri sam za dve sekunde.
-  const big = eff.baOsporen ? `<span class="wq">check the camera</span>`
-    : (eff.v==null)
-    ? (eff.dugaKolona ? `<span class="wq">queue ~${eff.kolona} m</span>`
-
-       : (eff.samAmss ? '<span class="wq">no data</span>' : '-'))
-    : ((eff.v<=NO_QUEUE_MAX && !eff.dugaKolona) ? '<span class="wok">No queue</span>' : fmtMin(eff.v));
-  // When a number is printed its origin goes with it - otherwise 25 min from
-  // BorderAlarm reads like an official figure. And when it was the queue that
-  // overrode "No queue", that has to be said, or the number looks like a bug.
-  let srcTag;
-  if(eff.baOsporen){
-    srcTag = `<div class="wsrc">one driver reports ${fmtMin(eff.baOsporen)}, measurement does not confirm it</div>`;
-  } else if(eff.src && eff.v!=null && eff.v>NO_QUEUE_MAX){
-    srcTag = `<div class="wsrc">source: ${eff.src}${eff.dugaKolona ? ` &middot; queue ~${eff.kolona} m` : ``}</div>`;
-  } else if(eff.dugaKolona){
-    srcTag = `<div class="wsrc">${eff.v==null ? `source: traffic map` : `measured queue ~${eff.kolona} m`}</div>`;
-  } else if(eff.samAmss){
-    srcTag = `<div class="wsrc">AMSS reports no delay &mdash; check the camera</div>`;
-  } else {
-    srcTag = `<div class="wcat">passenger vehicles</div>`;
+  let big, note, boja;
+  switch(eff.stanje){
+    case "broj":
+      boja = waitStatus(eff.v).c;
+      big  = fmtMin(eff.v);
+      note = `<div class="wsrc">source: ${eff.src}${eff.dugaKolona ? ` &middot; kolona ~${eff.kolona} m` : ``}</div>`;
+      break;
+    case "prijavljeno":
+      // Rec "prijavljeno" stoji UZ brojku, ne sitno ispod: kolona od 734 m
+      // potvrdjuje da guzva postoji, ne da traje bas toliko.
+      boja = waitStatus(eff.v).c;
+      big  = `<span class="wpre">reported</span> do ${fmtMin(eff.v)}`;
+      note = `<div class="wsrc">${eff.src}${eff.dugaKolona ? ` &middot; ` + `queue ~{k} m confirmed`.replace("{k}", eff.kolona) : ``}</div>`;
+      break;
+    case "bez-guzve":
+      boja = "var(--ok)"; big = `<span class="wok">No queue</span>`;
+      note = `<div class="wsrc">source: ${eff.src || "driver reports"}</div>`;
+      break;
+    case "kratko-prijava":
+      // Jedna prijava od 10 min nije dokaz da je prelaz prohodan.
+      boja = "var(--dim)"; big = `<span class="wq">Short wait</span>`;
+      note = `<div class="wsrc">${eff.src} &middot; unconfirmed — check the camera</div>`;
+      break;
+    case "kolona":
+      boja = "var(--warn)"; big = `<span class="wq">queue ~${eff.kolona} m</span>`;
+      note = `<div class="wsrc">${eff.v!=null ? `${eff.src}: ` + fmtMin(eff.v) + ` &middot; ` : ``}source: mapa saobraćaja</div>`;
+      break;
+    case "proveri":
+      boja = "var(--dim)"; big = `<span class="wq">check the camera</span>`;
+      note = `<div class="wsrc">` + `one driver reports {v}, measurement does not confirm it`.replace("{v}", fmtMin(eff.baOsporen)) + `</div>`;
+      break;
+    default:
+      boja = "var(--faint)";
+      big  = eff.samAmss ? `<span class="wq">no data</span>` : '-';
+      note = eff.samAmss ? `<div class="wsrc">AMSS reports no delay — check the camera</div>` : `<div class="wcat">passenger vehicles</div>`;
   }
+  const pct = (eff.v!=null) ? waitStatus(eff.v).pct : (eff.dugaKolona ? 55 : 8);
   return `
     <div class="wcell">
       <div class="wlabel"><span class="dir">${arrow}</span> ${label}</div>
-      <div class="wmin" style="color:${s.c}">${big}</div>
-      ${srcTag}
-      <div class="wbar"><i style="width:${s.pct}%;background:${s.c}"></i></div>
+      <div class="wmin" style="color:${boja}">${big}</div>
+      ${note}
+      <div class="wbar"><i style="width:${pct}%;background:${boja}"></i></div>
     </div>`;
 }
 
