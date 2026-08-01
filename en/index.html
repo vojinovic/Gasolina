@@ -287,6 +287,38 @@
     window.open(urls[kind], '_blank', 'noopener');
   }
 
+  // Ista pravila kao na srpskoj naslovnoj: sveziina se cita iz podatka.
+  // `updated` znaci "poslednja promena cene" (scraper ga ne pomera bez promene),
+  // `stale_since` upisuje scraper kad izvor stvarno zakaze, a `valid_until` je rok
+  // zvanicne cene Ministarstva. Datum i sat roka se citaju iz niske da bi svima
+  // pisalo beogradsko vreme, kako uredba i glasi.
+  function _stamp(v){
+    if(!v) return null;
+    const d = new Date(String(v).replace(" UTC","Z").replace(" ","T"));
+    return isNaN(d) ? null : d;
+  }
+  function freshnessNote(c){
+    const out = [];
+    const vu = _stamp(c.valid_until);
+    if (vu) {
+      const m = String(c.valid_until).match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2})/);
+      const when = m ? `${+m[3]}.${+m[2]}. at ${+m[4]}:00 (Belgrade)` : vu.toISOString().slice(0,10);
+      out.push(Date.now() < vu.getTime()
+        ? `Official price for diesel and petrol, valid until ${when}`
+        : `Official price was valid until ${when} — awaiting the new decision`);
+    }
+    const ss = _stamp(c.stale_since);
+    if (ss) {
+      const days = Math.floor((Date.now() - ss.getTime()) / 86400000);
+      out.push(`<span style="color:var(--bad, #d64e44)">&#9888; source not responding${days >= 1 ? ` for ${days} day${days === 1 ? '' : 's'}` : ''} — last known price shown</span>`);
+    }
+    if (!out.length) {
+      const u = _stamp(c.updated);
+      out.push(u ? `Last price change: ${u.getDate()}.${u.getMonth()+1}.${u.getFullYear()}.` : 'Last price change: -');
+    }
+    return out.join('<br>');
+  }
+
   function renderPrices() {
     const cards = document.getElementById('cards');
     cards.innerHTML = '';
@@ -311,7 +343,7 @@
           <button class="share-btn" type="button" onclick="doShare('facebook','${c.name}')">Facebook</button>
           <button class="share-btn" type="button" onclick="doShare('copy','${c.name}', this)">Copy</button>
         </div>
-        <div class="updated">Updated: ${c.updated || '-'}</div>`;
+        <div class="updated">${freshnessNote(c)}</div>`;
       cards.appendChild(card);
     });
   }
