@@ -338,7 +338,8 @@
             return `<div class="wval">queue ${fmtKolona(e.kolona, korZa(e._d))}</div>` +
                    small(e.v != null ? "drivers report " + dur(e.v) : "source: Traffic map");
           case "proveri":
-            return `<div class="wval">check the camera</div>` +
+            
+            return `<div class="wval">${(FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out')) ? "check the camera" : "unconfirmed"}</div>` +
                    small("one driver reports {v}, measurement does not confirm it".replace("{v}", dur(e.baOsporen)));
           default:
             return `<div class="wval">no data</div>` + (e.samAmss ? small("AMSS reports no delay — check the camera above") : "");

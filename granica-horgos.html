@@ -338,7 +338,8 @@
             return `<div class="wval">kolona ${fmtKolona(e.kolona, korZa(e._d))}</div>` +
                    small(e.v != null ? "vozači prijavljuju " + dur(e.v) : "izvor: Mapa saobraćaja");
           case "proveri":
-            return `<div class="wval">proveri kameru</div>` +
+            
+            return `<div class="wval">${(FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out')) ? "proveri kameru" : "nepotvrđeno"}</div>` +
                    small("jedan vozač prijavljuje {v}, merenje to ne potvrđuje".replace("{v}", dur(e.baOsporen)));
           default:
             return `<div class="wval">nema podataka</div>` + (e.samAmss ? small("AMSS ne javlja zadržavanje — proveri kameru iznad") : "");
