@@ -666,9 +666,15 @@ function waitCell(label,dirKey,c){
   // A measured queue must not stay green: 11 min with 537 m of queue is not "flowing".
   if(eff.dugaKolona && s.c === "var(--ok)") s = {c:"var(--warn)", pct:Math.max(40, s.pct), t:"queue"};
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
-  const big = (eff.v==null)
+  // Osporena prijava NE SME da postane umirujuca brojka, ni preko sopstvene
+  // grane ni preko malog TomTom kandidata koji ostane iza nje. TomTom ne vidi
+  // kolonu koja STOJI na pasoskoj kontroli - Presevo 01.08.: ba 120 min,
+  // tt 1 min / 53 m, a kamera puna kolona. Kad se izvori ne slazu, naslov
+  // upucuje na kameru, jedini izvor koji covek proveri sam za dve sekunde.
+  const big = eff.baOsporen ? `<span class="wq">check the camera</span>`
+    : (eff.v==null)
     ? (eff.dugaKolona ? `<span class="wq">queue ~${eff.kolona} m</span>`
-       : eff.baOsporen ? `<span class="wok">No queue</span>`
+
        : (eff.samAmss ? '<span class="wq">no data</span>' : '-'))
     : ((eff.v<=NO_QUEUE_MAX && !eff.dugaKolona) ? '<span class="wok">No queue</span>' : fmtMin(eff.v));
   // When a number is printed its origin goes with it - otherwise 25 min from
@@ -676,7 +682,7 @@ function waitCell(label,dirKey,c){
   // overrode "No queue", that has to be said, or the number looks like a bug.
   let srcTag;
   if(eff.baOsporen){
-    srcTag = `<div class="wsrc">one driver reports ${fmtMin(eff.baOsporen)} &mdash; measurement does not confirm it</div>`;
+    srcTag = `<div class="wsrc">one driver reports ${fmtMin(eff.baOsporen)}, measurement does not confirm it</div>`;
   } else if(eff.src && eff.v!=null && eff.v>NO_QUEUE_MAX){
     srcTag = `<div class="wsrc">source: ${eff.src}${eff.dugaKolona ? ` &middot; queue ~${eff.kolona} m` : ``}</div>`;
   } else if(eff.dugaKolona){
