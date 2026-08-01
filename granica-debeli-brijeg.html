@@ -190,7 +190,7 @@
 <script>
   const PRELAZ_ID = "debeli-brijeg";
   const FEEDS = [];
-  const T = {noQueue: "Bez guzve", noData: "nema podataka", queue: "kolona"};
+  const T = {noQueue: "Bez gužve", noData: "nema podataka", queue: "kolona", checkCam: "proveri kameru"};
   const SHARE = {label:"Podeli:", copied:"Kopirano!", out:"izlaz iz Crne Gore", inn:"ulaz u Crnu Goru", noq:"bez guzve", nd:"nema podataka", nowait:"kamera dostupna, cekanje se ne prati", queue:"kolona"};
   
   
@@ -241,13 +241,14 @@
       
       
       const fmt = e => {
-        if (!e || e.v == null) {
-          if (e && e.dugaKolona) return T.queue + " ~" + e.kolona + " m";
-          
-          
-          if (e && e.baOsporen) return T.noQueue;
-          return T.noData;
-        }
+        
+        
+        
+        
+        
+        
+        if (e && e.baOsporen) return T.checkCam;
+        if (!e || e.v == null) return (e && e.dugaKolona) ? (T.queue + " ~" + e.kolona + " m") : T.noData;
         return (e.v <= NO_QUEUE_MAX && !e.dugaKolona) ? T.noQueue : dur(e.v);
       };
       
@@ -323,7 +324,7 @@
       
       
       const srcNote = (e) => {
-        if (e.baOsporen) return small("jedan vozač prijavljuje {v} — merenje to ne potvrđuje".replace("{v}", dur(e.baOsporen)));
+        if (e.baOsporen) return small("jedan vozač prijavljuje {v}, merenje to ne potvrđuje".replace("{v}", dur(e.baOsporen)));
         if (e.src && e.v != null && e.v > NO_QUEUE_MAX)
           return small("izvor: " + e.src + (e.dugaKolona ? " · kolona ~" + e.kolona + " m" : ""));
         if (e.dugaKolona) return small(e.v == null ? "izvor: Mapa saobraćaja" : "merena kolona ~" + e.kolona + " m");

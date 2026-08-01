@@ -192,7 +192,7 @@
 <script>
   const PRELAZ_ID = "gostun";
   const FEEDS = [];
-  const T = {noQueue: "No queue", noData: "no data", queue: "queue"};
+  const T = {noQueue: "No queue", noData: "no data", queue: "queue", checkCam: "check the camera"};
   const SHARE = {label:"Share:", copied:"Copied!", out:"exiting Serbia", inn:"entering Serbia", noq:"no queue", nd:"no data", nowait:"camera available, waiting not tracked", queue:"queue"};
   
   
@@ -243,13 +243,14 @@
       
       
       const fmt = e => {
-        if (!e || e.v == null) {
-          if (e && e.dugaKolona) return T.queue + " ~" + e.kolona + " m";
-          
-          
-          if (e && e.baOsporen) return T.noQueue;
-          return T.noData;
-        }
+        
+        
+        
+        
+        
+        
+        if (e && e.baOsporen) return T.checkCam;
+        if (!e || e.v == null) return (e && e.dugaKolona) ? (T.queue + " ~" + e.kolona + " m") : T.noData;
         return (e.v <= NO_QUEUE_MAX && !e.dugaKolona) ? T.noQueue : dur(e.v);
       };
       
@@ -325,7 +326,7 @@
       
       
       const srcNote = (e) => {
-        if (e.baOsporen) return small("one driver reports {v} — measurement does not confirm it".replace("{v}", dur(e.baOsporen)));
+        if (e.baOsporen) return small("one driver reports {v}, measurement does not confirm it".replace("{v}", dur(e.baOsporen)));
         if (e.src && e.v != null && e.v > NO_QUEUE_MAX)
           return small("source: " + e.src + (e.dugaKolona ? " · queue ~" + e.kolona + " m" : ""));
         if (e.dugaKolona) return small(e.v == null ? "source: Traffic map" : "measured queue ~" + e.kolona + " m");
