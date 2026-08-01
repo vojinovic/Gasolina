@@ -662,6 +662,27 @@
     // zahtev je same-origin i za gasolina.rs i za www.gasolina.rs.
     const ORS_PROXY = "/api/ors";
 
+    // Isti status (429 ili 403) ima TRI razlicita uzroka i tri razlicita saveta.
+    // Posrednik ih razdvaja preko dva zaglavlja:
+    //   nema X-Gasolina-Worker             -> Cloudflare pravilo "ors-limit" na ivici,
+    //                                         prebrzo kliktanje, prodje za par sekundi
+    //   ima Worker + ima X-Gasolina-Razlog -> posrednik sam odbio (poreklo, putanja...)
+    //   ima Worker + nema Razlog           -> odgovor stigao od ORS-a, dakle kvota
+    // Ranije je ovde stajalo "dnevni limit je potrosen (2.500/dan) - probaj sutra" za
+    // svaki 429. Od kad postoji pravilo na ivici, to je bila neistina onome ko je
+    // slucajno prebrzo kucao. Kvota se ne pominje brojem jer se moze promeniti.
+    function porukaOLimitu(res) {
+      if (res.headers.get('X-Gasolina-Worker') !== '1') {
+        return 'Previše zahteva u kratkom periodu. Sačekaj nekoliko sekundi i pokušaj ponovo.';
+      }
+      const razlog = res.headers.get('X-Gasolina-Razlog');
+      if (razlog === 'poreklo') {
+        return 'Zahtev je odbijen jer pregledač nije poslao podatke o poreklu. Najčešće to blokira dodatak za privatnost.';
+      }
+      if (razlog) return 'Servis za rute trenutno ne prihvata zahtev.';
+      return 'Dnevni limit servisa za rute je potrošen. Pokušaj ponovo sutra.';
+    }
+
     // ORS interni country_id -> nas ISO kod. Samo zemlje koje se realno mogu pojaviti
     // na balkanskoj ruti - vidi punu listu: giscience.github.io/openrouteservice/technical-details/country-list
     const ORS_COUNTRY_ID = {
@@ -800,8 +821,8 @@
       if (restrictCountries) params.set('boundary.country', restrictCountries);
       const res = await fetch(`${ORS_PROXY}/geocode/search?${params}`);
       if (!res.ok) {
-        if (res.status === 403 || res.status === 401) throw new Error('ORS kljuc nije validan (proveri da li je tacno nalepljen).');
-        if (res.status === 429) throw new Error('Dnevni limit ORS poziva je potrosen (2.500/dan) - probaj sutra.');
+        if (res.status === 429 || res.status === 403) throw new Error(porukaOLimitu(res));
+        if (res.status === 401) throw new Error('Pristup servisu za rute nije prihvacen.');
         throw new Error('Geokodiranje nije uspelo (' + res.status + ').');
       }
       const data = await res.json();
@@ -832,8 +853,8 @@
         }),
       });
       if (!res.ok) {
-        if (res.status === 403 || res.status === 401) throw new Error('ORS kljuc nije validan.');
-        if (res.status === 429) throw new Error('Dnevni limit ORS poziva je potrosen (2.500/dan) - probaj sutra.');
+        if (res.status === 429 || res.status === 403) throw new Error(porukaOLimitu(res));
+        if (res.status === 401) throw new Error('Pristup servisu za rute nije prihvacen.');
         if (res.status === 400 || res.status === 404) throw new Error('Nije nadjena drumska ruta izmedju ove dve tacke.');
         throw new Error('Racunanje rute nije uspelo (' + res.status + ').');
       }
