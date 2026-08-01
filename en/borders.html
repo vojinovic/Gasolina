@@ -545,6 +545,32 @@ function sourcesDetails(c){
     </details>`;
 }
 
+/* Prijava vozaca protiv merenja (01.08.2026).
+
+   Medzitlija je 01.08. pisala 4h u OBA smera, dok je TomTom u istom trenutku
+   merio 0 minuta zastoja i 0 metara kolone, a kamera pokazivala prazan put.
+   Jedna prijava vozaca bila je jedini izvor i postala krupna crvena brojka.
+   Ljudi su to javno ismejali - s pravom.
+
+   Od BA_PROVERA_MIN navise prijava mora da izdrzi proveru: ako TomTom za taj
+   smer meri zastoj do TT_MIRNO_MIN i kolonu kracu od QUEUE_HARD_M, merenje joj
+   protivreci i prijava gubi pravo na krupnu brojku. Ne brise se - ispisuje se
+   ispod kao tvrdnja koju merenje ne potvrdjuje, jer ume da bude i tacna: kolona
+   koja STOJI na pasoskoj kontroli je TomTomu nevidljiva, pa je TT donja granica.
+
+   Prag je namerno visok. Na istoriji od 436 snimaka (24.06-31.07) pravilo
+   pogadja 1,3% celija - skalpel, ne redizajn. Ispod 2h se ne dira nista. */
+const BA_PROVERA_MIN = 120;  // min, od koliko prijava mora da izdrzi proveru
+const TT_MIRNO_MIN   = 5;    // min, TomTom zastoj ispod kog je put prohodan
+function baProtivMerenja(c, dirKey, v){
+  if(v == null || v < BA_PROVERA_MIN) return false;
+  if(!c.tt) return false;                       // nema cime da se ospori
+  const d = c.tt[dirKey];
+  if(d == null) return false;                   // taj smer nije meren
+  const k = c.tt[dirKey + "_kolona_m"];
+  return d <= TT_MIRNO_MIN && (k == null || k < QUEUE_HARD_M);
+}
+
 /* Worst available figure for a direction, across all sources.
 
    An AMSS value of EXACTLY 30 is skipped while any real source exists: it is
@@ -563,7 +589,14 @@ function effective(c, dirKey){
     if(v!=null && v>0) cands.push({v, src:"North Macedonian side"});
     if(c.mk.opsto!=null && c.mk.opsto>0) cands.push({v:c.mk.opsto, src:"North Macedonian side"});
   }
-  if(c.ba){ const v=c.ba[dirKey]; if(v!=null && v>0) cands.push({v, src:"driver reports"}); }
+  let baOsporen = null;
+  if(c.ba){
+    const v=c.ba[dirKey];
+    if(v!=null && v>0){
+      if(baProtivMerenja(c, dirKey, v)) baOsporen = v;
+      else cands.push({v, src:"driver reports"});
+    }
+  }
   // TomTom zastoj voznje - DONJA granica (ne vidi kolonu koja stoji na pasoskoj)
   if(c.tt){ const v=c.tt[dirKey]; if(v!=null && v>0) cands.push({v, src:"traffic map"}); }
   // Queue length is the only MEASURED figure (TomTom measures it on the road).
@@ -574,7 +607,7 @@ function effective(c, dirKey){
 
   // The AMSS default NEVER becomes a displayed number: "30 min" would assert a
   // half-hour wait nobody measured. samAmss carries that message into the cell.
-  if(!cands.length) return {v:null, src:null, samAmss:amssDefault, kolona, dugaKolona};
+  if(!cands.length) return {v:null, src:null, samAmss:amssDefault, kolona, dugaKolona, baOsporen};
   let best = cands[0];
   cands.forEach(x=>{ if(best.v==null || (x.v!=null && x.v>best.v)) best=x; });
   best.samAmss = false;   // only reached when at least one real candidate exists
@@ -635,13 +668,16 @@ function waitCell(label,dirKey,c){
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
   const big = (eff.v==null)
     ? (eff.dugaKolona ? `<span class="wq">queue ~${eff.kolona} m</span>`
+       : eff.baOsporen ? `<span class="wok">No queue</span>`
        : (eff.samAmss ? '<span class="wq">no data</span>' : '-'))
     : ((eff.v<=NO_QUEUE_MAX && !eff.dugaKolona) ? '<span class="wok">No queue</span>' : fmtMin(eff.v));
   // When a number is printed its origin goes with it - otherwise 25 min from
   // BorderAlarm reads like an official figure. And when it was the queue that
   // overrode "No queue", that has to be said, or the number looks like a bug.
   let srcTag;
-  if(eff.src && eff.v!=null && eff.v>NO_QUEUE_MAX){
+  if(eff.baOsporen){
+    srcTag = `<div class="wsrc">one driver reports ${fmtMin(eff.baOsporen)} &mdash; measurement does not confirm it</div>`;
+  } else if(eff.src && eff.v!=null && eff.v>NO_QUEUE_MAX){
     srcTag = `<div class="wsrc">source: ${eff.src}${eff.dugaKolona ? ` &middot; queue ~${eff.kolona} m` : ``}</div>`;
   } else if(eff.dugaKolona){
     srcTag = `<div class="wsrc">${eff.v==null ? `source: traffic map` : `measured queue ~${eff.kolona} m`}</div>`;
