@@ -689,6 +689,52 @@
     // dok ovo nije bio tvrd filter, ne samo blaga preferenca.
     const EXPECTED_GEOCODE_COUNTRIES = 'RS,HR,BA,ME,SI,MK,HU,BG,AL,GR,RO,AT,IT,DE,CH,PL,SK,CZ';
 
+    // === Srpski nazivi stranih gradova (egzonimi) ===
+    // ORS geokoder ih ne poznaje: "Solun" vraca samo ulice sa tim imenom, a grad se
+    // nalazi tek kao "Thessaloniki". Isto vazi za Bec, Atinu, Minhen. Covek koji pise
+    // na srpskom dobije spisak ulica i odustane, pa se zamena radi pre slanja upita.
+    // Spisak je namerno kratak i vezan za rute koje sajt stvarno pokriva: grcka
+    // odredista, prestonice na putu i gradovi iz kojih dijaspora krece.
+    // Kljucevi su u "ogoljenom" obliku (bez kvacica, cirilica preslovljena), pa jedan
+    // unos pokriva "Solun", "solun" i "Солун".
+    const EGZONIMI = {
+      // Grcka - odredista
+      'solun': 'Thessaloniki', 'atina': 'Athens', 'krf': 'Corfu', 'krit': 'Crete',
+      'rodos': 'Rhodes', 'halkidiki': 'Chalkidiki', 'paralija': 'Paralia Katerini',
+      'janjina': 'Ioannina', 'larisa': 'Larissa',
+      // prestonice i gradovi na putu
+      'skoplje': 'Skopje', 'sofija': 'Sofia', 'bukurest': 'Bucharest',
+      'budimpesta': 'Budapest', 'temisvar': 'Timisoara', 'carigrad': 'Istanbul',
+      'drac': 'Durres', 'skadar': 'Shkoder', 'valona': 'Vlore',
+      // dijaspora - polazista
+      'bec': 'Vienna', 'minhen': 'Munich', 'cirih': 'Zurich', 'zeneva': 'Geneva',
+      'prag': 'Prague', 'varsava': 'Warsaw', 'rim': 'Rome', 'venecija': 'Venice',
+      'milano': 'Milan', 'trst': 'Trieste', 'solunj': 'Thessaloniki',
+    };
+
+    // Cirilica -> latinica, samo za trazenje kljuca. Sam upit se ne menja ako
+    // egzonim nije pronadjen - ORS lepo radi sa cirilicom za domaca mesta.
+    const CIRILICA = {
+      'а':'a','б':'b','в':'v','г':'g','д':'d','ђ':'dj','е':'e','ж':'z','з':'z',
+      'и':'i','ј':'j','к':'k','л':'l','љ':'lj','м':'m','н':'n','њ':'nj','о':'o',
+      'п':'p','р':'r','с':'s','т':'t','ћ':'c','у':'u','ф':'f','х':'h','ц':'c',
+      'ч':'c','џ':'dz','ш':'s',
+    };
+
+    function egzonimKljuc(t) {
+      return t.trim().toLowerCase()
+        .replace(/[\u0430-\u045f]/g, c => CIRILICA[c] || c)
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')  // s^ -> s, c' -> c, z^ -> z
+        .replace(/\u0111/g, 'dj')                            // d/ se ne rastavlja u NFD
+        .replace(/\s+/g, ' ');
+    }
+
+    // Zamenjuje se SAMO ceo upis, nikad deo reci - zamena usred kucanja bi menjala
+    // predloge pod prstima i zbunila coveka koji tek pise ime.
+    function razresiEgzonim(t) {
+      return EGZONIMI[egzonimKljuc(t)] || t;
+    }
+
     // === Predlozi dok kucas (autocomplete) ===
     // ORS ima poseban /geocode/autocomplete endpoint bas za ovo (za razliku od /search) -
     // namenjen tacno za "type-ahead", ne krsi nicija pravila koriscenja kao sto bi bio
@@ -708,7 +754,7 @@
       const listEl = document.getElementById(listId);
       try {
         const params = new URLSearchParams({
-          text, size: 6,
+          text: razresiEgzonim(text), size: 6,
           'focus.point.lat': '44.5', 'focus.point.lon': '19.5',
           'boundary.country': EXPECTED_GEOCODE_COUNTRIES,
         });
@@ -766,8 +812,9 @@
       // Prvi pokusaj: strogo ogranicen na region (resava "Nis" -> Nice u Francuskoj).
       // Ako tamo nema pogotka (npr. korisnik stvarno trazi mesto van regiona), tek onda
       // globalna pretraga bez ogranicenja - ne zelimo da blokiramo legitimne udaljene rute.
-      let f = await orsGeocodeRaw(text, EXPECTED_GEOCODE_COUNTRIES);
-      if (!f) f = await orsGeocodeRaw(text, null);
+      const upit = razresiEgzonim(text);
+      let f = await orsGeocodeRaw(upit, EXPECTED_GEOCODE_COUNTRIES);
+      if (!f) f = await orsGeocodeRaw(upit, null);
       if (!f) return null;
       const [lon, lat] = f.geometry.coordinates;
       return { lat, lon, label: f.properties.label || text };
