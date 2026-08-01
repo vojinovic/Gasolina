@@ -79,5 +79,23 @@ test("AMSS-ovih tačno 30 nije kandidat",
   else console.log("  [OK  ] kolona duboko u koridoru kaže 'oko'");
 }
 
+// 8. Kamera ne postoji za svaki smer: Bogorodica ima samo izlaz ka Grckoj,
+//    Medzitlija samo ulaz. Uputiti coveka na kameru koje nema je gore nego
+//    ne reci nista.
+{
+  const src = html.slice(html.indexOf("function imaKameruZa"), html.indexOf("function effective"));
+  const imaKameruZa = new Function(src + "\nreturn imaKameruZa;")();
+  const samoIzlaz = {feeds: [{dir: "out", src: "x"}]};
+  const provere = [
+    [imaKameruZa(samoIzlaz, "izlaz") === true,  "kamera za izlaz nije prepoznata"],
+    [imaKameruZa(samoIzlaz, "ulaz")  === false, "kamera za ulaz je prijavljena a ne postoji"],
+    [imaKameruZa({feeds: []}, "izlaz") === false, "prelaz bez kamera prijavljuje kameru"],
+  ];
+  for (const [ok, poruka] of provere) {
+    if (!ok) { pao++; console.log(`  [PAO ] ${poruka}`); }
+  }
+  if (provere.every(x => x[0])) console.log("  [OK  ] 'proveri kameru' samo kad kamera za taj smer postoji");
+}
+
 console.log(pao ? `\nPALO: ${pao}\n` : "\nSve prolazi.\n");
 process.exit(pao ? 1 : 0);
