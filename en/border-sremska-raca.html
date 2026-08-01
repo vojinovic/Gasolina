@@ -242,100 +242,108 @@
       
       
       
-      const fmt = e => {
-        
-        
-        
-        
-        
-        
-        if (e && e.baOsporen) return T.checkCam;
-        if (!e || e.v == null) return (e && e.dugaKolona) ? (T.queue + " ~" + e.kolona + " m") : T.noData;
-        return (e.v <= NO_QUEUE_MAX && !e.dugaKolona) ? T.noQueue : dur(e.v);
+      
+      
+      
+      
+      
+      
+      
+      const KORIDOR_OUT = null, KORIDOR_IN = null;
+      const fmtKolona = (m, kor) => {
+        const blizuKraja = (kor != null && m >= 0.85 * kor);
+        let tekst;
+        if (m >= 1000) {
+          const km = Math.round(m / 500) * 0.5;
+          tekst = (km % 1 === 0 ? km.toFixed(0) : km.toFixed(1).replace(".", ",")) + " km";
+        } else { tekst = Math.round(m / 100) * 100 + " m"; }
+        return (blizuKraja ? "najmanje " : "oko ") + tekst;
       };
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+      const korZa = (dirKey) => (dirKey === 'ulaz' ? KORIDOR_IN : KORIDOR_OUT);
       const BA_PROVERA_MIN = 120;
       const TT_MIRNO_MIN = 5;
-      const baProtivMerenja = (dirKey, v) => {
-        if (v == null || v < BA_PROVERA_MIN) return false;
-        if (!c || !c.tt) return false;              
-        const d = c.tt[dirKey];
-        if (d == null) return false;                
-        const k = c.tt[dirKey + "_kolona_m"];
-        return d <= TT_MIRNO_MIN && (k == null || k < QUEUE_HARD_M);
-      };
       const eff = (dirKey) => {
-        const cands = [];
+        const ttMin  = (c && c.tt && c.tt[dirKey] != null) ? c.tt[dirKey] : null;
+        const kolona = (c && c.tt && c.tt[dirKey + "_kolona_m"] != null) ? c.tt[dirKey + "_kolona_m"] : null;
+        const dugaKolona = (kolona != null && kolona >= QUEUE_HARD_M);
+        const cands = []; let kratkoZvanicno = false;
         const p = (c && c.found && c.putnicka) ? c.putnicka[dirKey] : null;
-        
-        
-        
-        
         const amssDefault = (p === AMSS_DEFAULT_MIN);
-        if (p != null && !amssDefault) cands.push({v: p, src: null});
-        if (c && c.hu) { const v = c.hu[dirKey]; if (v != null && v > 0) cands.push({v, src: "Hungarian side"}); }
-      if (c && c.mk) {
-          const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
-          if (v != null && v > 0) cands.push({v, src: "North Macedonian side"});
-          if (c.mk.opsto != null && c.mk.opsto > 0) cands.push({v: c.mk.opsto, src: "North Macedonian side"});
+        if (p != null && !amssDefault) {
+          if (p > 0) cands.push({v: p, src: "border police", tip: "zvanicni"}); else kratkoZvanicno = true;
         }
+        if (c && c.hu) { const v = c.hu[dirKey];
+          if (v != null) { if (v > 0) cands.push({v, src: "Hungarian side", tip: "zvanicni"}); else kratkoZvanicno = true; } }
+        if (c && c.mk) {
+          const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
+          if (v != null) { if (v > 0) cands.push({v, src: "North Macedonian side", tip: "zvanicni"}); else kratkoZvanicno = true; }
+          if (c.mk.opsto != null) { if (c.mk.opsto > 0) cands.push({v: c.mk.opsto, src: "North Macedonian side", tip: "zvanicni"}); else kratkoZvanicno = true; }
+        }
+        if (c && c.user && c.user[dirKey] != null)
+          cands.push({v: c.user[dirKey], src: "Driver reports (BorderAlarm)", tip: "prijava"});
         let baOsporen = null;
         if (c && c.ba) {
           const v = c.ba[dirKey];
           if (v != null && v > 0) {
-            if (baProtivMerenja(dirKey, v)) baOsporen = v;
-            else cands.push({v, src: "Driver reports (BorderAlarm)"});
+            const merenjeMirno = (ttMin != null && ttMin <= TT_MIRNO_MIN && !dugaKolona);
+            if (v >= BA_PROVERA_MIN && merenjeMirno) baOsporen = v;
+            else cands.push({v, src: "Driver reports (BorderAlarm)", tip: "prijava"});
           }
         }
-        if (c && c.tt) { const v = c.tt[dirKey]; if (v != null && v > 0) cands.push({v, src: "Traffic map"}); }
-        
-        
-        const kolona = (c && c.tt && c.tt[dirKey + "_kolona_m"] != null) ? c.tt[dirKey + "_kolona_m"] : null;
-        const dugaKolona = (kolona != null && kolona >= QUEUE_HARD_M);
-        
-        
-        if (!cands.length) return {v: null, src: null, samAmss: amssDefault, kolona, dugaKolona, baOsporen};
-        let best = cands[0];
-        cands.forEach(x => { if (best.v == null || (x.v != null && x.v > best.v)) best = x; });
-        best.samAmss = false;   
-        best.baOsporen = baOsporen;
-        best.kolona = kolona;
-        best.dugaKolona = dugaKolona;
-        return best;
+        const zvanicniPostoji = cands.some(x => x.tip === "zvanicni");
+        if (baOsporen != null && !zvanicniPostoji)
+          return {stanje: "proveri", baOsporen, kolona, dugaKolona, ttMin, _d: dirKey};
+        if (cands.length) {
+          let best = cands[0];
+          cands.forEach(x => { if (x.v > best.v) best = x; });
+          if (kratkoZvanicno && best.tip === "prijava" && best.v >= BA_PROVERA_MIN)
+            return {stanje: "proveri", baOsporen: best.v, kolona, dugaKolona, ttMin, _d: dirKey};
+          
+          
+          if (dugaKolona && best.v <= NO_QUEUE_MAX)
+            return {stanje: "kolona", v: best.v, src: best.src, kolona, dugaKolona, ttMin, _d: dirKey};
+          if (best.v <= NO_QUEUE_MAX && !dugaKolona) {
+            if (best.tip === "zvanicni" || kratkoZvanicno)
+              return {stanje: "bez-guzve", src: best.src, kolona, dugaKolona, ttMin, _d: dirKey};
+            return {stanje: "kratko-prijava", v: best.v, src: best.src, kolona, dugaKolona, ttMin, _d: dirKey};
+          }
+          if (best.tip === "prijava")
+            return {stanje: "prijavljeno", v: best.v, src: best.src, kolona, dugaKolona, ttMin, _d: dirKey};
+          return {stanje: "broj", v: best.v, src: best.src, kolona, dugaKolona, ttMin, _d: dirKey};
+        }
+        if (dugaKolona) return {stanje: "kolona", kolona, dugaKolona, ttMin, _d: dirKey};
+        if (baOsporen != null) return {stanje: "proveri", baOsporen, kolona, dugaKolona, ttMin, _d: dirKey};
+        return {stanje: "nema", samAmss: amssDefault, kolona, dugaKolona, ttMin, _d: dirKey};
       };
       const eIn = eff('ulaz'), eOut = eff('izlaz');
       _waitState = {inn: eIn, out: eOut};
       const small = (txt) => `<div style="font-size:10px;color:var(--faint);margin-top:3px">${txt}</div>`;
-      
-      
-      const srcNote = (e) => {
-        if (e.baOsporen) return small("one driver reports {v}, measurement does not confirm it".replace("{v}", dur(e.baOsporen)));
-        if (e.src && e.v != null && e.v > NO_QUEUE_MAX)
-          return small("source: " + e.src + (e.dugaKolona ? " · queue ~" + e.kolona + " m" : ""));
-        if (e.dugaKolona) return small(e.v == null ? "source: Traffic map" : "measured queue ~" + e.kolona + " m");
-        if (e.samAmss) return small("AMSS reports no delay — check the camera above");
-        return "";
+      const cellHTML = (e) => {
+        switch (e.stanje) {
+          case "broj":
+            return `<div class="wval">${dur(e.v)}</div>` +
+                   small("source: " + e.src + (e.dugaKolona ? " · queue " + fmtKolona(e.kolona, korZa(e._d)) : ""));
+          case "prijavljeno":
+            
+            return `<div class="wval"><span style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:-2px">reported</span>${dur(e.v)}</div>` +
+                   small(e.src + (e.dugaKolona ? " · " + "queue {k} confirmed".replace("{k}", fmtKolona(e.kolona, korZa(e._d))) : ""));
+          case "bez-guzve":
+            return `<div class="wval">No queue</div>` + small("source: " + e.src);
+          case "kratko-prijava":
+            return `<div class="wval" style="font-size:15px;line-height:1.25">Drivers report a short wait</div>`;
+          case "kolona":
+            return `<div class="wval">queue ${fmtKolona(e.kolona, korZa(e._d))}</div>` +
+                   small(e.v != null ? "drivers report " + dur(e.v) : "source: Traffic map");
+          case "proveri":
+            return `<div class="wval">check the camera</div>` +
+                   small("one driver reports {v}, measurement does not confirm it".replace("{v}", dur(e.baOsporen)));
+          default:
+            return `<div class="wval">no data</div>` + (e.samAmss ? small("AMSS reports no delay — check the camera above") : "");
+        }
       };
       box.innerHTML = `
-        <div class="wcell"><div class="wlabel">Exiting Serbia</div><div class="wval">${fmt(eOut)}</div>${srcNote(eOut)}</div>
-        <div class="wcell"><div class="wlabel">Entering Serbia</div><div class="wval">${fmt(eIn)}</div>${srcNote(eIn)}</div>`;
+        <div class="wcell"><div class="wlabel">Exiting Serbia</div>${cellHTML(eOut)}</div>
+        <div class="wcell"><div class="wlabel">Entering Serbia</div>${cellHTML(eIn)}</div>`;
       
       
       const srcs = [];
