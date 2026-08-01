@@ -6,19 +6,25 @@
       "currency": "RSD",
       "fx_rate_eur": 117.6471,
       "petrol95": {
-        "local": 200.0,
-        "eur": 1.7
+        "local": 202.0,
+        "eur": 1.72
       },
       "diesel": {
-        "local": 224.0,
-        "eur": 1.91
+        "local": 226.0,
+        "eur": 1.92
       },
       "lpg": {
         "local": 105.4,
         "eur": 0.9
       },
-      "price_source": "nafta.hr",
-      "updated": "2026-08-01 08:59 UTC"
+      "price_source": "must.gov.rs (zvanicno) + nafta.hr (TNG)",
+      "diesel_source": "must.gov.rs",
+      "petrol_source": "must.gov.rs",
+      "lpg_source": "nafta.hr",
+      "updated": "2026-08-01 16:36 UTC",
+      "valid_from": "2026-07-31T15:00:00+02:00",
+      "valid_until": "2026-08-07T15:00:00+02:00",
+      "source_url": "https://must.gov.rs/vest/20875/obavestenje-o-najvisoj-maloprodajnoj-ceni-derivata-nafte-evro-dizel-i-evro-premijum-bmb-95-.php"
     },
     {
       "name": "Croatia",
