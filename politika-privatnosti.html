@@ -169,11 +169,11 @@
     <li>anonimni identifikator pregledača iz kolačića, radi razlikovanja nove od ponovljene posete;</li>
     <li>pojedine radnje na sajtu (npr. otvaranje kamere, pokretanje kalkulatora) — bez sadržaja koji si upisao.</li>
   </ul>
-  <p>Pored toga, GitHub Pages kao pružalac hostinga vodi standardne serverske zapise (IP adresa, vreme zahteva, tražena adresa, korisnički agent). Tim zapisima ne pristupamo.</p>
+  <p>Pored toga, saobraćaj ka sajtu prolazi kroz mrežu <b>Cloudflare</b>, koja služi kao posrednik i zaštita pred serverom. Cloudflare pritom obrađuje tehničke podatke svakog zahteva (IP adresa, vreme, tražena adresa, korisnički agent) i postavlja sopstveni tehnički kolačić neophodan za rad zaštite. GitHub Pages kao pružalac hostinga vodi standardne serverske zapise istog tipa. Ni jednim ni drugim zapisima ne pristupamo.</p>
 
   <h3>2.2 Podaci koje sam uneseš</h3>
   <ul>
-    <li><b>Kalkulator puta.</b> Polazište i odredište koje upišeš, kao i izbor u poljima za potrošnju i gorivo, šalju se servisu <b>OpenRouteService</b> (HeiGIT gGmbH, Nemačka) radi prepoznavanja mesta i izračunavanja rute. Šalje se samo tekst koji si upisao i ništa što bi te identifikovalo. Rezultat se ne čuva na našoj strani.</li>
+    <li><b>Kalkulator puta.</b> Polazište i odredište koje upišeš, kao i izbor u poljima za potrošnju i gorivo, šalju se servisu <b>OpenRouteService</b> (HeiGIT gGmbH, Nemačka) radi prepoznavanja mesta i izračunavanja rute. Zahtev pritom prolazi kroz posrednika na Cloudflare mreži, koji postoji da pristupni ključ za OpenRouteService ne bude vidljiv u tvom pregledaču; posrednik ne čuva ni polazište ni odredište. Šalje se samo tekst koji si upisao i ništa što bi te identifikovalo. Rezultat se ne čuva na našoj strani.</li>
     <li><b>Email.</b> Ako nam pišeš na <code>kontakt@gasolina.rs</code>, čuvamo tvoju poruku i adresu koliko je potrebno da odgovorimo i, ako je prijava greške, da je ispravimo.</li>
   </ul>
   <p>Sajt ne koristi tvoju GPS lokaciju i ne traži dozvolu za pristup lokaciji uređaja.</p>
@@ -247,6 +247,9 @@
     </tr>
     <tr>
       <td>OpenRouteService (HeiGIT gGmbH)</td><td>Prepoznavanje mesta i izračunavanje rute u kalkulatoru</td><td><a href="https://openrouteservice.org/privacy-policy/" target="_blank" rel="noopener">openrouteservice.org/privacy-policy</a></td>
+    </tr>
+    <tr>
+      <td>Cloudflare, Inc.</td><td>Mreža kroz koju prolazi sav saobraćaj ka sajtu (posrednik i zaštita pred serverom), i posrednik kroz koji zahtev kalkulatora prolazi pre nego što stigne do OpenRouteService-a</td><td><a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">cloudflare.com/privacypolicy</a></td>
     </tr>
     <tr>
       <td>GitHub Pages (GitHub, Inc.)</td><td>Hosting sajta</td><td><a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">docs.github.com</a></td>
