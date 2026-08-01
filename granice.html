@@ -225,6 +225,7 @@
   .wmin .wq{font-size:14px;color:inherit;font-weight:700;white-space:nowrap}
   .wcat{font-size:11px;color:var(--dim)}
   .wsrc{font-size:11px;color:var(--fuel)}
+  .wshort{font-size:15px;line-height:1.25;display:inline-block}
   .wpre{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;
     text-transform:uppercase;color:var(--faint);display:block;margin-bottom:-2px}
   .wtruck{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-top:5px;display:flex;align-items:center;gap:5px}
@@ -552,6 +553,32 @@ function sourcesDetails(c){
 const BA_PROVERA_MIN   = 120;  // min, od koliko prijava mora da izdrzi proveru
 const TT_MIRNO_MIN     = 5;    // min, TomTom zastoj ispod kog nema pokretne kolone
 
+
+// --- duzina kolone: zaokruzeno, i posteno oko gornje granice merenja --------
+// TomTom meri kolonu SAMO unutar kalibrisanog koridora. Kad izmerena duzina
+// dodje blizu duzine koridora, ne znamo dokle se kolona stvarno pruza - pa se
+// pise "najmanje", ne tacan broj. Gradina 01.08.: izmereno 1478 m na koridoru
+// od 1216 m, dakle kolona sigurno izlazi iz kadra merenja.
+function koridorM(c, dirKey){
+  const P = (dirKey === 'ulaz' && c.mapPBin) ? c.mapPBin : c.mapPB;
+  if (!P || P.length < 4) return null;
+  const R = 6371000, rad = x => x * Math.PI / 180;
+  const dLat = rad(P[2]-P[0]), dLon = rad(P[3]-P[1]);
+  const a = Math.sin(dLat/2)**2 + Math.cos(rad(P[0]))*Math.cos(rad(P[2]))*Math.sin(dLon/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+function fmtKolona(m, kor){
+  const blizuKraja = (kor != null && m >= 0.85 * kor);
+  let tekst;
+  if (m >= 1000) {
+    const km = Math.round(m / 500) * 0.5;
+    tekst = (km % 1 === 0 ? km.toFixed(0) : km.toFixed(1).replace(".", ",")) + " km";
+  } else {
+    tekst = Math.round(m / 100) * 100 + " m";
+  }
+  return (blizuKraja ? "najmanje " : "oko ") + tekst;
+}
+
 function effective(c, dirKey){
   // --- saobracajni signal (nikad krupna brojka) ---
   const ttMin  = (c.tt && c.tt[dirKey] != null) ? c.tt[dirKey] : null;
@@ -704,14 +731,14 @@ function waitCell(label,dirKey,c){
     case "broj":
       boja = waitStatus(eff.v).c;
       big  = fmtMin(eff.v);
-      note = `<div class="wsrc">izvor: ${eff.src}${eff.dugaKolona ? ` &middot; kolona ~${eff.kolona} m` : ``}</div>`;
+      note = `<div class="wsrc">izvor: ${eff.src}${eff.dugaKolona ? ` &middot; kolona ` + fmtKolona(eff.kolona, koridorM(c, dirKey)) : ``}</div>`;
       break;
     case "prijavljeno":
       // Rec "prijavljeno" stoji UZ brojku, ne sitno ispod: kolona od 734 m
       // potvrdjuje da guzva postoji, ne da traje bas toliko.
       boja = waitStatus(eff.v).c;
-      big  = `<span class="wpre">prijavljeno</span> do ${fmtMin(eff.v)}`;
-      note = `<div class="wsrc">${eff.src}${eff.dugaKolona ? ` &middot; ` + `kolona ~{k} m potvrđena`.replace("{k}", eff.kolona) : ``}</div>`;
+      big  = `<span class="wpre">prijavljeno</span> ${fmtMin(eff.v)}`;
+      note = `<div class="wsrc">${eff.src}${eff.dugaKolona ? ` &middot; ` + `kolona {k} potvrđena`.replace("{k}", fmtKolona(eff.kolona, koridorM(c, dirKey))) : ``}</div>`;
       break;
     case "bez-guzve":
       boja = "var(--ok)"; big = `<span class="wok">Bez gužve</span>`;
@@ -719,12 +746,12 @@ function waitCell(label,dirKey,c){
       break;
     case "kratko-prijava":
       // Jedna prijava od 10 min nije dokaz da je prelaz prohodan.
-      boja = "var(--dim)"; big = `<span class="wq">Kratko čekanje</span>`;
-      note = `<div class="wsrc">${eff.src} &middot; nije potvrđeno — proveri kameru</div>`;
+      boja = "var(--dim)"; big = `<span class="wshort">Vozači prijavljuju kratko čekanje</span>`;
+      note = ``;
       break;
     case "kolona":
-      boja = "var(--warn)"; big = `<span class="wq">kolona ~${eff.kolona} m</span>`;
-      note = `<div class="wsrc">${eff.v!=null ? `${eff.src}: ` + fmtMin(eff.v) + ` &middot; ` : ``}izvor: mapa saobraćaja</div>`;
+      boja = "var(--warn)"; big = `<span class="wq">kolona ${fmtKolona(eff.kolona, koridorM(c, dirKey))}</span>`;
+      note = `<div class="wsrc">${eff.v!=null ? `vozači prijavljuju ` + fmtMin(eff.v) : `izvor: mapa saobraćaja`}</div>`;
       break;
     case "proveri":
       boja = "var(--dim)"; big = `<span class="wq">proveri kameru</span>`;
