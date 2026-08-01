@@ -346,6 +346,7 @@
     .faq summary::before { content:"+"; color:var(--fuel); font-weight:700; margin-right:10px; }
     .faq details[open] summary::before { content:"\2212"; }
     .faq details p { margin:0 0 16px; color:var(--dim); font-size:14px; line-height:1.65; }
+  @media (max-width:560px){ .tc-pane{aspect-ratio:2/1} .topcams-grid{gap:10px} }
 </style>
 <!-- Google Analytics 4 -->
 <!-- Pristanak na kolacice - MORA pre gtag/js, bez async/defer -->
@@ -415,6 +416,45 @@
 
       <div class="showcase" id="showcase"></div>
 
+<style>
+/* Interno povezivanje: 26 landing stranica je do ove izmene bilo linkovano sa
+   TACNO JEDNE stranice (granice.html / borders.html). Linkovi su staticni, ne iz
+   JavaScripta - JS-generisani su pokrivali samo tri prelaza. */
+.xlinks{margin:28px 0 0;padding-top:16px;border-top:1px solid var(--line);
+  font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:2.1;color:var(--faint)}
+.xlinks .xl-lab{display:block;text-transform:uppercase;letter-spacing:.06em;font-size:11px;margin-bottom:4px}
+.xlinks a{color:var(--dim);text-decoration:none;margin-right:15px;white-space:nowrap;
+  border-bottom:1px solid transparent}
+.xlinks a:hover{color:var(--fuel);border-bottom-color:var(--fuel)}
+</style>
+      <!-- Tri najprometnija prelaza: slicica sa kamere + trenutno cekanje.
+           Fiksan izbor (Presevo, Horgos, Gradina) - nije "najgori trenutno",
+           nego "oni koje ljudi najcesce traze". Slicice pravi thumbs_scraper
+           u Actions-ima, pa ovde ne ide nijedan dodatni zahtev osim slike. -->
+      <section class="topcams" id="topCams">
+        <div class="topcams-head">
+          <h2>Kamere na granici</h2>
+          <a class="topcams-all" href="granice.html">svi prelazi &rarr;</a>
+        </div>
+<nav class="xlinks" aria-label="Svi granični prelazi">
+          <span class="xl-lab">Kamere i čekanje po prelazu</span>
+          <a href="granica-presevo.html">Preševo</a>
+          <a href="granica-gradina.html">Gradina</a>
+          <a href="granica-horgos.html">Horgoš</a>
+          <a href="granica-batrovci.html">Batrovci</a>
+          <a href="granica-kelebija.html">Kelebija</a>
+          <a href="granica-bogorodica.html">Bogorodica</a>
+          <a href="granica-dojran.html">Dojran</a>
+          <a href="granica-medzitlija.html">Medžitlija</a>
+          <a href="granica-sremska-raca.html">Sremska Rača</a>
+          <a href="granica-spiljani.html">Špiljani</a>
+          <a href="granica-prohor-pcinjski.html">Prohor Pčinjski</a>
+          <a href="granica-gostun.html">Gostun</a>
+          <a href="granica-debeli-brijeg.html">Debeli Brijeg</a>
+        </nav>
+        <div class="topcams-grid" id="topCamsGrid"></div>
+      </section>
+
       <div class="sec-head">
         <h2>Cene goriva</h2>
         <p class="meta" id="meta">Ucitavanje...</p>
@@ -437,44 +477,8 @@
       </div>
       <div class="cards" id="cards"></div>
 
-      <!-- Tri najprometnija prelaza: slicica sa kamere + trenutno cekanje.
-           Fiksan izbor (Presevo, Horgos, Gradina) - nije "najgori trenutno",
-           nego "oni koje ljudi najcesce traze". Slicice pravi thumbs_scraper
-           u Actions-ima, pa ovde ne ide nijedan dodatni zahtev osim slike. -->
-      <section class="topcams" id="topCams" style="display:none">
-        <div class="topcams-head">
-          <h2>Kamere na granici</h2>
-          <a class="topcams-all" href="granice.html">svi prelazi &rarr;</a>
-        </div>
-        <div class="topcams-grid" id="topCamsGrid"></div>
-      </section>
-      <style>
-/* Interno povezivanje: 26 landing stranica je do ove izmene bilo linkovano sa
-   TACNO JEDNE stranice (granice.html / borders.html). Linkovi su staticni, ne iz
-   JavaScripta - JS-generisani su pokrivali samo tri prelaza. */
-.xlinks{margin:28px 0 0;padding-top:16px;border-top:1px solid var(--line);
-  font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:2.1;color:var(--faint)}
-.xlinks .xl-lab{display:block;text-transform:uppercase;letter-spacing:.06em;font-size:11px;margin-bottom:4px}
-.xlinks a{color:var(--dim);text-decoration:none;margin-right:15px;white-space:nowrap;
-  border-bottom:1px solid transparent}
-.xlinks a:hover{color:var(--fuel);border-bottom-color:var(--fuel)}
-</style>
-<nav class="xlinks" aria-label="Svi granični prelazi">
-  <span class="xl-lab">Kamere i čekanje po prelazu</span>
-  <a href="granica-presevo.html">Preševo</a>
-  <a href="granica-gradina.html">Gradina</a>
-  <a href="granica-horgos.html">Horgoš</a>
-  <a href="granica-batrovci.html">Batrovci</a>
-  <a href="granica-kelebija.html">Kelebija</a>
-  <a href="granica-bogorodica.html">Bogorodica</a>
-  <a href="granica-dojran.html">Dojran</a>
-  <a href="granica-medzitlija.html">Medžitlija</a>
-  <a href="granica-sremska-raca.html">Sremska Rača</a>
-  <a href="granica-spiljani.html">Špiljani</a>
-  <a href="granica-prohor-pcinjski.html">Prohor Pčinjski</a>
-  <a href="granica-gostun.html">Gostun</a>
-  <a href="granica-debeli-brijeg.html">Debeli Brijeg</a>
-</nav>
+
+      
     </section>
     <!-- (kraj home/prices sekcije) -->
 
