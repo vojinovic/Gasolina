@@ -241,12 +241,43 @@
       
       
       const fmt = e => {
-        if (!e || e.v == null) return (e && e.dugaKolona) ? (T.queue + " ~" + e.kolona + " m") : T.noData;
+        if (!e || e.v == null) {
+          if (e && e.dugaKolona) return T.queue + " ~" + e.kolona + " m";
+          
+          
+          if (e && e.baOsporen) return T.noQueue;
+          return T.noData;
+        }
         return (e.v <= NO_QUEUE_MAX && !e.dugaKolona) ? T.noQueue : dur(e.v);
       };
       
       
       
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      const BA_PROVERA_MIN = 120;
+      const TT_MIRNO_MIN = 5;
+      const baProtivMerenja = (dirKey, v) => {
+        if (v == null || v < BA_PROVERA_MIN) return false;
+        if (!c || !c.tt) return false;              
+        const d = c.tt[dirKey];
+        if (d == null) return false;                
+        const k = c.tt[dirKey + "_kolona_m"];
+        return d <= TT_MIRNO_MIN && (k == null || k < QUEUE_HARD_M);
+      };
       const eff = (dirKey) => {
         const cands = [];
         const p = (c && c.found && c.putnicka) ? c.putnicka[dirKey] : null;
@@ -262,7 +293,14 @@
           if (v != null && v > 0) cands.push({v, src: "Makedonska strana"});
           if (c.mk.opsto != null && c.mk.opsto > 0) cands.push({v: c.mk.opsto, src: "Makedonska strana"});
         }
-        if (c && c.ba) { const v = c.ba[dirKey]; if (v != null && v > 0) cands.push({v, src: "Prijave vozača (BorderAlarm)"}); }
+        let baOsporen = null;
+        if (c && c.ba) {
+          const v = c.ba[dirKey];
+          if (v != null && v > 0) {
+            if (baProtivMerenja(dirKey, v)) baOsporen = v;
+            else cands.push({v, src: "Prijave vozača (BorderAlarm)"});
+          }
+        }
         if (c && c.tt) { const v = c.tt[dirKey]; if (v != null && v > 0) cands.push({v, src: "Mapa saobraćaja"}); }
         
         
@@ -270,10 +308,11 @@
         const dugaKolona = (kolona != null && kolona >= QUEUE_HARD_M);
         
         
-        if (!cands.length) return {v: null, src: null, samAmss: amssDefault, kolona, dugaKolona};
+        if (!cands.length) return {v: null, src: null, samAmss: amssDefault, kolona, dugaKolona, baOsporen};
         let best = cands[0];
         cands.forEach(x => { if (best.v == null || (x.v != null && x.v > best.v)) best = x; });
         best.samAmss = false;   
+        best.baOsporen = baOsporen;
         best.kolona = kolona;
         best.dugaKolona = dugaKolona;
         return best;
@@ -284,6 +323,7 @@
       
       
       const srcNote = (e) => {
+        if (e.baOsporen) return small("jedan vozač prijavljuje {v} — merenje to ne potvrđuje".replace("{v}", dur(e.baOsporen)));
         if (e.src && e.v != null && e.v > NO_QUEUE_MAX)
           return small("izvor: " + e.src + (e.dugaKolona ? " · kolona ~" + e.kolona + " m" : ""));
         if (e.dugaKolona) return small(e.v == null ? "izvor: Mapa saobraćaja" : "merena kolona ~" + e.kolona + " m");
