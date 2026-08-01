@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-01T11:44:14+00:00",
+  "scraped_at": "2026-08-01T13:40:15+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -9,7 +9,7 @@
   "crossings": {
     "prohor-pcinjski": {
       "putnicka": {
-        "izlaz": 30,
+        "izlaz": 60,
         "ulaz": 30
       },
       "teretna": null,
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 90,
-        "ulaz": 30
+        "izlaz": 55,
+        "ulaz": 20
       },
       "tt": {
-        "izlaz": 18,
-        "izlaz_kolona_m": 492,
-        "ulaz": 18,
-        "ulaz_kolona_m": 444
+        "izlaz": 25,
+        "izlaz_kolona_m": 616,
+        "ulaz": 34,
+        "ulaz_kolona_m": 602
       }
     },
     "horgos": {
@@ -56,18 +56,18 @@
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
-        "ulaz": 90,
-        "izlaz": 30
+        "ulaz": 60,
+        "izlaz": 60
       },
       "ba": {
-        "izlaz": 90,
-        "ulaz": 150
+        "izlaz": 10,
+        "ulaz": 25
       },
       "tt": {
-        "izlaz": 7,
-        "izlaz_kolona_m": 469,
-        "ulaz": 17,
-        "ulaz_kolona_m": 699
+        "izlaz": 40,
+        "izlaz_kolona_m": 966,
+        "ulaz": 18,
+        "ulaz_kolona_m": 601
       }
     },
     "kelebija": {
@@ -86,19 +86,19 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 90,
+        "izlaz": 330,
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 1,
-        "izlaz_kolona_m": 57,
-        "ulaz": 4,
-        "ulaz_kolona_m": 136
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
+        "ulaz": 5,
+        "ulaz_kolona_m": 269
       }
     },
     "batrovci": {
       "putnicka": {
-        "izlaz": 30,
+        "izlaz": 120,
         "ulaz": 30
       },
       "teretna": {
@@ -108,20 +108,20 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 330,
-        "ulaz": 630
+        "izlaz": 390,
+        "ulaz": 360
       },
       "tt": {
-        "izlaz": 40,
-        "izlaz_kolona_m": 1462,
-        "ulaz": 18,
-        "ulaz_kolona_m": 985
+        "izlaz": 19,
+        "izlaz_kolona_m": 984,
+        "ulaz": 19,
+        "ulaz_kolona_m": 1087
       }
     },
     "presevo": {
       "putnicka": {
-        "izlaz": 180,
-        "ulaz": 30
+        "izlaz": 50,
+        "ulaz": 40
       },
       "teretna": {
         "izlaz": 30,
@@ -135,14 +135,14 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 60,
-        "ulaz": 90
+        "izlaz": 5,
+        "ulaz": 5
       },
       "tt": {
-        "izlaz": 16,
-        "izlaz_kolona_m": 1126,
-        "ulaz": 2,
-        "ulaz_kolona_m": 53
+        "izlaz": 20,
+        "izlaz_kolona_m": 703,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "sremska-raca": {
@@ -171,8 +171,8 @@
     },
     "gostun": {
       "putnicka": {
-        "izlaz": 30,
-        "ulaz": 30
+        "izlaz": 60,
+        "ulaz": 50
       },
       "teretna": {
         "izlaz": 30,
@@ -196,7 +196,7 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 390
+        "ulaz": 5
       }
     },
     "dojran": {
@@ -217,8 +217,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 210,
-        "ulaz": 210
+        "izlaz": 5,
+        "ulaz": 15
       }
     }
   }
