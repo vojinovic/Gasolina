@@ -592,6 +592,14 @@ function fmtKolona(m, kor){
   return (blizuKraja ? "najmanje " : "oko ") + tekst;
 }
 
+// Kamera ne postoji za svaki smer: Bogorodica ima samo izlaz ka Grckoj,
+// Medzitlija samo ulaz. Uputiti coveka na kameru koje nema je gore nego
+// ne reci nista.
+function imaKameruZa(c, dirKey){
+  const trazeni = (dirKey === 'ulaz') ? 'in' : 'out';
+  return (c.feeds || []).some(x => x.src && x.dir === trazeni);
+}
+
 function effective(c, dirKey){
   // --- saobracajni signal (nikad krupna brojka) ---
   const ttMin  = (c.tt && c.tt[dirKey] != null) ? c.tt[dirKey] : null;
@@ -761,7 +769,10 @@ function waitCell(label,dirKey,c){
       note = `<div class="wsrc">${eff.v!=null ? `drivers report ` + fmtMin(eff.v) : `source: mapa saobraćaja`}</div>`;
       break;
     case "proveri":
-      boja = "var(--dim)"; big = `<span class="wq">check the camera</span>`;
+      boja = "var(--dim)";
+      big = imaKameruZa(c, dirKey)
+        ? `<span class="wq">check the camera</span>`
+        : `<span class="wq">unconfirmed</span>`;
       note = `<div class="wsrc">` + `one driver reports {v}, measurement does not confirm it`.replace("{v}", fmtMin(eff.baOsporen)) + `</div>`;
       break;
     default:
