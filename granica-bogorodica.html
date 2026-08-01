@@ -167,7 +167,7 @@
     <h1>Bogorodica — kamera uživo i vreme čekanja</h1>
     <span class="dirchip">🇲🇰 MK → 🇬🇷 GR</span>
   </div>
-  <div class="pane" id="pane"><span class="badge">roads.org.mk</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="thumbs/bogorodica.jpg" alt="Bogorodica" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Pusti kameru uživo"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Pusti kameru uživo</button></div>
+  <div class="pane" id="pane"><span class="badge">roads.org.mk</span><span class="live" id="liveTag">UŽIVO</span><img class="thumb" src="thumbs/bogorodica.jpg" alt="Bogorodica" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Pusti kameru uživo"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Pusti kameru uživo</button></div>
   <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Učitavanje trenutnog stanja…</div></div>
   <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Gužva na mapi: Severna Makedonija → Grčka</h2><iframe src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d11672.3!2d22.54906705!3d41.13179735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e0!4m3!3m2!1d41.135969!2d22.5464805!4m5!1s0x135626c88b4d3907%3A0xc81c83269be4c289!2sBorder%20Crossing%20Point%20of%20Evzoni!3m2!1d41.1276257!2d22.5516536!5e0!3m2!1ssr!2srs!4v1627540443619!5m2!1ssr!2srs" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Gužva na mapi: Severna Makedonija → Grčka" allowfullscreen></iframe></div>
@@ -325,6 +325,47 @@
   })();
   
   let _hls = null;
+  let _liveTimer = null;
+  
+  
+  
+  
+  
+  const LIVE_MAX_LAG = 60;   
+  function liveEdge(video){
+    
+    
+    if (_hls && _hls.liveSyncPosition != null && isFinite(_hls.liveSyncPosition)) return _hls.liveSyncPosition;
+    
+    
+    
+    try { if (video.seekable.length) return Math.max(0, video.seekable.end(video.seekable.length - 1) - 3); } catch(e) {}
+    return null;
+  }
+  function syncLive(video, force){
+    const edge = liveEdge(video);
+    if (edge == null) return null;
+    const lag = edge - video.currentTime;
+    if (lag > (force ? 5 : LIVE_MAX_LAG)) {
+      try { video.currentTime = edge; video.play().catch(()=>{}); } catch(e) {}
+      
+      
+      return Math.max(0, edge - video.currentTime);
+    }
+    return lag;
+  }
+  function markLive(lag){
+    const tag = document.getElementById("liveTag");
+    if (!tag) return;
+    
+    
+    if (lag == null) return;
+    const live = (lag <= LIVE_MAX_LAG);
+    tag.textContent = live ? "UŽIVO" : "SNIMAK";
+    tag.style.background = live ? "rgba(227,93,79,.9)" : "rgba(93,115,135,.92)";
+    tag.style.cursor = live ? "default" : "pointer";
+    tag.title = live ? "" : "Plejer nije na živoj ivici strima — klikni da skočiš na uživo";
+  }
   
   
   
@@ -359,12 +400,21 @@
     if(video.canPlayType("application/vnd.apple.mpegurl")){
       video.src = src;
     } else if ((await ensureHls(), window.Hls && Hls.isSupported())){
-      _hls = new Hls({maxBufferLength:10});
+      
+      
+      _hls = new Hls({maxBufferLength:10, liveSyncDurationCount:3,
+                       liveMaxLatencyDurationCount:10, backBufferLength:0});
       _hls.loadSource(src);
       _hls.attachMedia(video);
+      _hls.on(Hls.Events.MANIFEST_PARSED, () => syncLive(video, true));
     } else {
       video.src = src;
     }
+    
+    video.addEventListener("loadedmetadata", () => markLive(syncLive(video, true)), {once:true});
+    
+    if (_liveTimer) clearInterval(_liveTimer);
+    _liveTimer = setInterval(() => markLive(syncLive(video, false)), 5000);
     if(opts && opts.muted) video.muted = true;
     video.play().catch(()=>{});
     
@@ -377,6 +427,23 @@
     } catch(e) {}
     track('kamera_play', {prelaz: PRELAZ_ID, izvor: 'landing'});
   }
+  
+  
+  
+  document.addEventListener("visibilitychange", () => {
+    const v = document.getElementById("cam");
+    if (!document.hidden && v && !v.paused) markLive(syncLive(v, true));
+  });
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    const tag = document.getElementById("liveTag");
+    if (!tag) return;
+    tag.addEventListener("click", () => {
+      const v = document.getElementById("cam");
+      if (v) markLive(syncLive(v, true));
+    });
+  });
+
   
   
   

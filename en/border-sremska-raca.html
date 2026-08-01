@@ -323,6 +323,47 @@
   })();
   
   let _hls = null;
+  let _liveTimer = null;
+  
+  
+  
+  
+  
+  const LIVE_MAX_LAG = 60;   
+  function liveEdge(video){
+    
+    
+    if (_hls && _hls.liveSyncPosition != null && isFinite(_hls.liveSyncPosition)) return _hls.liveSyncPosition;
+    
+    
+    
+    try { if (video.seekable.length) return Math.max(0, video.seekable.end(video.seekable.length - 1) - 3); } catch(e) {}
+    return null;
+  }
+  function syncLive(video, force){
+    const edge = liveEdge(video);
+    if (edge == null) return null;
+    const lag = edge - video.currentTime;
+    if (lag > (force ? 5 : LIVE_MAX_LAG)) {
+      try { video.currentTime = edge; video.play().catch(()=>{}); } catch(e) {}
+      
+      
+      return Math.max(0, edge - video.currentTime);
+    }
+    return lag;
+  }
+  function markLive(lag){
+    const tag = document.getElementById("liveTag");
+    if (!tag) return;
+    
+    
+    if (lag == null) return;
+    const live = (lag <= LIVE_MAX_LAG);
+    tag.textContent = live ? "LIVE" : "REPLAY";
+    tag.style.background = live ? "rgba(227,93,79,.9)" : "rgba(93,115,135,.92)";
+    tag.style.cursor = live ? "default" : "pointer";
+    tag.title = live ? "" : "The player is behind the live edge — click to jump to live";
+  }
   
   
   
@@ -357,12 +398,21 @@
     if(video.canPlayType("application/vnd.apple.mpegurl")){
       video.src = src;
     } else if ((await ensureHls(), window.Hls && Hls.isSupported())){
-      _hls = new Hls({maxBufferLength:10});
+      
+      
+      _hls = new Hls({maxBufferLength:10, liveSyncDurationCount:3,
+                       liveMaxLatencyDurationCount:10, backBufferLength:0});
       _hls.loadSource(src);
       _hls.attachMedia(video);
+      _hls.on(Hls.Events.MANIFEST_PARSED, () => syncLive(video, true));
     } else {
       video.src = src;
     }
+    
+    video.addEventListener("loadedmetadata", () => markLive(syncLive(video, true)), {once:true});
+    
+    if (_liveTimer) clearInterval(_liveTimer);
+    _liveTimer = setInterval(() => markLive(syncLive(video, false)), 5000);
     if(opts && opts.muted) video.muted = true;
     video.play().catch(()=>{});
     
@@ -375,6 +425,23 @@
     } catch(e) {}
     track('kamera_play', {prelaz: PRELAZ_ID, izvor: 'landing'});
   }
+  
+  
+  
+  document.addEventListener("visibilitychange", () => {
+    const v = document.getElementById("cam");
+    if (!document.hidden && v && !v.paused) markLive(syncLive(v, true));
+  });
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    const tag = document.getElementById("liveTag");
+    if (!tag) return;
+    tag.addEventListener("click", () => {
+      const v = document.getElementById("cam");
+      if (v) markLive(syncLive(v, true));
+    });
+  });
+
   
   
   
