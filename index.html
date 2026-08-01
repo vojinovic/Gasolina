@@ -1110,18 +1110,51 @@
       const spanDays = Math.max(1, Math.round((pool[pool.length - 1].ts - pool[0].ts) / (24 * 60 * 60 * 1000)));
       return { min, max, spanDays };
     }
-    // Kad izvor za neku zemlju pukne (HR: cijenegoriva.hr DNS mrtav, BiH: goriva.ba
-    // promenio raspored), scraper zadrzi POSLEDNJE poznate cene i stari datum.
-    // Bez oznake to izgleda kao svez podatak - zato se posle 7 dana jasno kaze
-    // da cena mozda nije aktuelna, a posle 30 se dodatno istakne.
-    function staleNote(updated){
-      if(!updated) return "Ažurirano: -";
-      const d = new Date(String(updated).replace(" UTC","Z").replace(" ","T"));
-      if(isNaN(d)) return "Ažurirano: " + updated;
-      const dana = Math.floor((Date.now() - d.getTime()) / 86400000);
-      if(dana < 7) return "Ažurirano: " + updated;
-      const boja = dana >= 30 ? "var(--bad, #d64e44)" : "var(--fuel)";
-      return `Ažurirano: ${updated}<br><span style="color:${boja}">⚠ pre ${dana} dana — izvor trenutno nedostupan, cena možda nije aktuelna</span>`;
+    function parseStamp(v){
+      if(!v) return null;
+      const d = new Date(String(v).replace(" UTC","Z").replace(" ","T"));
+      return isNaN(d) ? null : d;
+    }
+    function danMesec(d){ return `${d.getDate()}.${d.getMonth()+1}.`; }
+    function danMesecGodina(d){ return `${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()}.`; }
+
+    // SVEZINA SE CITA IZ PODATKA, NE POGADJA IZ STAROSTI PECATA.
+    // Ranije je ovde stajalo: ako je `updated` stariji od 7 dana, znaci da je izvor
+    // pao. To je od 01.08.2026 netacno - scraper namerno NE pomera pecat kad se cena
+    // ne promeni (inace bi svaka provera pravila commit), pa bi svaka zemlja sa
+    // stabilnom cenom bila optuzena da joj je izvor mrtav. Sada:
+    //   stale_since  - scraper ga upise KAD izvor stvarno zakaze, i obrise kad prorad
+    //   valid_until  - zvanicna cena Ministarstva ima rok; dok traje nema sta da se
+    //                  upozorava, a kad istekne to je cinjenica, ne procena
+    //   updated      - znaci "poslednja promena cene", pa se tako i pise
+    function staleNote(c){
+      const red = [];
+
+      const vu = parseStamp(c.valid_until);
+      if (vu) {
+        // Datum i sat se citaju IZ NISKE, ne iz Date objekta. Uredba glasi na
+        // beogradsko vreme ("do 15 casova") i tako mora da pise svakome - kroz
+        // Date bi se sat preveo u zonu posetioca, pa bi neko u Londonu citao 14h.
+        // Sam Date se koristi samo za poredjenje da li je rok prosao, sto zona
+        // resava tacno.
+        const m = String(c.valid_until).match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2})/);
+        const kad = m ? `${+m[3]}.${+m[2]}. u ${+m[4]}h` : danMesec(vu);
+        red.push(Date.now() < vu.getTime()
+          ? `Zvanična cena dizela i benzina, važi do ${kad}`
+          : `<span style="color:var(--fuel)">Zvanična cena je važila do ${kad} — čeka se nova objava</span>`);
+      }
+
+      const ss = parseStamp(c.stale_since);
+      if (ss) {
+        const dana = Math.floor((Date.now() - ss.getTime()) / 86400000);
+        red.push(`<span style="color:var(--bad, #d64e44)">⚠ izvor ne odgovara${dana >= 1 ? ` ${dana} ${dana === 1 ? 'dan' : 'dana'}` : ''} — prikazana je poslednja poznata cena</span>`);
+      }
+
+      if (!red.length) {
+        const u = parseStamp(c.updated);
+        red.push(u ? `Poslednja promena cene: ${danMesecGodina(u)}` : "Poslednja promena cene: -");
+      }
+      return red.join("<br>");
     }
 
     function rangeHint(c, fuelKey) {
@@ -1155,7 +1188,7 @@
             <button class="share-btn" type="button" onclick="doShare('facebook','${c.name}')">Facebook</button>
             <button class="share-btn" type="button" onclick="doShare('copy','${c.name}', this)">Kopiraj</button>
           </div>
-          <div class="updated">${staleNote(c.updated)}</div>`;
+          <div class="updated">${staleNote(c)}</div>`;
         cards.appendChild(card);
       });
     }
@@ -1825,9 +1858,18 @@
       try {
         const res = await fetch('fuel_prices.json?cb=' + Date.now());
         dataCache = await res.json();
-        const dates = dataCache.countries.map(c => c.updated).filter(Boolean);
-        document.getElementById('meta').textContent =
-          `${dataCache.countries.length} zemalja · poslednje ažuriranje: ${dates[0] || '-'}`;
+        // checked_at je datum poslednje PROVERE (scraper ga upisuje i kad se nista
+        // nije promenilo). Bez njega se ne bi videlo da je ceo workflow stao - a
+        // pojedinacni `updated` to vise ne odaje, jer se namerno ne pomera bez
+        // promene cene.
+        const provera = parseStamp(dataCache.checked_at);
+        const danaOdProvere = provera ? Math.floor((Date.now() - provera.getTime()) / 86400000) : null;
+        let meta = `${dataCache.countries.length} zemalja`;
+        if (provera) {
+          meta += ` · poslednja provera: ${danMesecGodina(provera)}`;
+          if (danaOdProvere >= 10) meta += ` (pre ${danaOdProvere} dana)`;
+        }
+        document.getElementById('meta').textContent = meta;
         populateRoutes();
         renderPrices();
         renderShowcase(); renderTopCams();
