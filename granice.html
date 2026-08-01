@@ -531,6 +531,32 @@ function sourcesDetails(c){
     </details>`;
 }
 
+/* Prijava vozaca protiv merenja (01.08.2026).
+
+   Medzitlija je 01.08. pisala 4h u OBA smera, dok je TomTom u istom trenutku
+   merio 0 minuta zastoja i 0 metara kolone, a kamera pokazivala prazan put.
+   Jedna prijava vozaca bila je jedini izvor i postala krupna crvena brojka.
+   Ljudi su to javno ismejali - s pravom.
+
+   Od BA_PROVERA_MIN navise prijava mora da izdrzi proveru: ako TomTom za taj
+   smer meri zastoj do TT_MIRNO_MIN i kolonu kracu od QUEUE_HARD_M, merenje joj
+   protivreci i prijava gubi pravo na krupnu brojku. Ne brise se - ispisuje se
+   ispod kao tvrdnja koju merenje ne potvrdjuje, jer ume da bude i tacna: kolona
+   koja STOJI na pasoskoj kontroli je TomTomu nevidljiva, pa je TT donja granica.
+
+   Prag je namerno visok. Na istoriji od 436 snimaka (24.06-31.07) pravilo
+   pogadja 1,3% celija - skalpel, ne redizajn. Ispod 2h se ne dira nista. */
+const BA_PROVERA_MIN = 120;  // min, od koliko prijava mora da izdrzi proveru
+const TT_MIRNO_MIN   = 5;    // min, TomTom zastoj ispod kog je put prohodan
+function baProtivMerenja(c, dirKey, v){
+  if(v == null || v < BA_PROVERA_MIN) return false;
+  if(!c.tt) return false;                       // nema cime da se ospori
+  const d = c.tt[dirKey];
+  if(d == null) return false;                   // taj smer nije meren
+  const k = c.tt[dirKey + "_kolona_m"];
+  return d <= TT_MIRNO_MIN && (k == null || k < QUEUE_HARD_M);
+}
+
 /* najgori dostupan podatak za smer, iz svih izvora.
 
    AMSS-ovih TACNO 30 se ne racuna dok postoji bar jedan pravi izvor: to je
@@ -549,7 +575,14 @@ function effective(c, dirKey){
     if(v!=null && v>0) cands.push({v, src:"makedonska strana"});
     if(c.mk.opsto!=null && c.mk.opsto>0) cands.push({v:c.mk.opsto, src:"makedonska strana"});
   }
-  if(c.ba){ const v=c.ba[dirKey]; if(v!=null && v>0) cands.push({v, src:"prijave vozaca"}); }
+  let baOsporen = null;
+  if(c.ba){
+    const v=c.ba[dirKey];
+    if(v!=null && v>0){
+      if(baProtivMerenja(c, dirKey, v)) baOsporen = v;
+      else cands.push({v, src:"prijave vozaca"});
+    }
+  }
   // TomTom zastoj voznje - DONJA granica (ne vidi kolonu koja stoji na pasoskoj)
   if(c.tt){ const v=c.tt[dirKey]; if(v!=null && v>0) cands.push({v, src:"mapa saobracaja"}); }
   // Duzina kolone je jedini MEREN podatak (TomTom je izmeri na putu). Od praga
@@ -560,10 +593,11 @@ function effective(c, dirKey){
 
   // AMSS default NIKAD ne postaje prikazana brojka: "30 min" bi bilo tvrdjenje o
   // polusatnom cekanju koje niko nije izmerio. samAmss nosi tu poruku u prikaz.
-  if(!cands.length) return {v:null, src:null, samAmss:amssDefault, kolona, dugaKolona};
+  if(!cands.length) return {v:null, src:null, samAmss:amssDefault, kolona, dugaKolona, baOsporen};
   let best = cands[0];
   cands.forEach(x=>{ if(best.v==null || (x.v!=null && x.v>best.v)) best=x; });
   best.samAmss = false;   // dovde stize samo kad postoji bar jedan pravi kandidat
+  best.baOsporen = baOsporen;
   best.kolona = kolona;
   best.dugaKolona = dugaKolona;
   return best;
@@ -627,13 +661,16 @@ function waitCell(label,dirKey,c){
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
   const big = (eff.v==null)
     ? (eff.dugaKolona ? `<span class="wq">kolona ~${eff.kolona} m</span>`
+       : eff.baOsporen ? `<span class="wok">Bez guzve</span>`
        : (eff.samAmss ? '<span class="wq">nema podataka</span>' : '-'))
     : ((eff.v<=NO_QUEUE_MAX && !eff.dugaKolona) ? '<span class="wok">Bez guzve</span>' : fmtMin(eff.v));
   // Kad se ispisuje broj, uz njega ide i odakle je - inace 25 min iz BorderAlarma
   // izgleda kao zvanican podatak. Kad je kolona ta koja je oborila "Bez guzve",
   // to mora da pise, jer bi brojka inace izgledala kao greska.
   let srcTag;
-  if(eff.src && eff.v!=null && eff.v>NO_QUEUE_MAX){
+  if(eff.baOsporen){
+    srcTag = `<div class="wsrc">jedan vozač prijavljuje ${fmtMin(eff.baOsporen)} &mdash; merenje to ne potvrđuje</div>`;
+  } else if(eff.src && eff.v!=null && eff.v>NO_QUEUE_MAX){
     srcTag = `<div class="wsrc">izvor: ${eff.src}${eff.dugaKolona ? ` &middot; kolona ~${eff.kolona} m` : ``}</div>`;
   } else if(eff.dugaKolona){
     srcTag = `<div class="wsrc">${eff.v==null ? `izvor: mapa saobracaja` : `merena kolona ~${eff.kolona} m`}</div>`;
