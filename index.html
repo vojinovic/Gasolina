@@ -652,10 +652,15 @@
     let priceHistory = {}; // zemlja -> gorivo -> [{ts:Date, eur}], puni se iz cene_istorija.csv (moze biti prazno dok se ne nakupi bar jedan run)
 
     // === Dinamicke rute (OpenRouteService) ===
-    // Besplatan kljuc sa openrouteservice.org (Dashboard -> API Key), 2.500 poziva/dan.
-    // Ako ostane prazan, "Bilo koja ruta" tab i dalje radi ali odmah javlja jasnu gresku
-    // umesto da tiho puca - namerno, da se odmah vidi ako kljuc fali ili je pogresan.
-    const ORS_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjcxOWI4NzkyNzdjZjQyMTk4NGNkYmNiMTUyNGUzODVlIiwiaCI6Im11cm11cjY0In0=";
+    // ORS kljuc VISE NE ZIVI OVDE. Stajao je u ovom fajlu i bio vidljiv svakome
+    // kroz View Source; ORS ne podrzava ogranicenje po domenu, pa je jedini nacin
+    // da nestane sa sajta bio posrednik. Kljuc je sada Cloudflare secret na
+    // Worker-u ispod, a browser ga nikad ne vidi.
+    // Worker propusta samo tri putanje koje sajt koristi i samo sa gasolina.rs.
+    // Adresa je relativna: Worker stoji na ruti gasolina.rs/api/ors/* pa poziv ide
+    // na sopstveni domen. Tako se workers.dev poddomen nigde ne pojavljuje, a
+    // zahtev je same-origin i za gasolina.rs i za www.gasolina.rs.
+    const ORS_PROXY = "/api/ors";
 
     // ORS interni country_id -> nas ISO kod. Samo zemlje koje se realno mogu pojaviti
     // na balkanskoj ruti - vidi punu listu: giscience.github.io/openrouteservice/technical-details/country-list
@@ -703,11 +708,11 @@
       const listEl = document.getElementById(listId);
       try {
         const params = new URLSearchParams({
-          api_key: ORS_KEY, text, size: 6,
+          text, size: 6,
           'focus.point.lat': '44.5', 'focus.point.lon': '19.5',
           'boundary.country': EXPECTED_GEOCODE_COUNTRIES,
         });
-        const res = await fetch(`https://api.openrouteservice.org/geocode/autocomplete?${params}`);
+        const res = await fetch(`${ORS_PROXY}/geocode/autocomplete?${params}`);
         if (!res.ok) { hideSuggestions(listId); return; }
         const data = await res.json();
         const features = data.features || [];
@@ -741,14 +746,13 @@
 
     async function orsGeocodeRaw(text, restrictCountries) {
       const params = new URLSearchParams({
-        api_key: ORS_KEY,
         text,
         size: 1,
         'focus.point.lat': '44.5',
         'focus.point.lon': '19.5',
       });
       if (restrictCountries) params.set('boundary.country', restrictCountries);
-      const res = await fetch(`https://api.openrouteservice.org/geocode/search?${params}`);
+      const res = await fetch(`${ORS_PROXY}/geocode/search?${params}`);
       if (!res.ok) {
         if (res.status === 403 || res.status === 401) throw new Error('ORS kljuc nije validan (proveri da li je tacno nalepljen).');
         if (res.status === 429) throw new Error('Dnevni limit ORS poziva je potrosen (2.500/dan) - probaj sutra.');
@@ -770,10 +774,10 @@
     }
 
     async function orsRoute(from, to) {
-      const url = `https://api.openrouteservice.org/v2/directions/driving-car`;
+      const url = `${ORS_PROXY}/v2/directions/driving-car`;
       const res = await fetch(url, {
         method: 'POST',
-        headers: { 'Authorization': ORS_KEY, 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },   // Authorization dodaje Worker
         body: JSON.stringify({
           coordinates: [[from.lon, from.lat], [to.lon, to.lat]],
           extra_info: ['countryinfo'],
@@ -836,7 +840,7 @@
       const toText = document.getElementById('customTo').value.trim();
       statusEl.className = 'custom-route-status';
       if (!fromText || !toText) { statusEl.textContent = 'Unesi i polazak i odredište.'; statusEl.className = 'custom-route-status err'; return; }
-      if (!ORS_KEY || ORS_KEY === 'TVOJ_KLJUC_OVDE') { statusEl.textContent = 'ORS ključ nije podešen u kodu (ORS_KEY).'; statusEl.className = 'custom-route-status err'; return; }
+      if (!ORS_PROXY) { statusEl.textContent = 'Adresa ORS posrednika nije podešena (ORS_PROXY).'; statusEl.className = 'custom-route-status err'; return; }
 
       statusEl.textContent = 'Tražim lokacije…';
       try {
