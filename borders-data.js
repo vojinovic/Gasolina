@@ -78,7 +78,7 @@ window.BORDERS = (function () {
       wait: { putnicka: { ulaz: 30, izlaz: 30 }, teretna: { ulaz: 30, izlaz: 30 } },
     },
     {
-      id: "bogorodica", pbId: ["", "0x135626c88b4d3907%3A0xc81c83269be4c289"], pbIdIn: ["0x135626c88b4d3907%3A0xc81c83269be4c289", "0x135626c9f9dda211%3A0x5d10bb96bd3d13f7"], mapPBin: [41.1276257, 22.5516536, 41.134253, 22.5490008], mapPB: [41.135969, 22.5464805, 41.1276257, 22.5516536], mapRoute: ["Граничен премин Богородица", "Border Crossing Point of Evzoni"], coords: [41.1264, 22.5092], name: "Bogorodica", from: "MK", to: "GR",
+      id: "bogorodica", pbId: ["", "0x135626c88b4d3907%3A0xc81c83269be4c289"], pbIdIn: ["0x135626c88b4d3907%3A0xc81c83269be4c289", "0x135627f315b1847f%3A0x8ca1dfa25e55ace1"], mapPBin: [41.1276257, 22.5516536, 41.134253, 22.5490008], mapPB: [41.135969, 22.5464805, 41.1276257, 22.5516536], mapRoute: ["Граничен премин Богородица", "Border Crossing Point of Evzoni"], coords: [41.1309, 22.5503], name: "Bogorodica", from: "MK", to: "GR",
       pair: "Evzoni (GR)", road: "E75", provider: "roads.org.mk",
       official: "https://alltrafficcams.com/live/border-crossings/north-macedonia/greece/bogorodica-evzonoi/",
       feeds: [
@@ -159,7 +159,18 @@ window.BORDERS = (function () {
       // kad je Evzoni zakrcен. Isti obrazac kao Bogorodica: samo kamera (roads.org.mk /
       // neotel stream), bez pracenja cekanja (nije RS granica). Stream URL potvrdjen
       // rucno u browseru pre dodavanja (gvozdeno pravilo).
-      id: "dojran", mapPB: [41.1821, 22.7580, 41.1726, 22.7594], mapRoute: ["Граничен премин Дојрани", "Doirani Border Station"], coords: [41.22, 22.72], name: "Dojran", from: "MK", to: "GR",
+      id: "dojran",
+      // Koridor kalibrisan 01.08.2026. Stare tacke su lezale 1.2-1.7 km od rampe
+      // (kod pristanista u Star Dojranu), pa je Google rutao kroz seoske ulice i
+      // davao rute krace od vazdusne linije - siguran znak da krajevi nisu tamo gde
+      // mislimo. Nove tacke su same stanice, 1346 m, sto je u opsegu Kelebije (1274)
+      // i Medzitlije (1425). Ranije je mapRoute nosio GRCKI oblik imena na
+      // makedonskoj strani ("Дојрани"), pa bi rezervna mapa vodila u grcko selo.
+      mapPB: [41.1705414, 22.7452727, 41.1771878, 22.7587158],
+      mapPBin: [41.1771878, 22.7587158, 41.1705414, 22.7452727],
+      pbId: ["0x14a9dd8bff8c70ab%3A0x1f9a5b0bf0240f1f", "0x14a9e78aebffdd95%3A0x6fdb4272043303e5"],
+      pbIdIn: ["0x14a9e78aebffdd95%3A0x6fdb4272043303e5", "0x14a9dd8bff8c70ab%3A0x1f9a5b0bf0240f1f"],
+      mapRoute: ["Star Dojran Border Crossing", "Doirani Customs House"], coords: [41.1739, 22.7520], name: "Dojran", from: "MK", to: "GR",
       pair: "Doirani (GR)", road: "regionalni put (uz Dojransko jezero)", provider: "roads.org.mk",
       official: "https://roads.org.mk/en/road-network/live-webcast",
       noWait: true,
