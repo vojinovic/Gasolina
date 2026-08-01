@@ -1192,12 +1192,31 @@
 
     function bStatus(min) {
       if (min == null) return { c: 'var(--faint)', t: 'nema podataka' };
-      if (min <= 30) return { c: 'var(--ok)', t: 'prohodno' };
+      if (min <= 15) return { c: 'var(--ok)', t: 'prohodno' };
       if (min < 45) return { c: 'var(--warn)', t: 'umereno' };
       return { c: 'var(--bad)', t: 'velika guzva' };
     }
     function bMin(m) { if (m == null) return '-'; if (m >= 60) { const h = Math.floor(m/60), r = m%60; return r ? `${h}h ${r}m` : `${h}h`; } return `${m} min`; }
-    function bText(m) { if (m == null) return '-'; if (m <= 30) return 'Bez guzve'; return bMin(m); }
+    function bText(m) { if (m == null) return '-'; if (m <= 15) return 'Bez guzve'; return bMin(m); }
+    // Kartica na naslovnoj je uska, ali ne sme da tvrdi vise nego landing.
+    // "Bez guzve" na osnovu jedne neproverene prijave je bas ono sto je danas
+    // ispravljeno svuda drugde; ovde se zato pise "kratko*", a zvezdica i
+    // oznaka ispod kazu da je to prijava, ne merenje.
+    function bTextState(e) {
+      switch (e.stanje) {
+        case 'proveri':        return 'proveri';
+        case 'kolona':         return 'kolona';
+        case 'kratko-prijava': return 'kratko*';
+        case 'prijavljeno':    return bMin(e.v) + '*';
+        case 'bez-guzve':      return 'Bez guzve';
+        case 'broj':           return bText(e.v);
+        default:               return '-';
+      }
+    }
+    function bLabState(e, strelica, smer) {
+      const zvezda = (e.stanje === 'prijavljeno' || e.stanje === 'kratko-prijava') ? ' &middot; prijava' : '';
+      return strelica + ' ' + smer + zvezda;
+    }
 
     function routeCrossings(route) {
       const seen = new Set(), out = [];
@@ -1217,27 +1236,63 @@
     }
 
     // najgori dostupan podatak za smer, iz svih izvora (isto kao na granice.html)
+    // Ista pravila kao granice.html i landing stranice. Naslovna je do 01.08.
+    // imala SOPSTVENU, stariju kopiju: brojala je AMSS-ovih tacno 30 kao merenje
+    // i pustala TomTom u trku za krupnu brojku. Gradina 01.08.: AMSS 30,
+    // prijava 20, TomTom 34 -> naslovna je pisala "34 min", a landing "20 min".
+    // Cetiri kopije iste logike su tri previse; dok se ne objedine, SVAKA
+    // izmena pravila mora u sva cetiri fajla.
+    const NQ_MAX = 15, AMSS_DEF = 30, KOL_HARD = 200, BA_PROVERA = 120, TT_MIRNO = 5;
     function effWait(cid, dirKey) {
       const w = borderWaits[cid] || {};
-      const cands = [];
+      const ttMin  = (w.tt && w.tt[dirKey] != null) ? w.tt[dirKey] : null;
+      const kolona = (w.tt && w.tt[dirKey + '_kolona_m'] != null) ? w.tt[dirKey + '_kolona_m'] : null;
+      const dugaKolona = (kolona != null && kolona >= KOL_HARD);
+      const here = hereCrossings[cid] || null;
+      const cands = []; let kratkoZvanicno = false;
+
       const p = w.putnicka ? w.putnicka[dirKey] : null;
-      if (p != null) cands.push({ v: p, src: null });
-      if (w.hu) { const v = w.hu[dirKey]; if (v != null && v > 0) cands.push({ v, src: 'madjarska strana' }); }
+      const amssDefault = (p === AMSS_DEF);
+      if (p != null && !amssDefault) {
+        if (p > 0) cands.push({ v: p, src: 'granicna policija', tip: 'zvanicni' });
+        else kratkoZvanicno = true;
+      }
+      if (w.hu) { const v = w.hu[dirKey];
+        if (v != null) { if (v > 0) cands.push({ v, src: 'madjarska strana', tip: 'zvanicni' }); else kratkoZvanicno = true; } }
       if (w.mk) {
         const v = (dirKey === 'izlaz') ? w.mk.vlez : w.mk.izlez;
-        if (v != null && v > 0) cands.push({ v, src: 'makedonska strana' });
-        if (w.mk.opsto != null && w.mk.opsto > 0) cands.push({ v: w.mk.opsto, src: 'makedonska strana' });
+        if (v != null) { if (v > 0) cands.push({ v, src: 'makedonska strana', tip: 'zvanicni' }); else kratkoZvanicno = true; }
+        if (w.mk.opsto != null) { if (w.mk.opsto > 0) cands.push({ v: w.mk.opsto, src: 'makedonska strana', tip: 'zvanicni' }); else kratkoZvanicno = true; }
       }
-      if (w.ba) { const v = w.ba[dirKey]; if (v != null && v > 0) cands.push({ v, src: 'prijave vozaca' }); }
-      // TomTom zastoj kroz koridor - DONJA granica (ne vidi kolonu na pasoskoj)
-      if (w.tt) { const v = w.tt[dirKey]; if (v != null && v > 0) cands.push({ v, src: 'mapa saobracaja' }); }
-      if (hereCrossings[cid]) cands.push({ v: null, src: 'HERE', here: hereCrossings[cid] });
-      const nums = cands.filter(x => x.v != null);
-      if (!nums.length) return { v: null, src: null, here: (hereCrossings[cid] || null) };
-      let best = nums[0];
-      nums.forEach(x => { if (x.v > best.v) best = x; });
-      best.here = hereCrossings[cid] || null;
-      return best;
+      let baOsporen = null;
+      if (w.ba) { const v = w.ba[dirKey];
+        if (v != null && v > 0) {
+          const mirno = (ttMin != null && ttMin <= TT_MIRNO && !dugaKolona);
+          if (v >= BA_PROVERA && mirno) baOsporen = v;
+          else cands.push({ v, src: 'prijave vozaca', tip: 'prijava' });
+        } }
+      // TomTom NIJE kandidat za ukupno cekanje - donja granica sme da potvrdi,
+      // nikad da bude brojka.
+      const zvanicniPostoji = cands.some(x => x.tip === 'zvanicni');
+      const out = (o) => Object.assign({ v: null, src: null, here, kolona, dugaKolona, baOsporen, ttMin }, o);
+
+      if (baOsporen != null && !zvanicniPostoji) return out({ stanje: 'proveri' });
+      if (cands.length) {
+        let best = cands[0];
+        cands.forEach(x => { if (x.v > best.v) best = x; });
+        if (kratkoZvanicno && best.tip === 'prijava' && best.v >= BA_PROVERA)
+          return out({ stanje: 'proveri', baOsporen: best.v });
+        if (dugaKolona && best.v <= NQ_MAX)
+          return out({ stanje: 'kolona', v: best.v, src: best.src });
+        if (best.v <= NQ_MAX && !dugaKolona) {
+          if (best.tip === 'zvanicni' || kratkoZvanicno) return out({ stanje: 'bez-guzve', v: best.v, src: best.src });
+          return out({ stanje: 'kratko-prijava', v: best.v, src: best.src });
+        }
+        return out({ stanje: best.tip === 'prijava' ? 'prijavljeno' : 'broj', v: best.v, src: best.src });
+      }
+      if (dugaKolona) return out({ stanje: 'kolona' });
+      if (baOsporen != null) return out({ stanje: 'proveri' });
+      return out({ stanje: 'nema', samAmss: amssDefault });
     }
 
     // --- Kamere na granici (naslovna) ---------------------------------
@@ -1272,12 +1327,12 @@
             <div class="tc-pair">naspram ${cx.pair}</div>
             <div class="tc-waits">
               <div>
-                <div class="tc-lab">&rarr; ulaz</div>
-                <div class="tc-val" style="color:${sIn.c}">${bText(eIn.v)}</div>
+                <div class="tc-lab">${bLabState(eIn, "&rarr;", "ulaz")}</div>
+                <div class="tc-val" style="color:${sIn.c}">${bTextState(eIn)}</div>
               </div>
               <div>
-                <div class="tc-lab">&larr; izlaz</div>
-                <div class="tc-val" style="color:${sOut.c}">${bText(eOut.v)}</div>
+                <div class="tc-lab">${bLabState(eOut, "&larr;", "izlaz")}</div>
+                <div class="tc-val" style="color:${sOut.c}">${bTextState(eOut)}</div>
               </div>
             </div>
           </div>
@@ -1430,7 +1485,7 @@
           <div class="rb-wait">
             <span class="rb-dot" style="background:${s.c}"></span>
             <span class="rb-min" style="color:${s.c}">${bText(eff.v)}</span>
-            <span class="rb-cat">${dirLabel}${eff.src && eff.v > 30 ? ' &middot; izvor: ' + eff.src : ''}${extra}</span>
+            <span class="rb-cat">${dirLabel}${eff.src && eff.v > 15 ? ' &middot; izvor: ' + eff.src : ''}${extra}</span>
           </div>`;
       };
       const rows = list.map((cx, i) => {
