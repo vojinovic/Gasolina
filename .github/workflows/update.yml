@@ -3,7 +3,18 @@ name: Update Fuel Prices
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 7 * * 6'
+    # Cena se menja PETKOM u 15h po beogradskom vremenu = 13:00 UTC (leti),
+    # 14:00 UTC (zimi). Ministarstvo objavu okaci tog dana, ali ne uvek u isti
+    # minut, a GitHub-ov cron ume da kasni 5-15 minuta pod opterecenjem - zato
+    # se ne oslanjamo na jedno tacno pokretanje nego na niz provera.
+    #
+    # Ovo je bezbedno tek od 01.08.2026, kad je scraper dobio dve zastite:
+    # upisuje samo kad se cena stvarno promeni (pecat vremena se ne pomera bez
+    # promene), i odbija objavu kojoj je period vazenja istekao. Bez toga bi
+    # ovoliko pokretanja pravilo gomilu praznih commit-ova i pages deploy-ova.
+    - cron: '0,30 12-17 * * 5'   # petak 12:00-17:30 UTC, na pola sata
+    - cron: '0 7 * * 6'          # subota ujutru - rezerva ako je petak sve promasio
+    - cron: '0 7 * * 1'          # ponedeljak - hvata objave van uobicajenog rasporeda
 
 permissions:
   contents: write
