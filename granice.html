@@ -436,7 +436,7 @@ function waitStatus(min){
   return            {c:"var(--bad)", pct:Math.min(100,65+(min-45)/120*35), t:"velika guzva"};
 }
 function fmtMin(m){ if(m==null) return "-"; if(m>=60){const h=Math.floor(m/60),r=m%60; return r?`${h}h ${r}m`:`${h}h`;} return `${m} min`; }
-function huMin(m){ if(m==null) return "-"; if(m===0) return "Bez guzve"; return fmtMin(m); }
+function huMin(m){ if(m==null) return "-"; if(m===0) return "Bez gužve"; return fmtMin(m); }
 function cVal(m){
   if(m==null) return "<b>-</b>";
   const s = waitStatus(m);
@@ -464,7 +464,7 @@ function mkStrip(c){
     : { izlez:"ka Srbiji", vlez:"ka Makedoniji" };
   let body;
   if(c.mk.opsto!=null){
-    body = (c.mk.opsto===0) ? `<b style="color:var(--ok)">Bez guzve</b>` : `cekanje ${cVal(c.mk.opsto)}`;
+    body = (c.mk.opsto===0) ? `<b style="color:var(--ok)">Bez gužve</b>` : `cekanje ${cVal(c.mk.opsto)}`;
   } else {
     const parts=[];
     if(c.mk.izlez!=null) parts.push(`${L.izlez}: ${cVal(c.mk.izlez)}`);
@@ -659,17 +659,23 @@ function waitCell(label,dirKey,c){
   // Merena kolona ne sme da ostane zelena: 11 min uz 537 m kolone nije "prohodno".
   if(eff.dugaKolona && s.c === "var(--ok)") s = {c:"var(--warn)", pct:Math.max(40, s.pct), t:"kolona"};
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
-  const big = (eff.v==null)
+  // Osporena prijava NE SME da postane umirujuca brojka, ni preko sopstvene
+  // grane ni preko malog TomTom kandidata koji ostane iza nje. TomTom ne vidi
+  // kolonu koja STOJI na pasoskoj kontroli - Presevo 01.08.: ba 120 min,
+  // tt 1 min / 53 m, a kamera puna kolona. Kad se izvori ne slazu, naslov
+  // upucuje na kameru, jedini izvor koji covek proveri sam za dve sekunde.
+  const big = eff.baOsporen ? `<span class="wq">proveri kameru</span>`
+    : (eff.v==null)
     ? (eff.dugaKolona ? `<span class="wq">kolona ~${eff.kolona} m</span>`
-       : eff.baOsporen ? `<span class="wok">Bez guzve</span>`
+
        : (eff.samAmss ? '<span class="wq">nema podataka</span>' : '-'))
-    : ((eff.v<=NO_QUEUE_MAX && !eff.dugaKolona) ? '<span class="wok">Bez guzve</span>' : fmtMin(eff.v));
+    : ((eff.v<=NO_QUEUE_MAX && !eff.dugaKolona) ? '<span class="wok">Bez gužve</span>' : fmtMin(eff.v));
   // Kad se ispisuje broj, uz njega ide i odakle je - inace 25 min iz BorderAlarma
   // izgleda kao zvanican podatak. Kad je kolona ta koja je oborila "Bez guzve",
   // to mora da pise, jer bi brojka inace izgledala kao greska.
   let srcTag;
   if(eff.baOsporen){
-    srcTag = `<div class="wsrc">jedan vozač prijavljuje ${fmtMin(eff.baOsporen)} &mdash; merenje to ne potvrđuje</div>`;
+    srcTag = `<div class="wsrc">jedan vozač prijavljuje ${fmtMin(eff.baOsporen)}, merenje to ne potvrđuje</div>`;
   } else if(eff.src && eff.v!=null && eff.v>NO_QUEUE_MAX){
     srcTag = `<div class="wsrc">izvor: ${eff.src}${eff.dugaKolona ? ` &middot; kolona ~${eff.kolona} m` : ``}</div>`;
   } else if(eff.dugaKolona){
