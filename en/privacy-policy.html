@@ -169,11 +169,11 @@
     <li>an anonymous browser identifier from a cookie, to tell a new visit from a returning one;</li>
     <li>certain actions on the site (e.g. opening a camera, running the calculator) — without the content you typed.</li>
   </ul>
-  <p>Separately, GitHub Pages as the hosting provider keeps standard server logs (IP address, request time, requested path, user agent). We have no access to those logs.</p>
+  <p>Separately, traffic to this site passes through the <b>Cloudflare</b> network, which acts as a proxy and protective layer in front of the server. In doing so Cloudflare processes technical data about every request (IP address, time, requested path, user agent) and sets its own technical cookie required for that protection to work. GitHub Pages as the hosting provider keeps standard server logs of the same kind. We have no access to either set of logs.</p>
 
   <h3>2.2 Data you enter yourself</h3>
   <ul>
-    <li><b>Trip calculator.</b> The origin and destination you type, along with your consumption and fuel selections, are sent to <b>OpenRouteService</b> (HeiGIT gGmbH, Germany) to resolve the place names and calculate the route. Only the text you typed is sent, nothing that would identify you. The result is not stored on our side.</li>
+    <li><b>Trip calculator.</b> The origin and destination you type, along with your consumption and fuel selections, are sent to <b>OpenRouteService</b> (HeiGIT gGmbH, Germany) to resolve the place names and calculate the route. The request passes through a proxy on the Cloudflare network, which exists so that the OpenRouteService access key is not visible in your browser; the proxy stores neither origin nor destination. Only the text you typed is sent, nothing that would identify you. The result is not stored on our side.</li>
     <li><b>Email.</b> If you write to <code>kontakt@gasolina.rs</code>, we keep your message and address for as long as it takes to reply and, where it is an error report, to fix the problem.</li>
   </ul>
   <p>The site does not use your GPS location and never asks for device location permission.</p>
@@ -247,6 +247,9 @@
     </tr>
     <tr>
       <td>OpenRouteService (HeiGIT gGmbH)</td><td>Place lookup and route calculation in the trip calculator</td><td><a href="https://openrouteservice.org/privacy-policy/" target="_blank" rel="noopener">openrouteservice.org/privacy-policy</a></td>
+    </tr>
+    <tr>
+      <td>Cloudflare, Inc.</td><td>Network all traffic to this site passes through (proxy and protective layer in front of the server), and the proxy the calculator request passes through before it reaches OpenRouteService</td><td><a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">cloudflare.com/privacypolicy</a></td>
     </tr>
     <tr>
       <td>GitHub Pages (GitHub, Inc.)</td><td>Site hosting</td><td><a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">docs.github.com</a></td>
