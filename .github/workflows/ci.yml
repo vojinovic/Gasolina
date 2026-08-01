@@ -50,8 +50,12 @@ jobs:
           python3 engine/putevi_scraper.py --selftest
           python3 engine/thumbs_scraper.py --selftest
 
+      # Test zivi u privatnom engine-u, ne u javnom repou: on na jednom mestu
+      # sazima sva pravila i razloge zbog kojih postoje. Cita granice.html iz
+      # korena, pa se pokrece odatle.
       - name: Regresioni testovi logike cekanja (invarijante iz incidenata)
-        run: node test-wait-logic.js
+        if: steps.engine.outcome == 'success'
+        run: node engine/test-wait-logic.js
 
       - name: JS + JSON-LD + JSON provere (ci_checks.py)
         if: steps.engine.outcome == 'success'
