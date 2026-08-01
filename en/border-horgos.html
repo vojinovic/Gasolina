@@ -254,11 +254,12 @@
       const KORIDOR_OUT = 2798, KORIDOR_IN = 1897;
       const fmtKolona = (m, kor) => {
         const blizuKraja = (kor != null && m >= 0.85 * kor);
-        let tekst;
-        if (m >= 1000) {
-          const km = Math.round(m / 500) * 0.5;
-          tekst = (km % 1 === 0 ? km.toFixed(0) : km.toFixed(1).replace(".", ",")) + " km";
-        } else { tekst = Math.round(m / 100) * 100 + " m"; }
+        
+        const zaokruzeno = m >= 1000 ? Math.round(m / 500) * 500 : Math.round(m / 100) * 100;
+        const km = zaokruzeno / 1000;
+        const tekst = zaokruzeno >= 1000
+          ? ((km % 1 === 0 ? km.toFixed(0) : km.toFixed(1).replace(".", ",")) + " km")
+          : (zaokruzeno + " m");
         return (blizuKraja ? "najmanje " : "oko ") + tekst;
       };
       const korZa = (dirKey) => (dirKey === 'ulaz' ? KORIDOR_IN : KORIDOR_OUT);
