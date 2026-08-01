@@ -164,12 +164,12 @@ window.BORDERS = (function () {
       // (kod pristanista u Star Dojranu), pa je Google rutao kroz seoske ulice i
       // davao rute krace od vazdusne linije - siguran znak da krajevi nisu tamo gde
       // mislimo. Nove tacke su same stanice, 1346 m, sto je u opsegu Kelebije (1274)
-      // i Medzitlije (1425). Ranije je mapRoute nosio GRCKI oblik imena na
+      // i Medzitlije (1425). mapPBin namerno NIJE dodat - selftest u granice_scraper
+      // ima konzervirane TomTom odgovore samo za izlazni koridor. Ranije je
+      // mapRoute nosio GRCKI oblik imena na
       // makedonskoj strani ("Дојрани"), pa bi rezervna mapa vodila u grcko selo.
       mapPB: [41.1705414, 22.7452727, 41.1771878, 22.7587158],
-      mapPBin: [41.1771878, 22.7587158, 41.1705414, 22.7452727],
       pbId: ["0x14a9dd8bff8c70ab%3A0x1f9a5b0bf0240f1f", "0x14a9e78aebffdd95%3A0x6fdb4272043303e5"],
-      pbIdIn: ["0x14a9e78aebffdd95%3A0x6fdb4272043303e5", "0x14a9dd8bff8c70ab%3A0x1f9a5b0bf0240f1f"],
       mapRoute: ["Star Dojran Border Crossing", "Doirani Customs House"], coords: [41.1739, 22.7520], name: "Dojran", from: "MK", to: "GR",
       pair: "Doirani (GR)", road: "regionalni put (uz Dojransko jezero)", provider: "roads.org.mk",
       official: "https://roads.org.mk/en/road-network/live-webcast",
