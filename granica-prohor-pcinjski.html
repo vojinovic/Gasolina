@@ -382,6 +382,18 @@
   
   
   
+  
+  let _greskaJavljena = null;   
+  function javiGresku(razlog){
+    if (_greskaJavljena === razlog) return;
+    _greskaJavljena = razlog;
+    track('kamera_greska', {prelaz: PRELAZ_ID, razlog: razlog});
+  }
+  
+  
+  
+  
+  
   const LIVE_MAX_LAG = 60;   
   function liveEdge(video){
     
@@ -412,6 +424,7 @@
     
     if (lag == null) return;
     const live = (lag <= LIVE_MAX_LAG);
+    if (!live) javiGresku('zaostaje');
     tag.textContent = live ? "UŽIVO" : "SNIMAK";
     tag.style.background = live ? "rgba(227,93,79,.9)" : "rgba(93,115,135,.92)";
     tag.style.cursor = live ? "default" : "pointer";
@@ -447,6 +460,7 @@
     if(overlay) overlay.style.display = "none";
     video.style.display = "block";
     if(liveTag) liveTag.style.display = "block";
+    _greskaJavljena = null;   
     if(_hls){ try{_hls.destroy();}catch(e){} _hls = null; }
     if(video.canPlayType("application/vnd.apple.mpegurl")){
       video.src = src;
@@ -458,11 +472,14 @@
       _hls.loadSource(src);
       _hls.attachMedia(video);
       _hls.on(Hls.Events.MANIFEST_PARSED, () => syncLive(video, true));
+      _hls.on(Hls.Events.ERROR, (_e, d) => { if (d && d.fatal) javiGresku('ne_ucitava'); });
     } else {
       video.src = src;
     }
     
     video.addEventListener("loadedmetadata", () => markLive(syncLive(video, true)), {once:true});
+    
+    video.addEventListener("error", () => javiGresku('ne_ucitava'), {once:true});
     
     if (_liveTimer) clearInterval(_liveTimer);
     _liveTimer = setInterval(() => markLive(syncLive(video, false)), 5000);
