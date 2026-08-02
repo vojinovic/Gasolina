@@ -8,8 +8,14 @@
       "a": "kelebija",
       "b": "horgos",
       "prikaz": {
-        "sr": { "a": "Kelebija", "b": "Horgoš" },
-        "en": { "a": "Kelebija", "b": "Horgoš" }
+        "sr": {
+          "a": "Kelebija",
+          "b": "Horgoš"
+        },
+        "en": {
+          "a": "Kelebija",
+          "b": "Horgoš"
+        }
       },
       "period_od": "2026-07-14",
       "period_do": "2026-07-31",
@@ -29,6 +35,10 @@
           "medijana_min": 12,
           "najveca_prednost_b_min": 5
         }
+      },
+      "napomena": {
+        "sr": "Horgoš je na auto-putu, Kelebija nije — skretanje dodaje kilometre, pa razliku na granici uporedi sa dužinom obilaska.",
+        "en": "Horgoš is on the motorway, Kelebija is not — the detour adds distance, so weigh the border difference against the extra drive."
       }
     }
   ]
