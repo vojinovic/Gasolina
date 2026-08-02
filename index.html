@@ -662,6 +662,16 @@
     // zahtev je same-origin i za gasolina.rs i za www.gasolina.rs.
     const ORS_PROXY = "/api/ors";
 
+    // Nazivi mesta iz geokodera dolaze iz OpenStreetMap-a, koji SVAKO moze da menja.
+    // Ako se takav naziv ubaci u innerHTML nedirnut, dovoljno je da neko u OSM-u
+    // nazove mesto "<img src=x onerror=...>" pa da se to izvrsi na gasolina.rs.
+    // Zato svaki tudji tekst prolazi kroz esc() pre nego sto udje u HTML.
+    function esc(v) {
+      return String(v == null ? "" : v)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
     // Isti status (429 ili 403) ima TRI razlicita uzroka i tri razlicita saveta.
     // Posrednik ih razdvaja preko dva zaglavlja:
     //   nema X-Gasolina-Worker             -> Cloudflare pravilo "ors-limit" na ivici,
@@ -791,8 +801,8 @@
           const main = parts[0] || f.properties.label;
           const sub = parts.slice(1).join(',').trim();
           const [lon, lat] = f.geometry.coordinates;
-          return `<div class="suggest-item" data-i="${i}" data-lat="${lat}" data-lon="${lon}" data-label="${(f.properties.label || '').replace(/"/g, '&quot;')}"
-                       onmousedown="pickSuggestion('${inputId}','${listId}',this)">${main}<span class="sub">${sub}</span></div>`;
+          return `<div class="suggest-item" data-i="${i}" data-lat="${lat}" data-lon="${lon}" data-label="${esc(f.properties.label)}"
+                       onmousedown="pickSuggestion('${inputId}','${listId}',this)">${esc(main)}<span class="sub">${esc(sub)}</span></div>`;
         }).join('');
         listEl.classList.add('show');
       } catch (e) { hideSuggestions(listId); }
@@ -1748,7 +1758,7 @@
         </div>
         <div class="result-box">
           <h3>📋 Detalji puta</h3>
-          <div class="step">Ruta: <strong>${t.route.label}</strong> (${t.totalKm} km)</div>
+          <div class="step">Ruta: <strong>${esc(t.route.label)}</strong> (${t.totalKm} km)</div>
           <div class="step">Potrošnja: ${t.cons.toFixed(1).replace('.', ',')} L/100km · Rezervoar: ${t.tank} L · Početno gorivo: ${(t.startFuel).toFixed(1).replace('.', ',')} L</div>
           <div class="step">Ukupno potrebno: <strong>${t.totalFuelNeeded.toFixed(1).replace('.', ',')} L</strong> · Treba kupiti: <strong>${t.fuelToBuy.toFixed(1).replace('.', ',')} L</strong></div>
           <div class="step" style="margin-top:10px">Cene ${fuelText} po deonici:</div>
