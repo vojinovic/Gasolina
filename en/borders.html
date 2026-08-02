@@ -405,7 +405,9 @@
 </div>
 
 <script src="../borders-data.js"></script>
-<script src="../wait-logic.v1.js"></script>
+<!-- ?v= nije ukras: bez njega browser sme da posluzi staru kopiju uz novu
+     stranicu. Bumpuje se SVAKI put kad se wait-logic.v1.js promeni. -->
+<script src="../wait-logic.v1.js?v=20260802"></script>
 <script>
 /* Prelazi se ucitavaju iz deljenog borders-data.js (jedan izvor istine). */
 // Redosled kartica: najprometniji prelazi gore. Ostali zadrzavaju redosled iz borders-data.
@@ -433,7 +435,17 @@ const CAMERAS = [...BORDERS.CROSSINGS].sort((a, b) => {
 // The thresholds live in wait-logic.v1.js and are only pulled in here, so the
 // same number never exists in two places — changing it in one and not the
 // other silently changes the meaning of every figure on the site.
-const { NO_QUEUE_MAX, AMSS_DEFAULT_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN } = window.GasolinaWait;
+//
+// THE NAMES DELIBERATELY DIFFER from the ones inside wait-logic.v1.js. On
+// 02.08.2026 that file was briefly published WITHOUT its IIFE wrapper and leaked
+// `const NO_QUEUE_MAX` into the global scope. Any browser that cached it then
+// went on to load the new page with the old script - and the line below became a
+// SECOND declaration of the same name. That is a SyntaxError at instantiation:
+// the whole inline script never runs and not a single card is drawn. The page
+// was blank, with no message, and stayed blank until that cache expired.
+// While the names differ, a stale cached copy can no longer take the page down.
+const NQ_MAX = window.GasolinaWait.NO_QUEUE_MAX;
+const QUEUE_MIN_M = window.GasolinaWait.QUEUE_HARD_M;
 
 // Feed labels come from the shared borders-data.js and are Serbian there - the
 // EN page translates them at render time, so the data does not fork per language.
@@ -503,7 +515,6 @@ function mkStrip(c){
    threshold only opens the row: ONE direction clearing it is enough, and then
    both are shown (a short queue the other way is informative - it shows the
    jam is one-directional). Only a direction with no measurement is dropped. */
-const QUEUE_MIN_M = QUEUE_HARD_M;
 function queueRow(c){
   if(!c.tt) return "";
   const iz = c.tt.izlaz_kolona_m, ul = c.tt.ulaz_kolona_m;
@@ -518,7 +529,7 @@ function queueRow(c){
    is long, "No queue (queue ~725m)" contradicts itself - traffic moves, yet a
    line exists; in that case we write what is actually observed. */
 function ttDir(min, kolona, prefix){
-  if(min!=null && min<=NO_QUEUE_MAX && kolona>=QUEUE_MIN_M){
+  if(min!=null && min<=NQ_MAX && kolona>=QUEUE_MIN_M){
     return `<b style="color:var(--warn)">flowing, but queue ~${kolona} m</b>`;
   }
   return `${prefix}${cVal(min)}${kolona ? ` (queue ~${kolona}m)` : ``}`;
@@ -622,7 +633,7 @@ function shareTextBorder(c){
     // Same thresholds as the card - shared text must not claim more than the page.
     const say = e => (e.v==null)
       ? (e.dugaKolona ? `queue ~${e.kolona} m` : "no data")
-      : ((e.v<=NO_QUEUE_MAX && !e.dugaKolona) ? "no queue" : fmtMin(e.v));
+      : ((e.v<=NQ_MAX && !e.dugaKolona) ? "no queue" : fmtMin(e.v));
     parts.push(`exiting Serbia: ${say(iz)}`);
     parts.push(`entering Serbia: ${say(ul)}`);
   }
