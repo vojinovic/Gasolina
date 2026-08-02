@@ -195,6 +195,8 @@
   </section>
   <div class="others">Other border crossings: <a href="border-gradina.html">Gradina</a> <a href="border-horgos.html">Horgos</a> <a href="border-kelebija.html">Kelebija</a> <a href="border-batrovci.html">Batrovci</a> <a href="border-presevo.html">Presevo</a> <a href="border-bogorodica.html">Bogorodica</a> <a href="border-medzitlija.html">Medzitlija</a> <a href="border-spiljani.html">Spiljani</a> <a href="border-prohor-pcinjski.html">Prohor Pcinjski</a> <a href="border-gostun.html">Gostun</a> <a href="border-debeli-brijeg.html">Debeli Brijeg</a> <a href="border-dojran.html">Dojran</a></div>
 </div>
+
+<script src="../wait-logic.v1.js"></script>
 <script>
   const PRELAZ_ID = "sremska-raca";
   const FEEDS = [{"label": "Entry", "src": "https://kamere.mup.gov.rs:4443/SremskaRaca/sremskaraca1.m3u8", "dir": "in"}, {"label": "Exit", "src": "https://kamere.mup.gov.rs:4443/SremskaRaca/sremskaraca2.m3u8", "dir": "out"}];
@@ -202,7 +204,7 @@
   const SHARE = {label:"Share:", copied:"Copied!", out:"exiting Serbia", inn:"entering Serbia", noq:"no queue", nd:"no data", nowait:"camera available, waiting not tracked", queue:"queue"};
   
   
-  const NO_QUEUE_MAX = 15, AMSS_DEFAULT_MIN = 30, QUEUE_HARD_M = 200;
+  const NO_QUEUE_MAX = window.GasolinaWait.NO_QUEUE_MAX;
   
   const dur = m => (m >= 60 ? (m % 60 ? Math.floor(m/60) + "h " + (m % 60) + "m" : Math.floor(m/60) + "h") : m + " min");
   let _waitState = null; 
@@ -267,60 +269,29 @@
         return (blizuKraja ? "najmanje " : "oko ") + tekst;
       };
       const korZa = (dirKey) => (dirKey === 'ulaz' ? KORIDOR_IN : KORIDOR_OUT);
-      const BA_PROVERA_MIN = 120;
-      const TT_MIRNO_MIN = 5;
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      const SRC_NAZIV = {policija: "border police", hu: "Hungarian side", mk: "North Macedonian side",
+                         ba: "Driver reports (BorderAlarm)", user: "Driver reports (BorderAlarm)"};
       const eff = (dirKey) => {
-        const ttMin  = (c && c.tt && c.tt[dirKey] != null) ? c.tt[dirKey] : null;
-        const kolona = (c && c.tt && c.tt[dirKey + "_kolona_m"] != null) ? c.tt[dirKey + "_kolona_m"] : null;
-        const dugaKolona = (kolona != null && kolona >= QUEUE_HARD_M);
-        const cands = []; let kratkoZvanicno = false;
-        const p = (c && c.found && c.putnicka) ? c.putnicka[dirKey] : null;
-        const amssDefault = (p === AMSS_DEFAULT_MIN);
-        if (p != null && !amssDefault) {
-          if (p > 0) cands.push({v: p, src: "border police", tip: "zvanicni"}); else kratkoZvanicno = true;
-        }
-        if (c && c.hu) { const v = c.hu[dirKey];
-          if (v != null) { if (v > 0) cands.push({v, src: "Hungarian side", tip: "zvanicni"}); else kratkoZvanicno = true; } }
-        if (c && c.mk) {
-          const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
-          if (v != null) { if (v > 0) cands.push({v, src: "North Macedonian side", tip: "zvanicni"}); else kratkoZvanicno = true; }
-          if (c.mk.opsto != null) { if (c.mk.opsto > 0) cands.push({v: c.mk.opsto, src: "North Macedonian side", tip: "zvanicni"}); else kratkoZvanicno = true; }
-        }
-        if (c && c.user && c.user[dirKey] != null)
-          cands.push({v: c.user[dirKey], src: "Driver reports (BorderAlarm)", tip: "prijava"});
-        let baOsporen = null;
-        if (c && c.ba) {
-          const v = c.ba[dirKey];
-          if (v != null && v > 0) {
-            const merenjeMirno = (ttMin != null && ttMin <= TT_MIRNO_MIN && !dugaKolona);
-            if (v >= BA_PROVERA_MIN && merenjeMirno) baOsporen = v;
-            else cands.push({v, src: "Driver reports (BorderAlarm)", tip: "prijava"});
-          }
-        }
-        const zvanicniPostoji = cands.some(x => x.tip === "zvanicni");
-        if (baOsporen != null && !zvanicniPostoji)
-          return {stanje: "proveri", baOsporen, kolona, dugaKolona, ttMin, _d: dirKey};
-        if (cands.length) {
-          let best = cands[0];
-          cands.forEach(x => { if (x.v > best.v) best = x; });
-          if (kratkoZvanicno && best.tip === "prijava" && best.v >= BA_PROVERA_MIN)
-            return {stanje: "proveri", baOsporen: best.v, kolona, dugaKolona, ttMin, _d: dirKey};
-          
-          
-          if (dugaKolona && best.v <= NO_QUEUE_MAX)
-            return {stanje: "kolona", v: best.v, src: best.src, kolona, dugaKolona, ttMin, _d: dirKey};
-          if (best.v <= NO_QUEUE_MAX && !dugaKolona) {
-            if (best.tip === "zvanicni" || kratkoZvanicno)
-              return {stanje: "bez-guzve", src: best.src, kolona, dugaKolona, ttMin, _d: dirKey};
-            return {stanje: "kratko-prijava", v: best.v, src: best.src, kolona, dugaKolona, ttMin, _d: dirKey};
-          }
-          if (best.tip === "prijava")
-            return {stanje: "prijavljeno", v: best.v, src: best.src, kolona, dugaKolona, ttMin, _d: dirKey};
-          return {stanje: "broj", v: best.v, src: best.src, kolona, dugaKolona, ttMin, _d: dirKey};
-        }
-        if (dugaKolona) return {stanje: "kolona", kolona, dugaKolona, ttMin, _d: dirKey};
-        if (baOsporen != null) return {stanje: "proveri", baOsporen, kolona, dugaKolona, ttMin, _d: dirKey};
-        return {stanje: "nema", samAmss: amssDefault, kolona, dugaKolona, ttMin, _d: dirKey};
+        const ulaz = {
+          putnicka: (c && c.found) ? c.putnicka : null,
+          hu: c && c.hu, mk: c && c.mk, ba: c && c.ba, user: c && c.user,
+          tt: (c && c.tt) || {},
+        };
+        const e = window.GasolinaWait.procena(ulaz, dirKey);
+        
+        
+        return Object.assign({}, e, {_d: dirKey},
+                             e.src ? {src: SRC_NAZIV[e.src] || e.src} : {});
       };
       const eIn = eff('ulaz'), eOut = eff('izlaz');
       _waitState = {inn: eIn, out: eOut};
