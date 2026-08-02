@@ -405,7 +405,9 @@
 </div>
 
 <script src="borders-data.js"></script>
-<script src="wait-logic.v1.js"></script>
+<!-- ?v= nije ukras: bez njega browser sme da posluzi staru kopiju uz novu
+     stranicu. Bumpuje se SVAKI put kad se wait-logic.v1.js promeni. -->
+<script src="wait-logic.v1.js?v=20260802"></script>
 <script>
 /* Prelazi se ucitavaju iz deljenog borders-data.js (jedan izvor istine). */
 // Redosled kartica: najprometniji prelazi gore. Ostali zadrzavaju redosled iz borders-data.
@@ -433,7 +435,17 @@ const CAMERAS = [...BORDERS.CROSSINGS].sort((a, b) => {
 // PRAGOVI ZIVE U wait-logic.v1.js — ovde se samo preuzimaju, da isti broj ne bi
 // postojao na dva mesta. Promena praga na jednom a ne na drugom mestu tiho
 // menja znacenje svake brojke na sajtu (lekcija 31.07.2026).
-const { NO_QUEUE_MAX, AMSS_DEFAULT_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN } = window.GasolinaWait;
+//
+// IMENA SE NAMERNO RAZLIKUJU od imena unutar wait-logic.v1.js. 02.08.2026 je ta
+// datoteka nakratko bila objavljena BEZ IIFE omotaca i iznosila `const
+// NO_QUEUE_MAX` u globalni opseg. Svaki browser koji ju je tada kesirao dobijao
+// je posle toga novu stranicu uz staru skriptu - a red ispod je tada bio DRUGA
+// deklaracija istog imena. To je SyntaxError pri instanciranju, pa se cela
+// inline skripta ne izvrsava i nijedna kartica se ne iscrta. Stranica je bila
+// prazna, bez ijedne poruke, i takva je ostajala dok covekov kes ne istekne.
+// Dok se imena razlikuju, stara kesirana kopija vise ne moze da obori stranicu.
+const NQ_MAX = window.GasolinaWait.NO_QUEUE_MAX;
+const QUEUE_MIN_M = window.GasolinaWait.QUEUE_HARD_M;
 
 /* status iz minuta - boje i traka ostaju na starim granicama (30 / 45).
    Menja se samo NATPIS, ne skala: 20 min jeste zeleno, ali nije "bez guzve". */
@@ -489,7 +501,6 @@ function mkStrip(c){
    JEDAN smer predje, pa se prikazuju oba (kratka kolona u drugom smeru je tu
    korisna - pokazuje da guzva nije obostrana). Izostavlja se samo smer za koji
    nema merenja. */
-const QUEUE_MIN_M = QUEUE_HARD_M;
 function queueRow(c){
   if(!c.tt) return "";
   const iz = c.tt.izlaz_kolona_m, ul = c.tt.ulaz_kolona_m;
@@ -504,7 +515,7 @@ function queueRow(c){
    "Bez guzve (kolona ~725m)" je protivrecno - vozila se krecu, ali red postoji;
    u tom slucaju se pise sta se stvarno vidi. */
 function ttDir(min, kolona, prefix){
-  if(min!=null && min<=NO_QUEUE_MAX && kolona>=QUEUE_MIN_M){
+  if(min!=null && min<=NQ_MAX && kolona>=QUEUE_MIN_M){
     return `<b style="color:var(--warn)">protocno, ali kolona ~${kolona} m</b>`;
   }
   return `${prefix}${cVal(min)}${kolona ? ` (kolona ~${kolona}m)` : ``}`;
@@ -609,7 +620,7 @@ function shareTextBorder(c){
     // Isti pragovi kao na kartici - podeljen tekst ne sme da tvrdi vise od prikaza.
     const say = e => (e.v==null)
       ? (e.dugaKolona ? `kolona ~${e.kolona} m` : "nema podataka")
-      : ((e.v<=NO_QUEUE_MAX && !e.dugaKolona) ? "bez guzve" : fmtMin(e.v));
+      : ((e.v<=NQ_MAX && !e.dugaKolona) ? "bez guzve" : fmtMin(e.v));
     parts.push(`izlaz iz Srbije: ${say(iz)}`);
     parts.push(`ulaz u Srbiju: ${say(ul)}`);
   }
