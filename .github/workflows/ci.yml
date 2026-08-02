@@ -51,8 +51,9 @@ jobs:
           python3 engine/thumbs_scraper.py --selftest
 
       # Test zivi u privatnom engine-u, ne u javnom repou: on na jednom mestu
-      # sazima sva pravila i razloge zbog kojih postoje. Cita granice.html iz
-      # korena, pa se pokrece odatle.
+      # sazima sva pravila i razloge zbog kojih postoje. Cita wait-logic.v1.js i
+      # SVE .html stranice iz korena (provera da nijedna nema sopstvenu kopiju
+      # odluke), pa se pokrece odatle.
       - name: Regresioni testovi logike cekanja (invarijante iz incidenata)
         if: steps.engine.outcome == 'success'
         run: node engine/test-wait-logic.js
