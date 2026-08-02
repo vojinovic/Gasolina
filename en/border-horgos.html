@@ -202,7 +202,7 @@
   <div class="others">Other border crossings: <a href="border-gradina.html">Gradina</a> <a href="border-kelebija.html">Kelebija</a> <a href="border-batrovci.html">Batrovci</a> <a href="border-presevo.html">Presevo</a> <a href="border-bogorodica.html">Bogorodica</a> <a href="border-medzitlija.html">Medzitlija</a> <a href="border-sremska-raca.html">Sremska Raca</a> <a href="border-spiljani.html">Spiljani</a> <a href="border-prohor-pcinjski.html">Prohor Pcinjski</a> <a href="border-gostun.html">Gostun</a> <a href="border-debeli-brijeg.html">Debeli Brijeg</a> <a href="border-dojran.html">Dojran</a></div>
 </div>
 
-<script src="../wait-logic.v1.js"></script>
+<script src="../wait-logic.v1.js?v=20260802"></script>
 <script>
   const PRELAZ_ID = "horgos";
   const FEEDS = [{"label": "Entry", "src": "https://kamere.amss.org.rs/horgos1/horgos1.m3u8", "dir": "in"}, {"label": "Exit", "src": "https://kamere.amss.org.rs/horgos2/horgos2.m3u8", "dir": "out"}];
@@ -210,7 +210,10 @@
   const SHARE = {label:"Share:", copied:"Copied!", out:"exiting Serbia", inn:"entering Serbia", noq:"no queue", nd:"no data", nowait:"camera available, waiting not tracked", queue:"queue"};
   
   
-  const NO_QUEUE_MAX = window.GasolinaWait.NO_QUEUE_MAX;
+  
+  
+  
+  const NQ_MAX = window.GasolinaWait.NO_QUEUE_MAX;
   
   const dur = m => (m >= 60 ? (m % 60 ? Math.floor(m/60) + "h " + (m % 60) + "m" : Math.floor(m/60) + "h") : m + " min");
   let _waitState = null; 
@@ -221,7 +224,7 @@
       
       const f = e => (!e || e.v == null)
         ? (e && e.dugaKolona ? `${SHARE.queue} ~${e.kolona} m` : SHARE.nd)
-        : ((e.v <= NO_QUEUE_MAX && !e.dugaKolona) ? SHARE.noq : dur(e.v));
+        : ((e.v <= NQ_MAX && !e.dugaKolona) ? SHARE.noq : dur(e.v));
       parts.push(`${SHARE.out}: ${f(_waitState.out)}`);
       parts.push(`${SHARE.inn}: ${f(_waitState.inn)}`);
     } else {
