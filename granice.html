@@ -116,6 +116,8 @@
     border-radius:9px;padding:8px 12px;color:var(--text);font-size:12.5px;line-height:1.45;
   }
   .cmp-banner + .cmp-banner{margin-top:6px}
+  .cmp-banner.cmp-hist{margin-top:6px}
+  .cmp-hist .cmp-ograda{display:block;margin-top:3px;color:var(--faint);font-size:11px}
   .cmp-banner b{font-weight:700}
   .cmp-banner .cmp-fast{color:var(--ok)}
 
@@ -371,6 +373,7 @@
   <div class="note"><span class="ldot"></span><b>Uživo</b> &middot; podaci se učitavaju&hellip;</div>
 
   <div id="cmp"></div>
+  <div id="cmpHist"></div>
 
   <div class="grid" id="grid"></div>
 
@@ -900,6 +903,55 @@ const CN_DATIVE = { HU:"Mađarskoj", ME:"Crnoj Gori", HR:"Hrvatskoj", BG:"Bugars
    Prag od 10 min je namerno - manja razlika nije vredna isticanja, samo sum.
    Formulacija "ceka krace" je namerna: "brzi" je gresio rod na Kelebiji,
    Bogorodici i Medzitliji, a imena prelaza su i muskog i zenskog roda. */
+/* ISTORIJSKO POREDJENJE ALTERNATIVNIH PRELAZA (uvedeno 02.08.2026)
+   Podaci stoje u border_comparisons.json, NE u ovom fajlu - ista datoteka hrani
+   i englesku stranicu i (kasnije) landing stranice iz generatora. Zakucavanje
+   brojki u HTML bi napravilo jos jednu kopiju sadrzaja koja se odrzava rucno.
+
+   Zasto UPARENO poredjenje a ne prosek cekanja: oba prelaza se mere u istom
+   trenutku, pa razlika ne trpi uticaj dana, sezone ni vremena. Prosek cekanja
+   bi trazio mnogo vise razlicitih DANA da bi znacio nesto (vidi handoff).
+
+   Brojevi su dani, ne merenja. Snimci na svakih pola sata tokom iste kolone
+   nisu nezavisni dogadjaji - zato se prvo racuna medijana po datumu, pa se
+   broje dani. */
+const MESEC_GEN = ["januara","februara","marta","aprila","maja","juna",
+                   "jula","avgusta","septembra","oktobra","novembra","decembra"];
+
+function periodTekst(od, doo){
+  const a = od.split("-"), b = doo.split("-");
+  const dan = s => String(parseInt(s, 10));
+  if(a[1] === b[1]) return `${dan(a[2])}. do ${dan(b[2])}. ${MESEC_GEN[+b[1]-1]} ${b[0]}.`;
+  return `${dan(a[2])}. ${MESEC_GEN[+a[1]-1]} do ${dan(b[2])}. ${MESEC_GEN[+b[1]-1]} ${b[0]}.`;
+}
+
+async function renderHistorija(){
+  const box = document.getElementById("cmpHist");
+  if(!box) return;
+  try{
+    const r = await fetch("border_comparisons.json?cb=" + Date.now());
+    if(!r.ok) return;
+    const data = await r.json();
+    const out = (data.parovi || []).map(p => {
+      const ime = (p.prikaz && p.prikaz.sr) || {};
+      const A = ime.a || p.a, B = ime.b || p.b;
+      const u = p.smerovi && p.smerovi.ulaz, i = p.smerovi && p.smerovi.izlaz;
+      if(!u || !i) return "";
+      return `
+      <div class="cmp-banner cmp-hist">
+        \uD83D\uDCC5 <b>${B} ili ${A}?</b> Od ${periodTekst(p.period_od, p.period_do)}
+        ${A} je bila brža <b>${u.dana_a} od ${p.dana}</b> dana pri ulasku u Srbiju i
+        <b>${i.dana_a} od ${p.dana}</b> pri izlasku.
+        Tipična dnevna prednost: <b>${u.medijana_min} min</b> pri ulasku,
+        <b>${i.medijana_min} min</b> pri izlasku.
+        <span class="cmp-ograda">Istorijski obrazac za taj period, ne procena za danas —
+        proveri trenutno stanje i dodatne kilometre do ${A}.</span>
+      </div>`;
+    }).join("");
+    box.innerHTML = out;
+  }catch(e){ /* nema istorijskog poredjenja - blok se prosto ne prikaze */ }
+}
+
 function renderComparisons(){
   const cmp = document.getElementById("cmp");
   if(!cmp) return;
@@ -1013,6 +1065,7 @@ async function init(){
   grid.innerHTML=CAMERAS.map(cardHTML).join("");
   wire();
   renderComparisons();
+  renderHistorija();
   setNote(live, scrapedAt);
 }
 init();
