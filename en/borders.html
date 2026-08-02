@@ -405,6 +405,7 @@
 </div>
 
 <script src="../borders-data.js"></script>
+<script src="../wait-logic.v1.js"></script>
 <script>
 /* Prelazi se ucitavaju iz deljenog borders-data.js (jedan izvor istine). */
 // Redosled kartica: najprometniji prelazi gore. Ostali zadrzavaju redosled iz borders-data.
@@ -429,9 +430,10 @@ const CAMERAS = [...BORDERS.CROSSINGS].sort((a, b) => {
    3. A measured queue of QUEUE_HARD_M or more overrides "no queue" whatever the
       minutes say. The threshold deliberately matches QUEUE_MIN_M (the "Queue" row),
       so a queue printed below the cell can never sit under a "No queue" label. */
-const NO_QUEUE_MAX   = 15;   // min, upper bound for the "No queue" label
-const AMSS_DEFAULT_MIN = 30; // the AMSS default value, not a measurement
-const QUEUE_HARD_M   = 200;  // m, measured queue that overrides "No queue"
+// The thresholds live in wait-logic.v1.js and are only pulled in here, so the
+// same number never exists in two places — changing it in one and not the
+// other silently changes the meaning of every figure on the site.
+const { NO_QUEUE_MAX, AMSS_DEFAULT_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN } = window.GasolinaWait;
 
 // Feed labels come from the shared borders-data.js and are Serbian there - the
 // EN page translates them at render time, so the data does not fork per language.
@@ -567,8 +569,6 @@ function sourcesDetails(c){
 // tudju tvrdnju. Presevo 01.08.: prijava 2h oborena, TomTomova 1 minuta postala
 // naslov, ispalo "Bez guzve" - a kamera puna kolona.
 // ---------------------------------------------------------------------------
-const BA_PROVERA_MIN   = 120;  // min, od koliko prijava mora da izdrzi proveru
-const TT_MIRNO_MIN     = 5;    // min, TomTom zastoj ispod kog nema pokretne kolone
 
 
 // --- duzina kolone: zaokruzeno, i posteno oko gornje granice merenja --------
@@ -603,99 +603,15 @@ function imaKameruZa(c, dirKey){
   return (c.feeds || []).some(x => x.src && x.dir === trazeni);
 }
 
+/* The decision about which figure is shown NO LONGER LIVES HERE. The canonical
+   function is in wait-logic.v1.js; granice.html, index.html and the page
+   generator use the very same one. Only the shape adaptation stays here. */
 function effective(c, dirKey){
-  // --- saobracajni signal (nikad krupna brojka) ---
-  const ttMin  = (c.tt && c.tt[dirKey] != null) ? c.tt[dirKey] : null;
-  const kolona = (c.tt && c.tt[dirKey + "_kolona_m"] != null) ? c.tt[dirKey + "_kolona_m"] : null;
-  const dugaKolona = (kolona != null && kolona >= QUEUE_HARD_M);
-
-  // --- kandidati za UKUPNO cekanje ---
-  const cands = [];              // {v, src, tip}
-  let kratkoZvanicno = false;    // zvanicni izvor izricito kaze "nema cekanja"
-
-  const p = c.wait && c.wait.putnicka ? c.wait.putnicka[dirKey] : null;
-  const amssDefault = (p === AMSS_DEFAULT_MIN);
-  if (p != null && !amssDefault) {
-    if (p > 0) cands.push({v: p, src: "granična policija", tip: "zvanicni"});
-    else kratkoZvanicno = true;
-  }
-  if (c.hu) {
-    const v = c.hu[dirKey];
-    if (v != null) { if (v > 0) cands.push({v, src: "mađarska strana", tip: "zvanicni"});
-                     else kratkoZvanicno = true; }
-  }
-  if (c.mk) {
-    const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
-    if (v != null) { if (v > 0) cands.push({v, src: "makedonska strana", tip: "zvanicni"});
-                     else kratkoZvanicno = true; }
-    if (c.mk.opsto != null) { if (c.mk.opsto > 0) cands.push({v: c.mk.opsto, src: "makedonska strana", tip: "zvanicni"});
-                              else kratkoZvanicno = true; }
-  }
-  // sopstvena forma: medijana vec izracunata u scraperu; broj prijava nosi tezinu
-  let user = null;
-  if (c.user && c.user[dirKey] != null) {
-    user = c.user[dirKey];
-    cands.push({v: user, src: "prijave sa sajta", tip: "prijava"});
-  }
-
-  // --- prijava vozaca, uz proveru merenjem ---
-  // Merenje sme da ospori SAMO ekstremnu prijavu, i samo tako sto joj oduzme
-  // pravo na krupnu brojku - nikad tako sto svoju vrednost stavi umesto nje.
-  let baOsporen = null;
-  if (c.ba) {
-    const v = c.ba[dirKey];
-    if (v != null && v > 0) {
-      const merenjeMirno = (ttMin != null && ttMin <= TT_MIRNO_MIN && !dugaKolona);
-      if (v >= BA_PROVERA_MIN && merenjeMirno) baOsporen = v;
-      else cands.push({v, src: "prijave vozača", tip: "prijava"});
-    }
-  }
-
-  const zvanicniPostoji = cands.some(x => x.tip === "zvanicni");
-
-  // --- odluka ---
-  // 1. Osporena ekstremna prijava, a nema zvanicnog izvora da preuzme:
-  //    ne izmisljamo broj, upucujemo na kameru. TomTom OVDE NE PREUZIMA NASLOV.
-  if (baOsporen != null && !zvanicniPostoji)
-    return {stanje: "proveri", baOsporen, kolona, dugaKolona, ttMin};
-
-  if (cands.length) {
-    let best = cands[0];
-    cands.forEach(x => { if (x.v > best.v) best = x; });
-
-    // 2. Zvanicni izvor kaze kratko, a prijava kaze dugo -> dva izvora iste
-    //    vrste se ne slazu. Ni jedno ni drugo se ne proglasava istinom.
-    if (kratkoZvanicno && best.tip === "prijava" && best.v >= BA_PROVERA_MIN)
-      return {stanje: "proveri", baOsporen: best.v, kolona, dugaKolona, ttMin};
-
-    // 2b. Izmerena duga kolona obara svaki umirujuci naslov. Gradina 01.08.:
-    //     prijava 10 min uz izmerenih 1.478 m kolone - to nije "10 minuta".
-    //     Ovde merenje POTVRDJUJE guzvu, sto donja granica sme; ne opovrgava.
-    if (dugaKolona && best.v <= NO_QUEUE_MAX)
-      return {stanje: "kolona", v: best.v, src: best.src, kolona, dugaKolona, ttMin};
-
-    if (best.v <= NO_QUEUE_MAX && !dugaKolona) {
-      // 3. "Bez guzve" trazi POZITIVAN dokaz: zvanican izvor. Jedna prijava od
-      //    10 minuta nije dokaz da je prelaz prohodan - 94% dosadasnjih "Bez
-      //    guzve" prikaza pocivalo je bas na tome.
-      if (best.tip === "zvanicni" || kratkoZvanicno)
-        return {stanje: "bez-guzve", src: best.src, kolona, dugaKolona, ttMin};
-      return {stanje: "kratko-prijava", v: best.v, src: best.src, kolona, dugaKolona, ttMin};
-    }
-    // 4. Prijava koja prodje: broj ostaje, ali rec "prijavljeno" ide UZ brojku,
-    //    ne sitno ispod. Kolona od 734 m potvrdjuje da guzva postoji, ne da
-    //    traje bas 8 sati.
-    if (best.tip === "prijava")
-      return {stanje: "prijavljeno", v: best.v, src: best.src, kolona, dugaKolona, ttMin};
-    return {stanje: "broj", v: best.v, src: best.src, kolona, dugaKolona, ttMin};
-  }
-
-  // 5. Nema nijednog izvora ukupnog cekanja. TomTom sme samo da javi kolonu.
-  if (dugaKolona) return {stanje: "kolona", kolona, dugaKolona, ttMin};
-  if (baOsporen != null) return {stanje: "proveri", baOsporen, kolona, dugaKolona, ttMin};
-  return {stanje: "nema", samAmss: amssDefault, kolona, dugaKolona, ttMin};
+  return window.GasolinaWait.procena({
+    putnicka: c.wait && c.wait.putnicka, hu: c.hu, mk: c.mk,
+    ba: c.ba, user: c.user, tt: c.tt
+  }, dirKey);
 }
-
 
 function shareTextBorder(c){
   const parts = [];
@@ -741,6 +657,12 @@ function smerLabel(c, dirKey){
   return dirKey === "ulaz" ? "Entering " + home : "Exiting " + home;
 }
 
+  // The canonical function returns a source KEY, not a label, so the decision
+  // and the language do not live in the same function. Until 02.08.2026 this
+  // page printed the Serbian labels verbatim ("source: prijave vozaca").
+  const SRC_NAZIV = {policija:"border police", hu:"Hungarian side",
+                     mk:"North Macedonian side", ba:"driver reports", user:"reports from the site"};
+  const srcNaziv = k => SRC_NAZIV[k] || k || "driver reports";
 function waitCell(label,dirKey,c){
   const eff = effective(c, dirKey);
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
@@ -749,18 +671,18 @@ function waitCell(label,dirKey,c){
     case "broj":
       boja = waitStatus(eff.v).c;
       big  = fmtMin(eff.v);
-      note = `<div class="wsrc">source: ${eff.src}${eff.dugaKolona ? ` &middot; kolona ` + fmtKolona(eff.kolona, koridorM(c, dirKey)) : ``}</div>`;
+      note = `<div class="wsrc">source: ${srcNaziv(eff.src)}${eff.dugaKolona ? ` &middot; kolona ` + fmtKolona(eff.kolona, koridorM(c, dirKey)) : ``}</div>`;
       break;
     case "prijavljeno":
       // Rec "prijavljeno" stoji UZ brojku, ne sitno ispod: kolona od 734 m
       // potvrdjuje da guzva postoji, ne da traje bas toliko.
       boja = waitStatus(eff.v).c;
       big  = `<span class="wpre">reported</span> ${fmtMin(eff.v)}`;
-      note = `<div class="wsrc">${eff.src}${eff.dugaKolona ? ` &middot; ` + `queue {k} confirmed`.replace("{k}", fmtKolona(eff.kolona, koridorM(c, dirKey))) : ``}</div>`;
+      note = `<div class="wsrc">${srcNaziv(eff.src)}${eff.dugaKolona ? ` &middot; ` + `queue {k} confirmed`.replace("{k}", fmtKolona(eff.kolona, koridorM(c, dirKey))) : ``}</div>`;
       break;
     case "bez-guzve":
       boja = "var(--ok)"; big = `<span class="wok">No queue</span>`;
-      note = `<div class="wsrc">source: ${eff.src || "driver reports"}</div>`;
+      note = `<div class="wsrc">source: ${srcNaziv(eff.src)}</div>`;
       break;
     case "kratko-prijava":
       // Jedna prijava od 10 min nije dokaz da je prelaz prohodan.
