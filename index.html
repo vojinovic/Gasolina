@@ -594,7 +594,11 @@
   </div>
 
   <script src="borders-data.js"></script>
-  <script src="wait-logic.v1.js"></script>
+  <!-- ?v= nije ukras: bez njega browser sme da posluzi staru kopiju uz novu
+       stranicu. 02.08.2026 je kesirana verzija bez IIFE omotaca obarala granice.html
+       u SyntaxError i stranica je bila prazna dok covekov kes ne istekne.
+       Bumpuje se SVAKI put kad se wait-logic.v1.js promeni, u SVA cetiri fajla. -->
+  <script src="wait-logic.v1.js?v=20260802"></script>
   <script>
     // === "Instaliraj" baner ===
     // iOS Safari NEMA API za programsko instaliranje (Apple to namerno ne dozvoljava) -
