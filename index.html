@@ -594,6 +594,7 @@
   </div>
 
   <script src="borders-data.js"></script>
+  <script src="wait-logic.v1.js"></script>
   <script>
     // === "Instaliraj" baner ===
     // iOS Safari NEMA API za programsko instaliranje (Apple to namerno ne dozvoljava) -
@@ -1305,14 +1306,25 @@
 
 
 
+    // Prag "bez guzve" ne stoji dvaput: uzima se iz kanonske logike, da granica
+    // ispod koje pise "Bez guzve" bude ista i u odluci i u prikazu.
+    const NQ_MAX = window.GasolinaWait.NO_QUEUE_MAX;
+
+    // Kanonska funkcija NE vraca broj za stanje "bez-guzve": tu ne postoji
+    // izmerena brojka, nego zvanicna tvrdnja da cekanja nema. Naslovnoj brojka
+    // treba samo za BOJU tackice i za izbor najgoreg prelaza, pa se "bez guzve"
+    // ovde racuna kao 0 - stara kopija je na tom mestu vracala samu vrednost
+    // ispod praga, a 0 pada u isti razred, pa se prikaz ne menja.
+    const minZaPrikaz = e => (e.v != null ? e.v : (e.stanje === 'bez-guzve' ? 0 : null));
+
     function bStatus(min) {
       if (min == null) return { c: 'var(--faint)', t: 'nema podataka' };
-      if (min <= 15) return { c: 'var(--ok)', t: 'prohodno' };
+      if (min <= NQ_MAX) return { c: 'var(--ok)', t: 'prohodno' };
       if (min < 45) return { c: 'var(--warn)', t: 'umereno' };
       return { c: 'var(--bad)', t: 'velika guzva' };
     }
     function bMin(m) { if (m == null) return '-'; if (m >= 60) { const h = Math.floor(m/60), r = m%60; return r ? `${h}h ${r}m` : `${h}h`; } return `${m} min`; }
-    function bText(m) { if (m == null) return '-'; if (m <= 15) return 'Bez guzve'; return bMin(m); }
+    function bText(m) { if (m == null) return '-'; if (m <= NQ_MAX) return 'Bez guzve'; return bMin(m); }
     // Kartica na naslovnoj je uska, ali ne sme da tvrdi vise nego landing.
     // "Bez guzve" na osnovu jedne neproverene prijave je bas ono sto je danas
     // ispravljeno svuda drugde; ovde se zato pise "kratko*", a zvezdica i
@@ -1350,64 +1362,26 @@
       return out;
     }
 
-    // najgori dostupan podatak za smer, iz svih izvora (isto kao na granice.html)
-    // Ista pravila kao granice.html i landing stranice. Naslovna je do 01.08.
-    // imala SOPSTVENU, stariju kopiju: brojala je AMSS-ovih tacno 30 kao merenje
-    // i pustala TomTom u trku za krupnu brojku. Gradina 01.08.: AMSS 30,
-    // prijava 20, TomTom 34 -> naslovna je pisala "34 min", a landing "20 min".
-    // Cetiri kopije iste logike su tri previse; dok se ne objedine, SVAKA
-    // izmena pravila mora u sva cetiri fajla.
-    const NQ_MAX = 15, AMSS_DEF = 30, KOL_HARD = 200, BA_PROVERA = 120, TT_MIRNO = 5;
+    // ODLUKA VISE NE ZIVI OVDE. Kanonska funkcija je u wait-logic.v1.js i istu
+    // koriste granice.html, en/borders.html i generator landing stranica. Ovaj
+    // fajl je dvaput bio zaboravljen pri izmeni pravila (Gradina 01.08.: naslovna
+    // je pisala 34 min jer je AMSS-ovih tacno 30 brojala kao merenje i pustala
+    // TomTom u trku za krupnu brojku, a landing je za istu granicu pisao 20 min).
+    // Zato ovde ostaje samo prilagodjenje oblika ulaza i prevod kljuca izvora.
+    //
+    // Kanonska funkcija vraca KLJUC izvora, ne natpis - da odluka i jezik ne zive
+    // u istoj funkciji. Prevod je posao stranice.
+    const SRC_NAZIV = { policija: 'granicna policija', hu: 'madjarska strana',
+                        mk: 'makedonska strana', ba: 'prijave vozaca', user: 'prijave sa sajta' };
     function effWait(cid, dirKey) {
       const w = borderWaits[cid] || {};
-      const ttMin  = (w.tt && w.tt[dirKey] != null) ? w.tt[dirKey] : null;
-      const kolona = (w.tt && w.tt[dirKey + '_kolona_m'] != null) ? w.tt[dirKey + '_kolona_m'] : null;
-      const dugaKolona = (kolona != null && kolona >= KOL_HARD);
-      const here = hereCrossings[cid] || null;
-      const cands = []; let kratkoZvanicno = false;
-
-      const p = w.putnicka ? w.putnicka[dirKey] : null;
-      const amssDefault = (p === AMSS_DEF);
-      if (p != null && !amssDefault) {
-        if (p > 0) cands.push({ v: p, src: 'granicna policija', tip: 'zvanicni' });
-        else kratkoZvanicno = true;
-      }
-      if (w.hu) { const v = w.hu[dirKey];
-        if (v != null) { if (v > 0) cands.push({ v, src: 'madjarska strana', tip: 'zvanicni' }); else kratkoZvanicno = true; } }
-      if (w.mk) {
-        const v = (dirKey === 'izlaz') ? w.mk.vlez : w.mk.izlez;
-        if (v != null) { if (v > 0) cands.push({ v, src: 'makedonska strana', tip: 'zvanicni' }); else kratkoZvanicno = true; }
-        if (w.mk.opsto != null) { if (w.mk.opsto > 0) cands.push({ v: w.mk.opsto, src: 'makedonska strana', tip: 'zvanicni' }); else kratkoZvanicno = true; }
-      }
-      let baOsporen = null;
-      if (w.ba) { const v = w.ba[dirKey];
-        if (v != null && v > 0) {
-          const mirno = (ttMin != null && ttMin <= TT_MIRNO && !dugaKolona);
-          if (v >= BA_PROVERA && mirno) baOsporen = v;
-          else cands.push({ v, src: 'prijave vozaca', tip: 'prijava' });
-        } }
-      // TomTom NIJE kandidat za ukupno cekanje - donja granica sme da potvrdi,
-      // nikad da bude brojka.
-      const zvanicniPostoji = cands.some(x => x.tip === 'zvanicni');
-      const out = (o) => Object.assign({ v: null, src: null, here, kolona, dugaKolona, baOsporen, ttMin }, o);
-
-      if (baOsporen != null && !zvanicniPostoji) return out({ stanje: 'proveri' });
-      if (cands.length) {
-        let best = cands[0];
-        cands.forEach(x => { if (x.v > best.v) best = x; });
-        if (kratkoZvanicno && best.tip === 'prijava' && best.v >= BA_PROVERA)
-          return out({ stanje: 'proveri', baOsporen: best.v });
-        if (dugaKolona && best.v <= NQ_MAX)
-          return out({ stanje: 'kolona', v: best.v, src: best.src });
-        if (best.v <= NQ_MAX && !dugaKolona) {
-          if (best.tip === 'zvanicni' || kratkoZvanicno) return out({ stanje: 'bez-guzve', v: best.v, src: best.src });
-          return out({ stanje: 'kratko-prijava', v: best.v, src: best.src });
-        }
-        return out({ stanje: best.tip === 'prijava' ? 'prijavljeno' : 'broj', v: best.v, src: best.src });
-      }
-      if (dugaKolona) return out({ stanje: 'kolona' });
-      if (baOsporen != null) return out({ stanje: 'proveri' });
-      return out({ stanje: 'nema', samAmss: amssDefault });
+      const e = window.GasolinaWait.procena(w, dirKey);
+      // `here` (HERE saobracaj) je prikaz koji postoji samo na naslovnoj, pa se
+      // dodaje ovde a ne u kanonsku funkciju.
+      return Object.assign({ v: null, src: null, kolona: null, dugaKolona: false,
+                             baOsporen: null, ttMin: null }, e,
+                           { here: hereCrossings[cid] || null,
+                             src: e.src ? (SRC_NAZIV[e.src] || e.src) : null });
     }
 
     // --- Kamere na granici (naslovna) ---------------------------------
@@ -1426,7 +1400,7 @@
       if (!items.length) return;
       grid.innerHTML = items.map(cx => {
         const eIn = effWait(cx.id, 'ulaz'), eOut = effWait(cx.id, 'izlaz');
-        const sIn = bStatus(eIn.v), sOut = bStatus(eOut.v);
+        const sIn = bStatus(minZaPrikaz(eIn)), sOut = bStatus(minZaPrikaz(eOut));
         return `
         <a class="tc" href="granica-${cx.id}.html?play=1"
            onclick="track('naslovna_kamera', {prelaz:'${cx.id}'})">
@@ -1594,12 +1568,12 @@
       if (!list.length) return '';
       const waitBlock = (cx, dirKey, dirLabel) => {
         const eff = effWait(cx.id, dirKey);
-        const s = bStatus(eff.v);
+        const s = bStatus(minZaPrikaz(eff));
         const extra = eff.here ? ` &middot; HERE: ${eff.here.category}` : '';
         return `
           <div class="rb-wait">
             <span class="rb-dot" style="background:${s.c}"></span>
-            <span class="rb-min" style="color:${s.c}">${bText(eff.v)}</span>
+            <span class="rb-min" style="color:${s.c}">${bTextState(eff)}</span>
             <span class="rb-cat">${dirLabel}${eff.src && eff.v > 15 ? ' &middot; izvor: ' + eff.src : ''}${extra}</span>
           </div>`;
       };
@@ -1797,9 +1771,11 @@
       let best = null;
       BORDERS.CROSSINGS.forEach(cx => {
         ['ulaz', 'izlaz'].forEach(dir => {
-          const e = effWait(cx.id, dir);
-          if (e.v != null && (!best || e.v > best.min)) {
-            best = { name: cx.name, kind: dir === 'izlaz' ? 'izlaz' : 'ulaz', min: e.v };
+          // "bez guzve" ovde mora da se broji, inace bi dan u kome su svi prelazi
+          // prohodni ispao dan bez ijednog podatka i naslovna bi pisala "Ucitavanje".
+          const m = minZaPrikaz(effWait(cx.id, dir));
+          if (m != null && (!best || m > best.min)) {
+            best = { name: cx.name, kind: dir === 'izlaz' ? 'izlaz' : 'ulaz', min: m };
           }
         });
       });
