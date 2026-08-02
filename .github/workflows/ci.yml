@@ -57,6 +57,14 @@ jobs:
         if: steps.engine.outcome == 'success'
         run: node engine/test-wait-logic.js
 
+      # Dva testa cuvaju dve razlicite stvari i oba su potrebna:
+      #   test-wait-logic.js  - PRAVILA (devet invarijanti, svaka iz incidenta): zasto
+      #   test-wait-golden.js - PONASANJE (1.046 kombinacija iz arhiva): da se nista
+      #                         nije nehotice pomerilo pri preseljenju koda
+      - name: Zamrznuto ponasanje logike cekanja (1.046 kombinacija iz arhiva)
+        if: steps.engine.outcome == 'success'
+        run: node engine/test-wait-golden.js
+
       - name: JS + JSON-LD + JSON provere (ci_checks.py)
         if: steps.engine.outcome == 'success'
         run: |
