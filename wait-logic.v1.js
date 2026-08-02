@@ -26,7 +26,16 @@
  * NE MENJATI PRAVILA U ISTOM COMMITU SA PRESELJENJEM KODA. Ponasanje je zamrznuto
  * u engine/wait-golden.json (1.046 kombinacija iz arhiva) - posle preseljenja mora
  * biti identicno, tek onda se sme menjati pravilo.
+ *
+ * OMOTAC (IIFE) NIJE UKRAS. Klasicni <script> tagovi dele isti globalni leksicki
+ * opseg: bez njega bi `const NO_QUEUE_MAX` iz ovog fajla i isti taj `const` u
+ * granice.html bili DVE deklaracije istog imena, sto je SyntaxError - i cela
+ * inline skripta stranice prestaje da se parsira, pa se ne ucita nijedna kartica.
+ * Tako je 02.08.2026 granice.html ostala prazna. Nista se ne sme izneti u globalni
+ * opseg osim window.GasolinaWait.
  */
+
+(function () {
 const NO_QUEUE_MAX = 15;
 const AMSS_DEFAULT_MIN = 30;
 const QUEUE_HARD_M = 200;
@@ -136,3 +145,4 @@ if (typeof module !== "undefined" && module.exports) {
 if (typeof window !== "undefined") {
   window.GasolinaWait = { procena, NO_QUEUE_MAX, AMSS_DEFAULT_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN };
 }
+})();
