@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-02T11:20:27+00:00",
+  "scraped_at": "2026-08-02T12:35:51+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 120,
-        "ulaz": 25
+        "izlaz": 60,
+        "ulaz": 90
       },
       "tt": {
         "izlaz": 10,
-        "izlaz_kolona_m": 519,
-        "ulaz": 6,
-        "ulaz_kolona_m": 344
+        "izlaz_kolona_m": 180,
+        "ulaz": 1,
+        "ulaz_kolona_m": 111
       }
     },
     "horgos": {
@@ -56,18 +56,18 @@
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
-        "ulaz": 60,
+        "ulaz": 30,
         "izlaz": 60
       },
       "ba": {
-        "izlaz": 90,
-        "ulaz": 240
+        "izlaz": 60,
+        "ulaz": 30
       },
       "tt": {
         "izlaz": 3,
-        "izlaz_kolona_m": 55,
-        "ulaz": 14,
-        "ulaz_kolona_m": 866
+        "izlaz_kolona_m": 54,
+        "ulaz": 13,
+        "ulaz_kolona_m": 480
       }
     },
     "kelebija": {
@@ -86,8 +86,8 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 90,
-        "ulaz": 50
+        "izlaz": 120,
+        "ulaz": 35
       },
       "tt": {
         "izlaz": 0,
@@ -108,14 +108,14 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 180,
-        "ulaz": 120
+        "izlaz": 150,
+        "ulaz": 5
       },
       "tt": {
-        "izlaz": 28,
-        "izlaz_kolona_m": 1036,
-        "ulaz": 14,
-        "ulaz_kolona_m": 479
+        "izlaz": 25,
+        "izlaz_kolona_m": 1217,
+        "ulaz": 5,
+        "ulaz_kolona_m": 180
       }
     },
     "presevo": {
@@ -135,12 +135,12 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 60,
-        "ulaz": 10
+        "izlaz": 50,
+        "ulaz": 15
       },
       "tt": {
-        "izlaz": 9,
-        "izlaz_kolona_m": 598,
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -189,14 +189,14 @@
         "opsto": null
       },
       "tt": {
-        "izlaz": 4,
-        "izlaz_kolona_m": 253,
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 25,
-        "ulaz": 210
+        "izlaz": 20,
+        "ulaz": 420
       }
     },
     "dojran": {
@@ -218,7 +218,7 @@
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 5
+        "ulaz": 15
       }
     }
   }
