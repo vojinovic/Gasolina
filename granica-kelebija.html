@@ -142,6 +142,11 @@
   .share-btn:hover{color:var(--text);border-color:var(--fuel)}
   .others{margin-top:30px;font-size:12px;color:var(--faint)}
   .others a{color:var(--fuel);text-decoration:none;margin-right:10px}
+  .hist{margin-top:30px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);padding:16px 18px}
+  .hist h2{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;text-transform:uppercase;margin:0 0 10px}
+  .hist p{margin:0 0 8px;font-size:13.5px;color:var(--dim);line-height:1.65}
+  .hist p b{color:var(--text)}
+  .hist .hist-note{margin:0;font-size:11.5px;color:var(--faint)}
 </style>
 </head>
 <body>
@@ -179,6 +184,11 @@
     <a class="btn" href="granice.html" onclick="track('landing_cta', {prelaz:'kelebija', cilj:'granice'})">Uporedi sve prelaze →</a>
     <a class="btn ghost" href="index.html#kalkulator" onclick="track('landing_cta', {prelaz:'kelebija', cilj:'kalkulator'})">Izračunaj trošak puta →</a>
   </div>
+  <section class="hist">
+    <h2>Kelebija ili Horgoš?</h2>
+    <p>Od 14. do 31. jula 2026. Kelebija je imala kraće čekanje <b>16 od 18</b> dana pri ulasku u Srbiju i <b>16 od 18</b> dana pri izlasku iz Srbije. Medijana dnevne razlike bila je <b>25 min</b> pri ulasku i <b>12 min</b> pri izlasku. Horgoš je bio brži po jedan dan u svakom smeru, i tada za 5 minuta.</p>
+    <p class="hist-note">Istorijski obrazac za posmatrani period, ne procena za danas — proveri trenutno stanje iznad. Horgoš je na auto-putu, Kelebija nije — skretanje dodaje kilometre, pa razliku na granici uporedi sa dužinom obilaska.</p>
+  </section>
   <div class="info">
     <div><b>Pravac:</b> 🇷🇸 Srbija → 🇭🇺 Mađarska</div>
     <div><b>Put:</b> M17/E75</div>
