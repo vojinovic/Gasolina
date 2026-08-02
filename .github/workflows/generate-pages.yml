@@ -4,9 +4,12 @@ on:
   workflow_dispatch:          # ručno pokretanje preko Actions taba
   push:
     branches: [main]
-    paths:                    # pokreni SAMO kad se promeni izvor stranica -
-      - 'borders-data.js'     # workflow commituje samo HTML, pa nema beskonacne petlje
+    paths:                        # pokreni SAMO kad se promeni izvor stranica -
+      - 'borders-data.js'         # workflow commituje samo HTML, pa nema beskonacne petlje
       - 'generate_crossing_pages.py'
+      - 'border_comparisons.json' # brojke za blok "Horgos ili Kelebija?" - bez ovoga
+                                  # bi granice.html pokazivao nove, a 26 landing
+                                  # stranica stare (mesano stanje, 01.08.2026)
 
 permissions:
   contents: write
