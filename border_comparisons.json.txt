@@ -1,0 +1,35 @@
+{
+  "verzija": 1,
+  "napomena": "Uparena poredjenja alternativnih prelaza. Oba prelaza se mere U ISTOM TRENUTKU, pa razlika ne trpi uticaj dana, sezone ni vremena - za razliku od proseka cekanja. Racuna se iz sirovog arhiva granice.json SADASNJOM logikom cekanja (AMSS tacno 30 nije kandidat, TomTom nije kandidat, osporena velika prijava ne daje broj). Za svaki datum se uzme medijana razlike tog dana, pa se broje dani - jedna visesatna kolona tako ne dobija desetostruku tezinu.",
+  "azurirano": "2026-08-02",
+  "parovi": [
+    {
+      "id": "horgos-kelebija",
+      "a": "kelebija",
+      "b": "horgos",
+      "prikaz": {
+        "sr": { "a": "Kelebija", "b": "Horgoš" },
+        "en": { "a": "Kelebija", "b": "Horgoš" }
+      },
+      "period_od": "2026-07-14",
+      "period_do": "2026-07-31",
+      "dana": 18,
+      "smerovi": {
+        "ulaz": {
+          "dana_a": 16,
+          "dana_izjednaceno": 1,
+          "dana_b": 1,
+          "medijana_min": 25,
+          "najveca_prednost_b_min": 5
+        },
+        "izlaz": {
+          "dana_a": 16,
+          "dana_izjednaceno": 1,
+          "dana_b": 1,
+          "medijana_min": 12,
+          "najveca_prednost_b_min": 5
+        }
+      }
+    }
+  ]
+}
