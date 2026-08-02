@@ -116,6 +116,8 @@
     border-radius:9px;padding:8px 12px;color:var(--text);font-size:12.5px;line-height:1.45;
   }
   .cmp-banner + .cmp-banner{margin-top:6px}
+  .cmp-banner.cmp-hist{margin-top:6px}
+  .cmp-hist .cmp-ograda{display:block;margin-top:3px;color:var(--faint);font-size:11px}
   .cmp-banner b{font-weight:700}
   .cmp-banner .cmp-fast{color:var(--ok)}
 
@@ -371,6 +373,7 @@
   <div class="note"><span class="ldot"></span><b>Live</b> &middot; loading data&hellip;</div>
 
   <div id="cmp"></div>
+  <div id="cmpHist"></div>
 
   <div class="grid" id="grid"></div>
 
@@ -904,6 +907,53 @@ const CN_DATIVE = { HU:"Hungary", ME:"Montenegro", HR:"Croatia", BG:"Bulgaria", 
 /* Kad postoji vise prelaza ka istoj zemlji (npr. Horgos i Kelebija ka Madjarskoj),
    prikazi direktno poredjenje umesto da korisnik sam racuna dve odvojene kartice.
    Prag od 10 min je namerno - manja razlika nije vredna isticanja, samo sum. */
+/* HISTORICAL COMPARISON OF ALTERNATIVE CROSSINGS (added 02.08.2026)
+   Data lives in border_comparisons.json, NOT in this file - the same record feeds
+   the Serbian page and (later) the generated landing pages. Hardcoding the figures
+   into HTML would create yet another copy of content to maintain by hand.
+
+   Why a PAIRED comparison instead of an average wait: both crossings are measured
+   at the SAME MOMENT, so the difference is not distorted by day, season or hour.
+   An average wait would need far more distinct DAYS to mean anything (see handoff).
+
+   The counts are days, not measurements. Snapshots taken every half hour during one
+   queue are not independent events - so the median is taken per date first, and then
+   the days are counted. */
+async function renderHistory(){
+  const box = document.getElementById("cmpHist");
+  if(!box) return;
+  try{
+    const r = await fetch("../border_comparisons.json?cb=" + Date.now());
+    if(!r.ok) return;
+    const data = await r.json();
+    const MON = ["January","February","March","April","May","June",
+                 "July","August","September","October","November","December"];
+    const period = (od, doo) => {
+      const a = od.split("-"), b = doo.split("-");
+      const d = s => String(parseInt(s, 10));
+      return a[1] === b[1]
+        ? `${d(a[2])}\u2013${d(b[2])} ${MON[+b[1]-1]} ${b[0]}`
+        : `${d(a[2])} ${MON[+a[1]-1]} \u2013 ${d(b[2])} ${MON[+b[1]-1]} ${b[0]}`;
+    };
+    box.innerHTML = (data.parovi || []).map(p => {
+      const nm = (p.prikaz && p.prikaz.en) || {};
+      const A = nm.a || p.a, B = nm.b || p.b;
+      const u = p.smerovi && p.smerovi.ulaz, i = p.smerovi && p.smerovi.izlaz;
+      if(!u || !i) return "";
+      return `
+      <div class="cmp-banner cmp-hist">
+        \uD83D\uDCC5 <b>${B} or ${A}?</b> Over ${period(p.period_od, p.period_do)},
+        ${A} was faster on <b>${u.dana_a} of ${p.dana}</b> days entering Serbia and
+        <b>${i.dana_a} of ${p.dana}</b> days leaving.
+        Typical daily advantage: <b>${u.medijana_min} min</b> entering,
+        <b>${i.medijana_min} min</b> leaving.
+        <span class="cmp-ograda">A historical pattern for that period, not a forecast for
+        today \u2014 check the live figures and the extra distance to ${A}.</span>
+      </div>`;
+    }).join("");
+  }catch(e){ /* no historical comparison - the block simply does not appear */ }
+}
+
 function renderComparisons(){
   const cmp = document.getElementById("cmp");
   if(!cmp) return;
@@ -1017,6 +1067,7 @@ async function init(){
   grid.innerHTML=CAMERAS.map(cardHTML).join("");
   wire();
   renderComparisons();
+  renderHistory();
   setNote(live, scrapedAt);
 }
 init();
