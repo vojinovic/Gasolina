@@ -41,8 +41,19 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if [ -n "$(git status --porcelain granice.json istorija.csv)" ]; then
+          # amss-arhiv/ je sirov AMSS sadrzaj koji upisuje granice_scraper.py.
+          # Bez ovoga bi nastajao na runneru i nestajao sa njim.
+          # git status trpi putanju koja ne postoji, ali `git add` na nepostojecu
+          # putanju je fatalna greska - a arhiviranje SME da otkaze (zove se u
+          # try/except u scraperu). Zato se dodaje tek ako direktorijum postoji,
+          # i to punim `if`-om: `[ -d x ] && git add x` bi kao POSLEDNJA naredba
+          # u bloku oborio ceo korak zbog izlaznog koda, sto je tiha mina za
+          # nekog ko sutra doda red ispod.
+          if [ -n "$(git status --porcelain granice.json istorija.csv amss-arhiv)" ]; then
             git add granice.json istorija.csv
+            if [ -d amss-arhiv ]; then
+              git add amss-arhiv
+            fi
             git commit -m "Auto update border wait times"
             for i in 1 2 3; do
               git pull --rebase --autostash origin main && git push origin main && exit 0
