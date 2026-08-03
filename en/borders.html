@@ -238,6 +238,9 @@
   .wmin span{font-size:12px;color:var(--dim);font-weight:500}
   .wmin .wok{font-size:16px;color:inherit;font-weight:700;white-space:nowrap}
   .wmin .wq{font-size:14px;color:inherit;font-weight:700;white-space:nowrap}
+  /* Sukob nosi DVE brojke u istoj sirini u koju inace staje jedna, pa se
+     prelamao u dva reda. Manji stepen i nowrap ga vracaju u jedan. */
+  .wmin .wsuk{font-size:19px;white-space:nowrap}
   .wcat{font-size:11px;color:var(--dim)}
   .wsrc{font-size:11px;color:var(--fuel)}
   .wshort{font-size:15px;line-height:1.25;display:inline-block}
@@ -749,9 +752,14 @@ function waitCell(label,dirKey,c){
       // celija ("45 min" + "izvor: granicna policija"). Prva verzija je imala
       // pet redova i kartica je izgledala kao dijagnostika algoritma.
       // Ko je sta rekao i sta merenje kaze stoji u "Svi izvori" i na landingu.
+      // Isti oblik kao "prijavljeno" na Gradini: mala oznaka stanja IZNAD,
+      // krupna brojka ispod. Prva verzija je imala obrnuto - rec "NEIZVESNO"
+      // krupno a brojke sitno - pa se ono zbog cega covek dolazi videlo tek
+      // u drugom redu. Dve kartice jedna do druge moraju da imaju istu
+      // gramatiku, inace se pregled ne skenira nego cita.
       boja = waitStatus(eff.visa.v).c;
-      big  = `<span class="wshort" style="color:var(--fuel)">UNCERTAIN</span>`;
-      note = `<div class="wsrc">estimates: ${fmtMin(eff.niza.v)} i ${fmtMin(eff.visa.v)}</div>`;
+      big  = `<span class="wpre">uncertain</span> <span class="wsuk">${fmtMin(eff.niza.v)} \u2194 ${fmtMin(eff.visa.v)}</span>`;
+      note = `<div class="wsrc">sources disagree &middot; ${srcKratko(eff.niza.src)} \u2194 ${srcKratko(eff.visa.src)}</div>`;
       break;
     case "proveri":
       boja = "var(--dim)";
@@ -956,7 +964,7 @@ async function renderHistory(){
       if(!u || !i) return "";
       return `
       <details class="cmp-banner cmp-hist">
-        <summary class="cmp-sum">\uD83D\uDCC5 Horgoš or Kelebija — historical comparison \u2192</summary>
+        <summary class="cmp-sum">\uD83D\uDCC5 <b>Horgoš or Kelebija?</b> — historical comparison \u2192</summary>
         <div class="cmp-hist-body">
         \uD83D\uDCC5 <b>${B} or ${A}?</b> Over ${period(p.period_od, p.period_do)},
         ${A} was faster on <b>${u.dana_a} of ${p.dana}</b> days entering Serbia and
