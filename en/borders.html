@@ -675,15 +675,11 @@ function smerLabel(c, dirKey){
                      mk:"North Macedonian side", "mk-opsto":"North Macedonian side (no direction)", ba:"driver reports", user:"reports from the site"};
   const srcNaziv = k => SRC_NAZIV[k] || k || "driver reports";
 
-// What the measurement says about the disagreement. It does NOT decide who is
-// right - TomTom only sees vehicles that MOVE, so queue length is a lower bound:
-// 600 m confirms a jam exists, not that it lasts seven hours.
-function sukobKontekst(e, c, dirKey){
-  const kam = imaKameruZa(c, dirKey) ? " &middot; check the camera" : "";
-  if (e.kolona == null) return "no independent traffic measurement" + kam;
-  if (e.dugaKolona) return `a measured queue of ${fmtKolona(e.kolona, koridorM(c, dirKey))} confirms congestion, but not its duration` + kam;
-  return "traffic measurement shows no long queue" + kam;
-}
+  // Short names for the conflict line only: "North Macedonian side ↔ driver
+  // reports" wraps on a phone, and the full names are in "All sources" below.
+  const SRC_KRATKO = {policija:"police", hu:"Hungary", mk:"N. Macedonia",
+                      "mk-opsto":"N. Macedonia", ba:"drivers", user:"drivers"};
+  const srcKratko = k => SRC_KRATKO[k] || srcNaziv(k);
 
 function waitCell(label,dirKey,c){
   const eff = effective(c, dirKey);
@@ -721,10 +717,13 @@ function waitCell(label,dirKey,c){
       // Colour follows the HIGHER value - conservative, so congestion is not
       // understated. A two-way arrow, not a dash: a dash would read as a range,
       // and we do not claim the wait is somewhere BETWEEN those two figures.
+      // JEDNA velika poruka, jedna kratka dopuna - isti oblik kao svaka druga
+      // celija ("45 min" + "izvor: granicna policija"). Prva verzija je imala
+      // pet redova i kartica je izgledala kao dijagnostika algoritma.
+      // Ko je sta rekao i sta merenje kaze stoji u "Svi izvori" i na landingu.
       boja = waitStatus(eff.visa.v).c;
-      big  = `<span class="wshort">${fmtMin(eff.niza.v)} \u2194 ${fmtMin(eff.visa.v)}</span>`;
-      note = `<div class="wsrc">sources disagree &middot; ${srcNaziv(eff.niza.src)}: ${fmtMin(eff.niza.v)} &middot; ${srcNaziv(eff.visa.src)}: ${fmtMin(eff.visa.v)}</div>`
-           + `<div class="wcat">${sukobKontekst(eff, c, dirKey)}</div>`;
+      big  = `<span class="wshort">UNCERTAIN</span>`;
+      note = `<div class="wsrc">estimates: ${fmtMin(eff.niza.v)} i ${fmtMin(eff.visa.v)}</div>`;
       break;
     case "proveri":
       boja = "var(--dim)";
