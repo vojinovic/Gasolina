@@ -598,7 +598,7 @@
        stranicu. 02.08.2026 je kesirana verzija bez IIFE omotaca obarala granice.html
        u SyntaxError i stranica je bila prazna dok covekov kes ne istekne.
        Bumpuje se SVAKI put kad se wait-logic.v1.js promeni, u SVA cetiri fajla. -->
-  <script src="wait-logic.v1.js?v=20260802"></script>
+  <script src="wait-logic.v1.js?v=20260803"></script>
   <script>
     // === "Instaliraj" baner ===
     // iOS Safari NEMA API za programsko instaliranje (Apple to namerno ne dozvoljava) -
@@ -1576,7 +1576,7 @@
         // AMSS-ovih tacno 30 kao jedini izvor: naslovna je dosad pisala samo "-",
         // bez ijedne reci zasto. Ovde ima mesta za red objasnjenja, na uskim
         // karticama sa kamerama nema - tamo ostaje "-" jer bar nista ne tvrdi.
-        const bezProcene = (eff.stanje === 'nema' && eff.samAmss)
+        const bezProcene = (eff.stanje === 'nema' && eff.amss30Only)
           ? ' &middot; AMSS prikazuje oko 30 min, ne racunamo to kao procenu' : '';
         const extra = eff.here ? ` &middot; HERE: ${eff.here.category}` : '';
         return `
