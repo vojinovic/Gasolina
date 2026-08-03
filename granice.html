@@ -526,9 +526,20 @@ function queueRow(c){
   if(!c.tt) return "";
   const iz = c.tt.izlaz_kolona_m, ul = c.tt.ulaz_kolona_m;
   if(!(iz >= QUEUE_MIN_M || ul >= QUEUE_MIN_M)) return "";
+  // Smer cija celija VEC pominje kolonu se ovde ne ponavlja. Na Gradini je
+  // pisalo "kolona oko 700 m potvrdjena" u celiji, pa opet "Kolona: izlaz
+  // ~689 m" u redu ispod - ista stvar dvaput, u dva razlicita zaokruzenja.
+  const pomenuta = (dirKey) => {
+    const e = effective(c, dirKey);
+    return e.dugaKolona && ["broj","prijavljeno","kolona"].includes(e.stanje);
+  };
+  // U red ulazi samo smer koji je IZNAD praga i koji celija nije vec pomenula.
+  // Bez praga bi se, kad je vazniji smer pomenut gore, isticao onaj kraci -
+  // Horgos je tako pokazivao "izlaz ~110 m" dok je 580 m stajalo u celiji.
   const parts = [];
-  if(iz != null) parts.push(`izlaz <b>~${iz} m</b>`);
-  if(ul != null) parts.push(`ulaz <b>~${ul} m</b>`);
+  if(iz >= QUEUE_MIN_M && !pomenuta("izlaz")) parts.push(`izlaz <b>~${iz} m</b>`);
+  if(ul >= QUEUE_MIN_M && !pomenuta("ulaz")) parts.push(`ulaz <b>~${ul} m</b>`);
+  if(!parts.length) return "";
   return `<div class="hustrip">\uD83D\uDDFA\uFE0F Kolona: ${parts.join(" &middot; ")}</div>`;
 }
 
@@ -742,7 +753,7 @@ function waitCell(label,dirKey,c){
       // pet redova i kartica je izgledala kao dijagnostika algoritma.
       // Ko je sta rekao i sta merenje kaze stoji u "Svi izvori" i na landingu.
       boja = waitStatus(eff.visa.v).c;
-      big  = `<span class="wshort">NEIZVESNO</span>`;
+      big  = `<span class="wshort" style="color:var(--fuel)">NEIZVESNO</span>`;
       note = `<div class="wsrc">procene: ${fmtMin(eff.niza.v)} i ${fmtMin(eff.visa.v)}</div>`;
       break;
     case "proveri":
@@ -770,6 +781,13 @@ function waitCell(label,dirKey,c){
         ? `<div class="wsrc">AMSS prikazuje oko 30 min${imaKameruZa(c, dirKey) ? ' &middot; proveri kameru' : ''}</div>`
         : `<div class="wcat">putnička vozila</div>`;
   }
+  // INVARIJANTA 3, DOSLEDNO SPROVEDENA. Duga kolona obara svaki umirujuci
+  // prikaz - do 03.08.2026 je to vazilo samo za TEKST i samo ispod 15 minuta,
+  // pa je Gradina/ulaz pisala zeleno "20 min" a odmah ispod "kolona oko 700 m
+  // potvrdjena". Zeleno znaci "prohodno"; 700 m kolone nije prohodno.
+  // U arhivu 210 celija kroz 11 dana, najgore Batrovci: 10 min uz 1.156 m.
+  // Menja se SAMO boja - brojka, stanje i tekst ostaju isti.
+  if (eff.dugaKolona && boja === "var(--ok)") boja = "var(--warn)";
   const zaTraku = (eff.v != null) ? eff.v : (eff.visa ? eff.visa.v : null);
   const pct = (zaTraku != null) ? waitStatus(zaTraku).pct : (eff.dugaKolona ? 55 : 8);
   return `
@@ -946,7 +964,7 @@ async function renderHistorija(){
       if(!u || !i) return "";
       return `
       <details class="cmp-banner cmp-hist">
-        <summary class="cmp-sum">\uD83D\uDCC5 Horgoš ili Kelebija — istorijsko poređenje</summary>
+        <summary class="cmp-sum">\uD83D\uDCC5 Horgoš ili Kelebija — istorijsko poređenje \u2192</summary>
         <div class="cmp-hist-body">
         \uD83D\uDCC5 <b>${B} ili ${A}?</b> Od ${periodTekst(p.period_od, p.period_do)}
         ${A} je bila brža <b>${u.dana_a} od ${p.dana}</b> dana pri ulasku u Srbiju i
