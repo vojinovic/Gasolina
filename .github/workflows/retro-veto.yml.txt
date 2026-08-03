@@ -1,0 +1,39 @@
+####################################################################
+# RETROSPEKTIVNI TEST: sta bi se promenilo da TomTom-ova nula
+# vise ne brise prijavu vozaca.
+#
+# CISTO CITANJE. Ne pise nijedan fajl, ne commit-uje, ne dira sajt,
+# ne zove nijedan spoljni servis, ne trosi TomTom kvotu.
+#
+# Odluka se NE reimplementira. Ucitava kanonski wait-logic.v1.js i
+# pravi varijante STRING-ZAKRPOM nad njegovim izvorom. Svaka zakrpa
+# se ispisuje doslovno i pada ako se ne primeni.
+#
+# Pokrece se RUCNO. Nema rasporeda. Kad odluka bude doneta, brise se.
+####################################################################
+name: Retro test - TomTom veto
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  retro:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preuzmi repo SA CELOM istorijom
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Selftest zakrpa (nad rucnim ulazima)
+        run: node retro-veto.js --selftest
+
+      - name: Analiza nad istorijom
+        run: node retro-veto.js
