@@ -667,15 +667,11 @@ function smerLabel(c, dirKey){
                      mk:"makedonska strana", "mk-opsto":"makedonska strana (bez smera)", ba:"prijave vozača", user:"prijave sa sajta"};
   const srcNaziv = k => SRC_NAZIV[k] || k || "prijave vozača";
 
-// Sta merenje kaze o sukobu. NE presudjuje ko je u pravu - TomTom vidi samo
-// vozila koja se KRECU, pa je duzina kolone donja granica: 600 m potvrdjuje da
-// guzva postoji, ne da traje sedam sati.
-function sukobKontekst(e, c, dirKey){
-  const kam = imaKameruZa(c, dirKey) ? " &middot; proveri kameru" : "";
-  if (e.kolona == null) return "nema nezavisnog saobraćajnog merenja" + kam;
-  if (e.dugaKolona) return `izmerena kolona ${fmtKolona(e.kolona, koridorM(c, dirKey))} potvrđuje gužvu, ne i trajanje` + kam;
-  return "saobraćajno merenje ne pokazuje dugu kolonu" + kam;
-}
+  // Kratka imena SAMO za liniju sukoba: "makedonska strana ↔ prijave vozača"
+  // prelama u dva reda na telefonu, a puna imena stoje u "Svi izvori" ispod.
+  const SRC_KRATKO = {policija:"policija", hu:"mađarska", mk:"makedonska",
+                      "mk-opsto":"makedonska", ba:"vozači", user:"vozači"};
+  const srcKratko = k => SRC_KRATKO[k] || srcNaziv(k);
 
 function waitCell(label,dirKey,c){
   const eff = effective(c, dirKey);
@@ -713,10 +709,13 @@ function waitCell(label,dirKey,c){
       // Boja ide po VECOJ vrednosti - konzervativno, da se guzva ne umanji.
       // Strelica u oba smera, ne crta: crta bi znacila raspon, a mi ne tvrdimo
       // da je cekanje negde IZMEDJU te dve brojke. To su suprotstavljene tvrdnje.
+      // JEDNA velika poruka, jedna kratka dopuna - isti oblik kao svaka druga
+      // celija ("45 min" + "izvor: granicna policija"). Prva verzija je imala
+      // pet redova i kartica je izgledala kao dijagnostika algoritma.
+      // Ko je sta rekao i sta merenje kaze stoji u "Svi izvori" i na landingu.
       boja = waitStatus(eff.visa.v).c;
-      big  = `<span class="wshort">${fmtMin(eff.niza.v)} \u2194 ${fmtMin(eff.visa.v)}</span>`;
-      note = `<div class="wsrc">izvori se ne slažu &middot; ${srcNaziv(eff.niza.src)}: ${fmtMin(eff.niza.v)} &middot; ${srcNaziv(eff.visa.src)}: ${fmtMin(eff.visa.v)}</div>`
-           + `<div class="wcat">${sukobKontekst(eff, c, dirKey)}</div>`;
+      big  = `<span class="wshort">NEIZVESNO</span>`;
+      note = `<div class="wsrc">procene: ${fmtMin(eff.niza.v)} i ${fmtMin(eff.visa.v)}</div>`;
       break;
     case "proveri":
       boja = "var(--dim)";
