@@ -41,6 +41,8 @@ jobs:
         if: steps.engine.outcome == 'success'
         run: python3 -m py_compile engine/*.py
 
+      # amss_arhiv.py se NE zove posebno: granice_scraper.py --selftest ga vec
+      # pokrece, pa bi zaseban korak vrteo istih 20 provera dvaput.
       - name: Selftestovi (svih 5 scrapera, offline)
         if: steps.engine.outcome == 'success'
         run: |
@@ -49,7 +51,6 @@ jobs:
           python3 engine/pumpe_scraper.py --selftest
           python3 engine/putevi_scraper.py --selftest
           python3 engine/thumbs_scraper.py --selftest
-          python3 engine/amss_arhiv.py --selftest
 
       # Test zivi u privatnom engine-u, ne u javnom repou: on na jednom mestu
       # sazima sva pravila i razloge zbog kojih postoje. Cita wait-logic.v1.js i
@@ -66,6 +67,21 @@ jobs:
       - name: Zamrznuto ponasanje logike cekanja (1.046 kombinacija iz arhiva)
         if: steps.engine.outcome == 'success'
         run: node engine/test-wait-golden.js
+
+      # TRECI TEST, i jedini koji vidi PRIKAZ. Prethodna dva cuvaju odluku:
+      # test-wait-logic.js pravila, test-wait-golden.js ponasanje na 1.046
+      # kombinacija. Oba su bila zelena i 02.08. kad je granice.html bila prazna
+      # zbog sudara imena, i 03.08. kad je Prohor Pcinjski upucivao na kameru
+      # koje nema. Ovaj stvarno otvara svih 29 stranica u chromium-u.
+      - name: Chromium za smoke test prikaza
+        if: steps.engine.outcome == 'success'
+        run: |
+          npm i --no-save playwright@1.49
+          npx playwright install --with-deps chromium
+
+      - name: Smoke test prikaza (29 stranica u pravom browseru)
+        if: steps.engine.outcome == 'success'
+        run: node engine/test-stranice.js
 
       - name: JS + JSON-LD + JSON provere (ci_checks.py)
         if: steps.engine.outcome == 'success'
