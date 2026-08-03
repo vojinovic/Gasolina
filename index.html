@@ -1878,10 +1878,17 @@
             Object.keys(cr).forEach(id => {
               const c = cr[id];
               if (!c) return;
+              // OVDE SE NE SME IZOSTAVITI NIJEDAN IZVOR koji kanonska funkcija
+              // cita. `user` (prijave sa nase forme) je nedostajao od pocetka:
+              // funkcija je jedna, ali joj je naslovna davala uzi ulaz nego
+              // granice.html, pa su za isti prelaz mogle da stoje dve brojke.
+              // Test-wait-logic.js sada izvlaci spisak izvora IZ same kanonske
+              // funkcije i proverava da ih ovaj objekat sve prosledjuje.
               borderWaits[id] = {
                 putnicka: (c.found && c.putnicka) ? c.putnicka : null,
                 teretna: (c.found && c.teretna) ? c.teretna : null,
                 hu: c.hu || null, mk: c.mk || null, ba: c.ba || null,
+                user: c.user || null,
                 tt: c.tt || null,
               };
             });
