@@ -441,6 +441,72 @@ const CAMERAS = [...BORDERS.CROSSINGS].sort((a, b) => {
   return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
 });
 
+/* MERENJE PRIKAZA KARTICA (03.08.2026)
+
+   Klik bez prikaza je brojilac bez imenioca. Kartica na desetom mestu dobija
+   manje klikova zato sto je manje ljudi UOPSTE vidi - bez imenioca se ne
+   razlikuje "ljudi ne zele Spiljane" od "niko nije doskrolovao do Spiljana".
+   Isto je i sa GSC prikazima: oni mere gde MI rangiramo na Google-u, ne sta
+   covek na ovoj stranici bira. Zato se meri i prikaz, pa je CTR kartice
+   celija_klik / kartica_prikaz.
+
+   Jedinica je KARTICA, ne celija: kartica je ono sto ulazi u vidno polje,
+   a u njoj su dve celije (izlaz/ulaz) i thumb. Imenilac tako ostaje jedan
+   i isti za sva tri dogadjaja.
+
+   Prag: bar 50% VISINE kartice vidljivo neprekidno 1 s. Uslov je namerno
+   napisan preko intersectionRect.height, a NE preko intersectionRatio:
+   na telefonu je kartica cesto visa od ekrana, pa ratio nikad ne stigne do
+   0,5 i prikaz se ne bi zabelezio nikad - tacno na uredjaju gde je vecina
+   saobracaja. Kad je kartica visa od ekrana, dovoljna je polovina EKRANA.
+
+   Salje se najvise jednom po kartici po ucitavanju stranice; grid se
+   ponovo iscrtava pri osvezavanju podataka, pa `poslato` zivi izvan
+   funkcije da isti prikaz ne bi bio prijavljen dvaput.
+
+   ORDER_VERSION pamti koji je redosled kartica bio na snazi. Bez njega se
+   dva merna perioda ne mogu razdvojiti i poredjenje "pre i posle" ne
+   postoji. Menja se ISTOVREMENO sa CAMERA_ORDER, nikad odvojeno. */
+const ORDER_VERSION = "current_v1";
+const prikazPoslat = new Set();
+let prikazIO = null;
+function pratiPrikaze(){
+  if(!("IntersectionObserver" in window)) return;
+  const tajmeri = new Map();
+  if(prikazIO) prikazIO.disconnect();
+  // Gust niz pragova: kod kartice vise od ekrana ratio se menja u sitnim
+  // koracima, pa bi mali broj pragova propustio poziv.
+  const pragovi = Array.from({length:51}, (_,i)=>i/50);
+  prikazIO = new IntersectionObserver((unosi)=>{
+    unosi.forEach(e=>{
+      const el = e.target, id = el.dataset.id;
+      if(prikazPoslat.has(id)){ prikazIO.unobserve(el); return; }
+      const vh = (e.rootBounds && e.rootBounds.height) || window.innerHeight || 1;
+      const potrebno = Math.min(e.boundingClientRect.height * 0.5, vh * 0.5);
+      const dovoljno = e.isIntersecting && e.intersectionRect.height >= potrebno;
+      if(dovoljno){
+        if(tajmeri.has(id)) return;
+        tajmeri.set(id, setTimeout(()=>{
+          tajmeri.delete(id);
+          if(prikazPoslat.has(id)) return;
+          prikazPoslat.add(id);
+          prikazIO.unobserve(el);
+          track('kartica_prikaz', {
+            prelaz: id,
+            pozicija: (+el.dataset.poz || 0),
+            jezik: 'en',
+            order_version: ORDER_VERSION
+          });
+        }, 1000));
+      } else if(tajmeri.has(id)){
+        clearTimeout(tajmeri.get(id));
+        tajmeri.delete(id);
+      }
+    });
+  }, {threshold: pragovi});
+  document.querySelectorAll('.card').forEach(el=>prikazIO.observe(el));
+}
+
 /* DISPLAY THRESHOLDS (changed 31.07.2026)
 
    "No queue" used to run up to 30 min, which is exactly the AMSS default value,
@@ -712,7 +778,13 @@ function feedZa(c, dir){
   return i >= 0 ? `&feed=${i}` : "";
 }
 
-function waitCell(label,dirKey,c){
+// POZ is the card's 1-based slot in the grid (the grid is drawn with
+// CAMERAS.map, so this is exactly what the visitor scrolls past). Sent with
+// every click so we can later tell "people want this crossing" apart from
+// "this happened to be first on screen". Without it, every future ordering
+// decision rests on GSC impressions - and those measure where WE rank on
+// Google, not what a visitor on the site chooses (03.08.2026).
+function waitCell(label,dirKey,c,poz){
   const eff = effective(c, dirKey);
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
   let big, note, boja;
@@ -813,7 +885,7 @@ function waitCell(label,dirKey,c){
          samo tamo gde kamera za TAJ smer postoji. Bez ovoga bi test morao da
          pogadja po redosledu celija, sto prvo premestanje obori. -->
     <a class="wcell" data-smer="${dirKey}" href="granica-${c.id}.html?play=1${feedZa(c, dirKey)}"
-       onclick="track('celija_klik', {prelaz:'${c.id}', smer:'${dirKey}'})">
+       onclick="track('celija_klik', {prelaz:'${c.id}', smer:'${dirKey}', pozicija:${poz|0}, jezik:'en', order_version:ORDER_VERSION})">
       <div class="wlabel"><span class="dir">${arrow}</span> ${label}</div>
       <div class="wmin" style="color:${boja}">${big}</div>
       ${note}
@@ -850,7 +922,8 @@ function outFeedParam(c){
   return i > 0 ? `&feed=${i}` : "";
 }
 
-function cardHTML(c){
+function cardHTML(c, idx){
+  const poz = (idx|0) + 1;
   const hasVideo = c.feeds.some(f=>f.src);
   const noCamera = c.noCamera === true;
   // Izlazne kamere idu prve: sajt opsluzuje onoga ko tek krece na put, pa mu se
@@ -876,14 +949,14 @@ function cardHTML(c){
        <img class="thumb" src="../thumbs/${c.id}.jpg" alt="Latest snapshot from the ${c.name} camera" loading="lazy"
             onerror="this.closest('.pane').querySelector('.poster').classList.add('no-thumb'); this.remove()">
        <a class="poster" href="border-${c.id}.html?play=1${outFeedParam(c)}" aria-label="Open the ${c.name} crossing page with live camera"
-          onclick="track('thumb_klik', {prelaz:'${c.id}'})">
+          onclick="track('thumb_klik', {prelaz:'${c.id}', pozicija:${poz}, jezik:'en', order_version:ORDER_VERSION})">
          <span class="play"><svg width="20" height="20" viewBox="0 0 24 24" fill="var(--fuel)"><path d="M8 5v14l11-7z"/></svg></span>
          <span class="ptext">Live camera + map</span>
        </a>`;
   } else if(noCamera){
     paneInner = `<span class="badge">data only</span>
        <a class="poster no-thumb" href="border-${c.id}.html" aria-label="Open the ${c.name} crossing page"
-          onclick="track('thumb_klik', {prelaz:'${c.id}'})">
+          onclick="track('thumb_klik', {prelaz:'${c.id}', pozicija:${poz}, jezik:'en', order_version:ORDER_VERSION})">
          <span class="ptext">No camera &middot; open traffic map and waiting times</span>
        </a>`;
   } else {
@@ -905,7 +978,7 @@ function cardHTML(c){
   }
 
   return `
-  <article class="card" id="${c.id}" data-id="${c.id}">
+  <article class="card" id="${c.id}" data-id="${c.id}" data-poz="${poz}">
     <div class="chead">
       <div>
         <div class="route">
@@ -925,8 +998,8 @@ function cardHTML(c){
       ? ((c.mk||c.here) ? `` : `<div class="nowait">${c.from}\u2013${c.to} border. Waiting time is not tracked here; use the camera above.</div>`)
       : `
     <div class="wait">
-      ${waitCell(smerLabel(c,"izlaz"),"izlaz",c)}
-      ${waitCell(smerLabel(c,"ulaz"),"ulaz",c)}
+      ${waitCell(smerLabel(c,"izlaz"),"izlaz",c,poz)}
+      ${waitCell(smerLabel(c,"ulaz"),"ulaz",c,poz)}
     </div>`}
     ${queueRow(c)}
     ${sourcesDetails(c)}
@@ -1111,6 +1184,7 @@ async function init(){
 
   grid.innerHTML=CAMERAS.map(cardHTML).join("");
   wire();
+  pratiPrikaze();
   renderComparisons();
   renderHistory();
   setNote(live, scrapedAt);
