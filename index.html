@@ -598,7 +598,7 @@
        stranicu. 02.08.2026 je kesirana verzija bez IIFE omotaca obarala granice.html
        u SyntaxError i stranica je bila prazna dok covekov kes ne istekne.
        Bumpuje se SVAKI put kad se wait-logic.v1.js promeni, u SVA cetiri fajla. -->
-  <script src="wait-logic.v1.js?v=20260803"></script>
+  <script src="wait-logic.v1.js?v=20260803b"></script>
   <script>
     // === "Instaliraj" baner ===
     // iOS Safari NEMA API za programsko instaliranje (Apple to namerno ne dozvoljava) -
@@ -1319,7 +1319,12 @@
     // treba samo za BOJU tackice i za izbor najgoreg prelaza, pa se "bez guzve"
     // ovde racuna kao 0 - stara kopija je na tom mestu vracala samu vrednost
     // ispod praga, a 0 pada u isti razred, pa se prikaz ne menja.
-    const minZaPrikaz = e => (e.v != null ? e.v : (e.stanje === 'bez-guzve' ? 0 : null));
+    // U sukobu izvora nema `v` jer nema pobednika. Za BOJU i za izbor najgoreg
+    // prelaza uzima se VECA od dve sporne vrednosti - konzervativno, da se guzva
+    // ne umanji dok se ne zna koja je tvrdnja tacna.
+    const minZaPrikaz = e => (e.v != null ? e.v
+                              : e.stanje === 'sukob' ? e.visa.v
+                              : e.stanje === 'bez-guzve' ? 0 : null);
 
     function bStatus(min) {
       if (min == null) return { c: 'var(--faint)', t: 'nema podataka' };
@@ -1339,12 +1344,14 @@
         case 'kolona':         return 'kolona';
         case 'kratko-prijava': return 'kratko*';
         case 'prijavljeno':    return bMin(e.v) + '*';
+        case 'sukob':          return bMin(e.niza.v) + ' \u2194 ' + bMin(e.visa.v);
         case 'bez-guzve':      return 'Bez guzve';
         case 'broj':           return bText(e.v);
         default:               return '-';
       }
     }
     function bLabState(e, strelica, smer) {
+      if (e.stanje === 'sukob') return strelica + ' ' + smer + ' &middot; izvori se ne slazu';
       const zvezda = (e.stanje === 'prijavljeno' || e.stanje === 'kratko-prijava') ? ' &middot; prijava' : '';
       return strelica + ' ' + smer + zvezda;
     }
@@ -1376,7 +1383,8 @@
     // Kanonska funkcija vraca KLJUC izvora, ne natpis - da odluka i jezik ne zive
     // u istoj funkciji. Prevod je posao stranice.
     const SRC_NAZIV = { policija: 'granicna policija', hu: 'madjarska strana',
-                        mk: 'makedonska strana', ba: 'prijave vozaca', user: 'prijave sa sajta' };
+                        mk: 'makedonska strana', 'mk-opsto': 'makedonska strana (bez smera)',
+                        ba: 'prijave vozaca', user: 'prijave sa sajta' };
     function effWait(cid, dirKey) {
       const w = borderWaits[cid] || {};
       const e = window.GasolinaWait.procena(w, dirKey);
@@ -1578,12 +1586,16 @@
         // karticama sa kamerama nema - tamo ostaje "-" jer bar nista ne tvrdi.
         const bezProcene = (eff.stanje === 'nema' && eff.amss30Only)
           ? ' &middot; AMSS prikazuje oko 30 min, ne racunamo to kao procenu' : '';
+        // Sukob izvora: naslov nosi obe brojke, a ovaj red kaze CIJE su.
+        const sporno = (eff.stanje === 'sukob')
+          ? ` &middot; izvori se ne slazu: ${SRC_NAZIV[eff.niza.src] || eff.niza.src} ${bMin(eff.niza.v)}`
+            + ` naspram ${SRC_NAZIV[eff.visa.src] || eff.visa.src} ${bMin(eff.visa.v)}` : '';
         const extra = eff.here ? ` &middot; HERE: ${eff.here.category}` : '';
         return `
           <div class="rb-wait">
             <span class="rb-dot" style="background:${s.c}"></span>
             <span class="rb-min" style="color:${s.c}">${bTextState(eff)}</span>
-            <span class="rb-cat">${dirLabel}${eff.src && eff.v > 15 ? ' &middot; izvor: ' + eff.src : ''}${bezProcene}${extra}</span>
+            <span class="rb-cat">${dirLabel}${eff.src && eff.v > 15 ? ' &middot; izvor: ' + eff.src : ''}${bezProcene}${sporno}${extra}</span>
           </div>`;
       };
       const rows = list.map((cx, i) => {
