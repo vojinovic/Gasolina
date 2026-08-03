@@ -119,7 +119,17 @@
   .feeds button.on{background:var(--fuel);color:var(--ink);font-weight:700;border-color:var(--fuel)}
   .no-cam{border:1px dashed var(--line);border-radius:var(--radius);padding:24px;text-align:center;color:var(--dim);background:var(--panel)}
   .wait-box{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:14px;border-radius:var(--radius);overflow:hidden}
+  /* Na telefonu su dve kolone po 176 px i svaka recenica se prelama u sedam
+     redova. Kolone se zato slazu jedna ispod druge - oba smera ostaju vidljiva,
+     samo dobiju punu sirinu. Bolje nego sakriti jedan smer iza taba. */
+  @media(max-width:520px){ .wait-box{grid-template-columns:1fr} }
   .wcell{background:var(--panel);padding:14px 16px}
+  /* Status sukoba nosi akcentnu narandzastu, ne crvenu: crveno na ovom sajtu
+     znaci POTVRDJENA velika guzva, a ovde je poenta da potvrde nema. Sama
+     brojka zadrzava boju po VECOJ vrednosti, da se rizik ne umanji. */
+  .wstat{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--fuel);
+         font-weight:700;margin-top:4px}
+  .wnote{font-size:11px;color:var(--dim);line-height:1.45;margin-top:5px}
   .wlabel{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
   .wval{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:26px;margin-top:4px}
   .map-box iframe{display:block}
@@ -322,23 +332,24 @@
             
             
             
+            const KRAT = {policija: "granična policija", hu: "mađarska strana", mk: "makedonska strana",
+                          "mk-opsto": "makedonska strana", ba: "vozači", user: "vozači"};
+            const im = k => KRAT[k] || SRC_NAZIV[k] || k;
             
             
-            const RECENICA = {policija: "granična policija", hu: "Mađarska strana",
-                              mk: "Makedonska strana", "mk-opsto": "Makedonska strana"};
-            const ime = k => RECENICA[k] || SRC_NAZIV[k] || k;
-            const odVozaca = (e.visa.src === "ba" || e.visa.src === "user");
+            
+            
+            const nemaMerenja = (e.kolona == null) || (e.kolona === 0 && (e.ttMin || 0) === 0);
             const kolona = e.dugaKolona
               ? "izmerena je kolona {k}. To potvrđuje gužvu, ali ne i prijavljeno trajanje.".replace("{k}", fmtKolona(e.kolona, korZa(e._d)))
-              : (e.kolona == null ? "za ovaj smer nema nezavisnog saobraćajnog merenja." : "saobraćajno merenje trenutno ne pokazuje dugu kolonu.");
+              : (nemaMerenja ? "nema pouzdanog saobraćajnog merenja za ovaj smer." : "saobraćajno merenje trenutno ne pokazuje dugu kolonu.");
             const kam = (FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out'))
-              ? " Proveri kameru." : "";
-            const par = (odVozaca ? "{a_src} navodi {a}, a vozači prijavljuju {b}." : "{a_src} navodi {a}, a {b_src} navodi {b}.")
-              .replace("{a_src}", ime(e.niza.src)).replace("{a}", dur(e.niza.v))
-              .replace("{b_src}", ime(e.visa.src)).replace("{b}", dur(e.visa.v));
-            return `<div class="wval" style="font-size:15px;line-height:1.25">podaci se ne slažu</div>` +
-                   small(par + " " + kolona.charAt(0).toUpperCase() + kolona.slice(1) +
-                         " Procene se ne mogu pouzdano uskladiti." + kam);
+              ? `<div class="wnote">Proveri kameru.</div>` : "";
+            return `<div class="wstat">podaci se ne slažu</div>` +
+                   `<div class="wval">${dur(e.niza.v)} ↔ ${dur(e.visa.v)}</div>` +
+                   `<div class="wnote">${im(e.niza.src)} &middot; ${im(e.visa.src)}</div>` +
+                   `<div class="wnote">${kolona.charAt(0).toUpperCase() + kolona.slice(1)}</div>` +
+                   kam;
           }
           case "proveri":
             
