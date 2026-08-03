@@ -344,6 +344,31 @@
             
             
             const kam = "";
+            
+            
+            
+            
+            
+            
+            
+            const guzvaPotvrdjena = e.dugaKolona;
+            const odVozaca = (e.visa.src === "ba" || e.visa.src === "user");
+            if (odVozaca && guzvaPotvrdjena) {
+              const sup = "{a_src} navodi {a}, a vozači prijavljuju znatno duže. Izmerena kolona {k} potvrđuje veliku gužvu, ali ne i trajanje prijavljenog čekanja.".replace("{a_src}", im(e.niza.src)).replace("{a}", dur(e.niza.v))
+                            .replace("{k}", fmtKolona(e.kolona, korZa(e._d)));
+              return `<div class="wstat">velika gužva</div>` +
+                     `<div class="wval">${dur(e.niza.v)}</div>` +
+                     `<div class="wnote">${sup}</div>`;
+            }
+            if (odVozaca) {
+              const unv = "{a_src} navodi {a}. Postoji nepotvrđena prijava o znatno dužem čekanju.".replace("{a_src}", im(e.niza.src)).replace("{a}", dur(e.niza.v));
+              
+              
+              return `<div class="wstat">podaci nisu pouzdani</div>` +
+                     `<div class="wval">${dur(e.niza.v)}</div>` +
+                     `<div class="wnote">${unv}</div>` +
+                     (nemaMerenja ? "" : `<div class="wnote">${kolona.charAt(0).toUpperCase() + kolona.slice(1)}</div>`);
+            }
             return `<div class="wstat">podaci se ne slažu</div>` +
                    `<div class="wval">${dur(e.niza.v)} ↔ ${dur(e.visa.v)}</div>` +
                    `<div class="wnote">${im(e.niza.src)} &middot; ${im(e.visa.src)}</div>` +

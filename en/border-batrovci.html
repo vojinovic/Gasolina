@@ -348,6 +348,31 @@
             
             
             const kam = "";
+            
+            
+            
+            
+            
+            
+            
+            const guzvaPotvrdjena = e.dugaKolona;
+            const odVozaca = (e.visa.src === "ba" || e.visa.src === "user");
+            if (odVozaca && guzvaPotvrdjena) {
+              const sup = "{a_src} states {a}, while drivers report a much longer wait. A measured queue of {k} confirms heavy congestion, but not the reported duration.".replace("{a_src}", im(e.niza.src)).replace("{a}", dur(e.niza.v))
+                            .replace("{k}", fmtKolona(e.kolona, korZa(e._d)));
+              return `<div class="wstat">heavy congestion</div>` +
+                     `<div class="wval">${dur(e.niza.v)}</div>` +
+                     `<div class="wnote">${sup}</div>`;
+            }
+            if (odVozaca) {
+              const unv = "{a_src} states {a}. There is an unconfirmed report of a much longer wait.".replace("{a_src}", im(e.niza.src)).replace("{a}", dur(e.niza.v));
+              
+              
+              return `<div class="wstat">the data is not reliable</div>` +
+                     `<div class="wval">${dur(e.niza.v)}</div>` +
+                     `<div class="wnote">${unv}</div>` +
+                     (nemaMerenja ? "" : `<div class="wnote">${kolona.charAt(0).toUpperCase() + kolona.slice(1)}</div>`);
+            }
             return `<div class="wstat">the data disagrees</div>` +
                    `<div class="wval">${dur(e.niza.v)} ↔ ${dur(e.visa.v)}</div>` +
                    `<div class="wnote">${im(e.niza.src)} &middot; ${im(e.visa.src)}</div>` +
