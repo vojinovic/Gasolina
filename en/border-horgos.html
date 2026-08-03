@@ -202,7 +202,7 @@
   <div class="others">Other border crossings: <a href="border-gradina.html">Gradina</a> <a href="border-kelebija.html">Kelebija</a> <a href="border-batrovci.html">Batrovci</a> <a href="border-presevo.html">Presevo</a> <a href="border-bogorodica.html">Bogorodica</a> <a href="border-medzitlija.html">Medzitlija</a> <a href="border-sremska-raca.html">Sremska Raca</a> <a href="border-spiljani.html">Spiljani</a> <a href="border-prohor-pcinjski.html">Prohor Pcinjski</a> <a href="border-gostun.html">Gostun</a> <a href="border-debeli-brijeg.html">Debeli Brijeg</a> <a href="border-dojran.html">Dojran</a></div>
 </div>
 
-<script src="../wait-logic.v1.js?v=20260802"></script>
+<script src="../wait-logic.v1.js?v=20260803"></script>
 <script>
   const PRELAZ_ID = "horgos";
   const FEEDS = [{"label": "Entry", "src": "https://kamere.amss.org.rs/horgos1/horgos1.m3u8", "dir": "in"}, {"label": "Exit", "src": "https://kamere.amss.org.rs/horgos2/horgos2.m3u8", "dir": "out"}];
@@ -331,7 +331,7 @@
             
             
             
-            if (!e.samAmss) return `<div class="wval">no data</div>`;
+            if (!e.amss30Only) return `<div class="wval">no data</div>`;
             return `<div class="wval" style="font-size:15px;line-height:1.25">no reliable estimate</div>` +
                    small("AMSS shows about 30 min" +
                          ((FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out'))

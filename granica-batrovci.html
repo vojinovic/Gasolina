@@ -198,7 +198,7 @@
   <div class="others">Ostali granični prelazi: <a href="granica-gradina.html">Gradina</a> <a href="granica-horgos.html">Horgos</a> <a href="granica-kelebija.html">Kelebija</a> <a href="granica-presevo.html">Presevo</a> <a href="granica-bogorodica.html">Bogorodica</a> <a href="granica-medzitlija.html">Medzitlija</a> <a href="granica-sremska-raca.html">Sremska Raca</a> <a href="granica-spiljani.html">Spiljani</a> <a href="granica-prohor-pcinjski.html">Prohor Pcinjski</a> <a href="granica-gostun.html">Gostun</a> <a href="granica-debeli-brijeg.html">Debeli Brijeg</a> <a href="granica-dojran.html">Dojran</a></div>
 </div>
 
-<script src="wait-logic.v1.js?v=20260802"></script>
+<script src="wait-logic.v1.js?v=20260803"></script>
 <script>
   const PRELAZ_ID = "batrovci";
   const FEEDS = [{"label": "Ulaz", "src": "https://kamere.amss.org.rs/batrovci1/batrovci1.m3u8", "dir": "in"}, {"label": "Izlaz", "src": "https://kamere.amss.org.rs/batrovci2/batrovci2.m3u8", "dir": "out"}];
@@ -327,7 +327,7 @@
             
             
             
-            if (!e.samAmss) return `<div class="wval">nema podataka</div>`;
+            if (!e.amss30Only) return `<div class="wval">nema podataka</div>`;
             return `<div class="wval" style="font-size:15px;line-height:1.25">nema pouzdane procene</div>` +
                    small("AMSS prikazuje oko 30 min" +
                          ((FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out'))
