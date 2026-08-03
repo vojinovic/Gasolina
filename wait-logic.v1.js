@@ -18,6 +18,20 @@
  * ULAZ je sirovi zapis prelaza iz granice.json:
  *   {putnicka:{ulaz,izlaz}, hu:{...}, mk:{...}, ba:{...}, user:{...}, tt:{...}}
  *
+ * NAZIVI SU MENJANI 03.08.2026, POSLE REVIZIJE AMSS-a. Stara imena su tvrdila
+ * vise nego sto znamo:
+ *   AMSS_DEFAULT_MIN -> AMSS_NAJNIZA_MIN   "default" tvrdi kako njihov sistem
+ *                                          radi; mi znamo samo da je 30 najniza
+ *                                          vrednost koju ikad objave (6.890
+ *                                          celija kroz 40 dana, nijedna ispod).
+ *   samAmss          -> amss30Only         staro ime nije govorilo NISTA - ni
+ *                                          koja vrednost ni zasto je izdvojena.
+ *                                          Novo opisuje SITUACIJU (jedini izvor
+ *                                          je AMSS-ovih tacno 30), ne odluku
+ *                                          algoritma.
+ * Preimenovanje je islo zasebnim commitom, uz regeneraciju zamrznutog fixture-a
+ * i dokaz da se nijedno stanje, brojka ni korisnicki tekst nisu promenili.
+ *
  * NAZIVI: zvanicni izvori NISU merenje. AMSS, police.hu i AMSM daju PROCENU
  * (police.hu izricito pise da su podaci "tapasztalati uton megallapitottak es
  * tajekoztato jellegűek" - iskustveni i informativni). Merenje daje samo TomTom,
@@ -37,7 +51,7 @@
 
 (function () {
 const NO_QUEUE_MAX = 15;
-const AMSS_DEFAULT_MIN = 30;
+const AMSS_NAJNIZA_MIN = 30;
 const QUEUE_HARD_M = 200;
 const BA_PROVERA_MIN = 120;
 const TT_MIRNO_MIN = 5;
@@ -56,8 +70,8 @@ function procena(c, dirKey){
   // c.wait.putnicka, generator c.putnicka uz uslov c.found. Kanonski ulaz je
   // SIROVI zapis prelaza iz granice.json; pozivaoci prilagodjavaju svoj oblik.
   const p = c.putnicka ? c.putnicka[dirKey] : null;
-  const amssDefault = (p === AMSS_DEFAULT_MIN);
-  if (p != null && !amssDefault) {
+  const amss30 = (p === AMSS_NAJNIZA_MIN);
+  if (p != null && !amss30) {
     if (p > 0) cands.push({v: p, src: "policija", tip: "zvanicni"});
     else kratkoZvanicno = true;
   }
@@ -135,14 +149,14 @@ function procena(c, dirKey){
   // 5. Nema nijednog izvora ukupnog cekanja. TomTom sme samo da javi kolonu.
   if (dugaKolona) return {stanje: "kolona", kolona, dugaKolona, ttMin};
   if (baOsporen != null) return {stanje: "proveri", baOsporen, kolona, dugaKolona, ttMin};
-  return {stanje: "nema", samAmss: amssDefault, kolona, dugaKolona, ttMin};
+  return {stanje: "nema", amss30Only: amss30, kolona, dugaKolona, ttMin};
 }
 
 // Radi i u browseru (<script src>) i u Node-u (testovi, generator).
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { procena, NO_QUEUE_MAX, AMSS_DEFAULT_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN };
+  module.exports = { procena, NO_QUEUE_MAX, AMSS_NAJNIZA_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN };
 }
 if (typeof window !== "undefined") {
-  window.GasolinaWait = { procena, NO_QUEUE_MAX, AMSS_DEFAULT_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN };
+  window.GasolinaWait = { procena, NO_QUEUE_MAX, AMSS_NAJNIZA_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN };
 }
 })();
