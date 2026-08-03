@@ -344,9 +344,10 @@
             const nemaMerenja = (e.kolona == null) || (e.kolona === 0 && (e.ttMin || 0) === 0);
             const kolona = e.dugaKolona
               ? "a queue of {k} was measured. That confirms congestion, but not the reported duration.".replace("{k}", fmtKolona(e.kolona, korZa(e._d)))
-              : (nemaMerenja ? "no reliable traffic measurement for this direction." : "traffic measurement currently shows no long queue.");
-            const kam = (FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out'))
-              ? `<div class="wnote">Check the camera.</div>` : "";
+              : (nemaMerenja ? "no independent confirmation for this direction." : "traffic measurement currently shows no long queue.");
+            
+            
+            const kam = "";
             return `<div class="wstat">the data disagrees</div>` +
                    `<div class="wval">${dur(e.niza.v)} ↔ ${dur(e.visa.v)}</div>` +
                    `<div class="wnote">${im(e.niza.src)} &middot; ${im(e.visa.src)}</div>` +

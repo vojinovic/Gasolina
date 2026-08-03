@@ -344,9 +344,10 @@
             const nemaMerenja = (e.kolona == null) || (e.kolona === 0 && (e.ttMin || 0) === 0);
             const kolona = e.dugaKolona
               ? "izmerena je kolona {k}. To potvrđuje gužvu, ali ne i prijavljeno trajanje.".replace("{k}", fmtKolona(e.kolona, korZa(e._d)))
-              : (nemaMerenja ? "nema pouzdanog saobraćajnog merenja za ovaj smer." : "saobraćajno merenje trenutno ne pokazuje dugu kolonu.");
-            const kam = (FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out'))
-              ? `<div class="wnote">Proveri kameru.</div>` : "";
+              : (nemaMerenja ? "nema nezavisne potvrde za ovaj smer." : "saobraćajno merenje trenutno ne pokazuje dugu kolonu.");
+            
+            
+            const kam = "";
             return `<div class="wstat">podaci se ne slažu</div>` +
                    `<div class="wval">${dur(e.niza.v)} ↔ ${dur(e.visa.v)}</div>` +
                    `<div class="wnote">${im(e.niza.src)} &middot; ${im(e.visa.src)}</div>` +
