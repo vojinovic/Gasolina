@@ -407,7 +407,7 @@
 <script src="borders-data.js"></script>
 <!-- ?v= nije ukras: bez njega browser sme da posluzi staru kopiju uz novu
      stranicu. Bumpuje se SVAKI put kad se wait-logic.v1.js promeni. -->
-<script src="wait-logic.v1.js?v=20260803"></script>
+<script src="wait-logic.v1.js?v=20260803b"></script>
 <script>
 /* Prelazi se ucitavaju iz deljenog borders-data.js (jedan izvor istine). */
 // Redosled kartica: najprometniji prelazi gore. Ostali zadrzavaju redosled iz borders-data.
@@ -664,8 +664,19 @@ function smerLabel(c, dirKey){
   // Kanonska funkcija vraca KLJUC izvora, ne natpis — da odluka i jezik ne
   // zive u istoj funkciji. Prevod je posao stranice.
   const SRC_NAZIV = {policija:"granična policija", hu:"mađarska strana",
-                     mk:"makedonska strana", ba:"prijave vozača", user:"prijave sa sajta"};
+                     mk:"makedonska strana", "mk-opsto":"makedonska strana (bez smera)", ba:"prijave vozača", user:"prijave sa sajta"};
   const srcNaziv = k => SRC_NAZIV[k] || k || "prijave vozača";
+
+// Sta merenje kaze o sukobu. NE presudjuje ko je u pravu - TomTom vidi samo
+// vozila koja se KRECU, pa je duzina kolone donja granica: 600 m potvrdjuje da
+// guzva postoji, ne da traje sedam sati.
+function sukobKontekst(e, c, dirKey){
+  const kam = imaKameruZa(c, dirKey) ? " &middot; proveri kameru" : "";
+  if (e.kolona == null) return "nema nezavisnog saobraćajnog merenja" + kam;
+  if (e.dugaKolona) return `izmerena kolona ${fmtKolona(e.kolona, koridorM(c, dirKey))} potvrđuje gužvu, ne i trajanje` + kam;
+  return "saobraćajno merenje ne pokazuje dugu kolonu" + kam;
+}
+
 function waitCell(label,dirKey,c){
   const eff = effective(c, dirKey);
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
@@ -696,6 +707,17 @@ function waitCell(label,dirKey,c){
       boja = "var(--warn)"; big = `<span class="wq">kolona ${fmtKolona(eff.kolona, koridorM(c, dirKey))}</span>`;
       note = `<div class="wsrc">${eff.v!=null ? `vozači prijavljuju ` + fmtMin(eff.v) : `izvor: mapa saobraćaja`}</div>`;
       break;
+    case "sukob":
+      // Dve procene ukupnog cekanja koje se razilaze vise od tri puta. Sajt nema
+      // cime da presudi, pa ne bira pobednika: pokazuje OBE i kaze da se ne slazu.
+      // Boja ide po VECOJ vrednosti - konzervativno, da se guzva ne umanji.
+      // Strelica u oba smera, ne crta: crta bi znacila raspon, a mi ne tvrdimo
+      // da je cekanje negde IZMEDJU te dve brojke. To su suprotstavljene tvrdnje.
+      boja = waitStatus(eff.visa.v).c;
+      big  = `<span class="wshort">${fmtMin(eff.niza.v)} \u2194 ${fmtMin(eff.visa.v)}</span>`;
+      note = `<div class="wsrc">izvori se ne slažu &middot; ${srcNaziv(eff.niza.src)}: ${fmtMin(eff.niza.v)} &middot; ${srcNaziv(eff.visa.src)}: ${fmtMin(eff.visa.v)}</div>`
+           + `<div class="wcat">${sukobKontekst(eff, c, dirKey)}</div>`;
+      break;
     case "proveri":
       boja = "var(--dim)";
       big = imaKameruZa(c, dirKey)
@@ -721,7 +743,8 @@ function waitCell(label,dirKey,c){
         ? `<div class="wsrc">AMSS prikazuje oko 30 min${imaKameruZa(c, dirKey) ? ' &middot; proveri kameru' : ''}</div>`
         : `<div class="wcat">putnička vozila</div>`;
   }
-  const pct = (eff.v!=null) ? waitStatus(eff.v).pct : (eff.dugaKolona ? 55 : 8);
+  const zaTraku = (eff.v != null) ? eff.v : (eff.visa ? eff.visa.v : null);
+  const pct = (zaTraku != null) ? waitStatus(zaTraku).pct : (eff.dugaKolona ? 55 : 8);
   return `
     <!-- data-smer nosi smer do testa: on proverava da "proveri kameru" stoji
          samo tamo gde kamera za TAJ smer postoji. Bez ovoga bi test morao da
@@ -737,9 +760,13 @@ function waitCell(label,dirKey,c){
 function waitChips(c){
   if(c.noWait) return "";
   const u = effective(c, "ulaz"), i = effective(c, "izlaz");
-  if(u.v==null && i.v==null) return "";
-  const chip = (arrow, e) => e.v==null ? "" :
-    `<span class="wchip" style="color:${waitStatus(e.v).c}">${arrow}${e.v>=60?Math.round(e.v/60)+"h":e.v}</span>`;
+  // U sukobu nema `v` (nema pobednika), ali cip mora da postoji - inace bi
+  // kartica sa neslaganjem izgledala mirnije od one sa brojkom. Uzima se VECA
+  // vrednost, uz znak da je sporna.
+  const val = e => e.v != null ? e.v : (e.visa ? e.visa.v : null);
+  if(val(u)==null && val(i)==null) return "";
+  const chip = (arrow, e) => val(e)==null ? "" :
+    `<span class="wchip" style="color:${waitStatus(val(e)).c}">${arrow}${val(e)>=60?Math.round(val(e)/60)+"h":val(e)}${e.stanje==="sukob"?"?":""}</span>`;
   return `<div class="wchips">${chip("\u2191", u)}${chip("\u2193", i)}</div>`;
 }
 
