@@ -723,7 +723,10 @@ function waitCell(label,dirKey,c){
   }
   const pct = (eff.v!=null) ? waitStatus(eff.v).pct : (eff.dugaKolona ? 55 : 8);
   return `
-    <div class="wcell">
+    <!-- data-smer nosi smer do testa: on proverava da "proveri kameru" stoji
+         samo tamo gde kamera za TAJ smer postoji. Bez ovoga bi test morao da
+         pogadja po redosledu celija, sto prvo premestanje obori. -->
+    <div class="wcell" data-smer="${dirKey}">
       <div class="wlabel"><span class="dir">${arrow}</span> ${label}</div>
       <div class="wmin" style="color:${boja}">${big}</div>
       ${note}
