@@ -196,7 +196,7 @@
   <div class="others">Ostali granični prelazi: <a href="granica-gradina.html">Gradina</a> <a href="granica-horgos.html">Horgos</a> <a href="granica-kelebija.html">Kelebija</a> <a href="granica-batrovci.html">Batrovci</a> <a href="granica-presevo.html">Presevo</a> <a href="granica-bogorodica.html">Bogorodica</a> <a href="granica-medzitlija.html">Medzitlija</a> <a href="granica-sremska-raca.html">Sremska Raca</a> <a href="granica-spiljani.html">Spiljani</a> <a href="granica-prohor-pcinjski.html">Prohor Pcinjski</a> <a href="granica-gostun.html">Gostun</a> <a href="granica-debeli-brijeg.html">Debeli Brijeg</a></div>
 </div>
 
-<script src="wait-logic.v1.js?v=20260803"></script>
+<script src="wait-logic.v1.js?v=20260803b"></script>
 <script>
   const PRELAZ_ID = "dojran";
   const FEEDS = [{"label": "Kamera (granica)", "src": "https://streaming1.neotel.net.mk/stream/dojran.m3u8", "dir": "out"}];
@@ -216,9 +216,11 @@
     let parts = [];
     if (_waitState) {
       
-      const f = e => (!e || e.v == null)
-        ? (e && e.dugaKolona ? `${SHARE.queue} ~${e.kolona} m` : SHARE.nd)
-        : ((e.v <= NQ_MAX && !e.dugaKolona) ? SHARE.noq : dur(e.v));
+      const f = e => (e && e.stanje === "sukob")
+        ? `${dur(e.niza.v)} ↔ ${dur(e.visa.v)}`
+        : (!e || e.v == null)
+          ? (e && e.dugaKolona ? `${SHARE.queue} ~${e.kolona} m` : SHARE.nd)
+          : ((e.v <= NQ_MAX && !e.dugaKolona) ? SHARE.noq : dur(e.v));
       parts.push(`${SHARE.out}: ${f(_waitState.out)}`);
       parts.push(`${SHARE.inn}: ${f(_waitState.inn)}`);
     } else {
@@ -283,7 +285,7 @@
       
       
       const SRC_NAZIV = {policija: "granična policija", hu: "Mađarska strana", mk: "Makedonska strana",
-                         ba: "Prijave vozača (BorderAlarm)", user: "Prijave vozača (BorderAlarm)"};
+                         "mk-opsto": "makedonska strana (bez oznake smera)", ba: "Prijave vozača (BorderAlarm)", user: "Prijave vozača (BorderAlarm)"};
       const eff = (dirKey) => {
         const ulaz = {
           putnicka: (c && c.found) ? c.putnicka : null,
@@ -315,6 +317,28 @@
           case "kolona":
             return `<div class="wval">kolona ${fmtKolona(e.kolona, korZa(e._d))}</div>` +
                    small(e.v != null ? "vozači prijavljuju " + dur(e.v) : "izvor: Mapa saobraćaja");
+          case "sukob": {
+            
+            
+            
+            
+            
+            
+            const RECENICA = {policija: "granična policija", hu: "Mađarska strana",
+                              mk: "Makedonska strana", "mk-opsto": "Makedonska strana"};
+            const ime = k => RECENICA[k] || SRC_NAZIV[k] || k;
+            const odVozaca = (e.visa.src === "ba" || e.visa.src === "user");
+            const kolona = e.dugaKolona
+              ? "izmerena je kolona {k}. To potvrđuje gužvu, ali ne i prijavljeno trajanje.".replace("{k}", fmtKolona(e.kolona, korZa(e._d)))
+              : (e.kolona == null ? "za ovaj smer nema nezavisnog saobraćajnog merenja." : "saobraćajno merenje trenutno ne pokazuje dugu kolonu.");
+            const kam = (FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out'))
+              ? " Proveri kameru." : "";
+            const par = (odVozaca ? "{a_src} navodi {a}, a vozači prijavljuju {b}." : "{a_src} navodi {a}, a {b_src} navodi {b}.")
+              .replace("{a_src}", ime(e.niza.src)).replace("{a}", dur(e.niza.v))
+              .replace("{b_src}", ime(e.visa.src)).replace("{b}", dur(e.visa.v));
+            return `<div class="wval" style="font-size:15px;line-height:1.25">podaci se ne slažu</div>` +
+                   small(par + " " + kolona.charAt(0).toUpperCase() + kolona.slice(1) + kam);
+          }
           case "proveri":
             
             return `<div class="wval">${(FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out')) ? "proveri kameru" : "nepotvrđeno"}</div>` +

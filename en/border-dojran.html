@@ -196,7 +196,7 @@
   <div class="others">Other border crossings: <a href="border-gradina.html">Gradina</a> <a href="border-horgos.html">Horgos</a> <a href="border-kelebija.html">Kelebija</a> <a href="border-batrovci.html">Batrovci</a> <a href="border-presevo.html">Presevo</a> <a href="border-bogorodica.html">Bogorodica</a> <a href="border-medzitlija.html">Medzitlija</a> <a href="border-sremska-raca.html">Sremska Raca</a> <a href="border-spiljani.html">Spiljani</a> <a href="border-prohor-pcinjski.html">Prohor Pcinjski</a> <a href="border-gostun.html">Gostun</a> <a href="border-debeli-brijeg.html">Debeli Brijeg</a></div>
 </div>
 
-<script src="../wait-logic.v1.js?v=20260803"></script>
+<script src="../wait-logic.v1.js?v=20260803b"></script>
 <script>
   const PRELAZ_ID = "dojran";
   const FEEDS = [{"label": "Camera (border)", "src": "https://streaming1.neotel.net.mk/stream/dojran.m3u8", "dir": "out"}];
@@ -216,9 +216,11 @@
     let parts = [];
     if (_waitState) {
       
-      const f = e => (!e || e.v == null)
-        ? (e && e.dugaKolona ? `${SHARE.queue} ~${e.kolona} m` : SHARE.nd)
-        : ((e.v <= NQ_MAX && !e.dugaKolona) ? SHARE.noq : dur(e.v));
+      const f = e => (e && e.stanje === "sukob")
+        ? `${dur(e.niza.v)} ↔ ${dur(e.visa.v)}`
+        : (!e || e.v == null)
+          ? (e && e.dugaKolona ? `${SHARE.queue} ~${e.kolona} m` : SHARE.nd)
+          : ((e.v <= NQ_MAX && !e.dugaKolona) ? SHARE.noq : dur(e.v));
       parts.push(`${SHARE.out}: ${f(_waitState.out)}`);
       parts.push(`${SHARE.inn}: ${f(_waitState.inn)}`);
     } else {
@@ -283,7 +285,7 @@
       
       
       const SRC_NAZIV = {policija: "border police", hu: "Hungarian side", mk: "North Macedonian side",
-                         ba: "Driver reports (BorderAlarm)", user: "Driver reports (BorderAlarm)"};
+                         "mk-opsto": "North Macedonian side (no direction given)", ba: "Driver reports (BorderAlarm)", user: "Driver reports (BorderAlarm)"};
       const eff = (dirKey) => {
         const ulaz = {
           putnicka: (c && c.found) ? c.putnicka : null,
@@ -315,6 +317,28 @@
           case "kolona":
             return `<div class="wval">queue ${fmtKolona(e.kolona, korZa(e._d))}</div>` +
                    small(e.v != null ? "drivers report " + dur(e.v) : "source: Traffic map");
+          case "sukob": {
+            
+            
+            
+            
+            
+            
+            const RECENICA = {policija: "border police", hu: "Hungarian side",
+                              mk: "North Macedonian side", "mk-opsto": "North Macedonian side"};
+            const ime = k => RECENICA[k] || SRC_NAZIV[k] || k;
+            const odVozaca = (e.visa.src === "ba" || e.visa.src === "user");
+            const kolona = e.dugaKolona
+              ? "a queue of {k} was measured. That confirms congestion, but not the reported duration.".replace("{k}", fmtKolona(e.kolona, korZa(e._d)))
+              : (e.kolona == null ? "there is no independent traffic measurement for this direction." : "traffic measurement currently shows no long queue.");
+            const kam = (FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out'))
+              ? " Check the camera." : "";
+            const par = (odVozaca ? "{a_src} states {a}, while drivers report {b}." : "{a_src} states {a}, while {b_src} states {b}.")
+              .replace("{a_src}", ime(e.niza.src)).replace("{a}", dur(e.niza.v))
+              .replace("{b_src}", ime(e.visa.src)).replace("{b}", dur(e.visa.v));
+            return `<div class="wval" style="font-size:15px;line-height:1.25">the data disagrees</div>` +
+                   small(par + " " + kolona.charAt(0).toUpperCase() + kolona.slice(1) + kam);
+          }
           case "proveri":
             
             return `<div class="wval">${(FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out')) ? "check the camera" : "unconfirmed"}</div>` +
