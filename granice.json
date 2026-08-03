@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-03T11:37:33+00:00",
+  "scraped_at": "2026-08-03T14:52:18+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -16,8 +16,8 @@
       "found": true,
       "amss_name": "PROHOR PČINJSKI (Srbija - Severna Makedonija) R-238 (veza sa R-125)",
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
+        "izlaz": 1,
+        "izlaz_kolona_m": 280,
         "ulaz": null,
         "ulaz_kolona_m": null
       }
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 15,
-        "ulaz": 20
+        "izlaz": 240,
+        "ulaz": 5
       },
       "tt": {
-        "izlaz": 24,
-        "izlaz_kolona_m": 689,
-        "ulaz": 13,
-        "ulaz_kolona_m": 736
+        "izlaz": 19,
+        "izlaz_kolona_m": 340,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "horgos": {
@@ -56,18 +56,18 @@
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
-        "ulaz": 30,
-        "izlaz": 30
+        "ulaz": 0,
+        "izlaz": 0
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 15
+        "izlaz": 10,
+        "ulaz": 40
       },
       "tt": {
-        "izlaz": 6,
-        "izlaz_kolona_m": 110,
-        "ulaz": 8,
-        "ulaz_kolona_m": 580
+        "izlaz": 13,
+        "izlaz_kolona_m": 1395,
+        "ulaz": 7,
+        "ulaz_kolona_m": 136
       }
     },
     "kelebija": {
@@ -90,8 +90,8 @@
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
+        "izlaz": 2,
+        "izlaz_kolona_m": 155,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -108,13 +108,13 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 60,
-        "ulaz": 10
+        "izlaz": 210,
+        "ulaz": 90
       },
       "tt": {
-        "izlaz": 11,
-        "izlaz_kolona_m": 434,
-        "ulaz": 12,
+        "izlaz": 13,
+        "izlaz_kolona_m": 243,
+        "ulaz": 5,
         "ulaz_kolona_m": 731
       }
     },
@@ -130,7 +130,7 @@
       "found": true,
       "amss_name": "PREŠEVO Srbija - Severna Makedonija AP E 75 M1",
       "mk": {
-        "vlez": 30,
+        "vlez": 120,
         "izlez": null,
         "opsto": null
       },
@@ -184,19 +184,19 @@
     "bogorodica": {
       "found": false,
       "mk": {
-        "vlez": 180,
+        "vlez": 30,
         "izlez": null,
         "opsto": null
       },
       "tt": {
-        "izlaz": 14,
-        "izlaz_kolona_m": 253,
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 15
+        "izlaz": 5,
+        "ulaz": 90
       }
     },
     "dojran": {
@@ -217,7 +217,7 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 300,
+        "izlaz": 360,
         "ulaz": 330
       }
     }
