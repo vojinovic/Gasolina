@@ -704,9 +704,22 @@ function waitCell(label,dirKey,c){
       note = `<div class="wsrc">` + `jedan vozač prijavljuje {v}, merenje to ne potvrđuje`.replace("{v}", fmtMin(eff.baOsporen)) + `</div>`;
       break;
     default:
+      // AMSS-ovih TACNO 30 nije merenje nego njihova najniza objavljena vrednost:
+      // 02.08.2026 su svi mali prelazi (Ljuba, Nestin, Vrska Cuka, Bajina Basta)
+      // imali bas "oko 30 minuta" u oba smera, a tamo nema ni blizu pola sata
+      // cekanja. Zato ta brojka ne ide kao procena.
+      //
+      // Raniji tekst je glasio "AMSS ne javlja zadrzavanje" - to je JACA tvrdnja
+      // nego sto smemo: AMSS nije rekao da zadrzavanja nema, nego je objavio svoju
+      // najnizu vrednost, sto moze da znaci i da podatak nije osvezen.
+      //
+      // "proveri kameru" ide SAMO kad kamera za taj smer postoji. Prohor Pcinjski
+      // nema nijednu, a stranica ga je 03.08.2026 svejedno upucivala na nju.
       boja = "var(--faint)";
-      big  = eff.samAmss ? `<span class="wq">nema podataka</span>` : '-';
-      note = eff.samAmss ? `<div class="wsrc">AMSS ne javlja zadržavanje — proveri kameru</div>` : `<div class="wcat">putnička vozila</div>`;
+      big  = eff.samAmss ? `<span class="wshort">nema pouzdane procene</span>` : '-';
+      note = eff.samAmss
+        ? `<div class="wsrc">AMSS prikazuje oko 30 min${imaKameruZa(c, dirKey) ? ' &middot; proveri kameru' : ''}</div>`
+        : `<div class="wcat">putnička vozila</div>`;
   }
   const pct = (eff.v!=null) ? waitStatus(eff.v).pct : (eff.dugaKolona ? 55 : 8);
   return `
