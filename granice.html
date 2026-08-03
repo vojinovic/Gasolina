@@ -407,7 +407,7 @@
 <script src="borders-data.js"></script>
 <!-- ?v= nije ukras: bez njega browser sme da posluzi staru kopiju uz novu
      stranicu. Bumpuje se SVAKI put kad se wait-logic.v1.js promeni. -->
-<script src="wait-logic.v1.js?v=20260802"></script>
+<script src="wait-logic.v1.js?v=20260803"></script>
 <script>
 /* Prelazi se ucitavaju iz deljenog borders-data.js (jedan izvor istine). */
 // Redosled kartica: najprometniji prelazi gore. Ostali zadrzavaju redosled iz borders-data.
@@ -716,8 +716,8 @@ function waitCell(label,dirKey,c){
       // "proveri kameru" ide SAMO kad kamera za taj smer postoji. Prohor Pcinjski
       // nema nijednu, a stranica ga je 03.08.2026 svejedno upucivala na nju.
       boja = "var(--faint)";
-      big  = eff.samAmss ? `<span class="wshort">nema pouzdane procene</span>` : '-';
-      note = eff.samAmss
+      big  = eff.amss30Only ? `<span class="wshort">nema pouzdane procene</span>` : '-';
+      note = eff.amss30Only
         ? `<div class="wsrc">AMSS prikazuje oko 30 min${imaKameruZa(c, dirKey) ? ' &middot; proveri kameru' : ''}</div>`
         : `<div class="wcat">putnička vozila</div>`;
   }
