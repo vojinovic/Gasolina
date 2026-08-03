@@ -55,6 +55,10 @@ const AMSS_NAJNIZA_MIN = 30;
 const QUEUE_HARD_M = 200;
 const BA_PROVERA_MIN = 120;
 const TT_MIRNO_MIN = 5;
+// Koliko puta jedna procena mora da nadmasi drugu da bi to bio SUKOB, a ne
+// razlika. Arhiv 24.06-03.08.2026: odnos izmedju 2,5x i 4x menja zahvat za samo
+// jednu celiju, pa broj nije osetljiv - 3 je izabrano jer je najlakse objasniti.
+const SUKOB_ODNOS = 3;
 
 function procena(c, dirKey){
   // --- saobracajni signal (nikad krupna brojka) ---
@@ -66,25 +70,40 @@ function procena(c, dirKey){
   const cands = [];              // {v, src, tip}
   let kratkoZvanicno = false;    // zvanicni izvor izricito kaze "nema cekanja"
 
+  // SIROVE vrednosti po vrsti izvora, pre nego sto ijedno pravilo nesto potisne.
+  // Sukob se racuna nad njima, a ne nad `cands`: Bogorodica 28.07.2026 - prijava
+  // od 4h je bila potisnuta mirnim merenjem, ostalo je AMSM-ovih 15 min i sajt je
+  // napisao "Bez guzve" dok su vozaci prijavljivali cetiri sata. Potisnuta prijava
+  // ne sme da nestane bez traga.
+  const zvanicniSvi = [];        // {v, src} - procene UKUPNOG cekanja, zvanicne
+  const prijaveSve = [];         // {v, src} - prijave vozaca
+
   // JEDINO mesto koje se razlikovalo medju cetiri kopije: pregled je citao
   // c.wait.putnicka, generator c.putnicka uz uslov c.found. Kanonski ulaz je
   // SIROVI zapis prelaza iz granice.json; pozivaoci prilagodjavaju svoj oblik.
   const p = c.putnicka ? c.putnicka[dirKey] : null;
   const amss30 = (p === AMSS_NAJNIZA_MIN);
   if (p != null && !amss30) {
-    if (p > 0) cands.push({v: p, src: "policija", tip: "zvanicni"});
+    if (p > 0) { cands.push({v: p, src: "policija", tip: "zvanicni"});
+                 zvanicniSvi.push({v: p, src: "policija"}); }
     else kratkoZvanicno = true;
   }
   if (c.hu) {
     const v = c.hu[dirKey];
-    if (v != null) { if (v > 0) cands.push({v, src: "hu", tip: "zvanicni"});
+    if (v != null) { if (v > 0) { cands.push({v, src: "hu", tip: "zvanicni"});
+                                  zvanicniSvi.push({v, src: "hu"}); }
                      else kratkoZvanicno = true; }
   }
   if (c.mk) {
     const v = (dirKey === 'izlaz') ? c.mk.vlez : c.mk.izlez;
-    if (v != null) { if (v > 0) cands.push({v, src: "mk", tip: "zvanicni"});
+    if (v != null) { if (v > 0) { cands.push({v, src: "mk", tip: "zvanicni"});
+                                  zvanicniSvi.push({v, src: "mk"}); }
                      else kratkoZvanicno = true; }
-    if (c.mk.opsto != null) { if (c.mk.opsto > 0) cands.push({v: c.mk.opsto, src: "mk", tip: "zvanicni"});
+    // `opsto` je AMSM-ova recenica u kojoj je prelaz IMENOVAN ali bez oznake
+    // smera - dakle procena za taj prelaz, koju primenjujemo na oba smera.
+    // Slabija je od vrednosti sa smerom, pa prikaz to i kaze.
+    if (c.mk.opsto != null) { if (c.mk.opsto > 0) { cands.push({v: c.mk.opsto, src: "mk", tip: "zvanicni"});
+                                                    zvanicniSvi.push({v: c.mk.opsto, src: "mk-opsto"}); }
                               else kratkoZvanicno = true; }
   }
   // sopstvena forma: medijana vec izracunata u scraperu; broj prijava nosi tezinu
@@ -92,6 +111,7 @@ function procena(c, dirKey){
   if (c.user && c.user[dirKey] != null) {
     user = c.user[dirKey];
     cands.push({v: user, src: "user", tip: "prijava"});
+    if (user > 0) prijaveSve.push({v: user, src: "user"});
   }
 
   // --- prijava vozaca, uz proveru merenjem ---
@@ -102,6 +122,7 @@ function procena(c, dirKey){
     const v = c.ba[dirKey];
     if (v != null && v > 0) {
       const merenjeMirno = (ttMin != null && ttMin <= TT_MIRNO_MIN && !dugaKolona);
+      prijaveSve.push({v, src: "ba"});
       if (v >= BA_PROVERA_MIN && merenjeMirno) baOsporen = v;
       else cands.push({v, src: "ba", tip: "prijava"});
     }
@@ -110,6 +131,48 @@ function procena(c, dirKey){
   const zvanicniPostoji = cands.some(x => x.tip === "zvanicni");
 
   // --- odluka ---
+
+  // 0. SUKOB IZVORA. Dve procene UKUPNOG cekanja koje se razilaze vise od tri
+  //    puta nisu razlika nego neslaganje, i sajt nema cime da presudi. Umesto da
+  //    tiho uzme vecu, kaze da se izvori ne slazu i pokaze OBE vrednosti.
+  //
+  //    Okida se u dva slucaja:
+  //      A) prijava vozaca je mnogo VECA od zvanicne procene
+  //      C) dva zvanicna izvora se razilaze medjusobno (policija naspram AMSM-a,
+  //         Presevo 01.08.2026: 180 naspram 30 minuta)
+  //
+  //    NE okida se kad je zvanicna procena mnogo veca od prijave (slucaj B).
+  //    To NIJE proizvoljna asimetrija: invarijanta 2 kaze da jedna kratka prijava
+  //    nije dokaz da je prelaz prohodan. Ako prijava od 5 minuta ne sme da da
+  //    "Bez guzve", ne sme ni da obori zvanicnih 240 na "ne znamo". Arhiv:
+  //    11 takvih celija, sve sa prijavom od 5 do 60 minuta.
+  //
+  //    Prag je VECA vrednost >= BA_PROVERA_MIN: sitna neslaganja (20 naspram 5)
+  //    nisu vredna oduzimanja brojke.
+  {
+    const par = [];
+    if (zvanicniSvi.length && prijaveSve.length) {
+      const z = zvanicniSvi.reduce((a, b) => b.v > a.v ? b : a);   // najveci zvanicni:
+      const p2 = prijaveSve.reduce((a, b) => b.v > a.v ? b : a);   // najstroze prema sukobu
+      if (p2.v >= SUKOB_ODNOS * z.v) par.push({niza: z, visa: p2});
+    }
+    if (zvanicniSvi.length >= 2) {
+      const mx = zvanicniSvi.reduce((a, b) => b.v > a.v ? b : a);
+      const mn = zvanicniSvi.reduce((a, b) => b.v < a.v ? b : a);
+      if (mx.v >= SUKOB_ODNOS * mn.v) par.push({niza: mn, visa: mx});
+    }
+    // Vrednost 0 nikad ne ulazi u ove nizove (nula je "nema cekanja", pa ide u
+    // kratkoZvanicno), tako da mnozenje ne moze da uporedi nista sa nistom.
+    const sukob = par.filter(x => x.visa.v >= BA_PROVERA_MIN)
+                     .sort((a, b) => (b.visa.v / b.niza.v) - (a.visa.v / a.niza.v))[0];
+    if (sukob) {
+      // NEMA `v`. Da postoji, svaki prikaz bi ga ispisao kao naslov i time
+      // proglasio pobednika - a cela poenta je da pobednika nema.
+      return {stanje: "sukob", niza: sukob.niza, visa: sukob.visa,
+              kolona, dugaKolona, ttMin};
+    }
+  }
+
   // 1. Osporena ekstremna prijava, a nema zvanicnog izvora da preuzme:
   //    ne izmisljamo broj, upucujemo na kameru. TomTom OVDE NE PREUZIMA NASLOV.
   if (baOsporen != null && !zvanicniPostoji)
@@ -154,9 +217,9 @@ function procena(c, dirKey){
 
 // Radi i u browseru (<script src>) i u Node-u (testovi, generator).
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { procena, NO_QUEUE_MAX, AMSS_NAJNIZA_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN };
+  module.exports = { procena, NO_QUEUE_MAX, AMSS_NAJNIZA_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN, SUKOB_ODNOS };
 }
 if (typeof window !== "undefined") {
-  window.GasolinaWait = { procena, NO_QUEUE_MAX, AMSS_NAJNIZA_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN };
+  window.GasolinaWait = { procena, NO_QUEUE_MAX, AMSS_NAJNIZA_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN, SUKOB_ODNOS };
 }
 })();
