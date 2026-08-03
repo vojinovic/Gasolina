@@ -118,6 +118,13 @@
   .cmp-banner + .cmp-banner{margin-top:6px}
   .cmp-banner.cmp-hist{margin-top:6px}
   .cmp-hist .cmp-ograda{display:block;margin-top:3px;color:var(--faint);font-size:11px}
+  /* Dva puna banera jedan ispod drugog prave osecaj guzve pre nego sto se vidi
+     ijedna kartica. Ziv podatak ostaje otvoren, istorijski se sklapa u red. */
+  .cmp-hist{padding:8px 12px}
+  .cmp-sum{list-style:none;cursor:pointer;color:var(--dim);font-size:12px}
+  .cmp-sum::-webkit-details-marker{display:none}
+  .cmp-hist[open] .cmp-sum{color:var(--fuel);margin-bottom:6px}
+  .cmp-hist-body{font-size:13px}
   .cmp-banner b{font-weight:700}
   .cmp-banner .cmp-fast{color:var(--ok)}
 
@@ -257,6 +264,14 @@
      the buttons' horizontal padding are tightened. Font stays 12px and the 9px
      vertical padding keeps the height at 35px - the touch target is untouched. */
   .share-row{display:flex;align-items:center;gap:4px;padding:0 12px 14px;flex-wrap:wrap}
+  .share-wrap{padding:0 12px 12px}
+  .share-wrap summary{list-style:none;cursor:pointer;display:inline-block;
+    font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--dim);
+    border:1px solid var(--line);border-radius:8px;padding:7px 12px}
+  .share-wrap summary::-webkit-details-marker{display:none}
+  .share-wrap[open] summary{color:var(--fuel);border-color:var(--fuel);margin-bottom:8px}
+  .share-wrap[open]{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+  .share-wrap[open] summary{flex:0 0 100%}
   .share-label{font-size:11px;color:var(--faint);font-family:"JetBrains Mono",monospace;margin-right:0}
   .share-btn{
     font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--dim);
@@ -863,13 +878,14 @@ function cardHTML(c){
     </div>`}
     ${queueRow(c)}
     ${sourcesDetails(c)}
-    <div class="share-row">
-      <span class="share-label">Share:</span>
+    <!-- Cetiri dugmeta na svakoj od trinaest kartica su zauzimala ceo red
+         a koriste se retko. Sklopljena su u jedno; sadrzaj je isti. -->
+    <details class="share-wrap"><summary class="share-sum">Share</summary>
       <button class="share-btn" type="button" onclick="doShareBorder('viber','${c.id}')">Viber</button>
       <button class="share-btn" type="button" onclick="doShareBorder('whatsapp','${c.id}')">WhatsApp</button>
       <button class="share-btn" type="button" onclick="doShareBorder('facebook','${c.id}')">Facebook</button>
       <button class="share-btn" type="button" onclick="doShareBorder('copy','${c.id}', this)">Copy</button>
-    </div>
+    </details>
   </article>`;
 }
 
@@ -916,7 +932,9 @@ async function renderHistory(){
       const u = p.smerovi && p.smerovi.ulaz, i = p.smerovi && p.smerovi.izlaz;
       if(!u || !i) return "";
       return `
-      <div class="cmp-banner cmp-hist">
+      <details class="cmp-banner cmp-hist">
+        <summary class="cmp-sum">\uD83D\uDCC5 Horgoš or Kelebija — historical comparison</summary>
+        <div class="cmp-hist-body">
         \uD83D\uDCC5 <b>${B} or ${A}?</b> Over ${period(p.period_od, p.period_do)},
         ${A} was faster on <b>${u.dana_a} of ${p.dana}</b> days entering Serbia and
         <b>${i.dana_a} of ${p.dana}</b> days leaving.
