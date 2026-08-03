@@ -225,7 +225,13 @@
 
   /* wait strip */
   .wait{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:10px}
-  .wcell{background:var(--panel);padding:11px 13px}
+  /* Celija je od 03.08.2026 LINK ka stranici prelaza za taj smer (red sa
+     tabovima je uklonjen jer je radio isto sto i klik na sliku). Mora da se vidi
+     da je klikabilna, ali ne sme da vice - brojka ostaje glavna stvar. */
+  .wcell{background:var(--panel);padding:11px 13px;display:block;color:inherit;
+         text-decoration:none;transition:background .12s}
+  .wcell:hover,.wcell:focus-visible{background:rgba(255,255,255,.035)}
+  .wcell:focus-visible{outline:2px solid var(--fuel);outline-offset:-2px}
   .wlabel{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:6px}
   .wlabel .dir{color:var(--fuel)}
   .wmin{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:24px;margin:3px 0 1px;line-height:1}
@@ -688,6 +694,13 @@ function smerLabel(c, dirKey){
                       "mk-opsto":"makedonska", ba:"vozači", user:"vozači"};
   const srcKratko = k => SRC_KRATKO[k] || srcNaziv(k);
 
+/** Indeks kamere za dati smer, za link sa celije. Prazno kad kamere nema -
+ *  link i dalje vodi na stranicu prelaza, samo bez izbora kamere. */
+function feedZa(c, dir){
+  const i = (c.feeds||[]).findIndex(f => f.src && f.dir === (dir === "ulaz" ? "in" : "out"));
+  return i >= 0 ? `&feed=${i}` : "";
+}
+
 function waitCell(label,dirKey,c){
   const eff = effective(c, dirKey);
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
@@ -763,12 +776,13 @@ function waitCell(label,dirKey,c){
     <!-- data-smer nosi smer do testa: on proverava da "proveri kameru" stoji
          samo tamo gde kamera za TAJ smer postoji. Bez ovoga bi test morao da
          pogadja po redosledu celija, sto prvo premestanje obori. -->
-    <div class="wcell" data-smer="${dirKey}">
+    <a class="wcell" data-smer="${dirKey}" href="granica-${c.id}.html?play=1${feedZa(c, dirKey)}"
+       onclick="track('celija_klik', {prelaz:'${c.id}', smer:'${dirKey}'})">
       <div class="wlabel"><span class="dir">${arrow}</span> ${label}</div>
       <div class="wmin" style="color:${boja}">${big}</div>
       ${note}
       <div class="wbar"><i style="width:${pct}%;background:${boja}"></i></div>
-    </div>`;
+    </a>`;
 }
 
 function waitChips(c){
@@ -801,10 +815,13 @@ function cardHTML(c){
   const orderedFeeds = c.feeds
     .map((f,i)=>({f, i}))
     .sort((a,b)=> (a.f.dir==="out"?0:1) - (b.f.dir==="out"?0:1));
-  const tabs = c.feeds.length>1 && hasVideo
-    ? `<div class="tabs" role="tablist">${orderedFeeds.map(({f,i},pos)=>
-        `<button class="tab" role="tab" data-i="${i}" aria-selected="${pos===0}">${f.label}</button>`).join("")}</div>`
-    : "";
+  // RED SA TABOVIMA JE UKLONJEN 03.08.2026. Nije menjao nista na ovoj stranici:
+  // svaki tab je bio LINK ka granica-<id>.html sa izabranom kamerom, dakle isto
+  // sto radi i klik na sliku iznad. Presevo je zbog toga imalo cetiri velika
+  // dugmeta (Izlaz/Ulaz x AMSS/MUP) pre nego sto se vidi ijedna brojka.
+  // Sada su SAME CELIJE sa cekanjem linkovi, svaka na svoj smer - covek bira
+  // smer, a kameru tek na stranici prelaza. Jedan red manje na sedam kartica.
+
 
   let paneInner;
   if(hasVideo){
@@ -861,7 +878,6 @@ function cardHTML(c){
     </div>
 
     <div class="pane">${paneInner}${waitChips(c)}</div>
-    ${tabs}
 
     ${c.noWait
       ? ((c.mk||c.here) ? `` : `<div class="nowait">Granica ${c.from}\u2013${c.to}. Vreme cekanja se ovde ne prati; iskoristi kameru iznad.</div>`)
