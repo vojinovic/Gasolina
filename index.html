@@ -1587,9 +1587,10 @@
         const bezProcene = (eff.stanje === 'nema' && eff.amss30Only)
           ? ' &middot; AMSS prikazuje oko 30 min, ne racunamo to kao procenu' : '';
         // Sukob izvora: naslov nosi obe brojke, a ovaj red kaze CIJE su.
+        // Naslov vec nosi obe brojke; ovde stoji cije su i sta covek da uradi.
         const sporno = (eff.stanje === 'sukob')
-          ? ` &middot; izvori se ne slazu: ${SRC_NAZIV[eff.niza.src] || eff.niza.src} ${bMin(eff.niza.v)}`
-            + ` naspram ${SRC_NAZIV[eff.visa.src] || eff.visa.src} ${bMin(eff.visa.v)}` : '';
+          ? ` &middot; izvori se ne slazu: ${SRC_NAZIV[eff.niza.src] || eff.niza.src}`
+            + ` \u2194 ${SRC_NAZIV[eff.visa.src] || eff.visa.src} &middot; planiraj vecu rezervu` : '';
         const extra = eff.here ? ` &middot; HERE: ${eff.here.category}` : '';
         return `
           <div class="rb-wait">
