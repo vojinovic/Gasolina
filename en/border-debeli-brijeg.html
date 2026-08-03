@@ -335,7 +335,8 @@
               .replace("{a_src}", ime(e.niza.src)).replace("{a}", dur(e.niza.v))
               .replace("{b_src}", ime(e.visa.src)).replace("{b}", dur(e.visa.v));
             return `<div class="wval" style="font-size:15px;line-height:1.25">the data disagrees</div>` +
-                   small(par + " " + kolona.charAt(0).toUpperCase() + kolona.slice(1) + kam);
+                   small(par + " " + kolona.charAt(0).toUpperCase() + kolona.slice(1) +
+                         " The estimates cannot be reconciled with any confidence." + kam);
           }
           case "proveri":
             
