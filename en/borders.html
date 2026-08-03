@@ -712,9 +712,22 @@ function waitCell(label,dirKey,c){
       note = `<div class="wsrc">` + `one driver reports {v}, measurement does not confirm it`.replace("{v}", fmtMin(eff.baOsporen)) + `</div>`;
       break;
     default:
+      // AMSS's EXACTLY 30 is not a measurement but the lowest figure they ever
+      // publish: on 02.08.2026 every quiet crossing (Ljuba, Neštin, Vrška Čuka,
+      // Bajina Bašta) read "oko 30 minuta" in both directions, and those have
+      // nowhere near half an hour of waiting. So it never becomes the estimate.
+      //
+      // The earlier wording, "AMSS reports no delay", claimed MORE than we may:
+      // AMSS did not say there is no delay, it published its floor value, which
+      // can equally mean the figure was never refreshed.
+      //
+      // "check the camera" only when a camera for that direction exists. Prohor
+      // Pčinjski has none, yet on 03.08.2026 the page still pointed at one.
       boja = "var(--faint)";
-      big  = eff.samAmss ? `<span class="wq">no data</span>` : '-';
-      note = eff.samAmss ? `<div class="wsrc">AMSS reports no delay — check the camera</div>` : `<div class="wcat">passenger vehicles</div>`;
+      big  = eff.samAmss ? `<span class="wshort">no reliable estimate</span>` : '-';
+      note = eff.samAmss
+        ? `<div class="wsrc">AMSS shows about 30 min${imaKameruZa(c, dirKey) ? ' &middot; check the camera' : ''}</div>`
+        : `<div class="wcat">passenger vehicles</div>`;
   }
   const pct = (eff.v!=null) ? waitStatus(eff.v).pct : (eff.dugaKolona ? 55 : 8);
   return `
