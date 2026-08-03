@@ -322,7 +322,16 @@
             return `<div class="wval">${(FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out')) ? "check the camera" : "unconfirmed"}</div>` +
                    small("one driver reports {v}, measurement does not confirm it".replace("{v}", dur(e.baOsporen)));
           default:
-            return `<div class="wval">no data</div>` + (e.samAmss ? small("AMSS reports no delay — check the camera above") : "");
+            
+            
+            
+            
+            
+            if (!e.samAmss) return `<div class="wval">no data</div>`;
+            return `<div class="wval" style="font-size:15px;line-height:1.25">no reliable estimate</div>` +
+                   small("AMSS shows about 30 min" +
+                         ((FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out'))
+                          ? " · check the camera" : ""));
         }
       };
       box.innerHTML = `

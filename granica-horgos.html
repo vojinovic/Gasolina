@@ -326,7 +326,16 @@
             return `<div class="wval">${(FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out')) ? "proveri kameru" : "nepotvrđeno"}</div>` +
                    small("jedan vozač prijavljuje {v}, merenje to ne potvrđuje".replace("{v}", dur(e.baOsporen)));
           default:
-            return `<div class="wval">nema podataka</div>` + (e.samAmss ? small("AMSS ne javlja zadržavanje — proveri kameru iznad") : "");
+            
+            
+            
+            
+            
+            if (!e.samAmss) return `<div class="wval">nema podataka</div>`;
+            return `<div class="wval" style="font-size:15px;line-height:1.25">nema pouzdane procene</div>` +
+                   small("AMSS prikazuje oko 30 min" +
+                         ((FEEDS||[]).some(x => x.src && x.dir === (e._d === 'ulaz' ? 'in' : 'out'))
+                          ? " · proveri kameru" : ""));
         }
       };
       box.innerHTML = `
