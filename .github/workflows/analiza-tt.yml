@@ -1,0 +1,319 @@
+####################################################################
+# JEDNOKRATNA ANALIZA: da li TomTom koridori nesto mere?
+#
+# CISTO CITANJE. Ne pise nijedan fajl, ne commit-uje, ne dira sajt,
+# ne zove nijedan spoljni servis, ne trosi TomTom kvotu. Cita git
+# istoriju granice.json u ovom repou i ispisuje dve tabele u log.
+#
+# Pokrece se RUCNO (Actions -> Analiza TomTom koridora -> Run workflow).
+# Nema rasporeda. Kad odgovori na pitanje, obrise se.
+####################################################################
+name: Analiza TomTom koridora
+
+on:
+  workflow_dispatch:
+    inputs:
+      granica:
+        description: "Datum koji deli dva prozora (YYYY-MM-DD). Ispisuju se OBA."
+        required: true
+        default: "2026-08-01"
+
+permissions:
+  contents: read
+
+jobs:
+  analiza:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preuzmi repo SA CELOM istorijom
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0        # bez ovoga nema istorije, samo poslednji commit
+
+      - name: Izmeri
+        env:
+          GRANICA: ${{ inputs.granica }}
+        run: |
+          python3 - <<'PY'
+          import os, re, json, subprocess, collections
+
+          GRANICA = os.environ["GRANICA"]
+
+          # Kad neki DRUGI izvor javlja bar ovoliko minuta, a TomTom i dalje
+          # vraca nulu - to je najjaci pokazatelj da koridor ne meri. Prag je
+          # namerno visok: 30 je AMSS-ova podrazumevana vrednost i ne znaci nista.
+          DRUGI_GUZVA_MIN = 60
+
+          # --- pragovi iz wait-logic.v1.js: citaju se, ne prepisuju ----------
+          wl = open("wait-logic.v1.js", encoding="utf-8").read()
+          def prag(ime, podr):
+              m = re.search(rf'const\s+{ime}\s*=\s*(\d+)', wl)
+              return int(m.group(1)) if m else podr
+          TT_MIRNO   = prag("TT_MIRNO_MIN", 5)
+          QUEUE_HARD = prag("QUEUE_HARD_M", 200)
+          BA_PROVERA = prag("BA_PROVERA_MIN", 120)
+
+          def git(*a):
+              return subprocess.run(["git", *a], capture_output=True,
+                                    text=True, check=True).stdout
+
+          # --- ISTORIJSKA konfiguracija koridora ----------------------------
+          # Dojran je rekalibrisan 01.08. Ako bi se stari snapshot merio
+          # DANASNJIM borders-data.js, stari rezultat bi bio pripisan novom
+          # koridoru.
+          #
+          # Verzija se bira ANCESTRY-jem, ne poredjenjem datuma: uzima se blob
+          # `<sha>:borders-data.js`, dakle onaj koji stoji u stablu BAS TOG
+          # commit-a. Poredjenje po vremenu bi omasilo kod naknadno gurnutog
+          # commita, rebase-a ili pomerene vremenske zone.
+          def konfig_iz(text):
+              d = {}
+              for chunk in text.split('id: "')[1:]:
+                  cid = chunk.split('"')[0]
+                  telo = chunk[:chunk.find("wait:") + 1] if "wait:" in chunk else chunk
+                  d[(cid, "izlaz")] = bool(re.search(r'mapPB:\s*\[', telo))
+                  d[(cid, "ulaz")]  = bool(re.search(r'mapPBin:\s*\[', telo))
+              return d
+
+          # --- snapshotovi ---------------------------------------------------
+          # `git log -- granice.json` vraca SAMO commitove u kojima se taj fajl
+          # promenio, pa commitovi koji diraju druge fajlove ne ulaze.
+          # NE koristi `--since`: granica dana zavisi od vremenske zone commit-a
+          # i tiho odsece ceo prvi dan. Filtriranje ide nize, gde se vidi.
+          commits = [l.split("\t") for l in
+                     git("log", "--format=%H\t%cI", "--", "granice.json").splitlines() if l]
+          commits.reverse()   # hronoloski
+          print(f"Commitova koji menjaju granice.json: {len(commits)}")
+
+          # citanje kroz `cat-file`: dva duga procesa umesto hiljada poziva.
+          # --batch-check daje samo OID, pa se borders-data.js parsira jednom
+          # po JEDINSTVENOM sadrzaju, a ne jednom po snapshotu.
+          proc = subprocess.Popen(["git", "cat-file", "--batch"],
+                                  stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+          chk = subprocess.Popen(["git", "cat-file", "--batch-check"],
+                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+
+          def blob(ref):
+              proc.stdin.write((ref + "\n").encode()); proc.stdin.flush()
+              head = proc.stdout.readline().decode().split()
+              if len(head) < 3:
+                  return None
+              n = int(head[2]); data = proc.stdout.read(n); proc.stdout.read(1)
+              return data
+
+          def oid(ref):
+              chk.stdin.write((ref + "\n").encode()); chk.stdin.flush()
+              head = chk.stdout.readline().decode().split()
+              return head[0] if len(head) >= 3 else None
+
+          kfg_kes = {}          # oid -> konfig
+          kfg_upotreba = {}     # oid -> [prvi_ts, poslednji_ts, koliko_snapshotova]
+          BEZ_FAJLA = "(borders-data.js ne postoji u tom commitu)"
+
+          def konfig_za_commit(sha, ts):
+              o = oid(f"{sha}:borders-data.js") or BEZ_FAJLA
+              if o not in kfg_kes:
+                  raw = blob(o) if o != BEZ_FAJLA else None
+                  kfg_kes[o] = konfig_iz(raw.decode("utf-8", "replace")) if raw else {}
+              u = kfg_upotreba.setdefault(o, [ts, ts, 0])
+              u[0] = min(u[0], ts); u[1] = max(u[1], ts); u[2] += 1
+              return kfg_kes[o]
+
+          # --- akumulatori ---------------------------------------------------
+          KAT = ["corridor_undefined", "request_unavailable",
+                 "zero_no_queue_field", "zero_explicit_queue", "positive_signal"]
+
+          def prazno():
+              d = {k: 0 for k in KAT}
+              d.update(snap=0, potisnute=0, zero_dok_guzva=0, max_tt=0, max_kol=0,
+                       niz=0, max_niz=0, prvi_poz=None, dani=set(), primeri=[],
+                       primeri_guzva=[])
+              return d
+
+          prozori = {"SVE": collections.defaultdict(prazno),
+                     f"OD {GRANICA}": collections.defaultdict(prazno)}
+          brojac  = {"SVE": 0, f"OD {GRANICA}": 0}
+          opseg   = {}
+
+          videni = set()      # dedup po scraped_at
+          duplikata = 0
+          zapisi  = []        # (sa, cid, smer, kat, v, kol, drugi, velika, jeNula, mirno)
+          snapovi = []        # scraped_at jedinstvenih snapshotova
+
+          for sha, ts in commits:
+              raw = blob(f"{sha}:granice.json")
+              if raw is None:
+                  continue
+              try:
+                  snap = json.loads(raw.decode("utf-8"))
+              except Exception:
+                  continue
+              sa = snap.get("scraped_at") or ts
+              if sa in videni:
+                  duplikata += 1
+                  continue
+              videni.add(sa)
+
+              kfg = konfig_za_commit(sha, ts)
+              snapovi.append(sa)
+
+              for cid, c in (snap.get("crossings") or {}).items():
+                  tt  = c.get("tt") or {}
+                  ba  = c.get("ba") or {}
+                  usr = c.get("user") or {}
+                  hu  = c.get("hu") or {}
+                  mk  = c.get("mk") or {}
+                  pu  = c.get("putnicka") or {}
+                  for smer in ("izlaz", "ulaz"):
+                      v   = tt.get(smer)
+                      kol = tt.get(f"{smer}_kolona_m")
+
+                      if v is None:
+                          kat = ("corridor_undefined" if not kfg.get((cid, smer), False)
+                                 else "request_unavailable")
+                      elif v > 0 or (kol or 0) > 0:
+                          kat = "positive_signal"
+                      elif kol == 0:
+                          kat = "zero_explicit_queue"
+                      else:
+                          kat = "zero_no_queue_field"
+
+                      jeNula = kat.startswith("zero_")
+                      duga  = (kol is not None and kol >= QUEUE_HARD)
+                      mirno = (v is not None and v <= TT_MIRNO and not duga)
+
+                      # najveca vrednost koju javlja bilo koji DRUGI izvor
+                      kand = [pu.get(smer), hu.get(smer), ba.get(smer), usr.get(smer)]
+                      if mk:
+                          kand += [mk.get("vlez") if smer == "izlaz" else mk.get("izlez"),
+                                   mk.get("opsto")]
+                      drugi = max([x for x in kand if isinstance(x, int)], default=0)
+
+                      velika = max([x for x in (ba.get(smer), usr.get(smer))
+                                    if isinstance(x, int)], default=0)
+
+                      zapisi.append((sa, cid, smer, kat, v, kol, drugi,
+                                     velika, jeNula, mirno))
+
+          proc.stdin.close(); chk.stdin.close()
+
+          # HRONOLOSKI PO scraped_at, ne po redosledu iz `git log`.
+          # `git log` sortira po datumu COMMIT-a; unazad datiran ili rebase-ovan
+          # commit bi zato usao na pogresno mesto, a `nizNul` (najduzi niz nula)
+          # i `prviPoz` (datum prvog pozitivnog signala) zavise od redosleda.
+          # scraped_at je trenutak kad su podaci stvarno preuzeti - jedini
+          # ispravan kljuc.
+          zapisi.sort(key=lambda z: z[0])
+          for sa in sorted(snapovi):
+              for w in (["SVE"] + ([f"OD {GRANICA}"] if sa[:10] >= GRANICA else [])):
+                  brojac[w] += 1
+                  o = opseg.setdefault(w, [sa, sa])
+                  o[0] = min(o[0], sa); o[1] = max(o[1], sa)
+
+          for (sa, cid, smer, kat, v, kol, drugi, velika, jeNula, mirno) in zapisi:
+              for w in (["SVE"] + ([f"OD {GRANICA}"] if sa[:10] >= GRANICA else [])):
+                  k = prozori[w][(cid, smer)]
+                  k["snap"] += 1
+                  k[kat] += 1
+                  if v:   k["max_tt"]  = max(k["max_tt"], v)
+                  if kol: k["max_kol"] = max(k["max_kol"], kol)
+
+                  if kat == "positive_signal":
+                      k["niz"] = 0
+                      if k["prvi_poz"] is None:
+                          k["prvi_poz"] = sa[:16]
+                  elif jeNula:
+                      k["niz"] += 1
+                      k["max_niz"] = max(k["max_niz"], k["niz"])
+
+                  if jeNula and drugi >= DRUGI_GUZVA_MIN:
+                      k["zero_dok_guzva"] += 1
+                      if len(k["primeri_guzva"]) < 3:
+                          k["primeri_guzva"].append(
+                              f"{sa[:16]} drugi izvor {drugi} min, TomTom {v} min / kolona {kol}")
+
+                  if mirno and velika >= BA_PROVERA:
+                      k["potisnute"] += 1
+                      k["dani"].add(sa[:10])
+                      if len(k["primeri"]) < 4:
+                          k["primeri"].append(
+                              f"{sa[:16]} prijava {velika} min potisnuta "
+                              f"(TomTom {v} min / kolona {kol})")
+
+          print(f"Jedinstvenih snapshotova (dedup po scraped_at): {len(videni)}"
+                f"   odbaceno duplikata: {duplikata}\n")
+
+          # Koje su verzije borders-data.js STVARNO koriscene. Ako Dojran
+          # dobija koridore 01.08, ovde se mora videti prelaz sa jedne verzije
+          # na drugu bas u tom trenutku.
+          print("VERZIJE borders-data.js UZETE IZ STABLA SNAPSHOT COMMITA")
+          print("-" * 116)
+          for o, (prvi, posl, n) in sorted(kfg_upotreba.items(), key=lambda x: x[1][0]):
+              k = kfg_kes[o]
+              def_kor = sorted(f"{c}/{s}" for (c, s), v in k.items() if v)
+              print(f"  {o[:12]}  snapshotova: {n:>5}  {prvi[:16]} -> {posl[:16]}"
+                    f"  definisanih koridora: {len(def_kor)}")
+              print(f"      {', '.join(def_kor) if def_kor else '(nijedan)'}")
+          print()
+
+          # --- ispis ---------------------------------------------------------
+          H = "{:<26} {:>5} {:>6} {:>6} {:>6} {:>6} {:>5} {:>6} {:>7} {:>6} {:>7}"
+          for w, st in prozori.items():
+              o = opseg.get(w)
+              print("\n" + "=" * 116)
+              print(f"PROZOR: {w}    snapshotova: {brojac[w]}"
+                    + (f"    {o[0][:16]} -> {o[1][:16]}" if o else "    (prazno)"))
+              print("=" * 116)
+              if not brojac[w]:
+                  print("Nema nijednog snapshota u ovom prozoru.")
+                  continue
+              print(H.format("koridor", "snap", "undef", "unavl", "0/nema",
+                             "0/exp", "poz", "potis", "0uzGuzv", "nizNul", "prviPoz"))
+              print("-" * 116)
+              for (cid, smer), k in sorted(st.items(),
+                      key=lambda x: (-x[1]["potisnute"], -x[1]["zero_dok_guzva"], x[0])):
+                  print(H.format(f"{cid} / {smer}", k["snap"],
+                                 k["corridor_undefined"], k["request_unavailable"],
+                                 k["zero_no_queue_field"], k["zero_explicit_queue"],
+                                 k["positive_signal"], k["potisnute"],
+                                 k["zero_dok_guzva"], k["max_niz"],
+                                 (k["prvi_poz"] or "-")[:10]))
+
+              print("\n--- POTISNUTE VELIKE PRIJAVE ---")
+              ima = False
+              for (cid, smer), k in sorted(st.items()):
+                  if k["potisnute"]:
+                      ima = True
+                      print(f"\n{cid} / {smer}: {k['potisnute']} celija kroz {len(k['dani'])} dana")
+                      for p in k["primeri"]:
+                          print("   " + p)
+              if not ima:
+                  print(f"Nijedna. Merenje nije potisnulo nijednu prijavu >= {BA_PROVERA} min.")
+
+              print("\n--- NULA DOK DRUGI IZVOR JAVLJA GUZVU (>= "
+                    f"{DRUGI_GUZVA_MIN} min) ---")
+              print("Ovo je najjaci pokazatelj mrtvog koridora: nula u trenutku")
+              print("kada neko drugi javlja ozbiljno cekanje.")
+              ima = False
+              for (cid, smer), k in sorted(st.items(), key=lambda x: -x[1]["zero_dok_guzva"]):
+                  if k["zero_dok_guzva"]:
+                      ima = True
+                      print(f"\n{cid} / {smer}: {k['zero_dok_guzva']} puta")
+                      for p in k["primeri_guzva"]:
+                          print("   " + p)
+              if not ima:
+                  print("Nijedan koridor nije vratio nulu dok drugi izvor javlja guzvu.")
+
+              print("\n--- KORIDORI BEZ IJEDNOG POZITIVNOG SIGNALA ---")
+              for (cid, smer), k in sorted(st.items()):
+                  merenih = (k["zero_no_queue_field"] + k["zero_explicit_queue"]
+                             + k["positive_signal"])
+                  if merenih and k["positive_signal"] == 0:
+                      print(f"  {cid} / {smer}: {merenih} uspesnih odgovora, svi nula. "
+                            f"Potiskivao bi svaku veliku prijavu.")
+                  elif not merenih:
+                      zasto = ("koridor nije definisan" if k["corridor_undefined"]
+                               else "TomTom nikad nije odgovorio")
+                      print(f"  {cid} / {smer}: 0 uspesnih odgovora ({zasto}). "
+                            f"Bezopasno - null ne ispunjava uslov 'mirno'.")
+          PY
