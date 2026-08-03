@@ -745,25 +745,38 @@ function waitCell(label,dirKey,c){
       boja = "var(--warn)"; big = `<span class="wq">kolona ${fmtKolona(eff.kolona, koridorM(c, dirKey))}</span>`;
       note = `<div class="wsrc">${eff.v!=null ? `vozači prijavljuju ` + fmtMin(eff.v) : `izvor: mapa saobraćaja`}</div>`;
       break;
-    case "sukob":
-      // Dve procene ukupnog cekanja koje se razilaze vise od tri puta. Sajt nema
-      // cime da presudi, pa ne bira pobednika: pokazuje OBE i kaze da se ne slazu.
-      // Boja ide po VECOJ vrednosti - konzervativno, da se guzva ne umanji.
-      // Strelica u oba smera, ne crta: crta bi znacila raspon, a mi ne tvrdimo
-      // da je cekanje negde IZMEDJU te dve brojke. To su suprotstavljene tvrdnje.
-      // JEDNA velika poruka, jedna kratka dopuna - isti oblik kao svaka druga
-      // celija ("45 min" + "izvor: granicna policija"). Prva verzija je imala
-      // pet redova i kartica je izgledala kao dijagnostika algoritma.
-      // Ko je sta rekao i sta merenje kaze stoji u "Svi izvori" i na landingu.
-      // Isti oblik kao "prijavljeno" na Gradini: mala oznaka stanja IZNAD,
-      // krupna brojka ispod. Prva verzija je imala obrnuto - rec "NEIZVESNO"
-      // krupno a brojke sitno - pa se ono zbog cega covek dolazi videlo tek
-      // u drugom redu. Dve kartice jedna do druge moraju da imaju istu
-      // gramatiku, inace se pregled ne skenira nego cita.
-      boja = waitStatus(eff.visa.v).c;
-      big  = `<span class="wpre">neizvesno</span> <span class="wsuk">${fmtMin(eff.niza.v)} \u2194 ${fmtMin(eff.visa.v)}</span>`;
-      note = `<div class="wsrc">izvori se ne slažu &middot; ${srcKratko(eff.niza.src)} \u2194 ${srcKratko(eff.visa.src)}</div>`;
+    case "sukob": {
+      // TRI OBLIKA. Zajednicko im je da PRIJAVLJENO TRAJANJE nikad ne postaje
+      // krupna brojka - ni kad merenje pokazuje dugu kolonu.
+      //
+      // Ime govori sta merenje stvarno potvrdjuje: guzvu, NE prijavu. Da se
+      // zove `prijavaPotvrdjena`, prvo sledece citanje bi od "potvrdjena guzva"
+      // napravilo "potvrdjenih 4h 30m" - a kolona od 850 m kaze da red postoji,
+      // ne koliko se u njemu stoji. TomTom vidi samo vozila koja se KRECU.
+      const guzvaPotvrdjena = eff.dugaKolona;
+      const odVozaca = (eff.visa.src === "ba" || eff.visa.src === "user");
+
+      if (odVozaca && guzvaPotvrdjena) {
+        // Kategorija je potvrdjena merenjem, trajanje nije. Crveno sme.
+        boja = "var(--bad)";
+        big  = `<span class="wpre">velika gužva</span> ${fmtMin(eff.niza.v)}`;
+        note = `<div class="wsrc">${srcKratko(eff.niza.src)} &middot; prijavljeno znatno duže</div>`
+             + `<div class="wcat">kolona ${fmtKolona(eff.kolona, koridorM(c, dirKey))}</div>`;
+      } else if (odVozaca) {
+        // Nikakve potvrde. Narandzasto: crveno bi tvrdilo guzvu koju niko nije
+        // potvrdio, zeleno bi je poreklo.
+        boja = "var(--warn)";
+        big  = `<span class="wpre">neizvesno</span> ${fmtMin(eff.niza.v)}`;
+        note = `<div class="wsrc">${srcKratko(eff.niza.src)} &middot; prijavljeno znatno duže, bez potvrde</div>`;
+      } else {
+        // Dva ZVANICNA izvora se spore. Obe procene su iste vrste i iste tezine,
+        // pa jedino ovde obe brojke stoje jedna do druge.
+        boja = waitStatus(eff.visa.v).c;
+        big  = `<span class="wpre">neizvesno</span> <span class="wsuk">${fmtMin(eff.niza.v)} \u2194 ${fmtMin(eff.visa.v)}</span>`;
+        note = `<div class="wsrc">izvori se ne slažu &middot; ${srcKratko(eff.niza.src)} \u2194 ${srcKratko(eff.visa.src)}</div>`;
+      }
       break;
+    }
     case "proveri":
       boja = "var(--dim)";
       big = imaKameruZa(c, dirKey)
@@ -817,7 +830,15 @@ function waitChips(c){
   // U sukobu nema `v` (nema pobednika), ali cip mora da postoji - inace bi
   // kartica sa neslaganjem izgledala mirnije od one sa brojkom. Uzima se VECA
   // vrednost, uz znak da je sporna.
-  const val = e => e.v != null ? e.v : (e.visa ? e.visa.v : null);
+  // U sukobu cip nosi ISTU vrednost koju nosi i naslov celije: kad je veca
+  // vrednost nepotvrdjena prijava, i cip mora da pokaze zvanicni broj. Inace bi
+  // kartica u vrhu reklamirala 7h koje odmah ispod odbija da napise.
+  const val = e => {
+    if (e.v != null) return e.v;
+    if (!e.visa) return null;
+    const odVozaca = (e.visa.src === "ba" || e.visa.src === "user");
+    return odVozaca ? e.niza.v : e.visa.v;
+  };
   if(val(u)==null && val(i)==null) return "";
   const chip = (arrow, e) => val(e)==null ? "" :
     `<span class="wchip" style="color:${waitStatus(val(e)).c}">${arrow}${val(e)>=60?Math.round(val(e)/60)+"h":val(e)}${e.stanje==="sukob"?"?":""}</span>`;
