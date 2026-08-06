@@ -1,44 +1,62 @@
 User-agent: *
 Allow: /
-
-# Sirove datoteke sa podacima nisu za automatsko preuzimanje. Stranice ostaju
-# otvorene pretrazivacima - ovo ne dira SEO. Uslovi: /LICENSE
-Disallow: /granice.json
-Disallow: /granice_here.json
-Disallow: /fuel_prices.json
-Disallow: /pumpe.json
-Disallow: /istorija.csv
-Disallow: /thumbs/
+# NE VRACATI Disallow za .json, .csv i /thumbs/  (obrisano 06.08.2026)
+#
+# Do 06.08.2026 su ovde stajale zabrane za granice.json, granice_here.json,
+# fuel_prices.json, pumpe.json, istorija.csv i /thumbs/, uz komentar da to
+# "ne dira SEO". Taj komentar je bio netacan, i to je bio najskuplji red na
+# celom sajtu.
+#
+# Googlebot IZVRSAVA JavaScript, ali postuje robots.txt i za PODRESURSE.
+# Ceo sadrzaj Gasoline se ucitava iz tih fajlova:
+#     granice.html, en/borders.html, index.html i 26 landing stranica
+#         -> fetch("granice.json")        cekanja na granici
+#     index.html
+#         -> fetch("fuel_prices.json")    cene goriva
+#         -> fetch("pumpe.json")          pumpe
+#     istorija.html
+#         -> fetch("istorija.csv")        istorija cena
+#     sve kartice sa kamerom
+#         -> <img src="thumbs/...">       slike sa kamera
+#
+# Dok su bili zabranjeni, Google je renderovao prazan sablon: bez ijednog
+# broja, bez ijedne cene, bez ijedne slike. Na granice.html i en/borders.html
+# je fetch padao u catch i ispisivao "Demo prototip - brojke su ilustrativne".
+# 06.08.2026 je AdSense odbio sajt sa obrazlozenjem "Low value content".
+#
+# Namera je bila da se sirovi podaci ne skidaju automatski. Ali robots.txt
+# nikoga ne zaustavlja - postovanje je dobrovoljno, a ko hoce da skida podatke
+# ionako ne cita ovaj fajl. Jedini kome je zabrana stvarno radila bio je Google.
+# Zastita podataka ide kroz LICENSE i kroz Cloudflare, ne ovde.
+#
+# CI ovo cuva: engine/test-resursi.js izvlaci iz samih stranica svaki
+# fetch(".json"/".csv") i svaku putanju sa thumbs/, pa pada ako je ijedna
+# zabranjena. Provera je po prefiksu, pa i "Disallow: /granice" pada.
+#
+# Uslovi koriscenja podataka: /LICENSE
 
 # AI treneri i skupljaci sadrzaja. Postovanje je dobrovoljno, ali bez ovog
-# zapisa nema ni osnova za prigovor.
+# zapisa nema ni osnova za prigovor. Ovi blokovi NEMAJU veze sa renderovanjem
+# i smeju da ostanu - Googlebot (pretraga) i Google-Display-Ads-Bot (AdSense)
+# nisu medju njima.
 User-agent: GPTBot
 Disallow: /
-
 User-agent: CCBot
 Disallow: /
-
 User-agent: Google-Extended
 Disallow: /
-
 User-agent: anthropic-ai
 Disallow: /
-
 User-agent: ClaudeBot
 Disallow: /
-
 User-agent: PerplexityBot
 Disallow: /
-
 User-agent: Bytespider
 Disallow: /
-
 User-agent: Amazonbot
 Disallow: /
-
 User-agent: Applebot-Extended
 Disallow: /
-
 User-agent: meta-externalagent
 Disallow: /
 
