@@ -1142,7 +1142,7 @@ function setNote(live, scrapedAt){
     note.innerHTML=`<span class="ldot"></span><b>Uzivo</b>${when}`;
   } else {
     note.classList.add("demo");
-    note.innerHTML=`<span class="ldot"></span><b>Demo prototip</b> &middot; brojke su ilustrativne`;
+    note.innerHTML=`<span class="ldot"></span><b>Podaci trenutno nisu dostupni</b> &middot; pokusajte ponovo uskoro`;
   }
 }
 
@@ -1158,10 +1158,11 @@ document.addEventListener('click', function(e){
 }, true);
 
 async function init(){
-  let live=false, scrapedAt=null;
+  let live=false, scrapedAt=null, stigloJson=false;
   try{
     const res=await fetch("granice.json?cb="+Date.now());
     if(res.ok){
+      stigloJson=true;
       const data=await res.json();
       scrapedAt=data.scraped_at||null;
       const cr=data.crossings||{};
@@ -1180,7 +1181,21 @@ async function init(){
         cam.here = null;
       });
     }
-  }catch(e){ /* nema fajla, ostaju demo brojke */ }
+  }catch(e){ /* preuzimanje palo - obrada je odmah ispod */ }
+
+  // AKO PODACI NISU STIGLI, DEMO BROJKE NE SMEJU DA OSTANU (06.08.2026).
+  // `wait` u borders-data.js su rezervne, izmisljene vrednosti. Dok je fetch
+  // uspevao to se nije videlo, ali robots.txt je do 06.08. zabranjivao
+  // /granice.json SVAKOM crawler-u, pa je Googlebot renderovao stranicu bez
+  // podataka - i onda prikazivao BAS te izmisljene brojke, uz natpis
+  // "Demo prototip". Sajt koji tvrdi ono sto ne zna, i to bas pred onim ko
+  // ocenjuje da li je sajt zavrsen.
+  // Uslov je `stigloJson`, ne `live`: ako je granice.json stigao ali nijedan
+  // prelaz nema zvanicnu brojku, prijave vozaca i merenja su i dalje stvarna
+  // i ne smeju da se obrisu.
+  if(!stigloJson) CAMERAS.forEach(cam=>{
+    cam.wait=null; cam.hu=null; cam.mk=null; cam.ba=null; cam.tt=null; cam.here=null;
+  });
 
   try{
     const rh = await fetch("granice_here.json?cb="+Date.now());
