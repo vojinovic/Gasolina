@@ -1133,7 +1133,7 @@ function setNote(live, scrapedAt){
     note.innerHTML=`<span class="ldot"></span><b>Live</b>${when}`;
   } else {
     note.classList.add("demo");
-    note.innerHTML=`<span class="ldot"></span><b>Demo prototype</b> &middot; figures are illustrative`;
+    note.innerHTML=`<span class="ldot"></span><b>Data currently unavailable</b> &middot; please try again shortly`;
   }
 }
 
@@ -1149,10 +1149,11 @@ document.addEventListener('click', function(e){
 }, true);
 
 async function init(){
-  let live=false, scrapedAt=null;
+  let live=false, scrapedAt=null, stigloJson=false;
   try{
     const res=await fetch("../granice.json?cb="+Date.now());
     if(res.ok){
+      stigloJson=true;
       const data=await res.json();
       scrapedAt=data.scraped_at||null;
       const cr=data.crossings||{};
@@ -1171,7 +1172,21 @@ async function init(){
         cam.here = null;
       });
     }
-  }catch(e){ /* nema fajla, ostaju demo brojke */ }
+  }catch(e){ /* fetch failed - handled right below */ }
+
+  // IF THE DATA DID NOT ARRIVE, THE DEMO FIGURES MUST NOT REMAIN (06.08.2026).
+  // `wait` in borders-data.js holds invented fallback values. While the fetch
+  // worked this never showed, but until 06.08. robots.txt disallowed
+  // /granice.json for EVERY crawler, so Googlebot rendered the page without
+  // data - and then displayed exactly those invented numbers, under a
+  // "Demo prototype" label. A site asserting what it does not know, in front
+  // of the very party judging whether the site is finished.
+  // The guard is `stigloJson`, not `live`: if granice.json did arrive but no
+  // crossing carries an official figure, driver reports and measurements are
+  // still real and must not be wiped.
+  if(!stigloJson) CAMERAS.forEach(cam=>{
+    cam.wait=null; cam.hu=null; cam.mk=null; cam.ba=null; cam.tt=null; cam.here=null;
+  });
 
   try{
     const rh = await fetch("granice_here.json?cb="+Date.now());
