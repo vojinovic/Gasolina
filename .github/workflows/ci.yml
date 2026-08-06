@@ -60,6 +60,17 @@ jobs:
         if: steps.engine.outcome == 'success'
         run: node engine/test-wait-logic.js
 
+      # CETVRTI TEST. Ne gleda ni odluku ni prikaz nego STA CRAWLER MOZE DA
+      # UCITA. Do 06.08.2026 je robots.txt zabranjivao granice.json,
+      # fuel_prices.json, pumpe.json, istorija.csv i /thumbs/ svakom crawler-u.
+      # Googlebot izvrsava JavaScript ali postuje robots.txt i za podresurse,
+      # pa je renderovao prazan sablon - bez ijednog broja, cene i slike - i
+      # jos je citao natpis "Demo prototip". AdSense je 06.08. odbio sajt sa
+      # "Low value content". Sva tri prethodna testa su bila zelena.
+      - name: Kriticni resursi nisu zabranjeni crawler-ima (robots.txt)
+        if: steps.engine.outcome == 'success'
+        run: node engine/test-resursi.js
+
       # Dva testa cuvaju dve razlicite stvari i oba su potrebna:
       #   test-wait-logic.js  - PRAVILA (devet invarijanti, svaka iz incidenta): zasto
       #   test-wait-golden.js - PONASANJE (1.046 kombinacija iz arhiva): da se nista
