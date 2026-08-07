@@ -11,8 +11,8 @@
         "eur": 1.72
       },
       "diesel": {
-        "local": 226.0,
-        "eur": 1.93
+        "local": 228.0,
+        "eur": 1.94
       },
       "lpg": {
         "local": 105.4,
@@ -22,7 +22,7 @@
       "diesel_source": "nafta.hr",
       "petrol_source": "nafta.hr",
       "lpg_source": "nafta.hr",
-      "updated": "2026-08-07 14:12 UTC"
+      "updated": "2026-08-07 15:24 UTC"
     },
     {
       "name": "Croatia",
@@ -190,17 +190,17 @@
       "name": "Romania",
       "flag": "🇷🇴",
       "currency": "RON",
-      "fx_rate_eur": 5.2543,
+      "fx_rate_eur": 5.2525,
       "petrol95": {
         "local": 9.47,
         "eur": 1.803
       },
       "diesel": {
-        "local": 10.66,
+        "local": 10.65,
         "eur": 2.028
       },
       "lpg": null,
-      "updated": "2026-08-07 14:12 UTC"
+      "updated": "2026-08-07 15:24 UTC"
     },
     {
       "name": "Kosovo",
