@@ -190,17 +190,17 @@
       "name": "Romania",
       "flag": "🇷🇴",
       "currency": "RON",
-      "fx_rate_eur": 5.2525,
+      "fx_rate_eur": 4.98,
       "petrol95": {
-        "local": 9.47,
+        "local": 8.98,
         "eur": 1.803
       },
       "diesel": {
-        "local": 10.65,
+        "local": 10.1,
         "eur": 2.028
       },
       "lpg": null,
-      "updated": "2026-08-07 15:24 UTC"
+      "updated": "2026-08-07 18:10 UTC"
     },
     {
       "name": "Kosovo",
