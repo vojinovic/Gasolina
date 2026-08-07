@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-03",
+  "checked_at": "2026-08-07",
   "countries": [
     {
       "name": "Serbia",
@@ -221,15 +221,15 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.5,
-        "eur": 1.5
+        "local": 1.51,
+        "eur": 1.51
       },
       "diesel": {
-        "local": 1.52,
-        "eur": 1.52
+        "local": 1.55,
+        "eur": 1.55
       },
       "lpg": null,
-      "updated": "2026-08-01 09:00 UTC"
+      "updated": "2026-08-07 12:56 UTC"
     }
   ]
 }
