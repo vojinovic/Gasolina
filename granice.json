@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-07T21:45:11+00:00",
+  "scraped_at": "2026-08-07T22:42:47+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 50,
-        "ulaz": 10
+        "izlaz": 40,
+        "ulaz": 5
       },
       "tt": {
-        "izlaz": 13,
-        "izlaz_kolona_m": 704,
-        "ulaz": 7,
-        "ulaz_kolona_m": 217
+        "izlaz": 14,
+        "izlaz_kolona_m": 717,
+        "ulaz": 6,
+        "ulaz_kolona_m": 433
       }
     },
     "horgos": {
@@ -56,18 +56,18 @@
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
-        "ulaz": 45,
+        "ulaz": 60,
         "izlaz": 60
       },
       "ba": {
-        "izlaz": 180,
-        "ulaz": 120
+        "izlaz": 90,
+        "ulaz": 20
       },
       "tt": {
         "izlaz": 19,
-        "izlaz_kolona_m": 976,
-        "ulaz": 5,
-        "ulaz_kolona_m": 142
+        "izlaz_kolona_m": 1008,
+        "ulaz": 0,
+        "ulaz_kolona_m": 16
       }
     },
     "kelebija": {
@@ -87,13 +87,13 @@
       },
       "ba": {
         "izlaz": 90,
-        "ulaz": 10
+        "ulaz": 5
       },
       "tt": {
-        "izlaz": 7,
-        "izlaz_kolona_m": 266,
-        "ulaz": 0,
-        "ulaz_kolona_m": 0
+        "izlaz": 4,
+        "izlaz_kolona_m": 137,
+        "ulaz": 6,
+        "ulaz_kolona_m": 577
       }
     },
     "batrovci": {
@@ -112,10 +112,10 @@
         "ulaz": 360
       },
       "tt": {
-        "izlaz": 42,
-        "izlaz_kolona_m": 1545,
-        "ulaz": 4,
-        "ulaz_kolona_m": 539
+        "izlaz": 38,
+        "izlaz_kolona_m": 1908,
+        "ulaz": 10,
+        "ulaz_kolona_m": 302
       }
     },
     "presevo": {
@@ -135,12 +135,12 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 50,
-        "ulaz": 30
+        "izlaz": 45,
+        "ulaz": 25
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
+        "izlaz": 1,
+        "izlaz_kolona_m": 201,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -195,8 +195,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 20,
-        "ulaz": 20
+        "izlaz": 15,
+        "ulaz": 15
       }
     },
     "dojran": {
@@ -217,8 +217,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 10
+        "izlaz": 5,
+        "ulaz": 5
       }
     }
   }
