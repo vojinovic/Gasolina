@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-08",
+  "checked_at": "2026-08-10",
   "countries": [
     {
       "name": "Serbia",
@@ -11,8 +11,8 @@
         "eur": 1.72
       },
       "diesel": {
-        "local": 228.0,
-        "eur": 1.94
+        "local": 227.0,
+        "eur": 1.93
       },
       "lpg": {
         "local": 105.4,
@@ -22,7 +22,7 @@
       "diesel_source": "nafta.hr",
       "petrol_source": "nafta.hr",
       "lpg_source": "nafta.hr",
-      "updated": "2026-08-07 15:24 UTC"
+      "updated": "2026-08-10 08:23 UTC"
     },
     {
       "name": "Croatia",
@@ -122,8 +122,8 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.61,
-        "eur": 1.61
+        "local": 1.58,
+        "eur": 1.58
       },
       "diesel": {
         "local": 1.81,
@@ -133,7 +133,7 @@
         "local": 0.96,
         "eur": 0.96
       },
-      "updated": "2026-08-08 07:40 UTC"
+      "updated": "2026-08-10 08:24 UTC"
     },
     {
       "name": "Bulgaria",
