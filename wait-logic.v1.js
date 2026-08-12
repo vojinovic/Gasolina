@@ -37,6 +37,27 @@
  * tajekoztato jellegűek" - iskustveni i informativni). Merenje daje samo TomTom,
  * i to donju granicu, jer ne vidi kolonu koja STOJI na pasoskoj kontroli.
  *
+ * 12.08.2026 - DONJA GRANICA SME DA POTVRDI, NIKAD DA OSPORI. (V3b)
+ * Do danas je TomTom-ova nula BRISALA prijavu vozaca od dva sata i vise
+ * (`merenjeMirno`). `trafficDelayInSeconds` meri zastoj u VOZNJI; kolona na
+ * pasoskoj kontroli za TomTom ne postoji jer stoji. Zato je `delay = 0` isti
+ * odgovor i za slobodan put, i za put bez pokrivenosti, i za put na cijem kraju
+ * stoji cetvorosatna kolona. Bogorodica i Medzitlija su kroz 194 uspesna
+ * odgovora vratile nulu SVAKI PUT - koridori su mrtvi, a veto je radio i tamo.
+ *
+ * Sada takva prijava ne nestaje nego dobija oznaku `nepotvrdjena` i, ako pobedi,
+ * daje stanje "neizvesno": obe vrednosti se pokazuju, nijedna se ne proglasava
+ * istinom. Isti oblik je dobio i korak 2 (zvanicni kaze kratko, vozac kaze
+ * dugo) - to je vec bila ista vrsta neizvesnosti, samo starijim izlazom koji je
+ * gubio OBA podatka.
+ *
+ * Mereno nad git istorijom granice.json (475 snapshotova, 24.06-03.08, 11.574
+ * celije): promenjeno 323 celije (2,79%) - 169 od uklanjanja veta, 154 od
+ * svodjenja koraka 2 na isti oblik. NOVIH nepotvrdjenih krupnih brojki u
+ * naslovu: 0. Celija ostavljenih bez ijednog broja: 0.
+ * Odbacena varijanta bez ikakvog veta davala je 101 novu krupnu brojku, rep
+ * 780/720/660/600/570/540/480 minuta, sve na prelazima bez zvanicnog izvora.
+ *
  * NE MENJATI PRAVILA U ISTOM COMMITU SA PRESELJENJEM KODA. Ponasanje je zamrznuto
  * u engine/wait-golden.json (1.046 kombinacija iz arhiva) - posle preseljenja mora
  * biti identicno, tek onda se sme menjati pravilo.
@@ -114,21 +135,26 @@ function procena(c, dirKey){
     if (user > 0) prijaveSve.push({v: user, src: "user"});
   }
 
-  // --- prijava vozaca, uz proveru merenjem ---
-  // Merenje sme da ospori SAMO ekstremnu prijavu, i samo tako sto joj oduzme
-  // pravo na krupnu brojku - nikad tako sto svoju vrednost stavi umesto nje.
-  let baOsporen = null;
+  // --- prijava vozaca, uz merenje kao (ne)potvrdu ---
+  // Merenje NE osporava prijavu. Kad je prijava ekstremna a merenje mirno, jedino
+  // sto pouzdano znamo jeste da POTVRDE nema - ni u jednom smeru. Prijava zato
+  // ostaje kandidat, ali sa oznakom `nepotvrdjena`: ako pobedi, ne dobija krupnu
+  // brojku nego stanje "neizvesno" u kom se vide obe vrednosti.
+  //
+  // "Mirno merenje" i dalje trazi !dugaKolona, pa se `nepotvrdjena` i izmerena
+  // duga kolona ne mogu pojaviti zajedno - kad merenje POTVRDJUJE guzvu, ono to
+  // sme, jer donja granica sme da potvrdi.
   if (c.ba) {
     const v = c.ba[dirKey];
     if (v != null && v > 0) {
-      const merenjeMirno = (ttMin != null && ttMin <= TT_MIRNO_MIN && !dugaKolona);
+      const bezPotvrde = (ttMin != null && ttMin <= TT_MIRNO_MIN && !dugaKolona);
       prijaveSve.push({v, src: "ba"});
-      if (v >= BA_PROVERA_MIN && merenjeMirno) baOsporen = v;
-      else cands.push({v, src: "ba", tip: "prijava"});
+      if (v >= BA_PROVERA_MIN && bezPotvrde)
+        cands.push({v, src: "ba", tip: "prijava", nepotvrdjena: true});
+      else
+        cands.push({v, src: "ba", tip: "prijava"});
     }
   }
-
-  const zvanicniPostoji = cands.some(x => x.tip === "zvanicni");
 
   // --- odluka ---
 
@@ -173,19 +199,36 @@ function procena(c, dirKey){
     }
   }
 
-  // 1. Osporena ekstremna prijava, a nema zvanicnog izvora da preuzme:
-  //    ne izmisljamo broj, upucujemo na kameru. TomTom OVDE NE PREUZIMA NASLOV.
-  if (baOsporen != null && !zvanicniPostoji)
-    return {stanje: "proveri", baOsporen, kolona, dugaKolona, ttMin};
+  // NEIZVESNO: prijava postoji, potvrde nema, a sajt nema cime da presudi.
+  // Isti oblik kao "sukob" i iz istog razloga: NEMA `v`. Cim postoji `v`, svaki
+  // prikaz ga ispise kao naslov i time proglasi pobednika, a pobednika nema.
+  // `niza` sme da bude null - kad je zvanicni izvor javio NULU, nula ne ulazi u
+  // `zvanicniSvi`, pa prikaz mora da racuna na prazno.
+  const neizvesno = (prijava) => ({
+    stanje: "neizvesno",
+    niza: zvanicniSvi.length ? zvanicniSvi.reduce((a, b) => b.v > a.v ? b : a) : null,
+    visa: {v: prijava.v, src: prijava.src},
+    kolona, dugaKolona, ttMin,
+  });
+
+  // 1. Do 12.08.2026 je ovde stajalo: osporena ekstremna prijava bez zvanicnog
+  //    izvora -> "proveri kameru". Korak je UGASEN jer prijava vise ne biva
+  //    osporena - ostaje kandidat i sama stigne do koraka 4 kao "neizvesno".
 
   if (cands.length) {
     let best = cands[0];
     cands.forEach(x => { if (x.v > best.v) best = x; });
 
-    // 2. Zvanicni izvor kaze kratko, a prijava kaze dugo -> dva izvora iste
-    //    vrste se ne slazu. Ni jedno ni drugo se ne proglasava istinom.
+    // 2. Zvanicni izvor kaze kratko, a prijava kaze dugo -> dva izvora se ne
+    //    slazu. Ni jedno ni drugo se ne proglasava istinom.
+    //    Do 12.08.2026 je ovo vracalo "proveri", izlaz koji je gubio OBA podatka
+    //    i nikad nije rekao STA je zvanicni izvor zapravo javio. Semantika je od
+    //    pocetka bila ista kao u koraku 4, pa je i oblik sada isti - inace bi
+    //    postojala dva razlicita prikaza za istu vrstu neizvesnosti.
+    //    Ovde je `niza` najcesce prazno: `kratkoZvanicno` znaci da je zvanicni
+    //    javio NULU, a nula ne ulazi u `zvanicniSvi`.
     if (kratkoZvanicno && best.tip === "prijava" && best.v >= BA_PROVERA_MIN)
-      return {stanje: "proveri", baOsporen: best.v, kolona, dugaKolona, ttMin};
+      return neizvesno(best);
 
     // 2b. Izmerena duga kolona obara svaki umirujuci naslov. Gradina 01.08.:
     //     prijava 10 min uz izmerenih 1.478 m kolone - to nije "10 minuta".
@@ -201,17 +244,24 @@ function procena(c, dirKey){
         return {stanje: "bez-guzve", src: best.src, kolona, dugaKolona, ttMin};
       return {stanje: "kratko-prijava", v: best.v, src: best.src, kolona, dugaKolona, ttMin};
     }
-    // 4. Prijava koja prodje: broj ostaje, ali rec "prijavljeno" ide UZ brojku,
-    //    ne sitno ispod. Kolona od 734 m potvrdjuje da guzva postoji, ne da
-    //    traje bas 8 sati.
+    // 4. Ekstremna prijava koju merenje nije potvrdilo: obe vrednosti se vide,
+    //    nijedna nije naslov.
+    if (best.tip === "prijava" && best.nepotvrdjena)
+      return neizvesno(best);
+
+    // 4b. Prijava koja prodje: broj ostaje, ali rec "prijavljeno" ide UZ brojku,
+    //     ne sitno ispod. Kolona od 734 m potvrdjuje da guzva postoji, ne da
+    //     traje bas 8 sati.
     if (best.tip === "prijava")
       return {stanje: "prijavljeno", v: best.v, src: best.src, kolona, dugaKolona, ttMin};
     return {stanje: "broj", v: best.v, src: best.src, kolona, dugaKolona, ttMin};
   }
 
   // 5. Nema nijednog izvora ukupnog cekanja. TomTom sme samo da javi kolonu.
+  //    Ovde je do 12.08.2026 stajala i grana za osporenu prijavu. Nedostizna je
+  //    otkad prijava uvek ostaje kandidat: cim `c.ba` ima pozitivnu vrednost,
+  //    `cands` nije prazan i do ovog reda se ne stize.
   if (dugaKolona) return {stanje: "kolona", kolona, dugaKolona, ttMin};
-  if (baOsporen != null) return {stanje: "proveri", baOsporen, kolona, dugaKolona, ttMin};
   return {stanje: "nema", amss30Only: amss30, kolona, dugaKolona, ttMin};
 }
 
