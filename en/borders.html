@@ -693,7 +693,13 @@ function fmtKolona(m, kor){
   const tekst = zaokruzeno >= 1000
     ? ((km % 1 === 0 ? km.toFixed(0) : km.toFixed(1).replace(".", ",")) + " km")
     : (zaokruzeno + " m");
-  return (blizuKraja ? "najmanje " : "oko ") + tekst;
+  // "najmanje" kad kolona dopire do KRAJA koridora: TomTom ne vidi dalje, pa
+  // ne znamo dokle se pruza. Inace "oko".
+  // Do 12.08.2026 su ovde stajale SRPSKE reci i engleska stranica je ispisivala
+  // "queue najmanje 900 m". Vazilo je svuda gde se kolona prikazuje - sukob,
+  // kolona, broj sa dugom kolonom. Po GSC-u EN verzija nosi VISE saobracaja od
+  // SR (1.941 prema 1.112 prikaza), pa je greska bila i najvidljivija tamo.
+  return (blizuKraja ? "at least " : "about ") + tekst;
 }
 
 // Kamera ne postoji za svaki smer: Bogorodica ima samo izlaz ka Grckoj,
@@ -721,9 +727,21 @@ function shareTextBorder(c){
   } else {
     const iz = effective(c, "izlaz"), ul = effective(c, "ulaz");
     // Same thresholds as the card - shared text must not claim more than the page.
-    const say = e => (e.v==null)
-      ? (e.dugaKolona ? `queue ~${e.kolona} m` : "no data")
-      : ((e.v<=NQ_MAX && !e.dugaKolona) ? "no queue" : fmtMin(e.v));
+    // See granice.html: "sukob" has no `v` because there is no winner, but the
+    // data DOES exist and is disputed. Until 12.08.2026 the shared text said
+    // "no data", which is untrue in the other direction. The reported duration
+    // is never shared.
+    const say = e => {
+      if (e.stanje === "sukob") {
+        const odVozaca = (e.visa.src === "ba" || e.visa.src === "user");
+        if (odVozaca && e.dugaKolona) return `heavy congestion, officially ${fmtMin(e.niza.v)}, queue ~${e.kolona} m`;
+        if (odVozaca) return `uncertain, officially ${fmtMin(e.niza.v)}, a much longer wait reported`;
+        return `sources disagree: ${fmtMin(e.niza.v)} to ${fmtMin(e.visa.v)}`;
+      }
+      return (e.v==null)
+        ? (e.dugaKolona ? `queue ~${e.kolona} m` : "no data")
+        : ((e.v<=NQ_MAX && !e.dugaKolona) ? "no queue" : fmtMin(e.v));
+    };
     parts.push(`exiting Serbia: ${say(iz)}`);
     parts.push(`entering Serbia: ${say(ul)}`);
   }
@@ -1189,7 +1207,10 @@ async function init(){
   });
 
   try{
-    const rh = await fetch("granice_here.json?cb="+Date.now());
+    // `../`: ova stranica je u en/, a fajl stoji u KORENU. Bez toga se trazi
+    // /en/granice_here.json koji ne postoji, pa engleska stranica nikad nije
+    // dobijala HERE podatke - tiho, jer fetch padne u catch (12.08.2026).
+    const rh = await fetch("../granice_here.json?cb="+Date.now());
     if(rh.ok){
       const hj = await rh.json();
       const hc = hj.crossings || {};

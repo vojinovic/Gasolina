@@ -719,9 +719,24 @@ function shareTextBorder(c){
   } else {
     const iz = effective(c, "izlaz"), ul = effective(c, "ulaz");
     // Isti pragovi kao na kartici - podeljen tekst ne sme da tvrdi vise od prikaza.
-    const say = e => (e.v==null)
-      ? (e.dugaKolona ? `kolona ~${e.kolona} m` : "nema podataka")
-      : ((e.v<=NQ_MAX && !e.dugaKolona) ? "bez guzve" : fmtMin(e.v));
+    // "sukob" nema `v` jer nema pobednika - ali podaci POSTOJE i sporni su.
+    // Do 12.08.2026 je podeljen tekst za to stanje glasio "nema podataka", sto
+    // je neistina u drugom smeru: kartica prikazuje dve vrednosti, a poruka
+    // koju covek prosledjuje dalje tvrdi da se ne zna nista. Generator to ima
+    // resen u doShare; granice.html nije.
+    // Prijavljeno trajanje se NE deli - poruka ne sme da nosi broj koji sam
+    // sajt odbija da ispise krupno.
+    const say = e => {
+      if (e.stanje === "sukob") {
+        const odVozaca = (e.visa.src === "ba" || e.visa.src === "user");
+        if (odVozaca && e.dugaKolona) return `velika guzva, zvanicno ${fmtMin(e.niza.v)}, kolona ~${e.kolona} m`;
+        if (odVozaca) return `neizvesno, zvanicno ${fmtMin(e.niza.v)}, prijavljeno znatno duze`;
+        return `izvori se ne slazu: ${fmtMin(e.niza.v)} do ${fmtMin(e.visa.v)}`;
+      }
+      return (e.v==null)
+        ? (e.dugaKolona ? `kolona ~${e.kolona} m` : "nema podataka")
+        : ((e.v<=NQ_MAX && !e.dugaKolona) ? "bez guzve" : fmtMin(e.v));
+    };
     parts.push(`izlaz iz Srbije: ${say(iz)}`);
     parts.push(`ulaz u Srbiju: ${say(ul)}`);
   }
