@@ -1326,6 +1326,33 @@
                               : e.stanje === 'sukob' ? e.visa.v
                               : e.stanje === 'bez-guzve' ? 0 : null);
 
+    // DVA RAZLICITA PITANJA, DO SAD JEDAN BROJ (12.08.2026).
+    //
+    // `minZaPrikaz` je hranio TRI stvari: boju tackice na kartici, boju panela u
+    // kalkulatoru i izbor najgoreg prelaza. Za "sukob" vraca `visa.v`, a `visa`
+    // je u slucaju A PRIJAVA VOZACA. Nepotvrdjena prijava od 7h je tako mogla da
+    // oboji karticu crveno i da proglasi prelaz najgorim - iako je cela poenta
+    // pravila od 03.08. da toj brojci ne dajemo taj autoritet.
+    //
+    //   brojZaRangiranje  bira "najgori prelaz". Kad je veca vrednost
+    //                     nepotvrdjena prijava, rangira se po ZVANICNOJ proceni.
+    //   statusZaPrikaz    boja. Nepotvrdjeno je NARANDZASTO: crveno bi tvrdilo
+    //                     guzvu koju niko nije potvrdio, zeleno bi je poreklo.
+    //                     Crveno sme tek kad duga kolona nezavisno potvrdi
+    //                     kategoriju - to donja granica sme.
+    const odVozacaS = e => !!(e.visa && (e.visa.src === 'ba' || e.visa.src === 'user'));
+    const brojZaRangiranje = e => {
+      if (e.stanje === 'sukob') return odVozacaS(e) ? e.niza.v : e.visa.v;
+      return minZaPrikaz(e);
+    };
+    const statusZaPrikaz = e => {
+      if (e.stanje === 'sukob' && odVozacaS(e)) {
+        return e.dugaKolona ? { c: 'var(--bad)',  t: 'velika guzva' }
+                            : { c: 'var(--warn)', t: 'neizvesno' };
+      }
+      return bStatus(minZaPrikaz(e));
+    };
+
     function bStatus(min) {
       if (min == null) return { c: 'var(--faint)', t: 'nema podataka' };
       if (min <= NQ_MAX) return { c: 'var(--ok)', t: 'prohodno' };
@@ -1344,14 +1371,26 @@
         case 'kolona':         return 'kolona';
         case 'kratko-prijava': return 'kratko*';
         case 'prijavljeno':    return bMin(e.v) + '*';
-        case 'sukob':          return bMin(e.niza.v) + ' \u2194 ' + bMin(e.visa.v);
+        // SUKOB. Do 12.08.2026 je ovde uvek stajalo "1h 20m <-> 7h", pa je
+        // naslovna ispisivala NEPOTVRDJENU prijavu kao ravnopravnu brojku -
+        // tacno prikaz koji je 03.08. odbacen na granice.html i landing
+        // stranicama. index.html je tada promasen, a smoke test to nije video
+        // jer naslovnu uopste nije proveravao.
+        // Obe brojke stoje jedna do druge SAMO kad se spore dva ZVANICNA izvora:
+        // iste su vrste i iste tezine. Kad je veca vrednost prijava vozaca,
+        // krupno ostaje zvanicni broj, a prijava se opisuje recima u natpisu.
+        case 'sukob':          return odVozacaS(e) ? bMin(e.niza.v)
+                                                   : bMin(e.niza.v) + ' \u2194 ' + bMin(e.visa.v);
         case 'bez-guzve':      return 'Bez guzve';
         case 'broj':           return bText(e.v);
         default:               return '-';
       }
     }
     function bLabState(e, strelica, smer) {
-      if (e.stanje === 'sukob') return strelica + ' ' + smer + ' &middot; izvori se ne slazu';
+      if (e.stanje === 'sukob')
+        return strelica + ' ' + smer + ' &middot; ' + (!odVozacaS(e) ? 'izvori se ne slazu'
+          : e.dugaKolona ? 'prijavljeno duze &middot; kolona potvrdjena, trajanje nije'
+                         : 'prijavljeno znatno duze, bez potvrde');
       const zvezda = (e.stanje === 'prijavljeno' || e.stanje === 'kratko-prijava') ? ' &middot; prijava' : '';
       return strelica + ' ' + smer + zvezda;
     }
@@ -1412,7 +1451,7 @@
       if (!items.length) return;
       grid.innerHTML = items.map(cx => {
         const eIn = effWait(cx.id, 'ulaz'), eOut = effWait(cx.id, 'izlaz');
-        const sIn = bStatus(minZaPrikaz(eIn)), sOut = bStatus(minZaPrikaz(eOut));
+        const sIn = statusZaPrikaz(eIn), sOut = statusZaPrikaz(eOut);
         return `
         <a class="tc" href="granica-${cx.id}.html?play=1"
            onclick="track('naslovna_kamera', {prelaz:'${cx.id}'})">
@@ -1580,7 +1619,7 @@
       if (!list.length) return '';
       const waitBlock = (cx, dirKey, dirLabel) => {
         const eff = effWait(cx.id, dirKey);
-        const s = bStatus(minZaPrikaz(eff));
+        const s = statusZaPrikaz(eff);
         // AMSS-ovih tacno 30 kao jedini izvor: naslovna je dosad pisala samo "-",
         // bez ijedne reci zasto. Ovde ima mesta za red objasnjenja, na uskim
         // karticama sa kamerama nema - tamo ostaje "-" jer bar nista ne tvrdi.
@@ -1795,7 +1834,7 @@
         ['ulaz', 'izlaz'].forEach(dir => {
           // "bez guzve" ovde mora da se broji, inace bi dan u kome su svi prelazi
           // prohodni ispao dan bez ijednog podatka i naslovna bi pisala "Ucitavanje".
-          const m = minZaPrikaz(effWait(cx.id, dir));
+          const m = brojZaRangiranje(effWait(cx.id, dir));
           if (m != null && (!best || m > best.min)) {
             best = { name: cx.name, kind: dir === 'izlaz' ? 'izlaz' : 'ulaz', min: m };
           }
