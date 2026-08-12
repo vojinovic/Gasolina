@@ -806,6 +806,12 @@ function feedZa(c, dir){
 // posle moglo razdvojiti "ovaj prelaz ljudi hoce" od "ovo je bilo prvo na ekranu".
 // Bez toga svaka buduca odluka o redosledu kartica pociva na GSC prikazima, a
 // oni mere gde MI rangiramo na Google-u, ne sta covek na sajtu bira (03.08.2026).
+// 39% celija koje postaju "neizvesno" NEMA nijedno merenje (ttMin == null):
+// mereno nad golden fixture-om 12.08.2026. Za njih je "merenje ne pokazuje
+// kolonu" tvrdnja o merenju koje ne postoji - a nula i odsustvo nisu isto.
+// Isti razlog zbog kog `cnf_none2` postoji na landing stranicama.
+const bezMerenja = e => (e.ttMin == null);
+
 function waitCell(label,dirKey,c,poz){
   const eff = effective(c, dirKey);
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
@@ -897,13 +903,13 @@ function waitCell(label,dirKey,c,poz){
         // poreklo, a `visa.v` ne sme da odredjuje boju jer je nepotvrdjena.
         boja = "var(--warn)";
         big  = `<span class="wpre">neizvesno</span> ${fmtMin(eff.niza.v)}`;
-        note = `<div class="wsrc">${srcKratko(eff.niza.src)} &middot; prijavljeno znatno duže, merenje ne pokazuje kolonu</div>`;
+        note = `<div class="wsrc">${srcKratko(eff.niza.src)} &middot; prijavljeno znatno duže &middot; ${bezMerenja(eff) ? 'nema saobraćajnog merenja za ovaj smer' : 'merenje ne pokazuje kolonu'}</div>`;
       } else {
         // Nema nijedne zvanicne procene. Ostaju SAMO reci - prijavljena brojka se
         // ne ispisuje jer bi bila jedina krupna vrednost na celiji.
         boja = "var(--warn)";
         big  = `<span class="wq">neizvesno</span>`;
-        note = `<div class="wsrc">vozači prijavljuju dugo čekanje &middot; merenje ne pokazuje kolonu</div>`;
+        note = `<div class="wsrc">vozači prijavljuju dugo čekanje &middot; ${bezMerenja(eff) ? 'nema saobraćajnog merenja za ovaj smer' : 'merenje ne pokazuje kolonu'}</div>`;
       }
       break;
     }

@@ -1400,10 +1400,14 @@
       }
     }
     function bLabState(e, strelica, smer) {
+      // Kartica je uska, pa ovde stoji skracena verzija onoga sto landing
+      // stranica kaze recenicom. "bez potvrde" i "bez merenja" NISU isto:
+      // prvo znaci da je mereno pa nije potvrdjeno, drugo da merenja nema.
       if (e.stanje === 'neizvesno')
         return strelica + ' ' + smer + ' &middot; ' +
                (e.dugaKolona ? 'kolona potvrdjena, trajanje nije'
-                             : 'prijavljeno, bez potvrde');
+                : e.ttMin == null ? 'prijavljeno, nema merenja'
+                                  : 'prijavljeno, bez potvrde');
       if (e.stanje === 'sukob')
         return strelica + ' ' + smer + ' &middot; ' + (!odVozacaS(e) ? 'izvori se ne slazu'
           : e.dugaKolona ? 'prijavljeno duze &middot; kolona potvrdjena, trajanje nije'
@@ -1652,7 +1656,8 @@
         const nepotvrdjeno = (eff.stanje === 'neizvesno')
           ? ` &middot; ${SRC_NAZIV[eff.visa.src] || eff.visa.src} prijavljuje znatno duze`
             + (eff.dugaKolona ? ` &middot; kolona potvrdjena, trajanje nije`
-                              : ` &middot; merenje ne pokazuje kolonu`)
+               : eff.ttMin == null ? ` &middot; nema saobracajnog merenja za ovaj smer`
+                                   : ` &middot; merenje ne pokazuje kolonu`)
             + ` &middot; planiraj vecu rezervu` : '';
         const extra = eff.here ? ` &middot; HERE: ${eff.here.category}` : '';
         return `

@@ -807,6 +807,12 @@ function feedZa(c, dir){
 // "this happened to be first on screen". Without it, every future ordering
 // decision rests on GSC impressions - and those measure where WE rank on
 // Google, not what a visitor on the site chooses (03.08.2026).
+// 39% of cells that become "neizvesno" have NO measurement at all
+// (ttMin == null), measured over the golden fixture on 12.08.2026. For those,
+// "no queue measured" claims a measurement that does not exist - zero and
+// absence are not the same thing.
+const bezMerenja = e => (e.ttMin == null);
+
 function waitCell(label,dirKey,c,poz){
   const eff = effective(c, dirKey);
   const arrow = dirKey==='ulaz' ? '\u2192' : '\u2190';
@@ -889,11 +895,11 @@ function waitCell(label,dirKey,c,poz){
       } else if (eff.niza) {
         boja = "var(--warn)";
         big  = `<span class="wpre">uncertain</span> ${fmtMin(eff.niza.v)}`;
-        note = `<div class="wsrc">${srcKratko(eff.niza.src)} &middot; a much longer wait reported, no queue measured</div>`;
+        note = `<div class="wsrc">${srcKratko(eff.niza.src)} &middot; a much longer wait reported &middot; ${bezMerenja(eff) ? 'no traffic measurement for this direction' : 'no queue measured'}</div>`;
       } else {
         boja = "var(--warn)";
         big  = `<span class="wq">uncertain</span>`;
-        note = `<div class="wsrc">drivers report a long wait &middot; no queue measured</div>`;
+        note = `<div class="wsrc">drivers report a long wait &middot; ${bezMerenja(eff) ? 'no traffic measurement for this direction' : 'no queue measured'}</div>`;
       }
       break;
     }
