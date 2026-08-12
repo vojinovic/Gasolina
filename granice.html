@@ -727,6 +727,11 @@ function shareTextBorder(c){
     // Prijavljeno trajanje se NE deli - poruka ne sme da nosi broj koji sam
     // sajt odbija da ispise krupno.
     const say = e => {
+      if (e.stanje === "neizvesno") {
+        if (e.dugaKolona) return `velika guzva, kolona ~${e.kolona} m`;
+        if (e.niza) return `zvanicno ${fmtMin(e.niza.v)}, prijavljeno znatno duze`;
+        return "neizvesno, vozaci prijavljuju znatno duze";
+      }
       if (e.stanje === "sukob") {
         const odVozaca = (e.visa.src === "ba" || e.visa.src === "user");
         if (odVozaca && e.dugaKolona) return `velika guzva, zvanicno ${fmtMin(e.niza.v)}, kolona ~${e.kolona} m`;
@@ -863,6 +868,45 @@ function waitCell(label,dirKey,c,poz){
       }
       break;
     }
+    // NEIZVESNO (V3a, 12.08.2026). Stanje jos NIKO ne proizvodi - kanonska
+    // funkcija ga dobija tek u V3b. Prikaz ide PRVI namerno: novo `stanje` koje
+    // cetiri potrosaca ne poznaju znaci pokvarene celije izmedju dva commita.
+    // Ovako je svaki commit zelen sam za sebe.
+    //
+    // Znacenje: vozac prijavljuje dugo cekanje, a merenje ga NE POTVRDJUJE.
+    // Nula iz TomToma nije dokaz da je prohodno - `trafficDelayInSeconds` meri
+    // zastoj u VOZNJI, a kolona na pasoskoj kontroli mu je nevidljiva jer STOJI.
+    // Zato prijava ne nestaje, ali ni ne postaje naslov.
+    //
+    // Kao i "sukob", ovo stanje NEMA `v`. Nosi `niza` (zvanicna procena, moze
+    // biti null) i `visa` (prijava). PRIJAVLJENO TRAJANJE se nikad ne ispisuje
+    // krupno - tacna brojka stoji nize, u "Svi izvori".
+    case "neizvesno": {
+      if (eff.dugaKolona) {
+        // Merenje potvrdjuje da KOLONA postoji - to donja granica sme. Trajanje
+        // i dalje ne. Crveno je zato posteno: kategorija jeste potvrdjena.
+        boja = "var(--bad)";
+        big  = eff.niza
+          ? `<span class="wpre">velika gužva</span> ${fmtMin(eff.niza.v)}`
+          : `<span class="wpre">velika gužva</span>`;
+        note = `<div class="wsrc">${eff.niza ? srcKratko(eff.niza.src) + ' &middot; ' : ''}prijavljeno znatno duže</div>`
+             + `<div class="wcat">kolona ${fmtKolona(eff.kolona, koridorM(c, dirKey))}</div>`;
+      } else if (eff.niza) {
+        // Zvanicna procena ostaje krupna. Boja je narandzasta bez obzira na
+        // `niza.v`: crveno bi tvrdilo guzvu koju niko nije potvrdio, zeleno bi je
+        // poreklo, a `visa.v` ne sme da odredjuje boju jer je nepotvrdjena.
+        boja = "var(--warn)";
+        big  = `<span class="wpre">neizvesno</span> ${fmtMin(eff.niza.v)}`;
+        note = `<div class="wsrc">${srcKratko(eff.niza.src)} &middot; prijavljeno znatno duže, merenje ne pokazuje kolonu</div>`;
+      } else {
+        // Nema nijedne zvanicne procene. Ostaju SAMO reci - prijavljena brojka se
+        // ne ispisuje jer bi bila jedina krupna vrednost na celiji.
+        boja = "var(--warn)";
+        big  = `<span class="wq">neizvesno</span>`;
+        note = `<div class="wsrc">vozači prijavljuju dugo čekanje &middot; merenje ne pokazuje kolonu</div>`;
+      }
+      break;
+    }
     case "proveri":
       boja = "var(--dim)";
       big = imaKameruZa(c, dirKey)
@@ -923,11 +967,15 @@ function waitChips(c){
     if (e.v != null) return e.v;
     if (!e.visa) return null;
     const odVozaca = (e.visa.src === "ba" || e.visa.src === "user");
-    return odVozaca ? e.niza.v : e.visa.v;
+    // `niza` sme da bude null: u stanju "neizvesno" cesto NEMA zvanicne procene
+    // (AMSS-ovih tacno 30 nije kandidat). Tada cip nema sta da pokaze, a nikako
+    // ne sme da posegne za `visa.v` - to je nepotvrdjena prijava, i cip bi u vrhu
+    // kartice reklamirao brojku koju celija ispod odbija da napise.
+    return odVozaca ? (e.niza ? e.niza.v : null) : e.visa.v;
   };
   if(val(u)==null && val(i)==null) return "";
   const chip = (arrow, e) => val(e)==null ? "" :
-    `<span class="wchip" style="color:${waitStatus(val(e)).c}">${arrow}${val(e)>=60?Math.round(val(e)/60)+"h":val(e)}${e.stanje==="sukob"?"?":""}</span>`;
+    `<span class="wchip" style="color:${waitStatus(val(e)).c}">${arrow}${val(e)>=60?Math.round(val(e)/60)+"h":val(e)}${(e.stanje==="sukob"||e.stanje==="neizvesno")?"?":""}</span>`;
   return `<div class="wchips">${chip("\u2191", u)}${chip("\u2193", i)}</div>`;
 }
 

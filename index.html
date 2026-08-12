@@ -1342,10 +1342,18 @@
     //                     kategoriju - to donja granica sme.
     const odVozacaS = e => !!(e.visa && (e.visa.src === 'ba' || e.visa.src === 'user'));
     const brojZaRangiranje = e => {
+      // "neizvesno" bez zvanicne procene NE ucestvuje u izboru najgoreg prelaza:
+      // jedina brojka koju ima je nepotvrdjena prijava, a njoj taj autoritet ne
+      // dajemo. Vraca null, sto worstBorder preskace.
+      if (e.stanje === 'neizvesno') return e.niza ? e.niza.v : null;
       if (e.stanje === 'sukob') return odVozacaS(e) ? e.niza.v : e.visa.v;
       return minZaPrikaz(e);
     };
     const statusZaPrikaz = e => {
+      if (e.stanje === 'neizvesno') {
+        return e.dugaKolona ? { c: 'var(--bad)',  t: 'velika guzva' }
+                            : { c: 'var(--warn)', t: 'neizvesno' };
+      }
       if (e.stanje === 'sukob' && odVozacaS(e)) {
         return e.dugaKolona ? { c: 'var(--bad)',  t: 'velika guzva' }
                             : { c: 'var(--warn)', t: 'neizvesno' };
@@ -1381,12 +1389,21 @@
         // krupno ostaje zvanicni broj, a prijava se opisuje recima u natpisu.
         case 'sukob':          return odVozacaS(e) ? bMin(e.niza.v)
                                                    : bMin(e.niza.v) + ' \u2194 ' + bMin(e.visa.v);
+        // "neizvesno" nema `v`, kao ni "sukob". Kad zvanicne procene ima, ona
+        // stoji krupno; kad je nema, ostaje samo rec. Prijavljeno trajanje se
+        // NIKAD ne ispisuje: kartica je uska, brojka bi bila jedino sto se vidi,
+        // pa bi nepotvrdjena prijava izgledala kao procena.
+        case 'neizvesno':      return e.niza ? bMin(e.niza.v) : 'neizvesno';
         case 'bez-guzve':      return 'Bez guzve';
         case 'broj':           return bText(e.v);
         default:               return '-';
       }
     }
     function bLabState(e, strelica, smer) {
+      if (e.stanje === 'neizvesno')
+        return strelica + ' ' + smer + ' &middot; ' +
+               (e.dugaKolona ? 'kolona potvrdjena, trajanje nije'
+                             : 'prijavljeno, bez potvrde');
       if (e.stanje === 'sukob')
         return strelica + ' ' + smer + ' &middot; ' + (!odVozacaS(e) ? 'izvori se ne slazu'
           : e.dugaKolona ? 'prijavljeno duze &middot; kolona potvrdjena, trajanje nije'
@@ -1630,12 +1647,19 @@
         const sporno = (eff.stanje === 'sukob')
           ? ` &middot; izvori se ne slazu: ${SRC_NAZIV[eff.niza.src] || eff.niza.src}`
             + ` \u2194 ${SRC_NAZIV[eff.visa.src] || eff.visa.src} &middot; planiraj vecu rezervu` : '';
+        // "neizvesno": ovde ima mesta za recenicu, pa se kaze CIJA je prijava i
+        // sta merenje jeste videlo - bez prijavljene brojke, koju naslov ne nosi.
+        const nepotvrdjeno = (eff.stanje === 'neizvesno')
+          ? ` &middot; ${SRC_NAZIV[eff.visa.src] || eff.visa.src} prijavljuje znatno duze`
+            + (eff.dugaKolona ? ` &middot; kolona potvrdjena, trajanje nije`
+                              : ` &middot; merenje ne pokazuje kolonu`)
+            + ` &middot; planiraj vecu rezervu` : '';
         const extra = eff.here ? ` &middot; HERE: ${eff.here.category}` : '';
         return `
           <div class="rb-wait">
             <span class="rb-dot" style="background:${s.c}"></span>
             <span class="rb-min" style="color:${s.c}">${bTextState(eff)}</span>
-            <span class="rb-cat">${dirLabel}${eff.src && eff.v > 15 ? ' &middot; izvor: ' + eff.src : ''}${bezProcene}${sporno}${extra}</span>
+            <span class="rb-cat">${dirLabel}${eff.src && eff.v > 15 ? ' &middot; izvor: ' + eff.src : ''}${bezProcene}${sporno}${nepotvrdjeno}${extra}</span>
           </div>`;
       };
       const rows = list.map((cx, i) => {

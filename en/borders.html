@@ -732,6 +732,11 @@ function shareTextBorder(c){
     // "no data", which is untrue in the other direction. The reported duration
     // is never shared.
     const say = e => {
+      if (e.stanje === "neizvesno") {
+        if (e.dugaKolona) return `heavy congestion, queue ~${e.kolona} m`;
+        if (e.niza) return `officially ${fmtMin(e.niza.v)}, a much longer wait reported`;
+        return "uncertain, drivers report a much longer wait";
+      }
       if (e.stanje === "sukob") {
         const odVozaca = (e.visa.src === "ba" || e.visa.src === "user");
         if (odVozaca && e.dugaKolona) return `heavy congestion, officially ${fmtMin(e.niza.v)}, queue ~${e.kolona} m`;
@@ -864,6 +869,34 @@ function waitCell(label,dirKey,c,poz){
       }
       break;
     }
+    // UNCERTAIN (V3a, 12.08.2026). See granice.html for the full rationale.
+    // A driver reports a long wait and the measurement does NOT confirm it.
+    // TomTom's zero is not proof the crossing is clear: trafficDelayInSeconds
+    // measures DRIVING delay, and a queue standing at passport control is
+    // invisible to it. So the report neither vanishes nor becomes the headline.
+    //
+    // Like "sukob", this state has NO `v`. It carries `niza` (official estimate,
+    // may be null) and `visa` (the report). The reported duration is never
+    // printed large - the exact figure sits below, under "All sources".
+    case "neizvesno": {
+      if (eff.dugaKolona) {
+        boja = "var(--bad)";
+        big  = eff.niza
+          ? `<span class="wpre">heavy congestion</span> ${fmtMin(eff.niza.v)}`
+          : `<span class="wpre">heavy congestion</span>`;
+        note = `<div class="wsrc">${eff.niza ? srcKratko(eff.niza.src) + ' &middot; ' : ''}a much longer wait reported</div>`
+             + `<div class="wcat">queue ${fmtKolona(eff.kolona, koridorM(c, dirKey))}</div>`;
+      } else if (eff.niza) {
+        boja = "var(--warn)";
+        big  = `<span class="wpre">uncertain</span> ${fmtMin(eff.niza.v)}`;
+        note = `<div class="wsrc">${srcKratko(eff.niza.src)} &middot; a much longer wait reported, no queue measured</div>`;
+      } else {
+        boja = "var(--warn)";
+        big  = `<span class="wq">uncertain</span>`;
+        note = `<div class="wsrc">drivers report a long wait &middot; no queue measured</div>`;
+      }
+      break;
+    }
     case "proveri":
       boja = "var(--dim)";
       big = imaKameruZa(c, dirKey)
@@ -924,11 +957,15 @@ function waitChips(c){
     if (e.v != null) return e.v;
     if (!e.visa) return null;
     const odVozaca = (e.visa.src === "ba" || e.visa.src === "user");
-    return odVozaca ? e.niza.v : e.visa.v;
+    // `niza` sme da bude null: u stanju "neizvesno" cesto NEMA zvanicne procene
+    // (AMSS-ovih tacno 30 nije kandidat). Tada cip nema sta da pokaze, a nikako
+    // ne sme da posegne za `visa.v` - to je nepotvrdjena prijava, i cip bi u vrhu
+    // kartice reklamirao brojku koju celija ispod odbija da napise.
+    return odVozaca ? (e.niza ? e.niza.v : null) : e.visa.v;
   };
   if(val(u)==null && val(i)==null) return "";
   const chip = (arrow, e) => val(e)==null ? "" :
-    `<span class="wchip" style="color:${waitStatus(val(e)).c}">${arrow}${val(e)>=60?Math.round(val(e)/60)+"h":val(e)}${e.stanje==="sukob"?"?":""}</span>`;
+    `<span class="wchip" style="color:${waitStatus(val(e)).c}">${arrow}${val(e)>=60?Math.round(val(e)/60)+"h":val(e)}${(e.stanje==="sukob"||e.stanje==="neizvesno")?"?":""}</span>`;
   return `<div class="wchips">${chip("\u2191", u)}${chip("\u2193", i)}</div>`;
 }
 
