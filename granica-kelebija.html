@@ -403,15 +403,21 @@
                      (e.niza ? `<div class="wval">${dur(e.niza.v)}</div>` : "") +
                      `<div class="wnote">${"izmerena je kolona {k}. To potvrđuje gužvu, ali ne i prijavljeno trajanje.".replace("{k}", fmtKolona(e.kolona, korZa(e._d)))}</div>`;
             }
+            
+            
+            
+            const nemaTT = (e.ttMin == null);
             if (e.niza) {
+              const tx = (nemaTT ? "{a_src} navodi {a}, a vozači prijavljuju znatno duže. Za ovaj smer nema nezavisnog saobraćajnog merenja koje bi to potvrdilo ili opovrglo." : "{a_src} navodi {a}, a vozači prijavljuju znatno duže. Saobraćajno merenje ne pokazuje kolonu, ali ono vidi samo vozila koja se kreću - kolona na pasoškoj kontroli mu je nevidljiva.")
+                           .replace("{a_src}", imu(e.niza.src)).replace("{a}", dur(e.niza.v));
               return `<div class="wstat">neizvesno</div>` +
                      `<div class="wval">${dur(e.niza.v)}</div>` +
-                     `<div class="wnote">${"{a_src} navodi {a}, a vozači prijavljuju znatno duže. Saobraćajno merenje ne pokazuje kolonu, ali ono vidi samo vozila koja se kreću - kolona na pasoškoj kontroli mu je nevidljiva.".replace("{a_src}", imu(e.niza.src)).replace("{a}", dur(e.niza.v))}</div>`;
+                     `<div class="wnote">${tx}</div>`;
             }
             
             
             return `<div class="wval" style="font-size:15px;line-height:1.25">neizvesno</div>` +
-                   `<div class="wnote">Vozači prijavljuju dugo čekanje. Nema zvanične procene, a saobraćajno merenje ne pokazuje kolonu - ono, međutim, vidi samo vozila koja se kreću.</div>`;
+                   `<div class="wnote">${nemaTT ? "Vozači prijavljuju dugo čekanje. Nema ni zvanične procene ni nezavisnog saobraćajnog merenja za ovaj smer." : "Vozači prijavljuju dugo čekanje. Nema zvanične procene, a saobraćajno merenje ne pokazuje kolonu - ono, međutim, vidi samo vozila koja se kreću."}</div>`;
           }
           case "proveri":
             

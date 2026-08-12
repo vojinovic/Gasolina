@@ -403,15 +403,21 @@
                      (e.niza ? `<div class="wval">${dur(e.niza.v)}</div>` : "") +
                      `<div class="wnote">${"a queue of {k} was measured. That confirms congestion, but not the reported duration.".replace("{k}", fmtKolona(e.kolona, korZa(e._d)))}</div>`;
             }
+            
+            
+            
+            const nemaTT = (e.ttMin == null);
             if (e.niza) {
+              const tx = (nemaTT ? "{a_src} states {a}, while drivers report a much longer wait. There is no independent traffic measurement for this direction to confirm or refute it." : "{a_src} states {a}, while drivers report a much longer wait. Traffic measurement shows no queue, but it only sees vehicles that are MOVING - a queue standing at passport control is invisible to it.")
+                           .replace("{a_src}", imu(e.niza.src)).replace("{a}", dur(e.niza.v));
               return `<div class="wstat">uncertain</div>` +
                      `<div class="wval">${dur(e.niza.v)}</div>` +
-                     `<div class="wnote">${"{a_src} states {a}, while drivers report a much longer wait. Traffic measurement shows no queue, but it only sees vehicles that are MOVING - a queue standing at passport control is invisible to it.".replace("{a_src}", imu(e.niza.src)).replace("{a}", dur(e.niza.v))}</div>`;
+                     `<div class="wnote">${tx}</div>`;
             }
             
             
             return `<div class="wval" style="font-size:15px;line-height:1.25">uncertain</div>` +
-                   `<div class="wnote">Drivers report a long wait. There is no official estimate, and traffic measurement shows no queue - though it only sees vehicles that are moving.</div>`;
+                   `<div class="wnote">${nemaTT ? "Drivers report a long wait. There is neither an official estimate nor any independent traffic measurement for this direction." : "Drivers report a long wait. There is no official estimate, and traffic measurement shows no queue - though it only sees vehicles that are moving."}</div>`;
           }
           case "proveri":
             
