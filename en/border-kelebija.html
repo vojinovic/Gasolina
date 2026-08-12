@@ -232,7 +232,13 @@
     let parts = [];
     if (_waitState) {
       
-      const f = e => (e && e.stanje === "sukob")
+      
+      
+      
+      const f = e => (e && e.stanje === "neizvesno")
+        ? (e.dugaKolona ? `heavy congestion, queue ~${e.kolona} m`
+           : e.niza ? `uncertain, ${dur(e.niza.v)}` : "uncertain")
+        : (e && e.stanje === "sukob")
         ? `${dur(e.niza.v)} ↔ ${dur(e.visa.v)}`
         : (!e || e.v == null)
           ? (e && e.dugaKolona ? `${SHARE.queue} ~${e.kolona} m` : SHARE.nd)
@@ -382,6 +388,30 @@
                    `<div class="wnote">${im(e.niza.src)} &middot; ${im(e.visa.src)}</div>` +
                    `<div class="wnote">${kolona.charAt(0).toUpperCase() + kolona.slice(1)}</div>` +
                    kam;
+          }
+          
+          
+          
+          
+          case "neizvesno": {
+            const KRATU = {policija: "border police", hu: "Hungarian side", mk: "N. Macedonian side",
+                           "mk-opsto": "N. Macedonian side", ba: "drivers", user: "drivers"};
+            const imu = k => KRATU[k] || SRC_NAZIV[k] || k;
+            if (e.dugaKolona) {
+              
+              return `<div class="wstat">heavy congestion</div>` +
+                     (e.niza ? `<div class="wval">${dur(e.niza.v)}</div>` : "") +
+                     `<div class="wnote">${"a queue of {k} was measured. That confirms congestion, but not the reported duration.".replace("{k}", fmtKolona(e.kolona, korZa(e._d)))}</div>`;
+            }
+            if (e.niza) {
+              return `<div class="wstat">uncertain</div>` +
+                     `<div class="wval">${dur(e.niza.v)}</div>` +
+                     `<div class="wnote">${"{a_src} states {a}, while drivers report a much longer wait. Traffic measurement shows no queue, but it only sees vehicles that are MOVING - a queue standing at passport control is invisible to it.".replace("{a_src}", imu(e.niza.src)).replace("{a}", dur(e.niza.v))}</div>`;
+            }
+            
+            
+            return `<div class="wval" style="font-size:15px;line-height:1.25">uncertain</div>` +
+                   `<div class="wnote">Drivers report a long wait. There is no official estimate, and traffic measurement shows no queue - though it only sees vehicles that are moving.</div>`;
           }
           case "proveri":
             
