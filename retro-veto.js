@@ -31,6 +31,10 @@ const SIDRO_KORAK1 =
 `  if (baOsporen != null && !zvanicniPostoji)
     return {stanje: "proveri", baOsporen, kolona, dugaKolona, ttMin};`;
 
+const SIDRO_KORAK2 =
+`    if (kratkoZvanicno && best.tip === "prijava" && best.v >= BA_PROVERA_MIN)
+      return {stanje: "proveri", baOsporen: best.v, kolona, dugaKolona, ttMin};`;
+
 const SIDRO_KORAK4 =
 `    if (best.tip === "prijava")
       return {stanje: "prijavljeno", v: best.v, src: best.src, kolona, dugaKolona, ttMin};`;
@@ -96,6 +100,28 @@ const VARIJANTE = {
       return {stanje: "prijavljeno", v: best.v, src: best.src, kolona, dugaKolona, ttMin};`,
       "V3-korak4");
     return s;
+  },
+
+  // V3B - V3 plus KORAK 2 sveden na isti oblik.
+  // Korak 2 vec opisuje istu semantiku ("zvanicni kaze kratko, vozac kaze dugo,
+  // nema osnova za pobednika"), samo starijim izlazom koji gubi OBA podatka.
+  // Bez ovoga bi postojala dva razlicita prikaza za istu vrstu neizvesnosti, i
+  // ostala bi regresija broj:60 -> proveri koju retro test vidi u sve tri
+  // varijante.
+  //
+  // PAZI NA IMENILAC: ovo NIJE rep. Mereno nad golden fixture-om, korak 2 nosi
+  // otprilike POLOVINU ukupnog zahvata (41 kombinacija naspram 41). I `niza` je
+  // tu najcesce PRAZNO: `kratkoZvanicno` znaci da je zvanicni javio NULU, a nula
+  // ne ulazi u zvanicniSvi. Oblik je dakle obicno neizvesno[-<->N].
+  V3B_SA_KORAKOM2: (src) => {
+    let s = VARIJANTE.V3_NEIZVESNOST(src);
+    return zameni(s, SIDRO_KORAK2,
+`    if (kratkoZvanicno && best.tip === "prijava" && best.v >= BA_PROVERA_MIN) {
+      const zvNaj = zvanicniSvi.length
+        ? zvanicniSvi.reduce((a, b) => b.v > a.v ? b : a) : null;
+      return {stanje: "neizvesno", niza: zvNaj, visa: {v: best.v, src: best.src},
+              kolona, dugaKolona, ttMin};
+    }`, "V3B-korak2");
   },
 };
 
@@ -173,6 +199,25 @@ function selftest(kanonSrc) {
     { putnicka: { ulaz: 300 }, ba: { ulaz: 130 }, tt: { ulaz: 0, ulaz_kolona_m: 0 } },
     "ulaz",
     { OSNOVA: "broj:300", V1_BEZ_VETA: "broj:300", V3_NEIZVESNOST: "broj:300" });
+
+  // 5c. KORAK 2: zvanicni javlja NULU (kratkoZvanicno), vozac 240.
+  //     Veto se ne okida (nema TomToma), pa V1 i V3 daju isto sto i osnova -
+  //     "proveri". Tek V3B to svodi na isti oblik neizvesnosti.
+  //     `niza` je prazno jer nula ne ulazi u zvanicniSvi.
+  T("korak 2: zvanicni javlja nulu, vozac 240",
+    { putnicka: { ulaz: 30 }, hu: { ulaz: 0 }, ba: { ulaz: 240 }, tt: { ulaz: null } },
+    "ulaz",
+    { OSNOVA: "proveri", V1_BEZ_VETA: "proveri", V3_NEIZVESNOST: "proveri",
+      V3B_SA_KORAKOM2: "neizvesno[-<->240]" });
+
+  // 5d. KORAK 2 uz DUGU KOLONU. U fixture-u postoji 13 takvih slucajeva:
+  //     kolona potvrdjuje da guzva POSTOJI, samo prijavljeno trajanje nije
+  //     potvrdjeno. Zato ime `driverReportUncorroborated` ne bi bilo tacno.
+  T("korak 2 uz dugu kolonu",
+    { putnicka: { ulaz: 30 }, hu: { ulaz: 0 }, ba: { ulaz: 240 },
+      tt: { ulaz: 14, ulaz_kolona_m: 752 } },
+    "ulaz",
+    { OSNOVA: "proveri", V3B_SA_KORAKOM2: "neizvesno[-<->240]" });
 
   // 6. MALA prijava (ispod BA_PROVERA_MIN) - veto se ne tice nje.
   T("mala prijava",
