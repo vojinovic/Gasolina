@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-13T13:59:29+00:00",
+  "scraped_at": "2026-08-13T15:08:19+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -35,13 +35,13 @@
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
         "izlaz": 60,
-        "ulaz": 90
+        "ulaz": 55
       },
       "tt": {
-        "izlaz": 11,
-        "izlaz_kolona_m": 203,
-        "ulaz": 31,
-        "ulaz_kolona_m": 1156
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
+        "ulaz": 12,
+        "ulaz_kolona_m": 795
       }
     },
     "horgos": {
@@ -60,14 +60,14 @@
         "izlaz": 45
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 10
+        "izlaz": 270,
+        "ulaz": 5
       },
       "tt": {
-        "izlaz": 34,
-        "izlaz_kolona_m": 631,
-        "ulaz": 8,
-        "ulaz_kolona_m": 699
+        "izlaz": 33,
+        "izlaz_kolona_m": 607,
+        "ulaz": 7,
+        "ulaz_kolona_m": 652
       }
     },
     "kelebija": {
@@ -86,14 +86,14 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 25,
-        "ulaz": 5
+        "izlaz": 120,
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
-        "ulaz": 10,
-        "ulaz_kolona_m": 178
+        "ulaz": 5,
+        "ulaz_kolona_m": 281
       }
     },
     "batrovci": {
@@ -108,14 +108,14 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 150,
-        "ulaz": 90
+        "izlaz": 60,
+        "ulaz": 20
       },
       "tt": {
-        "izlaz": 32,
-        "izlaz_kolona_m": 874,
+        "izlaz": 12,
+        "izlaz_kolona_m": 713,
         "ulaz": 15,
-        "ulaz_kolona_m": 436
+        "ulaz_kolona_m": 612
       }
     },
     "presevo": {
@@ -136,13 +136,13 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 5
+        "ulaz": 15
       },
       "tt": {
-        "izlaz": 2,
-        "izlaz_kolona_m": 112,
-        "ulaz": 2,
-        "ulaz_kolona_m": 53
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "sremska-raca": {
@@ -195,8 +195,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 25,
-        "ulaz": 30
+        "izlaz": 20,
+        "ulaz": 25
       }
     },
     "dojran": {
@@ -217,8 +217,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 15
+        "izlaz": 5,
+        "ulaz": 5
       }
     }
   }
