@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-14T21:53:51+00:00",
+  "scraped_at": "2026-08-14T22:29:29+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 40,
-        "ulaz": 20
+        "izlaz": 35,
+        "ulaz": 15
       },
       "tt": {
-        "izlaz": 4,
-        "izlaz_kolona_m": 304,
-        "ulaz": 18,
-        "ulaz_kolona_m": 669
+        "izlaz": 8,
+        "izlaz_kolona_m": 318,
+        "ulaz": 4,
+        "ulaz_kolona_m": 222
       }
     },
     "horgos": {
@@ -60,14 +60,14 @@
         "izlaz": 45
       },
       "ba": {
-        "izlaz": 210,
-        "ulaz": 25
+        "izlaz": 180,
+        "ulaz": 10
       },
       "tt": {
-        "izlaz": 16,
-        "izlaz_kolona_m": 991,
-        "ulaz": 19,
-        "ulaz_kolona_m": 726
+        "izlaz": 21,
+        "izlaz_kolona_m": 1298,
+        "ulaz": 7,
+        "ulaz_kolona_m": 410
       }
     },
     "kelebija": {
@@ -92,8 +92,8 @@
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
-        "ulaz": 4,
-        "ulaz_kolona_m": 136
+        "ulaz": 3,
+        "ulaz_kolona_m": 347
       }
     },
     "batrovci": {
@@ -112,10 +112,10 @@
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 18,
-        "izlaz_kolona_m": 719,
-        "ulaz": 3,
-        "ulaz_kolona_m": 125
+        "izlaz": 16,
+        "izlaz_kolona_m": 632,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "presevo": {
@@ -135,7 +135,7 @@
         "opsto": 0
       },
       "ba": {
-        "izlaz": 10,
+        "izlaz": 5,
         "ulaz": 55
       },
       "tt": {
