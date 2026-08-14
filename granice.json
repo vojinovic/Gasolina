@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-14T03:07:40+00:00",
+  "scraped_at": "2026-08-14T05:16:27+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 15,
-        "ulaz": 15
+        "izlaz": 5,
+        "ulaz": 5
       },
       "tt": {
-        "izlaz": 14,
-        "izlaz_kolona_m": 328,
-        "ulaz": 11,
-        "ulaz_kolona_m": 316
+        "izlaz": 2,
+        "izlaz_kolona_m": 179,
+        "ulaz": 5,
+        "ulaz_kolona_m": 93
       }
     },
     "horgos": {
@@ -60,14 +60,14 @@
         "izlaz": 45
       },
       "ba": {
-        "izlaz": 210,
-        "ulaz": 40
+        "izlaz": 150,
+        "ulaz": 30
       },
       "tt": {
-        "izlaz": 39,
-        "izlaz_kolona_m": 855,
-        "ulaz": 4,
-        "ulaz_kolona_m": 400
+        "izlaz": 23,
+        "izlaz_kolona_m": 450,
+        "ulaz": 9,
+        "ulaz_kolona_m": 275
       }
     },
     "kelebija": {
@@ -86,8 +86,8 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 40,
-        "ulaz": 5
+        "izlaz": 30,
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
@@ -108,14 +108,14 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 330,
-        "ulaz": 60
+        "izlaz": 390,
+        "ulaz": 50
       },
       "tt": {
-        "izlaz": 46,
-        "izlaz_kolona_m": 1124,
-        "ulaz": 6,
-        "ulaz_kolona_m": 981
+        "izlaz": 16,
+        "izlaz_kolona_m": 624,
+        "ulaz": 19,
+        "ulaz_kolona_m": 1167
       }
     },
     "presevo": {
@@ -130,13 +130,13 @@
       "found": true,
       "amss_name": "PREŠEVO Srbija - Severna Makedonija AP E 75 M1",
       "mk": {
-        "vlez": null,
-        "izlez": 60,
-        "opsto": null
+        "vlez": 0,
+        "izlez": 0,
+        "opsto": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 10
+        "izlaz": 15,
+        "ulaz": 15
       },
       "tt": {
         "izlaz": 0,
@@ -196,7 +196,7 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 5
+        "ulaz": 20
       }
     },
     "dojran": {
