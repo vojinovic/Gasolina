@@ -5,14 +5,14 @@
       "name": "Serbia",
       "flag": "🇷🇸",
       "currency": "RSD",
-      "fx_rate_eur": 117.4419,
+      "fx_rate_eur": 117.6471,
       "petrol95": {
-        "local": 202.0,
-        "eur": 1.72
+        "local": 200.0,
+        "eur": 1.7
       },
       "diesel": {
-        "local": 227.0,
-        "eur": 1.93
+        "local": 229.0,
+        "eur": 1.95
       },
       "lpg": {
         "local": 105.4,
@@ -22,7 +22,7 @@
       "diesel_source": "nafta.hr",
       "petrol_source": "nafta.hr",
       "lpg_source": "nafta.hr",
-      "updated": "2026-08-10 08:23 UTC"
+      "updated": "2026-08-14 14:17 UTC"
     },
     {
       "name": "Croatia",
