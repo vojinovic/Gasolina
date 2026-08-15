@@ -155,7 +155,24 @@
     <p><b>So a zero from traffic measurement means three different things that cannot be told apart:</b> the road really is clear · the road is not covered by measurement · a four-hour queue is standing at the end of it.</p>
   </div>
 
-  <p>This is not a theoretical worry. Across an archive of 475 data snapshots (24 June – 3 August 2026, 11,574 records by crossing and direction) two corridors never once produced a positive signal: the inbound corridor at Bogorodica across 100 successful responses, and at Medzitlija across 94 — <b>every single one a zero</b>. Those corridors are dead, and the rule that treated zero as evidence was running there too.</p>
+  <p>This is not a theoretical worry. Across an archive of <b>665 snapshots</b> (24 June – 15 August 2026, 12,894 records by crossing and direction) the same system sees almost everything on some corridors and almost nothing on others:</p>
+
+  <table>
+    <tr><th>Corridor</th><th>Responses</th><th>With a signal</th></tr>
+    <tr><td>Batrovci, outbound</td><td>328</td><td><b>94.5%</b></td></tr>
+    <tr><td>Horgos, inbound</td><td>329</td><td><b>94.5%</b></td></tr>
+    <tr><td>Gradina, outbound</td><td>328</td><td><b>94.2%</b></td></tr>
+    <tr><td>Bogorodica, outbound</td><td>290</td><td>6.2%</td></tr>
+    <tr><td>Medzitlija, outbound</td><td>284</td><td>3.2%</td></tr>
+    <tr><td>Medzitlija, inbound</td><td>284</td><td>1.4%</td></tr>
+    <tr><td>Prohor Pcinjski, outbound</td><td>285</td><td>0.7%</td></tr>
+    <tr><td>Bogorodica, inbound</td><td>290</td><td>0.3%</td></tr>
+    <tr><td>Dojran, outbound</td><td>290</td><td><b>0%</b></td></tr>
+  </table>
+
+  <p>Dojran's outbound corridor is the only one that reported nothing at all across 290 responses — it is <b>dead</b>. The others near the bottom are not dead, merely almost mute. The same zero, then, means "the road is clear" at Batrovci and "I don't know" at Bogorodica.</p>
+
+  <p class="note">Correction to an earlier claim, 15 August 2026: until this measurement, this page stated that the inbound corridors at Bogorodica and Medzitlija had <b>never</b> produced a signal. That was true of the smaller sample (100 and 94 responses); across 290 and 284 responses each has produced several. The word "dead" now stands only where it is still earned.</p>
 
   <p>Until August 2026 a measurement was allowed to <b>overrule</b> a driver report: if someone reported four hours while the measurement looked calm, the report disappeared from the display. When we replayed that backwards across the whole archive, it turned out the site did not print "No queue" in those cases — it did not lie, it <b>went silent</b>. You got a page with no number at all, in exactly the situation where one source had a very definite opinion. A milder fault than we first thought, but the same kind.</p>
 
@@ -191,6 +208,13 @@
   <p class="note">For comparison: the Hungarian police publish only four values (0, 30, 45 and 60 minutes), while AMSM uses a finer scale (15, 20, 30, 40, 45, 50, 60) and reports zero in 85.2% of records. The granularity of a source is part of what its number means.</p>
 
   <h2>What the site does not know</h2>
+
+  <div class="box key">
+    <p><b>In 52.4% of cases the site has no figure at all.</b> Measured across the whole archive: of 12,894 records (crossing &times; direction &times; snapshot, 24 June – 15 August 2026), <b>6,753</b> end in "no reliable estimate". That is not a malfunction but the state of the sources — and it is written here so it does not have to be discovered when it matters.</p>
+  </div>
+
+  <p>It is not evenly spread. Batrovci and Gradina carry a figure about two thirds of the time; Sremska Raca has not carried one <b>once</b> in the entire period — 1,330 records — because no source we follow publishes anything for it beyond the AMSS default of 30 minutes.</p>
+
   <ul>
     <li><b>The camera and the number need not describe the same point.</b> When the source is the North Macedonian or Hungarian side, that is the wait at <b>their</b> control — downstream of a camera pointed at the Serbian apron. An empty apron in the picture does not refute such a number.</li>
     <li><b>Traffic measurement does not cover every direction.</b> Of 26 directions (13 crossings &times; 2), ten have no corridor at all — among them Spiljani and Sremska Raca in both directions.</li>
