@@ -204,7 +204,7 @@
   <div class="others">Ostali granični prelazi: <a href="granica-gradina.html">Gradina</a> <a href="granica-horgos.html">Horgos</a> <a href="granica-kelebija.html">Kelebija</a> <a href="granica-batrovci.html">Batrovci</a> <a href="granica-presevo.html">Presevo</a> <a href="granica-bogorodica.html">Bogorodica</a> <a href="granica-medzitlija.html">Medzitlija</a> <a href="granica-sremska-raca.html">Sremska Raca</a> <a href="granica-spiljani.html">Spiljani</a> <a href="granica-prohor-pcinjski.html">Prohor Pcinjski</a> <a href="granica-gostun.html">Gostun</a> <a href="granica-dojran.html">Dojran</a></div>
 </div>
 
-<script src="wait-logic.v1.js?v=20260812a"></script>
+<script src="wait-logic.v1.js?v=20260812b"></script>
 <script>
   const PRELAZ_ID = "debeli-brijeg";
   const FEEDS = [];
@@ -433,6 +433,32 @@
         <div class="wcell"><div class="wlabel">Ulaz u Crnu Goru</div>${cellHTML(eIn)}</div>`;
       
       
+      
+      
+      
+      (function(){
+        const el = document.getElementById("dataAge");
+        if (!el) return;
+        const min = window.GasolinaWait.starostMin(data.scraped_at);
+        let txt;
+        if (min == null) {
+          txt = "vreme merenja ovih podataka nije poznato";
+        } else {
+          const pre = min < 1 ? "upravo"
+            : min < 60 ? "pre {n} min".replace("{n}", min)
+            : (min % 60 ? "pre {h} h {m} min".replace("{h}", Math.floor(min / 60)).replace("{m}", min % 60)
+                        : "pre {h} h".replace("{h}", Math.floor(min / 60)));
+          const d = new Date(data.scraped_at);
+          const kada = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+          txt = (min <= window.GasolinaWait.PODACI_MAX_MIN ? "podaci od {kada} ({pre})" : "podaci od {kada} &middot; {pre} &middot; kamera iznad je uživo, brojke nisu")
+                  .replace("{kada}", kada).replace("{pre}", pre);
+          if (min > window.GasolinaWait.PODACI_MAX_MIN) el.style.color = "var(--warn)";
+        }
+        el.innerHTML = txt;
+        el.style.display = "block";
+      })();
+      
+      
       const srcs = [];
       const mfmt = m => (m == null) ? "-" : (m + " min");
       if (c && c.ba) srcs.push(`\uD83D\uDE97 <b>Prijave vozača (BorderAlarm):</b> izlaz ${mfmt(c.ba.izlaz)} \u00b7 ulaz ${mfmt(c.ba.ulaz)}`);
@@ -632,6 +658,8 @@
 <footer style="max-width:1180px;margin:50px auto 0;padding:22px 18px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace">
   Pitanja, primedbe, prijava greske: <a href="mailto:kontakt@gasolina.rs" style="color:var(--faint);text-decoration:underline">kontakt@gasolina.rs</a>
   <br>
+  <a href="o-projektu.html" style="color:var(--faint);text-decoration:underline">O projektu</a> &middot;
+  <a href="metodologija.html" style="color:var(--faint);text-decoration:underline">Metodologija</a> &middot;
   <a href="politika-privatnosti.html" style="color:var(--faint);text-decoration:underline">Politika privatnosti</a>
   <br>
   <span style="opacity:.75">&copy; 2026 Gasolina &middot; sadr&#382;aj i k&#244;d su autorsko delo &middot;

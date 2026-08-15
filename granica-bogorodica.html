@@ -184,6 +184,7 @@
   </div>
   <div class="pane" id="pane"><span class="badge">roads.org.mk</span><span class="live" id="liveTag">UŽIVO</span><img class="thumb" src="thumbs/bogorodica.jpg" alt="Bogorodica" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Pusti kameru uživo"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Pusti kameru uživo</button></div>
   <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Učitavanje trenutnog stanja…</div></div>
+  <div id="dataAge" style="display:none;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.04em;color:var(--faint)"></div>
   <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Gužva na mapi: Severna Makedonija → Grčka</h2><iframe src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d11672.3!2d22.54906705!3d41.13179735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e0!4m3!3m2!1d41.135969!2d22.5464805!4m5!1s0x135626c88b4d3907%3A0xc81c83269be4c289!2sBorder%20Crossing%20Point%20of%20Evzoni!3m2!1d41.1276257!2d22.5516536!5e0!3m2!1ssr!2srs!4v1627540443619!5m2!1ssr!2srs" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Gužva na mapi: Severna Makedonija → Grčka" allowfullscreen></iframe></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Gužva na mapi: Grčka → Severna Makedonija</h2><iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d11672.3!2d22.54906705!3d41.13179735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x135626c88b4d3907%3A0xc81c83269be4c289!2sBorder%20Crossing%20Point%20of%20Evzoni!3m2!1d41.1276257!2d22.5516536!4m5!1s0x135627f315b1847f%3A0x8ca1dfa25e55ace1!2sBorder%20Crossing%20Point%20of%20Evzoni!3m2!1d41.134253!2d22.5490008!5e0!3m2!1ssr!2srs!4v1627540443619!5m2!1ssr!2srs" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Gužva na mapi: Grčka → Severna Makedonija" allowfullscreen></iframe></div>
@@ -208,7 +209,7 @@
   <div class="others">Ostali granični prelazi: <a href="granica-gradina.html">Gradina</a> <a href="granica-horgos.html">Horgos</a> <a href="granica-kelebija.html">Kelebija</a> <a href="granica-batrovci.html">Batrovci</a> <a href="granica-presevo.html">Presevo</a> <a href="granica-medzitlija.html">Medzitlija</a> <a href="granica-sremska-raca.html">Sremska Raca</a> <a href="granica-spiljani.html">Spiljani</a> <a href="granica-prohor-pcinjski.html">Prohor Pcinjski</a> <a href="granica-gostun.html">Gostun</a> <a href="granica-debeli-brijeg.html">Debeli Brijeg</a> <a href="granica-dojran.html">Dojran</a></div>
 </div>
 
-<script src="wait-logic.v1.js?v=20260812a"></script>
+<script src="wait-logic.v1.js?v=20260812b"></script>
 <script>
   const PRELAZ_ID = "bogorodica";
   const FEEDS = [{"label": "Izlaz (ka Grckoj)", "src": "https://streaming1.neotel.net.mk/stream/bogorodica.m3u8", "dir": "out"}];
@@ -437,6 +438,32 @@
         <div class="wcell"><div class="wlabel">Ulaz u Severnu Makedoniju</div>${cellHTML(eIn)}</div>`;
       
       
+      
+      
+      
+      (function(){
+        const el = document.getElementById("dataAge");
+        if (!el) return;
+        const min = window.GasolinaWait.starostMin(data.scraped_at);
+        let txt;
+        if (min == null) {
+          txt = "vreme merenja ovih podataka nije poznato";
+        } else {
+          const pre = min < 1 ? "upravo"
+            : min < 60 ? "pre {n} min".replace("{n}", min)
+            : (min % 60 ? "pre {h} h {m} min".replace("{h}", Math.floor(min / 60)).replace("{m}", min % 60)
+                        : "pre {h} h".replace("{h}", Math.floor(min / 60)));
+          const d = new Date(data.scraped_at);
+          const kada = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+          txt = (min <= window.GasolinaWait.PODACI_MAX_MIN ? "podaci od {kada} ({pre})" : "podaci od {kada} &middot; {pre} &middot; kamera iznad je uživo, brojke nisu")
+                  .replace("{kada}", kada).replace("{pre}", pre);
+          if (min > window.GasolinaWait.PODACI_MAX_MIN) el.style.color = "var(--warn)";
+        }
+        el.innerHTML = txt;
+        el.style.display = "block";
+      })();
+      
+      
       const srcs = [];
       const mfmt = m => (m == null) ? "-" : (m + " min");
       if (c && c.ba) srcs.push(`\uD83D\uDE97 <b>Prijave vozača (BorderAlarm):</b> izlaz ${mfmt(c.ba.izlaz)} \u00b7 ulaz ${mfmt(c.ba.ulaz)}`);
@@ -636,6 +663,8 @@
 <footer style="max-width:1180px;margin:50px auto 0;padding:22px 18px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace">
   Pitanja, primedbe, prijava greske: <a href="mailto:kontakt@gasolina.rs" style="color:var(--faint);text-decoration:underline">kontakt@gasolina.rs</a>
   <br>
+  <a href="o-projektu.html" style="color:var(--faint);text-decoration:underline">O projektu</a> &middot;
+  <a href="metodologija.html" style="color:var(--faint);text-decoration:underline">Metodologija</a> &middot;
   <a href="politika-privatnosti.html" style="color:var(--faint);text-decoration:underline">Politika privatnosti</a>
   <br>
   <span style="opacity:.75">&copy; 2026 Gasolina &middot; sadr&#382;aj i k&#244;d su autorsko delo &middot;

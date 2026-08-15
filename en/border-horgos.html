@@ -184,6 +184,7 @@
   </div>
   <div class="pane" id="pane"><span class="badge">AMSS</span><span class="live" id="liveTag">LIVE</span><img class="thumb" src="../thumbs/horgos.jpg" alt="Horgos" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Play live camera"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div><div class="feeds"><button data-i="1" onclick="playFeed(1)">Exit</button><button data-i="0" onclick="playFeed(0)">Entry</button></div>
   <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Loading current status…</div></div>
+  <div id="dataAge" style="display:none;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.04em;color:var(--faint)"></div>
   <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Traffic on the map: Serbia → Hungary</h2><iframe src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d11672.3!2d19.97480125!3d46.1748572!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d46.1662695!2d19.9615223!4m3!3m2!1d46.1834449!2d19.9880802!5e0!3m2!1sen!2sus!4v1627540443619!5m2!1sen!2sus" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Traffic on the map: Serbia → Hungary" allowfullscreen></iframe></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Traffic on the map: Hungary → Serbia</h2><iframe src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d11672.3!2d19.97480125!3d46.1748572!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d46.1827699!2d19.9869952!4m3!3m2!1d46.1696718!2d19.9712071!5e0!3m2!1sen!2sus!4v1627540443619!5m2!1sen!2sus" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Traffic on the map: Hungary → Serbia" allowfullscreen></iframe></div>
@@ -212,7 +213,7 @@
   <div class="others">Other border crossings: <a href="border-gradina.html">Gradina</a> <a href="border-kelebija.html">Kelebija</a> <a href="border-batrovci.html">Batrovci</a> <a href="border-presevo.html">Presevo</a> <a href="border-bogorodica.html">Bogorodica</a> <a href="border-medzitlija.html">Medzitlija</a> <a href="border-sremska-raca.html">Sremska Raca</a> <a href="border-spiljani.html">Spiljani</a> <a href="border-prohor-pcinjski.html">Prohor Pcinjski</a> <a href="border-gostun.html">Gostun</a> <a href="border-debeli-brijeg.html">Debeli Brijeg</a> <a href="border-dojran.html">Dojran</a></div>
 </div>
 
-<script src="../wait-logic.v1.js?v=20260812a"></script>
+<script src="../wait-logic.v1.js?v=20260812b"></script>
 <script>
   const PRELAZ_ID = "horgos";
   const FEEDS = [{"label": "Entry", "src": "https://kamere.amss.org.rs/horgos1/horgos1.m3u8", "dir": "in"}, {"label": "Exit", "src": "https://kamere.amss.org.rs/horgos2/horgos2.m3u8", "dir": "out"}];
@@ -441,6 +442,32 @@
         <div class="wcell"><div class="wlabel">Entering Serbia</div>${cellHTML(eIn)}</div>`;
       
       
+      
+      
+      
+      (function(){
+        const el = document.getElementById("dataAge");
+        if (!el) return;
+        const min = window.GasolinaWait.starostMin(data.scraped_at);
+        let txt;
+        if (min == null) {
+          txt = "the time of measurement is unknown";
+        } else {
+          const pre = min < 1 ? "just now"
+            : min < 60 ? "{n} min ago".replace("{n}", min)
+            : (min % 60 ? "{h} h {m} min ago".replace("{h}", Math.floor(min / 60)).replace("{m}", min % 60)
+                        : "{h} h ago".replace("{h}", Math.floor(min / 60)));
+          const d = new Date(data.scraped_at);
+          const kada = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+          txt = (min <= window.GasolinaWait.PODACI_MAX_MIN ? "data from {kada} ({pre})" : "data from {kada} &middot; {pre} &middot; the camera above is live, the numbers are not")
+                  .replace("{kada}", kada).replace("{pre}", pre);
+          if (min > window.GasolinaWait.PODACI_MAX_MIN) el.style.color = "var(--warn)";
+        }
+        el.innerHTML = txt;
+        el.style.display = "block";
+      })();
+      
+      
       const srcs = [];
       const mfmt = m => (m == null) ? "-" : (m + " min");
       if (c && c.ba) srcs.push(`\uD83D\uDE97 <b>Driver reports (BorderAlarm):</b> exit ${mfmt(c.ba.izlaz)} \u00b7 entry ${mfmt(c.ba.ulaz)}`);
@@ -640,6 +667,8 @@
 <footer style="max-width:1180px;margin:50px auto 0;padding:22px 18px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace">
   Questions, feedback, error reports: <a href="mailto:kontakt@gasolina.rs" style="color:var(--faint);text-decoration:underline">kontakt@gasolina.rs</a>
   <br>
+  <a href="about.html" style="color:var(--faint);text-decoration:underline">About</a> &middot;
+  <a href="methodology.html" style="color:var(--faint);text-decoration:underline">Methodology</a> &middot;
   <a href="privacy-policy.html" style="color:var(--faint);text-decoration:underline">Privacy policy</a>
   <br>
   <span style="opacity:.75">&copy; 2026 Gasolina &middot; content and code are copyrighted &middot;
