@@ -1,0 +1,11 @@
+cd ~/Documents/gasolina/public
+git add analiza-prelaza.js .github/workflows/analiza-prelaza.yml
+git commit -m "Alat: profil prelaza iz arhiva, podloga za jedinstvene uvode
+
+Cisto citanje git istorije granice.json. Ucitava kanonski
+wait-logic.v1.js, ne reimplementira odluku. Po prelazu i smeru vadi
+raspodelu stanja, medijanu i p90, najgore zabelezeno, koji izvori
+javljaju, da li koridor postoji i da li je ikad dao signal, najgori
+sat i dan. Selftest 12/12. Brise se kad uvodi budu napisani."
+git pull --rebase
+git push
