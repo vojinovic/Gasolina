@@ -598,7 +598,7 @@
        stranicu. 02.08.2026 je kesirana verzija bez IIFE omotaca obarala granice.html
        u SyntaxError i stranica je bila prazna dok covekov kes ne istekne.
        Bumpuje se SVAKI put kad se wait-logic.v1.js promeni, u SVA cetiri fajla. -->
-  <script src="wait-logic.v1.js?v=20260812a"></script>
+  <script src="wait-logic.v1.js?v=20260812b"></script>
   <script>
     // === "Instaliraj" baner ===
     // iOS Safari NEMA API za programsko instaliranje (Apple to namerno ne dozvoljava) -
@@ -1700,9 +1700,22 @@
           <div class="rb-wait-group">${waitGroup}</div>
         </div>`;
       }).join('');
-      const stamp = borderStamp
-        ? `Cekanje: Uprava granicne policije RS &middot; ${new Date(borderStamp).toLocaleString('sr-RS')}`
-        : `Demo cekanje (granice.json jos nije ucitan)`;
+      // "Demo cekanje" je ovde stajalo do 12.08.2026 i bilo je netacno u drugom
+      // smeru: kad granice.json ne stigne, `borderWaits` ostaje prazan i kanonska
+      // funkcija vraca "nema" - dakle nijedna brojka se ne prikazuje, pa nema ni
+      // demo brojki. Rec "demo" je bila ostatak iz vremena kad su rezervne
+      // vrednosti iz borders-data.js zaista curile na sajt (popravljeno 06.08.2026).
+      //
+      // Starost se pise recima, a prag stoji u wait-logic.v1.js: brojka od pre dva
+      // sata ne sme da stoji pod istim natpisom kao brojka od pre pet minuta.
+      const _st = borderStamp ? GasolinaWait.starostMin(borderStamp) : null;
+      const _pre = (m) => m < 1 ? 'upravo' : m < 60 ? `pre ${m} min`
+                   : (m % 60 ? `pre ${Math.floor(m / 60)} h ${m % 60} min` : `pre ${Math.floor(m / 60)} h`);
+      const stamp = !borderStamp
+        ? `Podaci o cekanju jos nisu ucitani`
+        : _st == null
+          ? `Cekanje: Uprava granicne policije RS &middot; vreme merenja nije poznato`
+          : `Cekanje: Uprava granicne policije RS &middot; ${new Date(borderStamp).toLocaleString('sr-RS')} (${_pre(_st)})`;
       return `
         <div class="result-box rb-box">
           <h3>\uD83D\uDEA7 Granice na ovoj ruti</h3>
@@ -2018,6 +2031,8 @@
 <footer style="max-width:1180px;margin:50px auto 0;padding:22px 18px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace">
   Pitanja, primedbe, prijava greske: <a href="mailto:kontakt@gasolina.rs" style="color:var(--faint);text-decoration:underline">kontakt@gasolina.rs</a>
   <br>
+  <a href="o-projektu.html" style="color:var(--faint);text-decoration:underline">O projektu</a> &middot;
+  <a href="metodologija.html" style="color:var(--faint);text-decoration:underline">Metodologija</a> &middot;
   <a href="politika-privatnosti.html" style="color:var(--faint);text-decoration:underline">Politika privatnosti</a>
   <br>
   <span style="opacity:.75">&copy; 2026 Gasolina &middot; sadr&#382;aj i k&#244;d su autorsko delo &middot;

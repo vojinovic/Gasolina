@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How we calculate border waiting times — methodology | Gasolina</title>
+<meta name="description" content="Where the border waiting figures come from, what each source actually measures, why traffic measurement cannot refute a standing queue, and what every label on the site claims. Thresholds, sources and limits, written out in full.">
+<link rel="canonical" href="https://gasolina.rs/en/methodology.html">
+<link rel="alternate" hreflang="en" href="https://gasolina.rs/metodologija.html">
+<link rel="alternate" hreflang="en" href="https://gasolina.rs/en/methodology.html">
+<link rel="alternate" hreflang="x-default" href="https://gasolina.rs/metodologija.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0d1620">
+
+<link rel="manifest" href="../manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gasolina">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gasolina">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="How we calculate border waiting times">
+<meta property="og:description" content="What each source actually measures, why traffic measurement cannot refute a queue standing at passport control, and what every label on the site claims.">
+<meta property="og:url" content="https://gasolina.rs/en/methodology.html">
+<meta property="og:image" content="https://gasolina.rs/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "How we calculate border waiting times",
+  "description": "Methodology: data sources for border waiting times, decision rules, thresholds and limits.",
+  "url": "https://gasolina.rs/en/methodology.html",
+  "inLanguage": "en",
+  "isPartOf": { "@type": "WebSite", "name": "Gasolina", "url": "https://gasolina.rs/" },
+  "publisher": { "@type": "Organization", "name": "Gasolina", "url": "https://gasolina.rs/" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<!-- Pristanak na kolacice - MORA pre gtag/js, bez async/defer -->
+<script src="/consent.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4EPLBJE8BL');
+</script>
+
+<style>
+  :root{
+    --ink:#0d1620; --panel:#15212e; --panel-2:#1b2a39; --line:#26384a;
+    --text:#e9eff5; --dim:#8aa0b2; --faint:#5d7387;
+    --fuel:#f5a623; --ok:#2fbf71; --warn:#f5a623; --bad:#e05252; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:var(--text);font-family:"JetBrains Mono",monospace;line-height:1.6}
+  a{color:var(--fuel)}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(13,22,32,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .topbar .inner{max-width:1180px;margin:0 auto;padding:0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+  .brand .mark{width:26px;height:26px;border-radius:7px;background:var(--fuel);display:grid;place-items:center;color:var(--ink);font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:18px}
+  .brand .bname{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;letter-spacing:.04em;text-transform:uppercase;color:var(--text)}
+  .nav{display:flex;align-items:center;gap:4px}
+  .nav a{font-size:13px;color:var(--dim);text-decoration:none;padding:7px 11px;border-radius:8px;font-weight:500}
+  .nav a:hover{color:var(--text);background:var(--panel)}
+  .nav a[aria-current]{color:var(--ink);background:var(--fuel);font-weight:700}
+  @media (max-width:560px){
+    .topbar .inner{gap:8px}
+    .brand{flex-shrink:0}
+    .nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-width:0}
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{padding:6px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
+    .brand .bname{font-size:18px}
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:28px 18px 60px}
+  h1{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:36px;text-transform:uppercase;margin:0 0 10px;line-height:1.05}
+  h2{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:24px;text-transform:uppercase;margin:38px 0 12px;line-height:1.15;color:var(--text)}
+  h3{font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:18px;text-transform:uppercase;margin:26px 0 8px;color:var(--fuel);letter-spacing:.03em}
+  .lead{color:var(--dim);font-size:15px;line-height:1.7;margin:0 0 8px;max-width:640px}
+  p{font-size:14px;line-height:1.75;color:var(--text)}
+  p.note{color:var(--dim);font-size:13px}
+  ul,ol{font-size:14px;line-height:1.75;padding-left:20px}
+  li{margin-bottom:7px}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+  td b{color:var(--fuel)}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin:18px 0}
+  .box.key{border-left:3px solid var(--fuel)}
+  .box p:first-child{margin-top:0}
+  .box p:last-child{margin-bottom:0}
+  .updated{margin-top:8px;font-size:11px;color:var(--faint);letter-spacing:.05em}
+  code{background:var(--panel-2);padding:1px 5px;border-radius:5px;font-size:12.5px;color:var(--dim)}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="inner">
+    <a class="brand" href="index.html">
+      <span class="mark">G</span>
+      <span class="bname">Gasolina</span>
+    </a>
+    <div class="nav">
+      <a href="index.html">Fuel prices</a>
+      <a href="../index.html#kalkulator">Trip calculator</a>
+      <a href="borders.html">Borders</a>
+      <a href="history.html">History</a>
+      <a href="guides.html">Guides</a>
+      <a class="lang" href="../metodologija.html" title="&#268;itaj na srpskom" style="border:1px solid var(--line);font-weight:700">SR</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <h1>How we calculate waiting times</h1>
+  <p class="lead">When Gasolina says "1 h 20 min", that is not a single number we read somewhere. It is a decision between three kinds of source that measure different things and often disagree. This page describes that decision in full — including the cases where the site deliberately refuses to give a number.</p>
+  <p class="updated">Last updated: 12 August 2026.</p>
+
+  <h2>Three kinds of source</h2>
+  <p>Everything that reaches the site falls into one of three groups. What separates them is not accuracy but <b>what was measured in the first place</b>.</p>
+
+  <table>
+    <tr><th>Kind</th><th>Who</th><th>What it actually gives</th></tr>
+    <tr>
+      <td><b>Official estimate</b></td>
+      <td>Serbian Border Police (published via AMSS), police.hu, AMSM</td>
+      <td>An estimate of total delay at the crossing. Not a measurement. The Hungarian police say so explicitly — their figures are "based on experience and informative in nature".</td>
+    </tr>
+    <tr>
+      <td><b>Driver report</b></td>
+      <td>BorderAlarm, the form on this site</td>
+      <td>How long one person actually stood there. Closest to the truth when it is right, but the sample is tiny and nobody verifies it.</td>
+    </tr>
+    <tr>
+      <td><b>Traffic measurement</b></td>
+      <td>TomTom (delay and queue length on the corridor up to the barrier)</td>
+      <td>The only real measurement — but it only sees <b>vehicles that are moving</b>.</td>
+    </tr>
+  </table>
+
+  <h2>The rule everything rests on: a lower bound may confirm, never refute</h2>
+  <p>Traffic measurement looks like the strongest source because it is the only automatic one. In practice it is the weakest at the thing we care about. <code>trafficDelayInSeconds</code> measures how much slower traffic moves than it would on an empty road. A queue <b>standing</b> at passport control does not exist for that system — no movement, no delay.</p>
+
+  <div class="box key">
+    <p><b>So a zero from traffic measurement means three different things that cannot be told apart:</b> the road really is clear · the road is not covered by measurement · a four-hour queue is standing at the end of it.</p>
+  </div>
+
+  <p>This is not a theoretical worry. Across an archive of 475 data snapshots (24 June – 3 August 2026, 11,574 records by crossing and direction) two corridors never once produced a positive signal: the inbound corridor at Bogorodica across 100 successful responses, and at Medzitlija across 94 — <b>every single one a zero</b>. Those corridors are dead, and the rule that treated zero as evidence was running there too.</p>
+
+  <p>Until August 2026 a measurement was allowed to <b>overrule</b> a driver report: if someone reported four hours while the measurement looked calm, the report disappeared from the display. When we replayed that backwards across the whole archive, it turned out the site did not print "No queue" in those cases — it did not lie, it <b>went silent</b>. You got a page with no number at all, in exactly the situation where one source had a very definite opinion. A milder fault than we first thought, but the same kind.</p>
+
+  <p>Today the rule runs one way only: <b>measurement may confirm congestion, never disprove it.</b> A measured 700-metre queue still overrides a reassuring headline, because confirming is what a lower bound is entitled to do. The absence of a queue overrides nothing — it only means there is no confirmation.</p>
+
+  <h2>What each label claims</h2>
+  <table>
+    <tr><th>Label</th><th>What it claims</th></tr>
+    <tr><td><b>No queue</b></td><td>An official source says there is no delay, or under 15 minutes. This requires <b>positive evidence</b> — a single short driver report is not enough.</td></tr>
+    <tr><td><b>A figure</b> (e.g. 45 min)</td><td>An official estimate, with the source named.</td></tr>
+    <tr><td><b>Reported</b> + figure</td><td>The figure comes from drivers, not from an institution. The word sits next to the number, not in small print underneath.</td></tr>
+    <tr><td><b>Queue ~800 m</b></td><td>Measurement confirmed the length of the line. Length is not duration and is never converted into minutes.</td></tr>
+    <tr><td><b>Sources disagree</b></td><td>Two estimates differ by more than a factor of three. The site shows both and picks no winner.</td></tr>
+    <tr><td><b>Uncertain</b></td><td>Drivers report a long wait and there is no confirmation — neither from an institution nor from measurement. The report is visible, but never becomes the headline figure.</td></tr>
+    <tr><td><b>No reliable estimate</b></td><td>No source said anything usable. This is an answer, not a malfunction.</td></tr>
+  </table>
+
+  <p class="note">"Sources disagree" and "Uncertain" deliberately carry no single headline number. The moment one number exists, every display prints it as the headline and thereby declares a winner — and the whole point is that there is no winner.</p>
+
+  <h2>Thresholds, and why these ones</h2>
+  <table>
+    <tr><th>Threshold</th><th>Value</th><th>Why</th></tr>
+    <tr><td>"No queue"</td><td>up to 15 min</td><td>Below that, the difference between 5 and 12 minutes changes nobody's decision.</td></tr>
+    <tr><td>Long queue</td><td>from 200 m</td><td>Below that, a line at the barrier is normal operation, not congestion.</td></tr>
+    <tr><td>Extreme report</td><td>from 120 min</td><td>The point beyond which a report needs confirmation before it gets the headline.</td></tr>
+    <tr><td>Sources disagree</td><td>3&times; difference</td><td>Across the archive, any value between 2.5&times; and 4&times; changes the outcome for exactly one record — the number is not sensitive, so we picked the one easiest to explain.</td></tr>
+    <tr><td>Data age</td><td>up to 60 min</td><td>Data refreshes every 30 minutes. One missed cycle is normal; two are not, so beyond 60 minutes the page stops saying "live".</td></tr>
+  </table>
+
+  <h2>Why AMSS's exact 30 minutes never becomes a figure</h2>
+  <p>In the archive, the value <b>exactly 30 minutes</b> accounted for 6,232 of 6,404 records from that source — <b>97.3%</b>. A value that shows up in nineteen cases out of twenty is not an assessment of conditions; it is the value that stands until a change is reported. So an exact 30 does not enter the decision: in that case the page says there is no reliable estimate and points you at the camera.</p>
+  <p>An important limit on that claim: AMSS <b>can</b> publish a finer value — we found 15 minutes at Ljubovija–Bratunac and Nakovo, in both directions. So 30 is not their floor, it is the value they hold. No crossing this site tracks has ever published 15, so this correction changes not a single displayed figure — but it changes the reasoning, and that is why it is written here.</p>
+  <p class="note">For comparison: the Hungarian police publish only four values (0, 30, 45 and 60 minutes), while AMSM uses a finer scale (15, 20, 30, 40, 45, 50, 60) and reports zero in 85.2% of records. The granularity of a source is part of what its number means.</p>
+
+  <h2>What the site does not know</h2>
+  <ul>
+    <li><b>The camera and the number need not describe the same point.</b> When the source is the North Macedonian or Hungarian side, that is the wait at <b>their</b> control — downstream of a camera pointed at the Serbian apron. An empty apron in the picture does not refute such a number.</li>
+    <li><b>Traffic measurement does not cover every direction.</b> Of 26 directions (13 crossings &times; 2), ten have no corridor at all — among them Spiljani and Sremska Raca in both directions.</li>
+    <li><b>Driver reports are not verified.</b> One report is one person. That is why a single short report never yields "No queue", and a single extreme one never yields a headline figure without confirmation.</li>
+    <li><b>We do not forecast.</b> The site says what the sources are reporting now, not how long you will wait when you get there.</li>
+  </ul>
+
+  <h2>How this is kept from breaking</h2>
+  <p>The waiting decision lives in <b>one</b> file used by every page. Until August 2026 the same logic sat in four copies — and the home page showed 34 minutes for a crossing while that crossing's own page showed 20, because one copy was left untouched twice when the rule changed.</p>
+  <p>Every rule change passes three layers of checks before it goes live:</p>
+  <ol>
+    <li><b>Rules</b> — seventeen checks, each written after a real incident. They are not removed to make a test pass.</li>
+    <li><b>Frozen behaviour</b> — 1,046 unique input combinations drawn from the archive. If any result changes, the change must be deliberate and written down, never silent.</li>
+    <li><b>Display</b> — 29 pages driven through nine situations in a real browser, checking that none of them prints a blank or a claim the data does not support.</li>
+  </ol>
+  <p>On top of that, every rule change is replayed backwards across the whole archive to see how many records it would move. The most recent one (removing the measurement veto) changed 323 of 11,574 records — 2.79% — and not one of them gained a new unconfirmed headline figure.</p>
+
+  <div class="box">
+    <p>If you see a figure that does not match what is actually happening, tell us: <a href="mailto:kontakt@gasolina.rs">kontakt@gasolina.rs</a>. The time, the crossing and the direction are what help most — with those we can find the exact record in the archive and check which source got it wrong.</p>
+  </div>
+
+  <style>
+.xlinks{margin:28px 0 0;padding-top:16px;border-top:1px solid var(--line);
+  font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:2.1;color:var(--faint)}
+.xlinks .xl-lab{display:block;text-transform:uppercase;letter-spacing:.06em;font-size:11px;margin-bottom:4px}
+.xlinks a{color:var(--dim);text-decoration:none;margin-right:15px;white-space:nowrap;
+  border-bottom:1px solid transparent}
+.xlinks a:hover{color:var(--fuel);border-bottom-color:var(--fuel)}
+</style>
+<nav class="xlinks" aria-label="All border crossings">
+  <span class="xl-lab">Live camera and waiting time by crossing</span>
+  <a href="border-presevo.html">Presevo</a>
+  <a href="border-gradina.html">Gradina</a>
+  <a href="border-horgos.html">Horgos</a>
+  <a href="border-batrovci.html">Batrovci</a>
+  <a href="border-kelebija.html">Kelebija</a>
+  <a href="border-bogorodica.html">Bogorodica</a>
+  <a href="border-dojran.html">Dojran</a>
+  <a href="border-medzitlija.html">Medzitlija</a>
+  <a href="border-sremska-raca.html">Sremska Raca</a>
+  <a href="border-spiljani.html">Spiljani</a>
+  <a href="border-prohor-pcinjski.html">Prohor Pcinjski</a>
+  <a href="border-gostun.html">Gostun</a>
+  <a href="border-debeli-brijeg.html">Debeli Brijeg</a>
+</nav>
+</div>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
+
+<footer style="max-width:1180px;margin:50px auto 0;padding:22px 18px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace">
+  Questions, feedback, error reports: <a href="mailto:kontakt@gasolina.rs" style="color:var(--faint);text-decoration:underline">kontakt@gasolina.rs</a>
+  <br>
+  <a href="about.html" style="color:var(--faint);text-decoration:underline">About</a> &middot;
+  <a href="methodology.html" style="color:var(--faint);text-decoration:underline">Methodology</a> &middot;
+  <a href="privacy-policy.html" style="color:var(--faint);text-decoration:underline">Privacy policy</a>
+  <br>
+  <span style="opacity:.75">&copy; 2026 Gasolina &middot; content and code are copyrighted &middot;
+  data shown for information only, sources credited</span>
+</footer>
+</body>
+</html>

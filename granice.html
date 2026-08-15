@@ -431,7 +431,7 @@
 <script src="borders-data.js"></script>
 <!-- ?v= nije ukras: bez njega browser sme da posluzi staru kopiju uz novu
      stranicu. Bumpuje se SVAKI put kad se wait-logic.v1.js promeni. -->
-<script src="wait-logic.v1.js?v=20260812a"></script>
+<script src="wait-logic.v1.js?v=20260812b"></script>
 <script>
 /* Prelazi se ucitavaju iz deljenog borders-data.js (jedan izvor istine). */
 // Redosled kartica: najprometniji prelazi gore. Ostali zadrzavaju redosled iz borders-data.
@@ -1197,21 +1197,45 @@ function wire(){
   });
 }
 
+/* KOLIKO JE STARA BROJKA JE DEO ONOGA STO SAJT TVRDI (12.08.2026).
+   Do danas je ovde pisalo "Uzivo" cim je ijedan prelaz imao zvanican podatak, bez
+   obzira na starost. 12.08.2026 u 17:54 najsvezije granice.json bilo je od 16:37 -
+   77 minuta, dva promasena ciklusa skrejpera - a stranica je i dalje tvrdila da je
+   uzivo. Prag i racun stoje u wait-logic.v1.js, da se ne bi razisli po stranicama
+   isto kao sto se nekad razisla odluka o cekanju. */
+function preTekst(min){
+  if(min < 1) return "upravo";
+  if(min < 60) return `pre ${min} min`;
+  const h=Math.floor(min/60), m=min%60;
+  return m ? `pre ${h} h ${m} min` : `pre ${h} h`;
+}
 function setNote(live, scrapedAt){
   const note=document.querySelector(".note");
-  if(live){
-    let when="";
-    if(scrapedAt){
-      const d=new Date(scrapedAt);
-      const hh=String(d.getHours()).padStart(2,"0"), mm=String(d.getMinutes()).padStart(2,"0");
-      const dd=String(d.getDate()).padStart(2,"0"), mo=String(d.getMonth()+1).padStart(2,"0");
-      when=` &middot; azurirano ${dd}.${mo}. u ${hh}:${mm}`;
-    }
-    note.classList.remove("demo");
-    note.innerHTML=`<span class="ldot"></span><b>Uzivo</b>${when}`;
-  } else {
+  if(!live){
     note.classList.add("demo");
     note.innerHTML=`<span class="ldot"></span><b>Podaci trenutno nisu dostupni</b> &middot; pokusajte ponovo uskoro`;
+    return;
+  }
+  const min=GasolinaWait.starostMin(scrapedAt);
+  let kada=null;
+  if(scrapedAt){
+    const d=new Date(scrapedAt);
+    if(isFinite(d.getTime())){
+      const hh=String(d.getHours()).padStart(2,"0"), mm=String(d.getMinutes()).padStart(2,"0");
+      const dd=String(d.getDate()).padStart(2,"0"), mo=String(d.getMonth()+1).padStart(2,"0");
+      kada=`${dd}.${mo}. u ${hh}:${mm}`;
+    }
+  }
+  if(min==null){
+    // Nepoznata starost NIJE "uzivo". Ne znamo koliko je stara - to je ceo nalaz.
+    note.classList.add("demo");
+    note.innerHTML=`<span class="ldot"></span><b>Podaci ucitani</b> &middot; vreme merenja nije poznato`;
+  } else if(min<=GasolinaWait.PODACI_MAX_MIN){
+    note.classList.remove("demo");
+    note.innerHTML=`<span class="ldot"></span><b>Uzivo</b> &middot; azurirano ${kada} (${preTekst(min)})`;
+  } else {
+    note.classList.add("demo");
+    note.innerHTML=`<span class="ldot"></span><b>Podaci od ${kada}</b> &middot; ${preTekst(min)}`;
   }
 }
 
@@ -1293,6 +1317,8 @@ init();
 <footer style="max-width:1180px;margin:50px auto 0;padding:22px 18px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace">
   Pitanja, primedbe, prijava greske: <a href="mailto:kontakt@gasolina.rs" style="color:var(--faint);text-decoration:underline">kontakt@gasolina.rs</a>
   <br>
+  <a href="o-projektu.html" style="color:var(--faint);text-decoration:underline">O projektu</a> &middot;
+  <a href="metodologija.html" style="color:var(--faint);text-decoration:underline">Metodologija</a> &middot;
   <a href="politika-privatnosti.html" style="color:var(--faint);text-decoration:underline">Politika privatnosti</a>
   <br>
   <span style="opacity:.75">&copy; 2026 Gasolina &middot; sadr&#382;aj i k&#244;d su autorsko delo &middot;

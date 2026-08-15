@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — who builds Gasolina, and by what rule | Gasolina</title>
+<meta name="description" content="Gasolina tracks waiting times and live cameras at 13 border crossings, plus fuel prices across the region. What is tracked, where the data comes from, what the site deliberately refuses to claim, and where coverage ends.">
+<link rel="canonical" href="https://gasolina.rs/en/about.html">
+<link rel="alternate" hreflang="en" href="https://gasolina.rs/o-projektu.html">
+<link rel="alternate" hreflang="en" href="https://gasolina.rs/en/about.html">
+<link rel="alternate" hreflang="x-default" href="https://gasolina.rs/o-projektu.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0d1620">
+
+<link rel="manifest" href="../manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gasolina">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gasolina">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="About — who builds Gasolina, and by what rule">
+<meta property="og:description" content="What is tracked, where the data comes from, and the rule everything rests on: the site must not claim what it does not know.">
+<meta property="og:url" content="https://gasolina.rs/en/about.html">
+<meta property="og:image" content="https://gasolina.rs/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About the project",
+  "description": "About Gasolina: what is tracked, where the data comes from, and the rule that decides what gets shown.",
+  "url": "https://gasolina.rs/en/about.html",
+  "inLanguage": "en",
+  "isPartOf": { "@type": "WebSite", "name": "Gasolina", "url": "https://gasolina.rs/" },
+  "publisher": { "@type": "Organization", "name": "Gasolina", "url": "https://gasolina.rs/",
+                 "email": "kontakt@gasolina.rs" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<!-- Pristanak na kolacice - MORA pre gtag/js, bez async/defer -->
+<script src="/consent.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4EPLBJE8BL');
+</script>
+
+<style>
+  :root{
+    --ink:#0d1620; --panel:#15212e; --panel-2:#1b2a39; --line:#26384a;
+    --text:#e9eff5; --dim:#8aa0b2; --faint:#5d7387;
+    --fuel:#f5a623; --ok:#2fbf71; --warn:#f5a623; --bad:#e05252; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:var(--text);font-family:"JetBrains Mono",monospace;line-height:1.6}
+  a{color:var(--fuel)}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(13,22,32,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .topbar .inner{max-width:1180px;margin:0 auto;padding:0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+  .brand .mark{width:26px;height:26px;border-radius:7px;background:var(--fuel);display:grid;place-items:center;color:var(--ink);font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:18px}
+  .brand .bname{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;letter-spacing:.04em;text-transform:uppercase;color:var(--text)}
+  .nav{display:flex;align-items:center;gap:4px}
+  .nav a{font-size:13px;color:var(--dim);text-decoration:none;padding:7px 11px;border-radius:8px;font-weight:500}
+  .nav a:hover{color:var(--text);background:var(--panel)}
+  .nav a[aria-current]{color:var(--ink);background:var(--fuel);font-weight:700}
+  @media (max-width:560px){
+    .topbar .inner{gap:8px}
+    .brand{flex-shrink:0}
+    .nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-width:0}
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{padding:6px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
+    .brand .bname{font-size:18px}
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:28px 18px 60px}
+  h1{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:36px;text-transform:uppercase;margin:0 0 10px;line-height:1.05}
+  h2{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:24px;text-transform:uppercase;margin:38px 0 12px;line-height:1.15;color:var(--text)}
+  .lead{color:var(--dim);font-size:15px;line-height:1.7;margin:0 0 8px;max-width:640px}
+  p{font-size:14px;line-height:1.75;color:var(--text)}
+  p.note{color:var(--dim);font-size:13px}
+  ul,ol{font-size:14px;line-height:1.75;padding-left:20px}
+  li{margin-bottom:7px}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+  td b{color:var(--fuel)}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin:18px 0}
+  .box.key{border-left:3px solid var(--fuel)}
+  .box p:first-child{margin-top:0}
+  .box p:last-child{margin-bottom:0}
+  .updated{margin-top:8px;font-size:11px;color:var(--faint);letter-spacing:.05em}
+  code{background:var(--panel-2);padding:1px 5px;border-radius:5px;font-size:12.5px;color:var(--dim)}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="inner">
+    <a class="brand" href="index.html">
+      <span class="mark">G</span>
+      <span class="bname">Gasolina</span>
+    </a>
+    <div class="nav">
+      <a href="index.html">Fuel prices</a>
+      <a href="../index.html#kalkulator">Trip calculator</a>
+      <a href="borders.html">Borders</a>
+      <a href="history.html">History</a>
+      <a href="guides.html">Guides</a>
+      <a class="lang" href="../o-projektu.html" title="&#268;itaj na srpskom" style="border:1px solid var(--line);font-weight:700">SR</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <h1>About the project</h1>
+  <p class="lead">Gasolina is an independent site about driving through Serbia and the surrounding region: waiting times and live cameras at border crossings, fuel prices by country, and a calculator that works out where it pays to fill up. It is built by one person, in Serbia, with no newsroom and no sponsors.</p>
+  <p class="updated">Last updated: 12 August 2026.</p>
+
+  <h2>Why it exists</h2>
+  <p>Before a trip people ask the same two things: how bad is the border, and where should I buy fuel. The answers exist, but scattered — the wait on one institution's site, the camera on another's, fuel prices somewhere else again, and the neighbouring countries each in their own language. Gasolina puts that in one place and, more importantly, <b>says where every figure came from</b>.</p>
+
+  <h2>What is tracked</h2>
+  <p>Thirteen crossings, each in both directions, with cameras where they exist:</p>
+  <table>
+    <tr><th>Crossing</th><th>Between</th><th>Camera</th></tr>
+    <tr><td><b>Horgos</b>, <b>Kelebija</b></td><td>Serbia – Hungary</td><td>both directions</td></tr>
+    <tr><td><b>Batrovci</b></td><td>Serbia – Croatia</td><td>both directions</td></tr>
+    <tr><td><b>Gradina</b></td><td>Serbia – Bulgaria</td><td>both directions</td></tr>
+    <tr><td><b>Presevo</b></td><td>Serbia – North Macedonia</td><td>both directions, two feeds</td></tr>
+    <tr><td><b>Sremska Raca</b></td><td>Serbia – Bosnia and Herzegovina</td><td>both directions</td></tr>
+    <tr><td><b>Spiljani</b></td><td>Serbia – Montenegro</td><td>both directions</td></tr>
+    <tr><td><b>Bogorodica</b>, <b>Medzitlija</b>, <b>Dojran</b></td><td>North Macedonia – Greece</td><td>one direction each</td></tr>
+    <tr><td><b>Prohor Pcinjski</b></td><td>Serbia – North Macedonia</td><td>none</td></tr>
+    <tr><td><b>Gostun</b></td><td>Serbia – Montenegro</td><td>via the official source</td></tr>
+    <tr><td><b>Debeli Brijeg</b></td><td>Montenegro – Croatia</td><td>via the official source</td></tr>
+  </table>
+  <p class="note">For Debeli Brijeg and Dojran we show the camera but no waiting time — these are not Serbian borders and none of the sources we follow publishes an estimate for them. The site says so, instead of inventing a number.</p>
+  <p>Alongside that: diesel, petrol and LPG prices in Serbia and neighbouring countries, price history since 2024, a per-route cost calculator with a suggestion of where to fill up, and three guides (the Bulgarian vignette, the Green Card, documents for Greece).</p>
+
+  <h2>The rule everything rests on</h2>
+  <div class="box key">
+    <p><b>The site must not claim what it does not know.</b> Better to write "no reliable estimate" than to put up a figure that merely looks convincing. Someone who sets off once on a false number does not come back — and they are right not to.</p>
+  </div>
+  <p>That reads like a slogan until it starts costing something. A few things that were <b>taken off the site</b> because of it, even though they looked harmless:</p>
+  <ul>
+    <li><b>Fallback figures.</b> The site carried example values in case the data failed to load. They worked quietly and convincingly. They are gone: when data does not arrive, the site now says so.</li>
+    <li><b>A zero from traffic measurement treated as proof of calm.</b> Measurement only sees moving vehicles, so a queue standing at passport control does not exist for it. Until August 2026 such a zero would erase a four-hour driver report. Not any more — the <a href="methodology.html">methodology</a> explains why.</li>
+    <li><b>"Live" with nothing behind it.</b> The page said "live" even when the figures were an hour and a half old. Now every figure carries its age, and past an hour the word "live" is withdrawn.</li>
+    <li><b>One number when sources disagree.</b> The larger one used to win. Now, when two estimates differ by more than a factor of three, the site shows both and says there is no verdict.</li>
+  </ul>
+
+  <h2>Where the data comes from</h2>
+  <table>
+    <tr><th>Data</th><th>Source</th></tr>
+    <tr><td>Waiting times at Serbian crossings</td><td>Serbian Border Police, as published by AMSS</td></tr>
+    <tr><td>Waiting times on the Hungarian side</td><td>police.hu</td></tr>
+    <tr><td>Waiting times on the North Macedonian side</td><td>AMSM</td></tr>
+    <tr><td>Driver reports</td><td>BorderAlarm and the form on this site</td></tr>
+    <tr><td>Delay and queue length</td><td>TomTom</td></tr>
+    <tr><td>Cameras</td><td>AMSS, Serbian Ministry of the Interior, Montenegrin Ministry of the Interior, roads.org.mk and other official sources — every card names its source and links to the original</td></tr>
+    <tr><td>Fuel prices</td><td>official publications and company sites, by country</td></tr>
+  </table>
+  <p class="note">Cameras are neither downloaded nor re-broadcast — the official stream is displayed, with the owner named and a link to the source page. Terms for using data from this site are in the <a href="../LICENSE">licence</a>.</p>
+
+  <h2>Where coverage ends</h2>
+  <p>This is the list of what the site does <b>not</b> do, written down here so it does not have to be discovered the hard way:</p>
+  <ul>
+    <li><b>Not every crossing is covered.</b> Thirteen are, the rest are not. Expanding waits on evidence that a new crossing actually has a source publishing a real value rather than a default one.</li>
+    <li><b>Traffic measurement does not exist for every direction.</b> Of 26 directions, ten have no corridor — among them Spiljani and Sremska Raca in both directions.</li>
+    <li><b>We do not forecast congestion.</b> The site says what the sources report now, not how long the wait will be in three hours.</li>
+    <li><b>Reports from our own form are rare.</b> Over forty days, exactly one usable report arrived. Driver reports therefore rely mostly on BorderAlarm, and the form stands for the cases where something is obviously wrong.</li>
+    <li><b>Freight traffic is tracked less well than passenger traffic.</b> Sources for lorries are sparser and less consistent.</li>
+  </ul>
+
+  <h2>Money and independence</h2>
+  <p>The project currently earns nothing. If advertising ever appears on the site it will be clearly marked, and it <b>will not influence which crossings are tracked or which figure is shown</b> — that decision is made in a single file that knows nothing about advertising, and every change to it passes automated checks before going live.</p>
+
+  <h2>Corrections and contact</h2>
+  <p>If a figure does not match what is happening on the ground, that is valuable information and I would like to hear it: <a href="mailto:kontakt@gasolina.rs">kontakt@gasolina.rs</a>. The time, the crossing and the direction help most — with those the exact record can be found in the archive and the source that got it wrong identified. Several changes to this site started exactly that way.</p>
+  <p class="note">Content and code are copyrighted. Data is shown for information only, with sources credited, and does not constitute official information from any institution.</p>
+
+  <style>
+.xlinks{margin:28px 0 0;padding-top:16px;border-top:1px solid var(--line);
+  font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:2.1;color:var(--faint)}
+.xlinks .xl-lab{display:block;text-transform:uppercase;letter-spacing:.06em;font-size:11px;margin-bottom:4px}
+.xlinks a{color:var(--dim);text-decoration:none;margin-right:15px;white-space:nowrap;
+  border-bottom:1px solid transparent}
+.xlinks a:hover{color:var(--fuel);border-bottom-color:var(--fuel)}
+</style>
+<nav class="xlinks" aria-label="All border crossings">
+  <span class="xl-lab">Live camera and waiting time by crossing</span>
+  <a href="border-presevo.html">Presevo</a>
+  <a href="border-gradina.html">Gradina</a>
+  <a href="border-horgos.html">Horgos</a>
+  <a href="border-batrovci.html">Batrovci</a>
+  <a href="border-kelebija.html">Kelebija</a>
+  <a href="border-bogorodica.html">Bogorodica</a>
+  <a href="border-dojran.html">Dojran</a>
+  <a href="border-medzitlija.html">Medzitlija</a>
+  <a href="border-sremska-raca.html">Sremska Raca</a>
+  <a href="border-spiljani.html">Spiljani</a>
+  <a href="border-prohor-pcinjski.html">Prohor Pcinjski</a>
+  <a href="border-gostun.html">Gostun</a>
+  <a href="border-debeli-brijeg.html">Debeli Brijeg</a>
+</nav>
+</div>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
+
+<footer style="max-width:1180px;margin:50px auto 0;padding:22px 18px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace">
+  Questions, feedback, error reports: <a href="mailto:kontakt@gasolina.rs" style="color:var(--faint);text-decoration:underline">kontakt@gasolina.rs</a>
+  <br>
+  <a href="about.html" style="color:var(--faint);text-decoration:underline">About</a> &middot;
+  <a href="methodology.html" style="color:var(--faint);text-decoration:underline">Methodology</a> &middot;
+  <a href="privacy-policy.html" style="color:var(--faint);text-decoration:underline">Privacy policy</a>
+  <br>
+  <span style="opacity:.75">&copy; 2026 Gasolina &middot; content and code are copyrighted &middot;
+  data shown for information only, sources credited</span>
+</footer>
+</body>
+</html>

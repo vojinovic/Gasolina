@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O projektu — ko pravi Gasolinu i po kom pravilu | Gasolina</title>
+<meta name="description" content="Gasolina prati čekanje i kamere na 13 graničnih prelaza i cene goriva u regionu. Šta se tačno prati, odakle podaci, šta sajt namerno ne tvrdi i gde su granice pokrivenosti.">
+<link rel="canonical" href="https://gasolina.rs/o-projektu.html">
+<link rel="alternate" hreflang="sr" href="https://gasolina.rs/o-projektu.html">
+<link rel="alternate" hreflang="en" href="https://gasolina.rs/en/about.html">
+<link rel="alternate" hreflang="x-default" href="https://gasolina.rs/o-projektu.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0d1620">
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gasolina">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gasolina">
+<meta property="og:locale" content="sr_RS">
+<meta property="og:title" content="O projektu — ko pravi Gasolinu i po kom pravilu">
+<meta property="og:description" content="Šta se prati, odakle podaci, i pravilo od kog sve zavisi: sajt ne sme da tvrdi ono što ne zna.">
+<meta property="og:url" content="https://gasolina.rs/o-projektu.html">
+<meta property="og:image" content="https://gasolina.rs/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "O projektu",
+  "description": "O Gasolini: šta se prati, odakle podaci i po kom pravilu se odlučuje šta se prikazuje.",
+  "url": "https://gasolina.rs/o-projektu.html",
+  "inLanguage": "sr-RS",
+  "isPartOf": { "@type": "WebSite", "name": "Gasolina", "url": "https://gasolina.rs/" },
+  "publisher": { "@type": "Organization", "name": "Gasolina", "url": "https://gasolina.rs/",
+                 "email": "kontakt@gasolina.rs" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<!-- Pristanak na kolacice - MORA pre gtag/js, bez async/defer -->
+<script src="/consent.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4EPLBJE8BL');
+</script>
+
+<style>
+  :root{
+    --ink:#0d1620; --panel:#15212e; --panel-2:#1b2a39; --line:#26384a;
+    --text:#e9eff5; --dim:#8aa0b2; --faint:#5d7387;
+    --fuel:#f5a623; --ok:#2fbf71; --warn:#f5a623; --bad:#e05252; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:var(--text);font-family:"JetBrains Mono",monospace;line-height:1.6}
+  a{color:var(--fuel)}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(13,22,32,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .topbar .inner{max-width:1180px;margin:0 auto;padding:0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+  .brand .mark{width:26px;height:26px;border-radius:7px;background:var(--fuel);display:grid;place-items:center;color:var(--ink);font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:18px}
+  .brand .bname{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;letter-spacing:.04em;text-transform:uppercase;color:var(--text)}
+  .nav{display:flex;align-items:center;gap:4px}
+  .nav a{font-size:13px;color:var(--dim);text-decoration:none;padding:7px 11px;border-radius:8px;font-weight:500}
+  .nav a:hover{color:var(--text);background:var(--panel)}
+  .nav a[aria-current]{color:var(--ink);background:var(--fuel);font-weight:700}
+  @media (max-width:560px){
+    .topbar .inner{gap:8px}
+    .brand{flex-shrink:0}
+    .nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-width:0}
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{padding:6px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
+    .brand .bname{font-size:18px}
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:28px 18px 60px}
+  h1{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:36px;text-transform:uppercase;margin:0 0 10px;line-height:1.05}
+  h2{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:24px;text-transform:uppercase;margin:38px 0 12px;line-height:1.15;color:var(--text)}
+  .lead{color:var(--dim);font-size:15px;line-height:1.7;margin:0 0 8px;max-width:640px}
+  p{font-size:14px;line-height:1.75;color:var(--text)}
+  p.note{color:var(--dim);font-size:13px}
+  ul,ol{font-size:14px;line-height:1.75;padding-left:20px}
+  li{margin-bottom:7px}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+  td b{color:var(--fuel)}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin:18px 0}
+  .box.key{border-left:3px solid var(--fuel)}
+  .box p:first-child{margin-top:0}
+  .box p:last-child{margin-bottom:0}
+  .updated{margin-top:8px;font-size:11px;color:var(--faint);letter-spacing:.05em}
+  code{background:var(--panel-2);padding:1px 5px;border-radius:5px;font-size:12.5px;color:var(--dim)}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="inner">
+    <a class="brand" href="index.html">
+      <span class="mark">G</span>
+      <span class="bname">Gasolina</span>
+    </a>
+    <div class="nav">
+      <a href="index.html">Cene goriva</a>
+      <a href="index.html#kalkulator">Kalkulator</a>
+      <a href="granice.html">Granice</a>
+      <a href="istorija.html">Istorija</a>
+      <a href="vodici.html">Vodiči</a>
+      <a class="lang" href="en/about.html" title="Read in English" style="border:1px solid var(--line);font-weight:700">EN</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <h1>O projektu</h1>
+  <p class="lead">Gasolina je nezavisan sajt o putovanju automobilom kroz Srbiju i region: čekanje i kamere na graničnim prelazima, cene goriva po zemljama i kalkulator koji računa gde je isplativo natočiti. Radi ga jedan čovek, iz Srbije, bez redakcije i bez sponzora.</p>
+  <p class="updated">Poslednja izmena: 12.08.2026.</p>
+
+  <h2>Zašto postoji</h2>
+  <p>Pre polaska na put obično se pita jedno te isto: kolika je gužva na granici i gde da sipam gorivo. Odgovori postoje, ali razbacani — čekanje na sajtu jedne institucije, kamera na sajtu druge, cene goriva na trećem mestu, a susedne zemlje na svojim jezicima. Gasolina to skuplja na jedno mesto i, što je važnije, <b>kaže odakle svaka brojka dolazi</b>.</p>
+
+  <h2>Šta se prati</h2>
+  <p>Trinaest prelaza, svaki u oba smera, uz kamere gde ih ima:</p>
+  <table>
+    <tr><th>Prelaz</th><th>Pravac</th><th>Kamera</th></tr>
+    <tr><td><b>Horgoš</b>, <b>Kelebija</b></td><td>Srbija – Mađarska</td><td>oba smera</td></tr>
+    <tr><td><b>Batrovci</b></td><td>Srbija – Hrvatska</td><td>oba smera</td></tr>
+    <tr><td><b>Gradina</b></td><td>Srbija – Bugarska</td><td>oba smera</td></tr>
+    <tr><td><b>Preševo</b></td><td>Srbija – Severna Makedonija</td><td>oba smera, dva izvora</td></tr>
+    <tr><td><b>Sremska Rača</b></td><td>Srbija – Bosna i Hercegovina</td><td>oba smera</td></tr>
+    <tr><td><b>Špiljani</b></td><td>Srbija – Crna Gora</td><td>oba smera</td></tr>
+    <tr><td><b>Bogorodica</b>, <b>Medžitlija</b>, <b>Dojran</b></td><td>Severna Makedonija – Grčka</td><td>po jedan smer</td></tr>
+    <tr><td><b>Prohor Pčinjski</b></td><td>Srbija – Severna Makedonija</td><td>nema</td></tr>
+    <tr><td><b>Gostun</b></td><td>Srbija – Crna Gora</td><td>preko zvaničnog izvora</td></tr>
+    <tr><td><b>Debeli Brijeg</b></td><td>Crna Gora – Hrvatska</td><td>preko zvaničnog izvora</td></tr>
+  </table>
+  <p class="note">Za Debeli Brijeg i Dojran se prikazuje kamera, ali ne i čekanje — to nisu srpske granice i nijedan izvor koji pratimo ne objavljuje procenu za njih. Sajt to i piše, umesto da izmisli broj.</p>
+  <p>Uz to: cene dizela, benzina i auto-gasa u Srbiji i susednim zemljama, istorija cena od 2024, kalkulator troška po ruti sa predlogom gde tankovati, i tri vodiča (vinjeta za Bugarsku, zeleni karton, dokumenta za Grčku).</p>
+
+  <h2>Pravilo od kog sve zavisi</h2>
+  <div class="box key">
+    <p><b>Sajt ne sme da tvrdi ono što ne zna.</b> Bolje je napisati „nema pouzdane procene" nego staviti brojku koja izgleda uverljivo. Čovek koji jednom krene na put po lažnoj brojci više se ne vraća — i s pravom.</p>
+  </div>
+  <p>To zvuči kao fraza dok ne počne da košta. Nekoliko stvari koje su zbog tog pravila <b>sklonjene sa sajta</b>, iako su izgledale bezazleno:</p>
+  <ul>
+    <li><b>Rezervne brojke.</b> Sajt je imao ugrađene primer-vrednosti za slučaj da podaci ne stignu. Radile su tiho i uverljivo. Obrisane su: kad podaci ne stignu, sada piše da ih nema.</li>
+    <li><b>Nula iz merenja saobraćaja kao dokaz mira.</b> Merenje vidi samo vozila koja se kreću, pa kolona koja stoji na pasoškoj kontroli za njega ne postoji. Do avgusta 2026. je takva nula brisala prijavu vozača od četiri sata. Više ne — <a href="metodologija.html">metodologija</a> objašnjava zašto.</li>
+    <li><b>„Uživo" bez pokrića.</b> Stranica je pisala „uživo" i kad su brojke bile stare sat i po. Sada uz svaku brojku stoji koliko je stara, a preko sat vremena reč „uživo" se povlači.</li>
+    <li><b>Jedna brojka kad se izvori ne slažu.</b> Ranije je pobeđivala veća. Sada, kad se dve procene razilaze više od tri puta, sajt pokazuje obe i kaže da presude nema.</li>
+  </ul>
+
+  <h2>Odakle podaci</h2>
+  <table>
+    <tr><th>Podatak</th><th>Izvor</th></tr>
+    <tr><td>Čekanje na srpskim prelazima</td><td>Uprava granične policije RS, preko objave AMSS-a</td></tr>
+    <tr><td>Čekanje na mađarskoj strani</td><td>police.hu</td></tr>
+    <tr><td>Čekanje na makedonskoj strani</td><td>AMSM</td></tr>
+    <tr><td>Prijave vozača</td><td>BorderAlarm i forma na ovom sajtu</td></tr>
+    <tr><td>Zastoj i dužina kolone</td><td>TomTom</td></tr>
+    <tr><td>Kamere</td><td>AMSS, MUP Srbije, MUP Crne Gore, roads.org.mk i drugi zvanični izvori — svaka kartica nosi ime svog izvora i link na original</td></tr>
+    <tr><td>Cene goriva</td><td>zvanične objave i sajtovi kompanija po zemljama</td></tr>
+  </table>
+  <p class="note">Kamere se ne preuzimaju niti presnimavaju — prikazuje se zvanični strim, sa navedenim vlasnikom i linkom na izvornu stranicu. Uslovi korišćenja podataka sa ovog sajta stoje u <a href="LICENSE">licenci</a>.</p>
+
+  <h2>Gde su granice pokrivenosti</h2>
+  <p>Ovo je spisak onoga što sajt <b>ne</b> radi, i stoji ovde da ne bi trebalo da se otkriva u hodu:</p>
+  <ul>
+    <li><b>Nisu pokriveni svi prelazi.</b> Trinaest jeste, ostali nisu. Širenje čeka dokaz da za nov prelaz uopšte postoji izvor koji objavljuje pravu vrednost, a ne podrazumevanu.</li>
+    <li><b>Merenje saobraćaja ne postoji za svaki smer.</b> Od 26 pravaca, deset nema koridor — među njima Špiljani i Sremska Rača u oba smera.</li>
+    <li><b>Ne predviđamo gužvu.</b> Sajt kaže šta izvori javljaju sada, ne koliko će se čekati za tri sata.</li>
+    <li><b>Prijave sa sopstvene forme su retke.</b> Za četrdeset dana stigla je jedna upotrebljiva. Zato se prijave vozača uglavnom oslanjaju na BorderAlarm, a forma stoji za slučajeve kada nešto očigledno ne valja.</li>
+    <li><b>Teretni saobraćaj se prati slabije od putničkog.</b> Izvori za kamione su ređi i neujednačeniji.</li>
+  </ul>
+
+  <h2>Novac i nezavisnost</h2>
+  <p>Projekat trenutno ne donosi prihod. Ako se na sajtu jednog dana pojave oglasi, biće jasno označeni i <b>neće uticati na to koji se prelazi prate niti koja se brojka prikazuje</b> — ta odluka se donosi u jednoj datoteci koja ne zna ništa o oglasima, i svaka njena izmena prolazi kroz automatske provere pre objave.</p>
+
+  <h2>Ispravke i kontakt</h2>
+  <p>Ako brojka ne odgovara stanju na terenu, to je vredan podatak i molim da se javi: <a href="mailto:kontakt@gasolina.rs">kontakt@gasolina.rs</a>. Najkorisnije je vreme, prelaz i smer — tako se u arhivu nađe tačan zapis i vidi koji je izvor pogrešio. Nekoliko izmena na ovom sajtu nastalo je upravo tako.</p>
+  <p class="note">Sadržaj i kôd su autorsko delo. Podaci se prikazuju informativno, uz navedene izvore, i ne predstavljaju zvaničnu informaciju nijedne institucije.</p>
+
+  <style>
+.xlinks{margin:28px 0 0;padding-top:16px;border-top:1px solid var(--line);
+  font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:2.1;color:var(--faint)}
+.xlinks .xl-lab{display:block;text-transform:uppercase;letter-spacing:.06em;font-size:11px;margin-bottom:4px}
+.xlinks a{color:var(--dim);text-decoration:none;margin-right:15px;white-space:nowrap;
+  border-bottom:1px solid transparent}
+.xlinks a:hover{color:var(--fuel);border-bottom-color:var(--fuel)}
+</style>
+<nav class="xlinks" aria-label="Svi granični prelazi">
+  <span class="xl-lab">Kamere i čekanje po prelazu</span>
+  <a href="granica-presevo.html">Preševo</a>
+  <a href="granica-gradina.html">Gradina</a>
+  <a href="granica-horgos.html">Horgoš</a>
+  <a href="granica-batrovci.html">Batrovci</a>
+  <a href="granica-kelebija.html">Kelebija</a>
+  <a href="granica-bogorodica.html">Bogorodica</a>
+  <a href="granica-dojran.html">Dojran</a>
+  <a href="granica-medzitlija.html">Medžitlija</a>
+  <a href="granica-sremska-raca.html">Sremska Rača</a>
+  <a href="granica-spiljani.html">Špiljani</a>
+  <a href="granica-prohor-pcinjski.html">Prohor Pčinjski</a>
+  <a href="granica-gostun.html">Gostun</a>
+  <a href="granica-debeli-brijeg.html">Debeli Brijeg</a>
+</nav>
+</div>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
+
+<footer style="max-width:1180px;margin:50px auto 0;padding:22px 18px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace">
+  Pitanja, primedbe, prijava greske: <a href="mailto:kontakt@gasolina.rs" style="color:var(--faint);text-decoration:underline">kontakt@gasolina.rs</a>
+  <br>
+  <a href="o-projektu.html" style="color:var(--faint);text-decoration:underline">O projektu</a> &middot;
+  <a href="metodologija.html" style="color:var(--faint);text-decoration:underline">Metodologija</a> &middot;
+  <a href="politika-privatnosti.html" style="color:var(--faint);text-decoration:underline">Politika privatnosti</a>
+  <br>
+  <span style="opacity:.75">&copy; 2026 Gasolina &middot; sadr&#382;aj i k&#244;d su autorsko delo &middot;
+  podaci se prikazuju informativno, uz navedene izvore</span>
+</footer>
+</body>
+</html>

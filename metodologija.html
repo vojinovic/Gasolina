@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kako računamo čekanje na granici — metodologija | Gasolina</title>
+<meta name="description" content="Odakle dolaze brojke o čekanju na granici, šta koji izvor stvarno meri, zašto TomTom ne može da ospori kolonu i šta znači svaki natpis na sajtu. Pragovi, izvori i ograničenja, napisani do kraja.">
+<link rel="canonical" href="https://gasolina.rs/metodologija.html">
+<link rel="alternate" hreflang="sr" href="https://gasolina.rs/metodologija.html">
+<link rel="alternate" hreflang="en" href="https://gasolina.rs/en/methodology.html">
+<link rel="alternate" hreflang="x-default" href="https://gasolina.rs/metodologija.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0d1620">
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gasolina">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gasolina">
+<meta property="og:locale" content="sr_RS">
+<meta property="og:title" content="Kako računamo čekanje na granici">
+<meta property="og:description" content="Šta koji izvor stvarno meri, zašto merenje saobraćaja ne može da ospori kolonu na pasoškoj kontroli, i šta znači svaki natpis na sajtu.">
+<meta property="og:url" content="https://gasolina.rs/metodologija.html">
+<meta property="og:image" content="https://gasolina.rs/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Kako računamo čekanje na granici",
+  "description": "Metodologija: izvori podataka o čekanju na graničnim prelazima, pravila odlučivanja, pragovi i ograničenja.",
+  "url": "https://gasolina.rs/metodologija.html",
+  "inLanguage": "sr-RS",
+  "isPartOf": { "@type": "WebSite", "name": "Gasolina", "url": "https://gasolina.rs/" },
+  "publisher": { "@type": "Organization", "name": "Gasolina", "url": "https://gasolina.rs/" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<!-- Pristanak na kolacice - MORA pre gtag/js, bez async/defer -->
+<script src="/consent.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4EPLBJE8BL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4EPLBJE8BL');
+</script>
+
+<style>
+  :root{
+    --ink:#0d1620; --panel:#15212e; --panel-2:#1b2a39; --line:#26384a;
+    --text:#e9eff5; --dim:#8aa0b2; --faint:#5d7387;
+    --fuel:#f5a623; --ok:#2fbf71; --warn:#f5a623; --bad:#e05252; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:var(--text);font-family:"JetBrains Mono",monospace;line-height:1.6}
+  a{color:var(--fuel)}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(13,22,32,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .topbar .inner{max-width:1180px;margin:0 auto;padding:0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+  .brand .mark{width:26px;height:26px;border-radius:7px;background:var(--fuel);display:grid;place-items:center;color:var(--ink);font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:18px}
+  .brand .bname{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;letter-spacing:.04em;text-transform:uppercase;color:var(--text)}
+  .nav{display:flex;align-items:center;gap:4px}
+  .nav a{font-size:13px;color:var(--dim);text-decoration:none;padding:7px 11px;border-radius:8px;font-weight:500}
+  .nav a:hover{color:var(--text);background:var(--panel)}
+  .nav a[aria-current]{color:var(--ink);background:var(--fuel);font-weight:700}
+  @media (max-width:560px){
+    .topbar .inner{gap:8px}
+    .brand{flex-shrink:0}
+    .nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-width:0}
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{padding:6px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
+    .brand .bname{font-size:18px}
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:28px 18px 60px}
+  h1{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:36px;text-transform:uppercase;margin:0 0 10px;line-height:1.05}
+  h2{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:24px;text-transform:uppercase;margin:38px 0 12px;line-height:1.15;color:var(--text)}
+  h3{font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:18px;text-transform:uppercase;margin:26px 0 8px;color:var(--fuel);letter-spacing:.03em}
+  .lead{color:var(--dim);font-size:15px;line-height:1.7;margin:0 0 8px;max-width:640px}
+  p{font-size:14px;line-height:1.75;color:var(--text)}
+  p.note{color:var(--dim);font-size:13px}
+  ul,ol{font-size:14px;line-height:1.75;padding-left:20px}
+  li{margin-bottom:7px}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+  td b{color:var(--fuel)}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin:18px 0}
+  .box.key{border-left:3px solid var(--fuel)}
+  .box p:first-child{margin-top:0}
+  .box p:last-child{margin-bottom:0}
+  .updated{margin-top:8px;font-size:11px;color:var(--faint);letter-spacing:.05em}
+  code{background:var(--panel-2);padding:1px 5px;border-radius:5px;font-size:12.5px;color:var(--dim)}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="inner">
+    <a class="brand" href="index.html">
+      <span class="mark">G</span>
+      <span class="bname">Gasolina</span>
+    </a>
+    <div class="nav">
+      <a href="index.html">Cene goriva</a>
+      <a href="index.html#kalkulator">Kalkulator</a>
+      <a href="granice.html">Granice</a>
+      <a href="istorija.html">Istorija</a>
+      <a href="vodici.html">Vodiči</a>
+      <a class="lang" href="en/methodology.html" title="Read in English" style="border:1px solid var(--line);font-weight:700">EN</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <h1>Kako računamo čekanje</h1>
+  <p class="lead">Kad na Gasolini piše „1 h 20 min", to nije jedan broj koji smo negde pročitali. To je odluka između tri vrste izvora koji mere različite stvari i često se ne slažu. Ova stranica opisuje tu odluku do kraja — uključujući slučajeve u kojima sajt namerno odbija da kaže broj.</p>
+  <p class="updated">Poslednja izmena: 12.08.2026.</p>
+
+  <h2>Tri vrste izvora</h2>
+  <p>Sve što stigne do sajta spada u jednu od tri grupe. Razlika među njima nije u tačnosti nego u tome <b>šta je uopšte mereno</b>.</p>
+
+  <table>
+    <tr><th>Vrsta</th><th>Ko</th><th>Šta zapravo daje</th></tr>
+    <tr>
+      <td><b>Zvanična procena</b></td>
+      <td>Uprava granične policije RS (preko AMSS-a), police.hu, AMSM</td>
+      <td>Procena ukupnog zadržavanja na prelazu. Nije merenje. Mađarska policija to i piše izričito — njihovi podaci su „iskustveni i informativnog karaktera".</td>
+    </tr>
+    <tr>
+      <td><b>Prijava vozača</b></td>
+      <td>BorderAlarm, forma na ovom sajtu</td>
+      <td>Koliko je jedan čovek stvarno stajao. Najbliže istini kad je tačno, ali je uzorak mali i niko je ne proverava.</td>
+    </tr>
+    <tr>
+      <td><b>Merenje saobraćaja</b></td>
+      <td>TomTom (zastoj i dužina kolone na koridoru do rampe)</td>
+      <td>Jedino pravo merenje — ali meri samo <b>vozila koja se kreću</b>.</td>
+    </tr>
+  </table>
+
+  <h2>Pravilo koje sve drži: donja granica sme da potvrdi, nikad da ospori</h2>
+  <p>Merenje saobraćaja izgleda kao najjači izvor jer je jedino automatsko. U stvarnosti je najslabiji u onome što nas zanima. <code>trafficDelayInSeconds</code> meri koliko se sporije vozi nego što bi se vozilo praznim putem. Kolona koja <b>stoji</b> na pasoškoj kontroli za taj sistem ne postoji — nema kretanja, nema zastoja.</p>
+
+  <div class="box key">
+    <p><b>Zato nula iz merenja saobraćaja znači tri različite stvari koje se ne mogu razlikovati:</b> put je stvarno prohodan · put nije pokriven merenjem · na kraju puta stoji četvorosatna kolona.</p>
+  </div>
+
+  <p>Ovo nije teorijska bojazan. U arhivu od 475 snimaka podataka (24.06–03.08.2026, 11.574 zapisa po prelazu i smeru) dva koridora nikada nisu dala pozitivan signal: ulazni koridor kod Bogorodice u 100 uspešnih odgovora i kod Medžitlije u 94 — <b>svi do jednog nula</b>. Ti koridori su mrtvi, a pravilo koje je nulu tretiralo kao dokaz radilo je i tamo.</p>
+
+  <p>Do avgusta 2026. je merenje smelo da <b>obori</b> prijavu vozača: ako je neko prijavio četiri sata, a merenje pokazivalo mirno, prijava je nestajala iz prikaza. Kad smo to izmerili unazad kroz ceo arhiv, ispalo je da sajt u tim slučajevima nije pisao „Bez gužve" — nije lagao, nego je <b>prećutao</b>. Čovek je dobijao stranicu bez ijednog broja tamo gde je jedan izvor imao vrlo određeno mišljenje. To je blaži kvar nego što smo prvo mislili, ali kvar iste vrste.</p>
+
+  <p>Danas važi jednosmerno pravilo: <b>merenje sme da potvrdi gužvu, nikad da je opovrgne.</b> Izmerena kolona od 700 metara i dalje obara umirujući naslov, jer potvrda je ono što donja granica sme. Odsustvo kolone ne obara ništa — samo znači da potvrde nema.</p>
+
+  <h2>Šta znači svaki natpis</h2>
+  <table>
+    <tr><th>Natpis</th><th>Šta tvrdi</th></tr>
+    <tr><td><b>Bez gužve</b></td><td>Zvaničan izvor kaže da zadržavanja nema ili je ispod 15 minuta. Traži <b>pozitivan dokaz</b> — jedna kratka prijava vozača nije dovoljna.</td></tr>
+    <tr><td><b>Brojka</b> (npr. 45 min)</td><td>Zvanična procena, uz naznačen izvor.</td></tr>
+    <tr><td><b>Prijavljeno</b> + brojka</td><td>Brojka dolazi od vozača, ne od institucije. Reč stoji uz broj, ne sitno ispod njega.</td></tr>
+    <tr><td><b>Kolona ~800 m</b></td><td>Merenje je potvrdilo dužinu reda. Dužina nije trajanje i ne prevodi se u minute.</td></tr>
+    <tr><td><b>Sukob izvora</b></td><td>Dve procene se razilaze više od tri puta. Sajt pokazuje obe i ne bira pobednika.</td></tr>
+    <tr><td><b>Neizvesno</b></td><td>Vozač prijavljuje dugo čekanje, a potvrde nema — ni od institucije ni od merenja. Prijava se vidi, ali ne postaje krupna brojka.</td></tr>
+    <tr><td><b>Nema pouzdane procene</b></td><td>Nijedan izvor nije rekao ništa upotrebljivo. Ovo je odgovor, ne kvar.</td></tr>
+  </table>
+
+  <p class="note">Stanja „sukob" i „neizvesno" namerno nemaju jednu krupnu brojku. Čim postoji jedan broj, svaki prikaz ga ispiše kao naslov i time proglasi pobednika — a cela poenta je da pobednika nema.</p>
+
+  <h2>Pragovi, i zašto baš ti</h2>
+  <table>
+    <tr><th>Prag</th><th>Vrednost</th><th>Zašto</th></tr>
+    <tr><td>„Bez gužve"</td><td>do 15 min</td><td>Ispod toga razlika između 5 i 12 minuta ne menja ničiju odluku.</td></tr>
+    <tr><td>Duga kolona</td><td>od 200 m</td><td>Ispod toga je red na rampi normalno stanje, ne gužva.</td></tr>
+    <tr><td>Ekstremna prijava</td><td>od 120 min</td><td>Granica preko koje prijava traži potvrdu pre nego što dobije naslov.</td></tr>
+    <tr><td>Sukob izvora</td><td>razlika od 3×</td><td>Nad arhivom, svaka vrednost između 2,5× i 4× menja zahvat za jednu jedinu ćeliju — broj nije osetljiv, pa je izabran onaj koji se najlakše objasni.</td></tr>
+    <tr><td>Starost podataka</td><td>do 60 min</td><td>Podaci se osvežavaju na svakih 30 minuta. Jedan preskočen ciklus je normalno; dva nisu, pa preko 60 minuta stranica prestaje da piše „uživo".</td></tr>
+  </table>
+
+  <h2>Zašto AMSS-ovih tačno 30 minuta ne postaje brojka</h2>
+  <p>U arhivu je vrednost <b>tačno 30 minuta</b> činila 6.232 od 6.404 zapisa iz tog izvora — <b>97,3 %</b>. Vrednost koja se javlja u devetnaest od dvadeset slučajeva nije procena stanja nego vrednost koja stoji dok se ne javi promena. Zato tačno 30 ne ulazi u izbor: stranica u tom slučaju piše da nema pouzdane procene i upućuje na kameru.</p>
+  <p>Važno ograničenje ove tvrdnje: AMSS <b>ume</b> da objavi i finiju vrednost — u arhivu smo našli 15 minuta na Ljuboviji–Bratuncu i Nakovu, u oba smera. Dakle 30 nije njihov donji limit, nego vrednost koju drže. Nijedan prelaz koji ovaj sajt prati nije objavio 15, pa ova ispravka ne menja nijednu prikazanu brojku — ali menja obrazloženje, i zato piše ovde.</p>
+  <p class="note">Poređenja radi: mađarska policija objavljuje samo četiri vrednosti (0, 30, 45 i 60 minuta), dok AMSM koristi finiju skalu (15, 20, 30, 40, 45, 50, 60) i u 85,2 % zapisa javlja nulu. Skala izvora je deo onoga što njegova brojka znači.</p>
+
+  <h2>Šta sajt ne zna</h2>
+  <ul>
+    <li><b>Kamera i brojka ne moraju da opisuju istu tačku.</b> Kad je izvor makedonska ili mađarska strana, to je čekanje na <b>njihovoj</b> kontroli — nizvodno od kamere koja gleda srpski plato. Prazan plato na slici ne opovrgava takvu brojku.</li>
+    <li><b>Merenje saobraćaja ne pokriva svaki smer.</b> Od 26 pravaca (13 prelaza × 2 smera), deset nema koridor uopšte — među njima Špiljani i Sremska Rača u oba smera.</li>
+    <li><b>Prijave vozača nisu proveravane.</b> Jedna prijava je jedan čovek. Zato jedna kratka prijava nikada ne daje „Bez gužve", a jedna ekstremna nikada ne daje krupnu brojku bez potvrde.</li>
+    <li><b>Ne predviđamo.</b> Sajt kaže šta izvori javljaju sada, ne koliko će se čekati kad stignete.</li>
+  </ul>
+
+  <h2>Kako se ovo drži da se ne pokvari</h2>
+  <p>Odluka o čekanju živi u <b>jednoj</b> datoteci koju koriste sve stranice. Do avgusta 2026. je ista logika stajala u četiri kopije — i naslovna je za isti prelaz pisala 34 minuta dok je stranica prelaza pisala 20, jer je jedna kopija dvaput ostala nepromenjena pri izmeni pravila.</p>
+  <p>Svaka izmena pravila prolazi tri provere pre objave:</p>
+  <ol>
+    <li><b>Pravila</b> — sedamnaest provera, svaka napisana posle stvarnog incidenta. Ne uklanjaju se da bi test prošao.</li>
+    <li><b>Zamrznuto ponašanje</b> — 1.046 jedinstvenih kombinacija ulaza iz arhiva. Ako se ijedan rezultat promeni, promena mora da bude namerna i zapisana, nikad tiha.</li>
+    <li><b>Prikaz</b> — 29 stranica puštenih u pravom brauzeru kroz devet situacija, uz proveru da nijedna ne ispiše prazninu ili tvrdnju koju podaci ne pokrivaju.</li>
+  </ol>
+  <p>Uz to, svaka izmena pravila se pre objave pusti unazad kroz ceo arhiv, da se vidi koliko bi zapisa promenila. Poslednja takva izmena (uklanjanje veta merenja) promenila je 323 od 11.574 zapisa — 2,79 % — i nijedan od njih nije dobio novu nepotvrđenu krupnu brojku.</p>
+
+  <div class="box">
+    <p>Ako vidite brojku koja ne odgovara stanju na terenu, javite: <a href="mailto:kontakt@gasolina.rs">kontakt@gasolina.rs</a>. Korisno je vreme, prelaz i smer — tako se može naći tačan zapis u arhivu i proveriti koji je izvor pogrešio.</p>
+  </div>
+
+  <style>
+.xlinks{margin:28px 0 0;padding-top:16px;border-top:1px solid var(--line);
+  font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:2.1;color:var(--faint)}
+.xlinks .xl-lab{display:block;text-transform:uppercase;letter-spacing:.06em;font-size:11px;margin-bottom:4px}
+.xlinks a{color:var(--dim);text-decoration:none;margin-right:15px;white-space:nowrap;
+  border-bottom:1px solid transparent}
+.xlinks a:hover{color:var(--fuel);border-bottom-color:var(--fuel)}
+</style>
+<nav class="xlinks" aria-label="Svi granični prelazi">
+  <span class="xl-lab">Kamere i čekanje po prelazu</span>
+  <a href="granica-presevo.html">Preševo</a>
+  <a href="granica-gradina.html">Gradina</a>
+  <a href="granica-horgos.html">Horgoš</a>
+  <a href="granica-batrovci.html">Batrovci</a>
+  <a href="granica-kelebija.html">Kelebija</a>
+  <a href="granica-bogorodica.html">Bogorodica</a>
+  <a href="granica-dojran.html">Dojran</a>
+  <a href="granica-medzitlija.html">Medžitlija</a>
+  <a href="granica-sremska-raca.html">Sremska Rača</a>
+  <a href="granica-spiljani.html">Špiljani</a>
+  <a href="granica-prohor-pcinjski.html">Prohor Pčinjski</a>
+  <a href="granica-gostun.html">Gostun</a>
+  <a href="granica-debeli-brijeg.html">Debeli Brijeg</a>
+</nav>
+</div>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
+
+<footer style="max-width:1180px;margin:50px auto 0;padding:22px 18px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace">
+  Pitanja, primedbe, prijava greske: <a href="mailto:kontakt@gasolina.rs" style="color:var(--faint);text-decoration:underline">kontakt@gasolina.rs</a>
+  <br>
+  <a href="o-projektu.html" style="color:var(--faint);text-decoration:underline">O projektu</a> &middot;
+  <a href="metodologija.html" style="color:var(--faint);text-decoration:underline">Metodologija</a> &middot;
+  <a href="politika-privatnosti.html" style="color:var(--faint);text-decoration:underline">Politika privatnosti</a>
+  <br>
+  <span style="opacity:.75">&copy; 2026 Gasolina &middot; sadr&#382;aj i k&#244;d su autorsko delo &middot;
+  podaci se prikazuju informativno, uz navedene izvore</span>
+</footer>
+</body>
+</html>
