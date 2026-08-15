@@ -93,9 +93,14 @@ function procena(c, dirKey){
 
   // SIROVE vrednosti po vrsti izvora, pre nego sto ijedno pravilo nesto potisne.
   // Sukob se racuna nad njima, a ne nad `cands`: Bogorodica 28.07.2026 - prijava
-  // od 4h je bila potisnuta mirnim merenjem, ostalo je AMSM-ovih 15 min i sajt je
-  // napisao "Bez guzve" dok su vozaci prijavljivali cetiri sata. Potisnuta prijava
-  // ne sme da nestane bez traga.
+  // od 4h je bila potisnuta mirnim merenjem i NESTALA IZ PRIKAZA. Potisnuta
+  // prijava ne sme da nestane bez traga.
+  //
+  // ISPRAVKA 15.08.2026: ovde je do danas pisalo da je sajt u tom slucaju napisao
+  // "Bez guzve". Retro test nad arhivom je pokazao NULA takvih slucajeva u 8.334
+  // celije - sajt nije lagao nego je precutao, i covek je ostajao bez ijedne
+  // brojke. Tvrdnja je povucena jos 03.08.2026, ali je komentar zaostao i nastavio
+  // da je ponavlja. Obrazlozenje pravila mora da izdrzi istu proveru kao i pravilo.
   const zvanicniSvi = [];        // {v, src} - procene UKUPNOG cekanja, zvanicne
   const prijaveSve = [];         // {v, src} - prijave vozaca
 
