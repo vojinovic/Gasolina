@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-15T20:52:41+00:00",
+  "scraped_at": "2026-08-15T21:26:20+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -38,8 +38,8 @@
         "ulaz": 55
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
+        "izlaz": 6,
+        "izlaz_kolona_m": 104,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -61,13 +61,13 @@
       },
       "ba": {
         "izlaz": 180,
-        "ulaz": 5
+        "ulaz": 10
       },
       "tt": {
-        "izlaz": 22,
-        "izlaz_kolona_m": 768,
-        "ulaz": 14,
-        "ulaz_kolona_m": 601
+        "izlaz": 25,
+        "izlaz_kolona_m": 873,
+        "ulaz": 5,
+        "ulaz_kolona_m": 106
       }
     },
     "kelebija": {
@@ -92,8 +92,8 @@
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
-        "ulaz": 6,
-        "ulaz_kolona_m": 656
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "batrovci": {
@@ -108,14 +108,14 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 240,
+        "izlaz": 210,
         "ulaz": 10
       },
       "tt": {
         "izlaz": 11,
-        "izlaz_kolona_m": 450,
-        "ulaz": 13,
-        "ulaz_kolona_m": 238
+        "izlaz_kolona_m": 437,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "presevo": {
@@ -217,8 +217,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 5
+        "izlaz": 5,
+        "ulaz": 15
       }
     }
   }
