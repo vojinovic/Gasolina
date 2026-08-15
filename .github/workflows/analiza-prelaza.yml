@@ -1,11 +1,45 @@
-cd ~/Documents/gasolina/public
-git add analiza-prelaza.js .github/workflows/analiza-prelaza.yml
-git commit -m "Alat: profil prelaza iz arhiva, podloga za jedinstvene uvode
+####################################################################
+# PROFIL SVAKOG PRELAZA IZ SOPSTVENOG ARHIVA
+#
+# Vadi cinjenice iz git istorije granice.json - po prelazu i smeru:
+# raspodela stanja, medijana i p90 prikazane brojke, najgore
+# zabelezeno, koji izvori uopste javljaju nesto, da li TomTom koridor
+# postoji i da li je ikad dao pozitivan signal, najgori sat i dan.
+#
+# Sluzi kao PODLOGA za pisanje jedinstvenih uvoda na 26 landing
+# stranica. Ne pise tekst - vadi brojeve iz kojih se tekst sme pisati.
+#
+# CISTO CITANJE. Ne pise nijedan fajl, ne commit-uje, ne dira sajt,
+# ne zove nijedan spoljni servis, ne trosi TomTom kvotu.
+#
+# Odluka se NE reimplementira - ucitava se kanonski wait-logic.v1.js,
+# isti onaj koji radi na sajtu.
+#
+# Pokrece se RUCNO. Nema rasporeda. Kad uvodi budu napisani, brise se.
+####################################################################
+name: Profil prelaza iz arhiva
 
-Cisto citanje git istorije granice.json. Ucitava kanonski
-wait-logic.v1.js, ne reimplementira odluku. Po prelazu i smeru vadi
-raspodelu stanja, medijanu i p90, najgore zabelezeno, koji izvori
-javljaju, da li koridor postoji i da li je ikad dao signal, najgori
-sat i dan. Selftest 12/12. Brise se kad uvodi budu napisani."
-git pull --rebase
-git push
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  profil:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preuzmi repo SA CELOM istorijom
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Selftest racuna (nad rucnim ulazima)
+        run: node analiza-prelaza.js --selftest
+
+      - name: Profil nad istorijom
+        run: node analiza-prelaza.js
