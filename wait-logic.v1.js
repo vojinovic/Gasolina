@@ -265,11 +265,51 @@ function procena(c, dirKey){
   return {stanje: "nema", amss30Only: amss30, kolona, dugaKolona, ttMin};
 }
 
+/* ---------------------------------------------------------------------------
+ * STAROST PODATAKA (12.08.2026)
+ *
+ * ZASTO JE OVDE, a nije prikaz: prag "koliko stara brojka jos sme da se zove
+ * uzivo" mora da bude ISTI na sve cetiri stranice. Da stoji kao broj u svakoj od
+ * njih, razisao bi se isto kao sto se razisla odluka o cekanju - zbog cega ovaj
+ * fajl i postoji. Funkcija vraca MINUTE, ne tekst; reci pise svaka stranica na
+ * svom jeziku.
+ *
+ * ZASTO 60: `update-granice.yml` se vrti na svakih 30 minuta. Jedan preskocen ciklus
+ * (GitHub Actions ume da kasni) daje do 60 minuta i jos je normalno stanje. Preko
+ * toga su promasena najmanje dva ciklusa i podatak vise nije "uzivo".
+ *
+ * POVOD: 12.08.2026 u 17:54 najsvezije `granice.json` bilo je od 16:37 - 77
+ * minuta - a granice.html je i dalje pisao "Uzivo" pored zelene tacke, dok je
+ * kamera iznad kucala tacno vreme. Landing stranice nisu pisale nista.
+ */
+const PODACI_MAX_MIN = 60;
+
+/**
+ * Starost podatka u minutima, ili `null` kad se ne moze tvrditi.
+ * `null` se vraca i kad je racun besmislen: sat na uredjaju ume da bude pomeren,
+ * pa bi "pre -180 min" ili "pre 9 dana" bila nasa greska predstavljena kao nalaz.
+ */
+function starostMin(scrapedAt, sada) {
+  if (!scrapedAt) return null;
+  const t = new Date(scrapedAt).getTime();
+  if (!isFinite(t)) return null;
+  const n = (sada != null ? new Date(sada).getTime() : Date.now());
+  const min = Math.round((n - t) / 60000);
+  if (min < -5 || min > 7 * 24 * 60) return null;
+  return min < 0 ? 0 : min;
+}
+
+/** Da li podatak jos sme da se predstavi kao ziv. Nepoznata starost NIJE ziva. */
+function svez(scrapedAt, sada) {
+  const m = starostMin(scrapedAt, sada);
+  return m != null && m <= PODACI_MAX_MIN;
+}
+
+const IZLAZ = { procena, starostMin, svez, PODACI_MAX_MIN,
+                NO_QUEUE_MAX, AMSS_NAJNIZA_MIN, QUEUE_HARD_M,
+                BA_PROVERA_MIN, TT_MIRNO_MIN, SUKOB_ODNOS };
+
 // Radi i u browseru (<script src>) i u Node-u (testovi, generator).
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = { procena, NO_QUEUE_MAX, AMSS_NAJNIZA_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN, SUKOB_ODNOS };
-}
-if (typeof window !== "undefined") {
-  window.GasolinaWait = { procena, NO_QUEUE_MAX, AMSS_NAJNIZA_MIN, QUEUE_HARD_M, BA_PROVERA_MIN, TT_MIRNO_MIN, SUKOB_ODNOS };
-}
+if (typeof module !== "undefined" && module.exports) module.exports = IZLAZ;
+if (typeof window !== "undefined") window.GasolinaWait = IZLAZ;
 })();
