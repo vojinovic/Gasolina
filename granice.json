@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-16T22:26:59+00:00",
+  "scraped_at": "2026-08-16T22:50:11+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -38,10 +38,10 @@
         "ulaz": 20
       },
       "tt": {
-        "izlaz": 10,
-        "izlaz_kolona_m": 401,
-        "ulaz": 13,
-        "ulaz_kolona_m": 370
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
+        "ulaz": 5,
+        "ulaz_kolona_m": 93
       }
     },
     "horgos": {
@@ -64,10 +64,10 @@
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 8,
-        "izlaz_kolona_m": 368,
-        "ulaz": 4,
-        "ulaz_kolona_m": 506
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
+        "ulaz": 2,
+        "ulaz_kolona_m": 106
       }
     },
     "kelebija": {
@@ -87,7 +87,7 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 15
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
@@ -113,8 +113,8 @@
       },
       "tt": {
         "izlaz": 7,
-        "izlaz_kolona_m": 746,
-        "ulaz": 2,
+        "izlaz_kolona_m": 143,
+        "ulaz": 6,
         "ulaz_kolona_m": 105
       }
     },
@@ -135,8 +135,8 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 10
+        "izlaz": 10,
+        "ulaz": 5
       },
       "tt": {
         "izlaz": 0,
@@ -195,7 +195,7 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 10,
+        "izlaz": 5,
         "ulaz": 120
       }
     },
@@ -218,7 +218,7 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 10
+        "ulaz": 5
       }
     }
   }
