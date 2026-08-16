@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-16T15:26:52+00:00",
+  "scraped_at": "2026-08-16T15:49:49+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 120,
+        "izlaz": 35,
         "ulaz": 50
       },
       "tt": {
-        "izlaz": 17,
-        "izlaz_kolona_m": 393,
-        "ulaz": 5,
-        "ulaz_kolona_m": 192
+        "izlaz": 13,
+        "izlaz_kolona_m": 235,
+        "ulaz": 16,
+        "ulaz_kolona_m": 827
       }
     },
     "horgos": {
@@ -64,10 +64,10 @@
         "ulaz": 5
       },
       "tt": {
-        "izlaz": 12,
-        "izlaz_kolona_m": 542,
-        "ulaz": 13,
-        "ulaz_kolona_m": 523
+        "izlaz": 17,
+        "izlaz_kolona_m": 718,
+        "ulaz": 9,
+        "ulaz_kolona_m": 377
       }
     },
     "kelebija": {
@@ -87,7 +87,7 @@
       },
       "ba": {
         "izlaz": 40,
-        "ulaz": 5
+        "ulaz": 15
       },
       "tt": {
         "izlaz": 0,
@@ -109,13 +109,13 @@
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
         "izlaz": 15,
-        "ulaz": 35
+        "ulaz": 50
       },
       "tt": {
-        "izlaz": 13,
-        "izlaz_kolona_m": 475,
+        "izlaz": 14,
+        "izlaz_kolona_m": 643,
         "ulaz": 0,
-        "ulaz_kolona_m": 0
+        "ulaz_kolona_m": 11
       }
     },
     "presevo": {
@@ -135,8 +135,8 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 270,
-        "ulaz": 240
+        "izlaz": 240,
+        "ulaz": 210
       },
       "tt": {
         "izlaz": 0,
@@ -196,7 +196,7 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 35
+        "ulaz": 90
       }
     },
     "dojran": {
@@ -218,7 +218,7 @@
       },
       "ba": {
         "izlaz": 15,
-        "ulaz": 5
+        "ulaz": 15
       }
     }
   }
