@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-18T18:46:22+00:00",
+  "scraped_at": "2026-08-18T19:31:33+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 5,
-        "ulaz": 45
+        "izlaz": 10,
+        "ulaz": 420
       },
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
-        "ulaz": 20,
-        "ulaz_kolona_m": 355
+        "ulaz": 9,
+        "ulaz_kolona_m": 313
       }
     },
     "horgos": {
@@ -56,18 +56,18 @@
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
-        "ulaz": 30,
-        "izlaz": 30
+        "ulaz": 0,
+        "izlaz": 0
       },
       "ba": {
-        "izlaz": 40,
+        "izlaz": 180,
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 22,
-        "izlaz_kolona_m": 2252,
-        "ulaz": 3,
-        "ulaz_kolona_m": 117
+        "izlaz": 11,
+        "izlaz_kolona_m": 1173,
+        "ulaz": 0,
+        "ulaz_kolona_m": 16
       }
     },
     "kelebija": {
@@ -86,12 +86,12 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 10
+        "izlaz": 10,
+        "ulaz": 5
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
+        "izlaz": 2,
+        "izlaz_kolona_m": 183,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -108,14 +108,14 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 90,
-        "ulaz": 25
+        "izlaz": 60,
+        "ulaz": 20
       },
       "tt": {
-        "izlaz": 23,
-        "izlaz_kolona_m": 679,
-        "ulaz": 4,
-        "ulaz_kolona_m": 1041
+        "izlaz": 10,
+        "izlaz_kolona_m": 2177,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "presevo": {
@@ -135,8 +135,8 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 5
+        "izlaz": 10,
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
@@ -195,8 +195,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 20,
-        "ulaz": 5
+        "izlaz": 150,
+        "ulaz": 25
       }
     },
     "dojran": {
@@ -217,8 +217,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 10
+        "izlaz": 10,
+        "ulaz": 5
       }
     }
   }
