@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-18T10:34:53+00:00",
+  "scraped_at": "2026-08-18T11:30:01+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 150,
+        "izlaz": 120,
         "ulaz": 60
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
-        "ulaz": 26,
-        "ulaz_kolona_m": 1113
+        "izlaz": 18,
+        "izlaz_kolona_m": 328,
+        "ulaz": 18,
+        "ulaz_kolona_m": 681
       }
     },
     "horgos": {
@@ -55,15 +55,19 @@
       },
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
+      "hu": {
+        "ulaz": 0,
+        "izlaz": 0
+      },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 15
+        "izlaz": 5,
+        "ulaz": 10
       },
       "tt": {
-        "izlaz": 15,
-        "izlaz_kolona_m": 762,
-        "ulaz": 0,
-        "ulaz_kolona_m": 0
+        "izlaz": 1,
+        "izlaz_kolona_m": 111,
+        "ulaz": 1,
+        "ulaz_kolona_m": 121
       }
     },
     "kelebija": {
@@ -77,6 +81,10 @@
       },
       "found": true,
       "amss_name": "KELEBIJA Srbija-Mađarska",
+      "hu": {
+        "ulaz": 0,
+        "izlaz": 0
+      },
       "ba": {
         "izlaz": 10,
         "ulaz": 5
@@ -104,9 +112,9 @@
         "ulaz": 30
       },
       "tt": {
-        "izlaz": 22,
-        "izlaz_kolona_m": 1231,
-        "ulaz": 0,
+        "izlaz": 33,
+        "izlaz_kolona_m": 1230,
+        "ulaz": 3,
         "ulaz_kolona_m": 731
       }
     },
@@ -128,7 +136,7 @@
       },
       "ba": {
         "izlaz": 15,
-        "ulaz": 15
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
@@ -188,7 +196,7 @@
       },
       "ba": {
         "izlaz": 25,
-        "ulaz": 60
+        "ulaz": 90
       }
     },
     "dojran": {
@@ -210,7 +218,7 @@
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 5
+        "ulaz": 15
       }
     }
   }
