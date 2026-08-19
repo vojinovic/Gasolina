@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-19T10:34:25+00:00",
+  "scraped_at": "2026-08-19T11:30:14+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 10,
+        "izlaz": 5,
         "ulaz": 45
       },
       "tt": {
-        "izlaz": 19,
-        "izlaz_kolona_m": 340,
-        "ulaz": 9,
-        "ulaz_kolona_m": 289
+        "izlaz": 18,
+        "izlaz_kolona_m": 328,
+        "ulaz": 7,
+        "ulaz_kolona_m": 335
       }
     },
     "horgos": {
@@ -57,17 +57,17 @@
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
         "ulaz": 60,
-        "izlaz": 0
+        "izlaz": 45
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 10
+        "izlaz": 60,
+        "ulaz": 60
       },
       "tt": {
-        "izlaz": 8,
-        "izlaz_kolona_m": 148,
-        "ulaz": 2,
-        "ulaz_kolona_m": 117
+        "izlaz": 10,
+        "izlaz_kolona_m": 436,
+        "ulaz": 3,
+        "ulaz_kolona_m": 489
       }
     },
     "kelebija": {
@@ -112,10 +112,10 @@
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 26,
-        "izlaz_kolona_m": 1428,
-        "ulaz": 0,
-        "ulaz_kolona_m": 0
+        "izlaz": 24,
+        "izlaz_kolona_m": 945,
+        "ulaz": 1,
+        "ulaz_kolona_m": 177
       }
     },
     "presevo": {
@@ -139,9 +139,9 @@
         "ulaz": 15
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
-        "ulaz": 2,
+        "izlaz": 1,
+        "izlaz_kolona_m": 222,
+        "ulaz": 1,
         "ulaz_kolona_m": 53
       }
     },
@@ -195,7 +195,7 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 10,
+        "izlaz": 5,
         "ulaz": 50
       }
     },
@@ -218,7 +218,7 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 10
+        "ulaz": 5
       }
     }
   }
