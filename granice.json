@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-23T20:53:50+00:00",
+  "scraped_at": "2026-08-23T21:27:08+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -38,10 +38,10 @@
         "ulaz": 50
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
-        "ulaz": 16,
-        "ulaz_kolona_m": 419
+        "izlaz": 6,
+        "izlaz_kolona_m": 1028,
+        "ulaz": 8,
+        "ulaz_kolona_m": 683
       }
     },
     "horgos": {
@@ -60,12 +60,12 @@
         "izlaz": 30
       },
       "ba": {
-        "izlaz": 50,
+        "izlaz": 45,
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 24,
-        "izlaz_kolona_m": 1719,
+        "izlaz": 12,
+        "izlaz_kolona_m": 1648,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -86,14 +86,14 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 10
+        "izlaz": 10,
+        "ulaz": 5
       },
       "tt": {
         "izlaz": 0,
-        "izlaz_kolona_m": 0,
+        "izlaz_kolona_m": 27,
         "ulaz": 0,
-        "ulaz_kolona_m": 8
+        "ulaz_kolona_m": 28
       }
     },
     "batrovci": {
@@ -112,10 +112,10 @@
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 11,
-        "izlaz_kolona_m": 531,
-        "ulaz": 3,
-        "ulaz_kolona_m": 389
+        "izlaz": 12,
+        "izlaz_kolona_m": 470,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "presevo": {
@@ -136,7 +136,7 @@
       },
       "ba": {
         "izlaz": 30,
-        "ulaz": 45
+        "ulaz": 15
       },
       "tt": {
         "izlaz": 0,
@@ -196,7 +196,7 @@
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 50
+        "ulaz": 90
       }
     },
     "dojran": {
@@ -218,7 +218,7 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 10
+        "ulaz": 5
       }
     }
   }
