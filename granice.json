@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-23T10:29:29+00:00",
+  "scraped_at": "2026-08-23T10:54:06+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 20,
-        "ulaz": 60
+        "izlaz": 15,
+        "ulaz": 55
       },
       "tt": {
-        "izlaz": 10,
-        "izlaz_kolona_m": 374,
-        "ulaz": 7,
-        "ulaz_kolona_m": 258
+        "izlaz": 24,
+        "izlaz_kolona_m": 689,
+        "ulaz": 20,
+        "ulaz_kolona_m": 355
       }
     },
     "horgos": {
@@ -64,10 +64,10 @@
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 16,
-        "izlaz_kolona_m": 503,
-        "ulaz": 10,
-        "ulaz_kolona_m": 363
+        "izlaz": 19,
+        "izlaz_kolona_m": 1068,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "kelebija": {
@@ -108,14 +108,14 @@
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
-        "izlaz": 15,
+        "izlaz": 150,
         "ulaz": 40
       },
       "tt": {
-        "izlaz": 50,
-        "izlaz_kolona_m": 1800,
-        "ulaz": 17,
-        "ulaz_kolona_m": 658
+        "izlaz": 40,
+        "izlaz_kolona_m": 1350,
+        "ulaz": 1,
+        "ulaz_kolona_m": 599
       }
     },
     "presevo": {
@@ -135,14 +135,14 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 35
+        "izlaz": 20,
+        "ulaz": 45
       },
       "tt": {
         "izlaz": 0,
-        "izlaz_kolona_m": 0,
+        "izlaz_kolona_m": 384,
         "ulaz": 2,
-        "ulaz_kolona_m": 53
+        "ulaz_kolona_m": 98
       }
     },
     "sremska-raca": {
@@ -217,7 +217,7 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 5,
+        "izlaz": 10,
         "ulaz": 45
       }
     }
