@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-23T23:26:23+00:00",
+  "scraped_at": "2026-08-23T23:49:09+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -38,10 +38,10 @@
         "ulaz": 55
       },
       "tt": {
-        "izlaz": 18,
-        "izlaz_kolona_m": 505,
+        "izlaz": 12,
+        "izlaz_kolona_m": 630,
         "ulaz": 5,
-        "ulaz_kolona_m": 93
+        "ulaz_kolona_m": 192
       }
     },
     "horgos": {
@@ -64,8 +64,8 @@
         "ulaz": 5
       },
       "tt": {
-        "izlaz": 3,
-        "izlaz_kolona_m": 774,
+        "izlaz": 2,
+        "izlaz_kolona_m": 162,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -91,9 +91,9 @@
       },
       "tt": {
         "izlaz": 0,
-        "izlaz_kolona_m": 27,
+        "izlaz_kolona_m": 0,
         "ulaz": 0,
-        "ulaz_kolona_m": 28
+        "ulaz_kolona_m": 0
       }
     },
     "batrovci": {
@@ -109,11 +109,11 @@
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
         "izlaz": 30,
-        "ulaz": 30
+        "ulaz": 25
       },
       "tt": {
-        "izlaz": 9,
-        "izlaz_kolona_m": 1640,
+        "izlaz": 12,
+        "izlaz_kolona_m": 266,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -135,12 +135,12 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 20,
-        "ulaz": 50
+        "izlaz": 15,
+        "ulaz": 45
       },
       "tt": {
         "izlaz": 1,
-        "izlaz_kolona_m": 515,
+        "izlaz_kolona_m": 232,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -195,8 +195,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 60
+        "izlaz": 10,
+        "ulaz": 55
       }
     },
     "dojran": {
@@ -217,7 +217,7 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 5,
+        "izlaz": 10,
         "ulaz": 10
       }
     }
