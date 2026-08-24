@@ -547,18 +547,42 @@
   const STAROST_MAX_S = 300;
 
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  const PDT_NAJRANIJE = Date.UTC(2020, 0, 1);
+  function vremeSnimkaMs(){
+    if (!_hls || !_hls.playingDate) return null;
+    const t = _hls.playingDate.getTime();
+    if (!isFinite(t)) return null;
+    if (t < PDT_NAJRANIJE) return null;   
+    
+    
+    
+    
+    if (t > Date.now() + 60 * 1000) return null;
+    return t;
+  }
+
+  
   function stanjeZive(video){
-    const pdt = (_hls && _hls.playingDate && isFinite(_hls.playingDate.getTime()))
-      ? _hls.playingDate.getTime() : null;
+    const pdt = vremeSnimkaMs();
     const edge = liveEdge(video);
     if (pdt != null) {
       const staroS = (Date.now() - pdt) / 1000;
-      
-      if (staroS > STAROST_MAX_S || staroS < -STAROST_MAX_S) return 'snimak';
-      if (edge == null) return 'uzivo';   
+      if (staroS > STAROST_MAX_S) return 'snimak';
+      if (edge != null && (edge - video.currentTime) > LIVE_MAX_LAG) return 'snimak';
+      return 'uzivo';
     }
-    if (edge == null) return 'nepoznato';
-    return (edge - video.currentTime) <= LIVE_MAX_LAG ? 'uzivo' : 'snimak';
+    if (edge != null && (edge - video.currentTime) > LIVE_MAX_LAG) return 'snimak';
+    return 'nepoznato';
   }
 
   
@@ -568,8 +592,7 @@
     const el = document.getElementById("camAge");
     if (!el) return;
     if (st === 'uzivo') { el.style.display = "none"; return; }
-    const pdt = (_hls && _hls.playingDate && isFinite(_hls.playingDate.getTime()))
-      ? _hls.playingDate.getTime() : null;
+    const pdt = vremeSnimkaMs();
     const min = pdt != null ? Math.round((Date.now() - pdt) / 60000) : null;
     let txt;
     if (st === 'snimak' && min != null && min > 0) {
