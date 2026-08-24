@@ -1,7 +1,7 @@
 {
-  "scraped_at": "2026-08-17T04:09:14+00:00",
+  "scraped_at": "2026-08-24T04:10:16+00:00",
   "source": "OpenStreetMap (Overpass API)",
-  "count": 1087,
+  "count": 1086,
   "stations": [
     {
       "id": 296878310,
@@ -2570,20 +2570,6 @@
       "brand": "OMV",
       "lat": 44.86836,
       "lon": 20.35574,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 3733451283,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "OMV",
-      "lat": 44.80333,
-      "lon": 20.39107,
       "fuels": [
         "dizel",
         "benzin",
