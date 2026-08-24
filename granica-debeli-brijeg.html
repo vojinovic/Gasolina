@@ -558,6 +558,34 @@
     return (edge - video.currentTime) <= LIVE_MAX_LAG ? 'uzivo' : 'snimak';
   }
 
+  
+  
+  
+  function prikaziStarost(st){
+    const el = document.getElementById("camAge");
+    if (!el) return;
+    if (st === 'uzivo') { el.style.display = "none"; return; }
+    const pdt = (_hls && _hls.playingDate && isFinite(_hls.playingDate.getTime()))
+      ? _hls.playingDate.getTime() : null;
+    const min = pdt != null ? Math.round((Date.now() - pdt) / 60000) : null;
+    let txt;
+    if (st === 'snimak' && min != null && min > 0) {
+      const pre = min < 60 ? "pre {n} min".replace("{n}", min)
+        : (min % 60 ? "pre {h} h {m} min".replace("{h}", Math.floor(min / 60)).replace("{m}", min % 60)
+                    : "pre {h} h".replace("{h}", Math.floor(min / 60)));
+      const d = new Date(pdt);
+      const kada = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+      txt = "Slika je od {kada} — izvor emituje sa zadrškom ({pre}).".replace("{kada}", kada).replace("{pre}", pre);
+    } else if (st === 'snimak') {
+      
+      txt = "Slika nije sa žive ivice strima — klikni na značku da skočiš na uživo.";
+    } else {
+      txt = "Ne možemo da potvrdimo koliko je ova slika sveža.";
+    }
+    el.textContent = txt;
+    el.style.display = "block";
+  }
+
   function markLive(_lagIgnorisan){
     const tag = document.getElementById("liveTag");
     if (!tag) return;
@@ -575,6 +603,7 @@
     tag.style.cursor = st === 'uzivo' ? "default" : "pointer";
     tag.title = st === 'uzivo' ? ""
               : st === 'snimak' ? "Plejer nije na živoj ivici strima — klikni da skočiš na uživo" : "Slika sa kamere — ne možemo da potvrdimo koliko je sveža";
+    prikaziStarost(st);
   }
   
   

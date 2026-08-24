@@ -182,7 +182,7 @@
     <h1>Dojran — live camera and waiting time</h1>
     <span class="dirchip">🇲🇰 MK → 🇬🇷 GR</span>
   </div>
-  <div class="pane" id="pane"><span class="badge">roads.org.mk</span><span class="live" id="liveTag" title="Camera image — we cannot confirm how fresh it is" style="background:rgba(93,115,135,.92)">CAMERA</span><img class="thumb" src="../thumbs/dojran.jpg" alt="Dojran" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Play live camera"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div>
+  <div class="pane" id="pane"><span class="badge">roads.org.mk</span><span class="live" id="liveTag" title="Camera image — we cannot confirm how fresh it is" style="background:rgba(93,115,135,.92)">CAMERA</span><img class="thumb" src="../thumbs/dojran.jpg" alt="Dojran" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Play live camera"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div><div id="camAge" style="display:none;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.03em;color:var(--warn)"></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Traffic on the map: North Macedonia → Greece</h2><iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d11672.3!2d22.751994250000003!3d41.1738646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x14a9dd8bff8c70ab%3A0x1f9a5b0bf0240f1f!2sStar%20Dojran%20Border%20Crossing!3m2!1d41.1705414!2d22.7452727!4m5!1s0x14a9e78aebffdd95%3A0x6fdb4272043303e5!2sDoirani%20Customs%20House!3m2!1d41.1771878!2d22.7587158!5e0!3m2!1sen!2sus!4v1627540443619!5m2!1sen!2sus" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Traffic on the map: North Macedonia → Greece" allowfullscreen></iframe></div>
   <div class="map-box"><h2 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase;margin:26px 0 10px">Traffic on the map: Greece → North Macedonia</h2><iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d11672.3!2d22.751994250000003!3d41.1738646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x14a9e78aebffdd95%3A0x6fdb4272043303e5!2sDoirani%20Customs%20House!3m2!1d41.1771878!2d22.7587158!4m5!1s0x14a9dd8bff8c70ab%3A0x1f9a5b0bf0240f1f!2sStar%20Dojran%20Border%20Crossing!3m2!1d41.1705414!2d22.7452727!5e0!3m2!1sen!2sus!4v1627540443619!5m2!1sen!2sus" width="100%" height="340" style="border:1px solid var(--line);border-radius:12px" loading="lazy" title="Traffic on the map: Greece → North Macedonia" allowfullscreen></iframe></div>
   <div style="font-size:11px;color:var(--faint);margin-top:6px">The time on the map is a driving estimate through the crossing zone in current traffic — it does not include passport control.</div>
@@ -560,6 +560,34 @@
     return (edge - video.currentTime) <= LIVE_MAX_LAG ? 'uzivo' : 'snimak';
   }
 
+  
+  
+  
+  function prikaziStarost(st){
+    const el = document.getElementById("camAge");
+    if (!el) return;
+    if (st === 'uzivo') { el.style.display = "none"; return; }
+    const pdt = (_hls && _hls.playingDate && isFinite(_hls.playingDate.getTime()))
+      ? _hls.playingDate.getTime() : null;
+    const min = pdt != null ? Math.round((Date.now() - pdt) / 60000) : null;
+    let txt;
+    if (st === 'snimak' && min != null && min > 0) {
+      const pre = min < 60 ? "{n} min ago".replace("{n}", min)
+        : (min % 60 ? "{h} h {m} min ago".replace("{h}", Math.floor(min / 60)).replace("{m}", min % 60)
+                    : "{h} h ago".replace("{h}", Math.floor(min / 60)));
+      const d = new Date(pdt);
+      const kada = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+      txt = "This image is from {kada} — the source is broadcasting with a delay ({pre}).".replace("{kada}", kada).replace("{pre}", pre);
+    } else if (st === 'snimak') {
+      
+      txt = "This image is not from the live edge — click the badge to jump to live.";
+    } else {
+      txt = "We cannot confirm how fresh this image is.";
+    }
+    el.textContent = txt;
+    el.style.display = "block";
+  }
+
   function markLive(_lagIgnorisan){
     const tag = document.getElementById("liveTag");
     if (!tag) return;
@@ -577,6 +605,7 @@
     tag.style.cursor = st === 'uzivo' ? "default" : "pointer";
     tag.title = st === 'uzivo' ? ""
               : st === 'snimak' ? "The player is behind the live edge — click to jump to live" : "Camera image — we cannot confirm how fresh it is";
+    prikaziStarost(st);
   }
   
   

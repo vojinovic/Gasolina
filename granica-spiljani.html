@@ -182,7 +182,7 @@
     <h1>Spiljani — kamera uživo i vreme čekanja</h1>
     <span class="dirchip">🇷🇸 RS → 🇲🇪 ME</span>
   </div>
-  <div class="pane" id="pane"><span class="badge">MUP</span><span class="live" id="liveTag" title="Slika sa kamere — ne možemo da potvrdimo koliko je sveža" style="background:rgba(93,115,135,.92)">KAMERA</span><img class="thumb" src="thumbs/spiljani.jpg" alt="Spiljani" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Pusti kameru uživo"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Pusti kameru uživo</button></div><div class="feeds"><button data-i="1" onclick="playFeed(1)">Izlaz</button><button data-i="0" onclick="playFeed(0)">Ulaz</button></div>
+  <div class="pane" id="pane"><span class="badge">MUP</span><span class="live" id="liveTag" title="Slika sa kamere — ne možemo da potvrdimo koliko je sveža" style="background:rgba(93,115,135,.92)">KAMERA</span><img class="thumb" src="thumbs/spiljani.jpg" alt="Spiljani" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Pusti kameru uživo"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Pusti kameru uživo</button></div><div class="feeds"><button data-i="1" onclick="playFeed(1)">Izlaz</button><button data-i="0" onclick="playFeed(0)">Ulaz</button></div><div id="camAge" style="display:none;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.03em;color:var(--warn)"></div>
   <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Učitavanje trenutnog stanja…</div></div>
   <div id="dataAge" style="display:none;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.04em;color:var(--faint)"></div>
   <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
@@ -561,6 +561,34 @@
     return (edge - video.currentTime) <= LIVE_MAX_LAG ? 'uzivo' : 'snimak';
   }
 
+  
+  
+  
+  function prikaziStarost(st){
+    const el = document.getElementById("camAge");
+    if (!el) return;
+    if (st === 'uzivo') { el.style.display = "none"; return; }
+    const pdt = (_hls && _hls.playingDate && isFinite(_hls.playingDate.getTime()))
+      ? _hls.playingDate.getTime() : null;
+    const min = pdt != null ? Math.round((Date.now() - pdt) / 60000) : null;
+    let txt;
+    if (st === 'snimak' && min != null && min > 0) {
+      const pre = min < 60 ? "pre {n} min".replace("{n}", min)
+        : (min % 60 ? "pre {h} h {m} min".replace("{h}", Math.floor(min / 60)).replace("{m}", min % 60)
+                    : "pre {h} h".replace("{h}", Math.floor(min / 60)));
+      const d = new Date(pdt);
+      const kada = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+      txt = "Slika je od {kada} — izvor emituje sa zadrškom ({pre}).".replace("{kada}", kada).replace("{pre}", pre);
+    } else if (st === 'snimak') {
+      
+      txt = "Slika nije sa žive ivice strima — klikni na značku da skočiš na uživo.";
+    } else {
+      txt = "Ne možemo da potvrdimo koliko je ova slika sveža.";
+    }
+    el.textContent = txt;
+    el.style.display = "block";
+  }
+
   function markLive(_lagIgnorisan){
     const tag = document.getElementById("liveTag");
     if (!tag) return;
@@ -578,6 +606,7 @@
     tag.style.cursor = st === 'uzivo' ? "default" : "pointer";
     tag.title = st === 'uzivo' ? ""
               : st === 'snimak' ? "Plejer nije na živoj ivici strima — klikni da skočiš na uživo" : "Slika sa kamere — ne možemo da potvrdimo koliko je sveža";
+    prikaziStarost(st);
   }
   
   

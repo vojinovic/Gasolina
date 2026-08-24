@@ -182,7 +182,7 @@
     <h1>Medzitlija — live camera and waiting time</h1>
     <span class="dirchip">🇲🇰 MK → 🇬🇷 GR</span>
   </div>
-  <div class="pane" id="pane"><span class="badge">neotel.net.mk</span><span class="live" id="liveTag" title="Camera image — we cannot confirm how fresh it is" style="background:rgba(93,115,135,.92)">CAMERA</span><img class="thumb" src="../thumbs/medzitlija.jpg" alt="Medzitlija" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Play live camera"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div>
+  <div class="pane" id="pane"><span class="badge">neotel.net.mk</span><span class="live" id="liveTag" title="Camera image — we cannot confirm how fresh it is" style="background:rgba(93,115,135,.92)">CAMERA</span><img class="thumb" src="../thumbs/medzitlija.jpg" alt="Medzitlija" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Play live camera"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div><div id="camAge" style="display:none;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.03em;color:var(--warn)"></div>
   <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Loading current status…</div></div>
   <div id="dataAge" style="display:none;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.04em;color:var(--faint)"></div>
   <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
@@ -563,6 +563,34 @@
     return (edge - video.currentTime) <= LIVE_MAX_LAG ? 'uzivo' : 'snimak';
   }
 
+  
+  
+  
+  function prikaziStarost(st){
+    const el = document.getElementById("camAge");
+    if (!el) return;
+    if (st === 'uzivo') { el.style.display = "none"; return; }
+    const pdt = (_hls && _hls.playingDate && isFinite(_hls.playingDate.getTime()))
+      ? _hls.playingDate.getTime() : null;
+    const min = pdt != null ? Math.round((Date.now() - pdt) / 60000) : null;
+    let txt;
+    if (st === 'snimak' && min != null && min > 0) {
+      const pre = min < 60 ? "{n} min ago".replace("{n}", min)
+        : (min % 60 ? "{h} h {m} min ago".replace("{h}", Math.floor(min / 60)).replace("{m}", min % 60)
+                    : "{h} h ago".replace("{h}", Math.floor(min / 60)));
+      const d = new Date(pdt);
+      const kada = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+      txt = "This image is from {kada} — the source is broadcasting with a delay ({pre}).".replace("{kada}", kada).replace("{pre}", pre);
+    } else if (st === 'snimak') {
+      
+      txt = "This image is not from the live edge — click the badge to jump to live.";
+    } else {
+      txt = "We cannot confirm how fresh this image is.";
+    }
+    el.textContent = txt;
+    el.style.display = "block";
+  }
+
   function markLive(_lagIgnorisan){
     const tag = document.getElementById("liveTag");
     if (!tag) return;
@@ -580,6 +608,7 @@
     tag.style.cursor = st === 'uzivo' ? "default" : "pointer";
     tag.title = st === 'uzivo' ? ""
               : st === 'snimak' ? "The player is behind the live edge — click to jump to live" : "Camera image — we cannot confirm how fresh it is";
+    prikaziStarost(st);
   }
   
   

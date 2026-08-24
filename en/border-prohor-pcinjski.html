@@ -563,6 +563,34 @@
     return (edge - video.currentTime) <= LIVE_MAX_LAG ? 'uzivo' : 'snimak';
   }
 
+  
+  
+  
+  function prikaziStarost(st){
+    const el = document.getElementById("camAge");
+    if (!el) return;
+    if (st === 'uzivo') { el.style.display = "none"; return; }
+    const pdt = (_hls && _hls.playingDate && isFinite(_hls.playingDate.getTime()))
+      ? _hls.playingDate.getTime() : null;
+    const min = pdt != null ? Math.round((Date.now() - pdt) / 60000) : null;
+    let txt;
+    if (st === 'snimak' && min != null && min > 0) {
+      const pre = min < 60 ? "{n} min ago".replace("{n}", min)
+        : (min % 60 ? "{h} h {m} min ago".replace("{h}", Math.floor(min / 60)).replace("{m}", min % 60)
+                    : "{h} h ago".replace("{h}", Math.floor(min / 60)));
+      const d = new Date(pdt);
+      const kada = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+      txt = "This image is from {kada} — the source is broadcasting with a delay ({pre}).".replace("{kada}", kada).replace("{pre}", pre);
+    } else if (st === 'snimak') {
+      
+      txt = "This image is not from the live edge — click the badge to jump to live.";
+    } else {
+      txt = "We cannot confirm how fresh this image is.";
+    }
+    el.textContent = txt;
+    el.style.display = "block";
+  }
+
   function markLive(_lagIgnorisan){
     const tag = document.getElementById("liveTag");
     if (!tag) return;
@@ -580,6 +608,7 @@
     tag.style.cursor = st === 'uzivo' ? "default" : "pointer";
     tag.title = st === 'uzivo' ? ""
               : st === 'snimak' ? "The player is behind the live edge — click to jump to live" : "Camera image — we cannot confirm how fresh it is";
+    prikaziStarost(st);
   }
   
   
