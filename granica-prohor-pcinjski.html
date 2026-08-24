@@ -608,7 +608,7 @@
       
       txt = "Slika nije sa žive ivice strima — klikni na značku da skočiš na uživo.";
     } else {
-      txt = "Ne možemo da potvrdimo koliko je ova slika sveža.";
+      txt = "Strim ne nosi oznaku vremena. Proveri sat upisan u sliku.";
     }
     el.textContent = txt;
     el.style.display = "block";
@@ -630,7 +630,7 @@
     tag.style.background = st === 'uzivo' ? "rgba(227,93,79,.9)" : "rgba(93,115,135,.92)";
     tag.style.cursor = st === 'uzivo' ? "default" : "pointer";
     tag.title = st === 'uzivo' ? ""
-              : st === 'snimak' ? "Plejer nije na živoj ivici strima — klikni da skočiš na uživo" : "Slika sa kamere — ne možemo da potvrdimo koliko je sveža";
+              : st === 'snimak' ? "Plejer nije na živoj ivici strima — klikni da skočiš na uživo" : "Strim ne nosi oznaku vremena, pa svežinu ne možemo da potvrdimo";
     prikaziStarost(st);
   }
   

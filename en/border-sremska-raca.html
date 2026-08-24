@@ -182,7 +182,7 @@
     <h1>Sremska Raca — live camera and waiting time</h1>
     <span class="dirchip">🇷🇸 RS → 🇧🇦 BA</span>
   </div>
-  <div class="pane" id="pane"><span class="badge">MUP</span><span class="live" id="liveTag" title="Camera image — we cannot confirm how fresh it is" style="background:rgba(93,115,135,.92)">CAMERA</span><img class="thumb" src="../thumbs/sremska-raca.jpg" alt="Sremska Raca" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Play live camera"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div><div class="feeds"><button data-i="1" onclick="playFeed(1)">Exit</button><button data-i="0" onclick="playFeed(0)">Entry</button></div><div id="camAge" style="display:none;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.03em;color:var(--warn)"></div>
+  <div class="pane" id="pane"><span class="badge">MUP</span><span class="live" id="liveTag" title="The stream carries no timestamp, so freshness cannot be confirmed" style="background:rgba(93,115,135,.92)">CAMERA</span><img class="thumb" src="../thumbs/sremska-raca.jpg" alt="Sremska Raca" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Play live camera"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play live camera</button></div><div class="feeds"><button data-i="1" onclick="playFeed(1)">Exit</button><button data-i="0" onclick="playFeed(0)">Entry</button></div><div id="camAge" style="display:none;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.03em;color:var(--warn)"></div>
   <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Loading current status…</div></div>
   <div id="dataAge" style="display:none;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.04em;color:var(--faint)"></div>
   <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
@@ -606,7 +606,7 @@
       
       txt = "This image is not from the live edge — click the badge to jump to live.";
     } else {
-      txt = "We cannot confirm how fresh this image is.";
+      txt = "The stream carries no timestamp. Check the clock printed in the image.";
     }
     el.textContent = txt;
     el.style.display = "block";
@@ -628,7 +628,7 @@
     tag.style.background = st === 'uzivo' ? "rgba(227,93,79,.9)" : "rgba(93,115,135,.92)";
     tag.style.cursor = st === 'uzivo' ? "default" : "pointer";
     tag.title = st === 'uzivo' ? ""
-              : st === 'snimak' ? "The player is behind the live edge — click to jump to live" : "Camera image — we cannot confirm how fresh it is";
+              : st === 'snimak' ? "The player is behind the live edge — click to jump to live" : "The stream carries no timestamp, so freshness cannot be confirmed";
     prikaziStarost(st);
   }
   

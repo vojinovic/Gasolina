@@ -606,7 +606,7 @@
       
       txt = "This image is not from the live edge — click the badge to jump to live.";
     } else {
-      txt = "We cannot confirm how fresh this image is.";
+      txt = "The stream carries no timestamp. Check the clock printed in the image.";
     }
     el.textContent = txt;
     el.style.display = "block";
@@ -628,7 +628,7 @@
     tag.style.background = st === 'uzivo' ? "rgba(227,93,79,.9)" : "rgba(93,115,135,.92)";
     tag.style.cursor = st === 'uzivo' ? "default" : "pointer";
     tag.title = st === 'uzivo' ? ""
-              : st === 'snimak' ? "The player is behind the live edge — click to jump to live" : "Camera image — we cannot confirm how fresh it is";
+              : st === 'snimak' ? "The player is behind the live edge — click to jump to live" : "The stream carries no timestamp, so freshness cannot be confirmed";
     prikaziStarost(st);
   }
   
