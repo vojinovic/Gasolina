@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-24T15:44:46+00:00",
+  "scraped_at": "2026-08-24T16:44:43+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 20,
-        "ulaz": 45
+        "izlaz": 15,
+        "ulaz": 40
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
-        "ulaz": 24,
-        "ulaz_kolona_m": 1158
+        "izlaz": 7,
+        "izlaz_kolona_m": 137,
+        "ulaz": 9,
+        "ulaz_kolona_m": 499
       }
     },
     "horgos": {
@@ -60,12 +60,12 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 55,
-        "ulaz": 5
+        "izlaz": 50,
+        "ulaz": 15
       },
       "tt": {
-        "izlaz": 15,
-        "izlaz_kolona_m": 1903,
+        "izlaz": 2,
+        "izlaz_kolona_m": 218,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -86,14 +86,14 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 90,
-        "ulaz": 5
+        "izlaz": 60,
+        "ulaz": 10
       },
       "tt": {
-        "izlaz": 5,
-        "izlaz_kolona_m": 557,
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
         "ulaz": 0,
-        "ulaz_kolona_m": 28
+        "ulaz_kolona_m": 0
       }
     },
     "batrovci": {
@@ -109,11 +109,11 @@
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
         "izlaz": 120,
-        "ulaz": 90
+        "ulaz": 60
       },
       "tt": {
-        "izlaz": 31,
-        "izlaz_kolona_m": 733,
+        "izlaz": 49,
+        "izlaz_kolona_m": 1407,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -135,8 +135,8 @@
         "opsto": null
       },
       "ba": {
-        "izlaz": 35,
-        "ulaz": 5
+        "izlaz": 30,
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
@@ -195,8 +195,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 30,
-        "ulaz": 150
+        "izlaz": 25,
+        "ulaz": 120
       }
     },
     "dojran": {
@@ -217,8 +217,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 15
+        "izlaz": 10,
+        "ulaz": 10
       }
     }
   }
