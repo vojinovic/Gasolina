@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-24T22:32:12+00:00",
+  "scraped_at": "2026-08-24T23:26:44+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -40,8 +40,8 @@
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
-        "ulaz": 7,
-        "ulaz_kolona_m": 442
+        "ulaz": 2,
+        "ulaz_kolona_m": 371
       }
     },
     "horgos": {
@@ -57,15 +57,15 @@
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
         "ulaz": 0,
-        "izlaz": 30
+        "izlaz": 0
       },
       "ba": {
         "izlaz": 10,
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 1,
-        "izlaz_kolona_m": 107,
+        "izlaz": 19,
+        "izlaz_kolona_m": 916,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -86,8 +86,8 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 30,
-        "ulaz": 10
+        "izlaz": 25,
+        "ulaz": 5
       },
       "tt": {
         "izlaz": 0,
@@ -112,8 +112,8 @@
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 34,
-        "izlaz_kolona_m": 1936,
+        "izlaz": 21,
+        "izlaz_kolona_m": 664,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -195,8 +195,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 10
+        "izlaz": 5,
+        "ulaz": 5
       }
     },
     "dojran": {
@@ -217,8 +217,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 10
+        "izlaz": 5,
+        "ulaz": 5
       }
     }
   }
