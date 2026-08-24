@@ -182,7 +182,7 @@
     <h1>Bogorodica — kamera uživo i vreme čekanja</h1>
     <span class="dirchip">🇲🇰 MK → 🇬🇷 GR</span>
   </div>
-  <div class="pane" id="pane"><span class="badge">roads.org.mk</span><span class="live" id="liveTag">UŽIVO</span><img class="thumb" src="thumbs/bogorodica.jpg" alt="Bogorodica" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Pusti kameru uživo"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Pusti kameru uživo</button></div>
+  <div class="pane" id="pane"><span class="badge">roads.org.mk</span><span class="live" id="liveTag" title="Slika sa kamere — ne možemo da potvrdimo koliko je sveža" style="background:rgba(93,115,135,.92)">KAMERA</span><img class="thumb" src="thumbs/bogorodica.jpg" alt="Bogorodica" loading="lazy" onerror="this.remove()"><video id="cam" playsinline controls muted></video><button class="overlay" id="playOverlay" onclick="playFeed(0)" aria-label="Pusti kameru uživo"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Pusti kameru uživo</button></div>
   <div class="wait-box" id="waitBox"><div class="wcell" style="grid-column:1/-1;color:var(--faint)">Učitavanje trenutnog stanja…</div></div>
   <div id="dataAge" style="display:none;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.04em;color:var(--faint)"></div>
   <div id="sources" style="display:none;gap:6px;margin-top:10px;font-size:12.5px;color:var(--dim);border:1px dashed var(--line);border-radius:10px;padding:12px 14px"></div>
@@ -531,18 +531,55 @@
     }
     return lag;
   }
-  function markLive(lag){
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  const STAROST_MAX_S = 300;
+
+  
+  function stanjeZive(video){
+    const pdt = (_hls && _hls.playingDate && isFinite(_hls.playingDate.getTime()))
+      ? _hls.playingDate.getTime() : null;
+    const edge = liveEdge(video);
+    if (pdt != null) {
+      const staroS = (Date.now() - pdt) / 1000;
+      
+      if (staroS > STAROST_MAX_S || staroS < -STAROST_MAX_S) return 'snimak';
+      if (edge == null) return 'uzivo';   
+    }
+    if (edge == null) return 'nepoznato';
+    return (edge - video.currentTime) <= LIVE_MAX_LAG ? 'uzivo' : 'snimak';
+  }
+
+  function markLive(_lagIgnorisan){
     const tag = document.getElementById("liveTag");
     if (!tag) return;
+    const video = document.getElementById("cam");
+    if (!video) return;
+    const st = stanjeZive(video);
     
     
-    if (lag == null) return;
-    const live = (lag <= LIVE_MAX_LAG);
-    if (!live) javiGresku('zaostaje');
-    tag.textContent = live ? "UŽIVO" : "SNIMAK";
-    tag.style.background = live ? "rgba(227,93,79,.9)" : "rgba(93,115,135,.92)";
-    tag.style.cursor = live ? "default" : "pointer";
-    tag.title = live ? "" : "Plejer nije na živoj ivici strima — klikni da skočiš na uživo";
+    
+    if (st === 'nepoznato') javiGresku('starost_nepoznata');
+    if (st === 'snimak') javiGresku('zaostaje');
+    tag.textContent = st === 'uzivo' ? "UŽIVO"
+                    : st === 'snimak' ? "SNIMAK" : "KAMERA";
+    tag.style.background = st === 'uzivo' ? "rgba(227,93,79,.9)" : "rgba(93,115,135,.92)";
+    tag.style.cursor = st === 'uzivo' ? "default" : "pointer";
+    tag.title = st === 'uzivo' ? ""
+              : st === 'snimak' ? "Plejer nije na živoj ivici strima — klikni da skočiš na uživo" : "Slika sa kamere — ne možemo da potvrdimo koliko je sveža";
   }
   
   
@@ -555,7 +592,7 @@
       const s = document.createElement("script");
       s.src = "https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js";
       s.onload = () => res();
-      s.onerror = () => res();   
+      s.onerror = () => { javiGresku('hls_ne_ucitava'); res(); };   
       document.head.appendChild(s);
     });
     return _hlsLoad;
@@ -576,9 +613,21 @@
     if(liveTag) liveTag.style.display = "block";
     _greskaJavljena = null;   
     if(_hls){ try{_hls.destroy();}catch(e){} _hls = null; }
-    if(video.canPlayType("application/vnd.apple.mpegurl")){
-      video.src = src;
-    } else if ((await ensureHls(), window.Hls && Hls.isSupported())){
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    await ensureHls();
+    if (window.Hls && Hls.isSupported()){
       
       
       _hls = new Hls({maxBufferLength:10, liveSyncDurationCount:3,
@@ -587,8 +636,13 @@
       _hls.attachMedia(video);
       _hls.on(Hls.Events.MANIFEST_PARSED, () => syncLive(video, true));
       _hls.on(Hls.Events.ERROR, (_e, d) => { if (d && d.fatal) javiGresku('ne_ucitava'); });
-    } else {
+    } else if (video.canPlayType("application/vnd.apple.mpegurl")){
       video.src = src;
+    } else {
+      
+      
+      video.src = src;
+      javiGresku('nema_plejera');
     }
     
     video.addEventListener("loadedmetadata", () => markLive(syncLive(video, true)), {once:true});
