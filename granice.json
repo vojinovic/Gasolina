@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-26T05:06:54+00:00",
+  "scraped_at": "2026-08-26T06:01:27+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 15,
-        "ulaz": 5
+        "izlaz": 10,
+        "ulaz": 10
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
-        "ulaz": 9,
-        "ulaz_kolona_m": 426
+        "izlaz": 11,
+        "izlaz_kolona_m": 203,
+        "ulaz": 12,
+        "ulaz_kolona_m": 305
       }
     },
     "horgos": {
@@ -64,8 +64,8 @@
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 9,
-        "izlaz_kolona_m": 191,
+        "izlaz": 8,
+        "izlaz_kolona_m": 628,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -86,8 +86,8 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 5
+        "izlaz": 15,
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
@@ -112,8 +112,8 @@
         "ulaz": 30
       },
       "tt": {
-        "izlaz": 12,
-        "izlaz_kolona_m": 348,
+        "izlaz": 15,
+        "izlaz_kolona_m": 266,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -135,12 +135,12 @@
         "opsto": 0
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 50
+        "izlaz": 15,
+        "ulaz": 45
       },
       "tt": {
-        "izlaz": 2,
-        "izlaz_kolona_m": 257,
+        "izlaz": 1,
+        "izlaz_kolona_m": 128,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -195,8 +195,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 10
+        "izlaz": 40,
+        "ulaz": 15
       }
     },
     "dojran": {
@@ -217,8 +217,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 15
+        "izlaz": 15,
+        "ulaz": 10
       }
     }
   }
