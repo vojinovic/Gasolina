@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-28",
+  "checked_at": "2026-08-29",
   "countries": [
     {
       "name": "Serbia",
@@ -22,8 +22,7 @@
       "diesel_source": "nafta.hr",
       "petrol_source": "nafta.hr",
       "lpg_source": "nafta.hr",
-      "updated": "2026-08-24 07:53 UTC",
-      "stale_since": "2026-08-28 21:42 UTC"
+      "updated": "2026-08-29 12:52 UTC"
     },
     {
       "name": "Croatia",
@@ -42,8 +41,7 @@
         "local": 0.0,
         "eur": 0.0
       },
-      "updated": "2026-08-14 18:25 UTC",
-      "stale_since": "2026-08-28 21:42 UTC"
+      "updated": "2026-08-29 12:52 UTC"
     },
     {
       "name": "Bosnia and Herzegovina",
@@ -62,8 +60,7 @@
         "local": 1.36,
         "eur": 0.7
       },
-      "updated": "2026-08-21 12:39 UTC",
-      "stale_since": "2026-08-28 21:42 UTC"
+      "updated": "2026-08-29 12:52 UTC"
     },
     {
       "name": "Montenegro",
@@ -75,12 +72,11 @@
         "eur": 1.76
       },
       "diesel": {
-        "local": 1.88,
-        "eur": 1.88
+        "local": 1.87,
+        "eur": 1.87
       },
       "lpg": null,
-      "updated": "2026-08-21 12:39 UTC",
-      "stale_since": "2026-08-28 21:42 UTC"
+      "updated": "2026-08-29 12:52 UTC"
     },
     {
       "name": "Slovenia",
@@ -99,28 +95,26 @@
         "local": 0.98,
         "eur": 0.98
       },
-      "updated": "2026-08-21 12:39 UTC",
-      "stale_since": "2026-08-28 21:42 UTC"
+      "updated": "2026-08-29 12:52 UTC"
     },
     {
       "name": "North Macedonia",
       "flag": "🇲🇰",
       "currency": "MKD",
-      "fx_rate_eur": 61.7021,
+      "fx_rate_eur": 61.5894,
       "petrol95": {
-        "local": 87.0,
-        "eur": 1.41
+        "local": 93.0,
+        "eur": 1.51
       },
       "diesel": {
-        "local": 91.5,
-        "eur": 1.49
+        "local": 101.5,
+        "eur": 1.65
       },
       "lpg": {
         "local": 47.0,
         "eur": 0.76
       },
-      "updated": "2026-08-21 12:39 UTC",
-      "stale_since": "2026-08-28 21:42 UTC"
+      "updated": "2026-08-29 12:52 UTC"
     },
     {
       "name": "Hungary",
@@ -128,19 +122,18 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.63,
-        "eur": 1.63
+        "local": 1.64,
+        "eur": 1.64
       },
       "diesel": {
         "local": 1.88,
         "eur": 1.88
       },
       "lpg": {
-        "local": 0.97,
-        "eur": 0.97
+        "local": 0.98,
+        "eur": 0.98
       },
-      "updated": "2026-08-24 07:53 UTC",
-      "stale_since": "2026-08-28 21:42 UTC"
+      "updated": "2026-08-29 12:52 UTC"
     },
     {
       "name": "Bulgaria",
