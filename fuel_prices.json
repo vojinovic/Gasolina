@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-29",
+  "checked_at": "2026-08-31",
   "countries": [
     {
       "name": "Serbia",
@@ -190,7 +190,7 @@
       "name": "Romania",
       "flag": "🇷🇴",
       "currency": "RON",
-      "fx_rate_eur": 5.2584,
+      "fx_rate_eur": 5.2592,
       "petrol95": {
         "local": 9.55,
         "eur": 1.816
@@ -200,7 +200,7 @@
         "eur": 1.94
       },
       "lpg": null,
-      "updated": "2026-08-28 21:42 UTC"
+      "updated": "2026-08-31 14:45 UTC"
     },
     {
       "name": "Kosovo",
