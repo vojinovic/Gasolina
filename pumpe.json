@@ -1,7 +1,7 @@
 {
-  "scraped_at": "2026-08-24T04:10:16+00:00",
+  "scraped_at": "2026-08-31T09:50:53+00:00",
   "source": "OpenStreetMap (Overpass API)",
-  "count": 1086,
+  "count": 1087,
   "stations": [
     {
       "id": 296878310,
@@ -4252,8 +4252,8 @@
       "corridor": "bg-sid",
       "country": "RS",
       "brand": "Nešković",
-      "lat": 44.78461,
-      "lon": 19.23772,
+      "lat": 44.78463,
+      "lon": 19.23756,
       "fuels": null,
       "open24": null
     },
@@ -5250,6 +5250,16 @@
       "brand": "Nestro",
       "lat": 44.76882,
       "lon": 19.2255,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 14123669488,
+      "corridor": "bg-sid",
+      "country": "RS",
+      "brand": "Benzinska pumpa Intergaj",
+      "lat": 44.76237,
+      "lon": 19.201,
       "fuels": null,
       "open24": null
     },
