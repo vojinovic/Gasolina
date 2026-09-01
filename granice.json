@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-09-01T20:06:09+00:00",
+  "scraped_at": "2026-09-01T22:45:41+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 10,
+        "izlaz": 15,
         "ulaz": 5
       },
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
-        "ulaz": 1,
-        "ulaz_kolona_m": 738
+        "ulaz": 0,
+        "ulaz_kolona_m": 265
       }
     },
     "horgos": {
@@ -60,14 +60,14 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 10
+        "izlaz": 5,
+        "ulaz": 5
       },
       "tt": {
-        "izlaz": 9,
-        "izlaz_kolona_m": 2095,
-        "ulaz": 3,
-        "ulaz_kolona_m": 235
+        "izlaz": 13,
+        "izlaz_kolona_m": 774,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "kelebija": {
@@ -86,12 +86,12 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 5,
+        "izlaz": 10,
         "ulaz": 5
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
+        "izlaz": 14,
+        "izlaz_kolona_m": 240,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -105,12 +105,12 @@
       "found": true,
       "amss_name": "Batrovci - Kuzmin 1 - radovi na auto-putu",
       "ba": {
-        "izlaz": 30,
-        "ulaz": 30
+        "izlaz": 25,
+        "ulaz": 25
       },
       "tt": {
-        "izlaz": 14,
-        "izlaz_kolona_m": 1310,
+        "izlaz": 0,
+        "izlaz_kolona_m": 1433,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -132,7 +132,7 @@
         "opsto": 0
       },
       "ba": {
-        "izlaz": 15,
+        "izlaz": 10,
         "ulaz": 5
       },
       "tt": {
@@ -193,7 +193,7 @@
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 10
+        "ulaz": 5
       }
     },
     "dojran": {
