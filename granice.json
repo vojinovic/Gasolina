@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-09-02T00:55:39+00:00",
+  "scraped_at": "2026-09-02T05:35:56+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 5,
-        "ulaz": 5
+        "izlaz": 10,
+        "ulaz": 10
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
-        "ulaz": 6,
-        "ulaz_kolona_m": 113
+        "izlaz": 7,
+        "izlaz_kolona_m": 125,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "horgos": {
@@ -60,14 +60,14 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 10
+        "izlaz": 5,
+        "ulaz": 5
       },
       "tt": {
-        "izlaz": 8,
-        "izlaz_kolona_m": 933,
-        "ulaz": 2,
-        "ulaz_kolona_m": 106
+        "izlaz": 1,
+        "izlaz_kolona_m": 136,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "kelebija": {
@@ -98,19 +98,22 @@
     },
     "batrovci": {
       "putnicka": {
-        "izlaz": null,
-        "ulaz": null
+        "izlaz": 30,
+        "ulaz": 30
       },
-      "teretna": null,
+      "teretna": {
+        "izlaz": 240,
+        "ulaz": 30
+      },
       "found": true,
-      "amss_name": "Batrovci - Kuzmin 1 - radovi na auto-putu",
+      "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
         "izlaz": 10,
         "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
-        "izlaz_kolona_m": 984,
+        "izlaz_kolona_m": 250,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -133,7 +136,7 @@
       },
       "ba": {
         "izlaz": 15,
-        "ulaz": 5
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
@@ -215,7 +218,7 @@
       },
       "ba": {
         "izlaz": 15,
-        "ulaz": 5
+        "ulaz": 10
       }
     }
   }
