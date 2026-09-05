@@ -1,18 +1,18 @@
 {
-  "checked_at": "2026-09-04",
+  "checked_at": "2026-09-05",
   "countries": [
     {
       "name": "Serbia",
       "flag": "🇷🇸",
       "currency": "RSD",
-      "fx_rate_eur": 117.4419,
+      "fx_rate_eur": 117.1429,
       "petrol95": {
-        "local": 202.0,
-        "eur": 1.72
+        "local": 205.0,
+        "eur": 1.75
       },
       "diesel": {
-        "local": 231.0,
-        "eur": 1.97
+        "local": 234.0,
+        "eur": 2.0
       },
       "lpg": {
         "local": 105.9,
@@ -22,7 +22,7 @@
       "diesel_source": "nafta.hr",
       "petrol_source": "nafta.hr",
       "lpg_source": "nafta.hr",
-      "updated": "2026-08-29 12:52 UTC"
+      "updated": "2026-09-05 11:01 UTC"
     },
     {
       "name": "Croatia",
@@ -101,20 +101,20 @@
       "name": "North Macedonia",
       "flag": "🇲🇰",
       "currency": "MKD",
-      "fx_rate_eur": 61.5894,
+      "fx_rate_eur": 61.4379,
       "petrol95": {
-        "local": 93.0,
-        "eur": 1.51
+        "local": 94.0,
+        "eur": 1.53
       },
       "diesel": {
-        "local": 101.5,
-        "eur": 1.65
+        "local": 95.0,
+        "eur": 1.54
       },
       "lpg": {
         "local": 47.0,
         "eur": 0.76
       },
-      "updated": "2026-08-29 12:52 UTC"
+      "updated": "2026-09-05 11:01 UTC"
     },
     {
       "name": "Hungary",
