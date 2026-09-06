@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-09-06T21:09:59+00:00",
+  "scraped_at": "2026-09-06T23:02:10+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -39,9 +39,9 @@
       },
       "tt": {
         "izlaz": 0,
-        "izlaz_kolona_m": 168,
-        "ulaz": 6,
-        "ulaz_kolona_m": 113
+        "izlaz_kolona_m": 0,
+        "ulaz": 12,
+        "ulaz_kolona_m": 206
       }
     },
     "horgos": {
@@ -60,12 +60,12 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 25,
-        "ulaz": 10
+        "izlaz": 15,
+        "ulaz": 15
       },
       "tt": {
         "izlaz": 1,
-        "izlaz_kolona_m": 1793,
+        "izlaz_kolona_m": 774,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -86,12 +86,12 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 30,
+        "izlaz": 20,
         "ulaz": 5
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
+        "izlaz": 12,
+        "izlaz_kolona_m": 212,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -112,8 +112,8 @@
         "ulaz": 30
       },
       "tt": {
-        "izlaz": 11,
-        "izlaz_kolona_m": 1484,
+        "izlaz": 5,
+        "izlaz_kolona_m": 1543,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -135,12 +135,12 @@
         "opsto": 0
       },
       "ba": {
-        "izlaz": 90,
-        "ulaz": 10
+        "izlaz": 55,
+        "ulaz": 15
       },
       "tt": {
-        "izlaz": 2,
-        "izlaz_kolona_m": 762,
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -196,7 +196,7 @@
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 25
+        "ulaz": 15
       }
     },
     "dojran": {
@@ -217,8 +217,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 10
+        "izlaz": 15,
+        "ulaz": 15
       }
     }
   }
