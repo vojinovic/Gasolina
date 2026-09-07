@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-05",
+  "checked_at": "2026-09-07",
   "countries": [
     {
       "name": "Serbia",
@@ -12,7 +12,7 @@
       },
       "diesel": {
         "local": 234.0,
-        "eur": 2.0
+        "eur": 1.99
       },
       "lpg": {
         "local": 105.9,
@@ -22,7 +22,7 @@
       "diesel_source": "nafta.hr",
       "petrol_source": "nafta.hr",
       "lpg_source": "nafta.hr",
-      "updated": "2026-09-05 11:01 UTC"
+      "updated": "2026-09-07 13:13 UTC"
     },
     {
       "name": "Croatia",
@@ -49,18 +49,18 @@
       "currency": "BAM",
       "fx_rate_eur": 1.95583,
       "petrol95": {
-        "local": 3.01,
-        "eur": 1.54
+        "local": 3.13,
+        "eur": 1.6
       },
       "diesel": {
-        "local": 3.38,
-        "eur": 1.73
+        "local": 3.44,
+        "eur": 1.76
       },
       "lpg": {
         "local": 1.36,
         "eur": 0.7
       },
-      "updated": "2026-08-29 12:52 UTC"
+      "updated": "2026-09-07 13:13 UTC"
     },
     {
       "name": "Montenegro",
@@ -84,18 +84,18 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.59,
-        "eur": 1.59
+        "local": 1.63,
+        "eur": 1.63
       },
       "diesel": {
-        "local": 1.86,
-        "eur": 1.86
+        "local": 1.81,
+        "eur": 1.81
       },
       "lpg": {
         "local": 0.98,
         "eur": 0.98
       },
-      "updated": "2026-08-29 12:52 UTC"
+      "updated": "2026-09-07 13:13 UTC"
     },
     {
       "name": "North Macedonia",
@@ -122,18 +122,18 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.64,
-        "eur": 1.64
+        "local": 1.7,
+        "eur": 1.7
       },
       "diesel": {
-        "local": 1.88,
-        "eur": 1.88
+        "local": 1.92,
+        "eur": 1.92
       },
       "lpg": {
         "local": 0.98,
         "eur": 0.98
       },
-      "updated": "2026-08-29 12:52 UTC"
+      "updated": "2026-09-07 13:13 UTC"
     },
     {
       "name": "Bulgaria",
