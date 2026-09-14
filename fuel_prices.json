@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-12",
+  "checked_at": "2026-09-14",
   "countries": [
     {
       "name": "Serbia",
@@ -212,11 +212,11 @@
         "eur": 1.56
       },
       "diesel": {
-        "local": 1.61,
-        "eur": 1.61
+        "local": 1.62,
+        "eur": 1.62
       },
       "lpg": null,
-      "updated": "2026-09-11 15:49 UTC"
+      "updated": "2026-09-14 13:34 UTC"
     }
   ]
 }
