@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-09-14T19:09:59+00:00",
+  "scraped_at": "2026-09-14T22:40:47+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -35,7 +35,7 @@
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
         "izlaz": 10,
-        "ulaz": 10
+        "ulaz": 5
       },
       "tt": {
         "izlaz": 0,
@@ -60,12 +60,12 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 15,
+        "izlaz": 10,
         "ulaz": 5
       },
       "tt": {
-        "izlaz": 2,
-        "izlaz_kolona_m": 162,
+        "izlaz": 0,
+        "izlaz_kolona_m": 240,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -86,14 +86,14 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 10
+        "izlaz": 10,
+        "ulaz": 5
       },
       "tt": {
-        "izlaz": 4,
-        "izlaz_kolona_m": 239,
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
         "ulaz": 0,
-        "ulaz_kolona_m": 28
+        "ulaz_kolona_m": 0
       }
     },
     "batrovci": {
@@ -109,13 +109,13 @@
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
         "izlaz": 10,
-        "ulaz": 30
+        "ulaz": 10
       },
       "tt": {
-        "izlaz": 5,
-        "izlaz_kolona_m": 1204,
-        "ulaz": 13,
-        "ulaz_kolona_m": 238
+        "izlaz": 0,
+        "izlaz_kolona_m": 613,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "presevo": {
@@ -136,7 +136,7 @@
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 10
+        "ulaz": 15
       },
       "tt": {
         "izlaz": 0,
@@ -196,7 +196,7 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 60
+        "ulaz": 15
       }
     },
     "dojran": {
@@ -218,7 +218,7 @@
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 5
+        "ulaz": 10
       }
     }
   }
