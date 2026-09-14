@@ -1,7 +1,7 @@
 {
-  "scraped_at": "2026-09-07T08:29:22+00:00",
+  "scraped_at": "2026-09-14T09:20:14+00:00",
   "source": "OpenStreetMap (Overpass API)",
-  "count": 1073,
+  "count": 924,
   "stations": [
     {
       "id": 296878310,
@@ -482,19 +482,6 @@
         "dizel",
         "benzin",
         "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 5032961922,
-      "corridor": "bg-horgos",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 45.08385,
-      "lon": 19.85585,
-      "fuels": [
-        "dizel",
-        "benzin"
       ],
       "open24": null
     },
@@ -4180,1090 +4167,6 @@
       "open24": true
     },
     {
-      "id": 476339429,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Pam promet",
-      "lat": 45.11646,
-      "lon": 19.24807,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 611035579,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Shell",
-      "lat": 45.0469,
-      "lon": 19.22491,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 1313020990,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Dragstes",
-      "lat": 44.84024,
-      "lon": 19.12463,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 1642125667,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Neskovic",
-      "lat": 44.78613,
-      "lon": 19.23812,
-      "fuels": [
-        "dizel",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 1750722443,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Naftachem petrol",
-      "lat": 44.97519,
-      "lon": 19.63756,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 1848366708,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nešković",
-      "lat": 44.78463,
-      "lon": 19.23756,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 1848412303,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nešković",
-      "lat": 44.76641,
-      "lon": 19.21501,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 1848435941,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "4. април",
-      "lat": 44.7809,
-      "lon": 19.23312,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 1848447847,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Petrol",
-      "lat": 44.79089,
-      "lon": 19.24341,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 1939883992,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 45.04136,
-      "lon": 19.26364,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2129103421,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.7633,
-      "lon": 19.6957,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2129103425,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "АМК",
-      "lat": 45.00122,
-      "lon": 19.8161,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 2129103430,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Ekspres gas",
-      "lat": 44.99526,
-      "lon": 19.8301,
-      "fuels": [
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 2205475735,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.76822,
-      "lon": 19.22703,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 2318906092,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 44.99133,
-      "lon": 19.57383,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 2390059266,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 45.12056,
-      "lon": 19.22499,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2390127605,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Sale petrol",
-      "lat": 45.13373,
-      "lon": 19.21517,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2503368104,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.80928,
-      "lon": 19.75425,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 2503368106,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Avia",
-      "lat": 44.88194,
-      "lon": 19.76298,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 2503368110,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.89068,
-      "lon": 19.76432,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 2503368126,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.93266,
-      "lon": 19.78285,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 2565962760,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.97285,
-      "lon": 19.63759,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 2566065526,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 44.97442,
-      "lon": 19.62604,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 2584313064,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.75206,
-      "lon": 19.70692,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2642669644,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.75076,
-      "lon": 19.70707,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 3068270264,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 45.04902,
-      "lon": 19.18739,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 3334248896,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "OMV",
-      "lat": 45.03623,
-      "lon": 19.45076,
-      "fuels": [
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 3334249193,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "OMV",
-      "lat": 45.03565,
-      "lon": 19.4492,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 3469399666,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "INA",
-      "lat": 45.14005,
-      "lon": 19.03587,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 4979355925,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Naftachem petrol",
-      "lat": 45.02447,
-      "lon": 19.834,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 4987677430,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Mačva expres",
-      "lat": 44.76972,
-      "lon": 19.67486,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 4988018124,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Gazprom",
-      "lat": 44.75852,
-      "lon": 19.19733,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 5160595760,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Benzinska pumpa Petrić",
-      "lat": 44.83018,
-      "lon": 19.01716,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 5214208017,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Benzinska pumpa Monaco",
-      "lat": 44.80771,
-      "lon": 19.06856,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 5215032911,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Monaco",
-      "lat": 44.76381,
-      "lon": 19.18074,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 5215032912,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Monaco",
-      "lat": 44.75882,
-      "lon": 19.1986,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 5218311448,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Benzinska pumpa Braća Lazić",
-      "lat": 44.78056,
-      "lon": 19.10092,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 5764596880,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Pitt Stop",
-      "lat": 44.78748,
-      "lon": 19.38354,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 5793648254,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 45.04791,
-      "lon": 19.19824,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 6207930501,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Benzinska pumpa Petrić",
-      "lat": 44.82612,
-      "lon": 19.03516,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 6208028997,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Benzinska pumpa Rakić",
-      "lat": 44.82954,
-      "lon": 19.01431,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 6208209364,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Benzinska pumpa Nešković",
-      "lat": 44.77344,
-      "lon": 19.11755,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 6208374724,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "MDrive",
-      "lat": 44.76891,
-      "lon": 19.15887,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 6208461175,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.76264,
-      "lon": 19.20724,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 6208461596,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Деспотовић",
-      "lat": 44.76104,
-      "lon": 19.20641,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 6382944947,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "BP Intergaj",
-      "lat": 44.78586,
-      "lon": 19.27896,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 6629899954,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 45.03158,
-      "lon": 19.3896,
-      "fuels": [
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 6973914558,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Dragstes",
-      "lat": 44.77972,
-      "lon": 19.31708,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 7925767959,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nešković",
-      "lat": 44.78021,
-      "lon": 19.30909,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 9455121715,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Avia",
-      "lat": 45.00829,
-      "lon": 19.7892,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 9876444672,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nešković",
-      "lat": 44.76292,
-      "lon": 19.20798,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 9979920065,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 45.11724,
-      "lon": 19.40731,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 9994924508,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.97125,
-      "lon": 19.61919,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 10210222121,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nešković",
-      "lat": 44.88941,
-      "lon": 19.33347,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 10210222122,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Trifković",
-      "lat": 44.89012,
-      "lon": 19.33356,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 10236280962,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Agrotehnika - PETROL",
-      "lat": 44.84768,
-      "lon": 19.30291,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 10236319764,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.83672,
-      "lon": 19.29576,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 11049875001,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.78156,
-      "lon": 19.28737,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 11049875002,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.7811,
-      "lon": 19.29413,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 11049875004,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.77995,
-      "lon": 19.31635,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 11371432667,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.77484,
-      "lon": 19.72461,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 11608437499,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.99609,
-      "lon": 19.81602,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 12087101076,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 45.00111,
-      "lon": 19.82333,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12087101079,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 44.82436,
-      "lon": 19.48259,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12714499615,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Petrol",
-      "lat": 44.92385,
-      "lon": 19.34239,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 12714532909,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Поповић петрол",
-      "lat": 44.95278,
-      "lon": 19.37316,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 12752332751,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Naftachem petrol",
-      "lat": 45.00685,
-      "lon": 19.55147,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12766586424,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Art Petrol",
-      "lat": 44.76126,
-      "lon": 19.68296,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 12771910614,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 44.76243,
-      "lon": 19.64014,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12787625470,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 44.76754,
-      "lon": 19.66303,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12802067389,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 45.00126,
-      "lon": 19.84163,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12802096049,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 45.06818,
-      "lon": 19.35161,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12802098539,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.97146,
-      "lon": 19.6437,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12802105665,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.89656,
-      "lon": 19.54446,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12803935630,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.76329,
-      "lon": 19.67681,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12810051188,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "ButanGas",
-      "lat": 44.97129,
-      "lon": 19.62619,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12827736610,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 45.06792,
-      "lon": 19.21753,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 12830450348,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "MM Petrol",
-      "lat": 44.84063,
-      "lon": 19.50726,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12847347014,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Morava gas",
-      "lat": 44.86314,
-      "lon": 19.71611,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 12847373222,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Morava gas",
-      "lat": 44.85189,
-      "lon": 19.46903,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 12847400158,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Morava gas",
-      "lat": 44.92636,
-      "lon": 19.54514,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12847401744,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Morava gas",
-      "lat": 44.78509,
-      "lon": 19.59632,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12855428261,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Авис",
-      "lat": 45.00733,
-      "lon": 19.84131,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12855459908,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Sim Tim",
-      "lat": 45.03973,
-      "lon": 19.83946,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12855459916,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 45.03855,
-      "lon": 19.67274,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 12873499019,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.97999,
-      "lon": 19.59708,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 13305341421,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.94567,
-      "lon": 19.44868,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 13624043323,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "MDI",
-      "lat": 44.76827,
-      "lon": 19.16176,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 13624133177,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Šišarka",
-      "lat": 44.7676,
-      "lon": 19.16557,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 13720811206,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Nestro",
-      "lat": 44.76882,
-      "lon": 19.2255,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 14123669488,
-      "corridor": "bg-sid",
-      "country": "RS",
-      "brand": "Benzinska pumpa Intergaj",
-      "lat": 44.76237,
-      "lon": 19.201,
-      "fuels": null,
-      "open24": null
-    },
-    {
       "id": 1193131977,
       "corridor": "bg-nis",
       "country": "RS",
@@ -6672,1141 +5575,6 @@
       "open24": true
     },
     {
-      "id": 936150925,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.01648,
-      "lon": 20.90712,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 971083787,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 44.02139,
-      "lon": 20.91006,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 971083973,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.02699,
-      "lon": 20.92041,
-      "fuels": [
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 971087260,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 44.03511,
-      "lon": 20.91123,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 999202319,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Коле петрол",
-      "lat": 44.0158,
-      "lon": 20.93574,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 1377842753,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "ЈП",
-      "lat": 44.34907,
-      "lon": 21.0768,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 1377845164,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 43.95465,
-      "lon": 21.36407,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 1377845172,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 43.9933,
-      "lon": 21.27368,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 1808918202,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Gazprom",
-      "lat": 44.02832,
-      "lon": 20.91839,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 1915593732,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 43.95283,
-      "lon": 21.36644,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2114896118,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.04419,
-      "lon": 20.90807,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2118506005,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.23601,
-      "lon": 21.11715,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2118506010,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "OMV",
-      "lat": 43.96437,
-      "lon": 21.2785,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2139366061,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "DMB petrol oil",
-      "lat": 44.2231,
-      "lon": 21.20232,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2431183522,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Bugarin petrol",
-      "lat": 44.15257,
-      "lon": 21.07653,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2889923138,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.33631,
-      "lon": 21.07595,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 3043283308,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Gazprom",
-      "lat": 44.34499,
-      "lon": 21.07824,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 3060051221,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 43.91975,
-      "lon": 21.37419,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 3080153467,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Mihajlović",
-      "lat": 43.94162,
-      "lon": 21.37356,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 4004389843,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.22832,
-      "lon": 21.17098,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 4059506957,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Obnova petrol",
-      "lat": 44.41116,
-      "lon": 21.05384,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 4973727705,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "DMB petrol oil",
-      "lat": 44.2215,
-      "lon": 20.98433,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 5843965899,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.01947,
-      "lon": 20.92532,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 5843965900,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.02732,
-      "lon": 20.9122,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 5866572876,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.00634,
-      "lon": 20.91926,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 5929450085,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 43.99311,
-      "lon": 21.25877,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 6135724385,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "CNG pumpa",
-      "lat": 44.00402,
-      "lon": 21.25807,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 6532921410,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Box petrol",
-      "lat": 43.99912,
-      "lon": 20.91824,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 6532926019,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.00145,
-      "lon": 20.93039,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 6700359035,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 44.22379,
-      "lon": 20.98375,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 6700383928,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "DMB petrol oil",
-      "lat": 44.23163,
-      "lon": 20.97147,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 6805691588,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 43.98559,
-      "lon": 21.2507,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 6805691590,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Shell",
-      "lat": 43.98269,
-      "lon": 21.26103,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 6805691591,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 43.97922,
-      "lon": 21.26734,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 6805691595,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Miletić komerc",
-      "lat": 43.94047,
-      "lon": 21.36023,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 6805694589,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 43.93884,
-      "lon": 21.36567,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 6805694986,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "DM petrol",
-      "lat": 43.95391,
-      "lon": 21.31634,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 6805694988,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 43.9359,
-      "lon": 21.38791,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 6805694990,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "RM petrol",
-      "lat": 43.90264,
-      "lon": 21.37948,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 8295270532,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 43.99807,
-      "lon": 20.91782,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 8312834334,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.35706,
-      "lon": 21.2074,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 8312857494,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Bugarin petrol",
-      "lat": 44.3561,
-      "lon": 21.21405,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 9047256400,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Dani Petrol",
-      "lat": 44.30402,
-      "lon": 21.21715,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 9047256412,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "ND petrol",
-      "lat": 44.26526,
-      "lon": 21.20748,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 9047256413,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "DMB petrol oil",
-      "lat": 44.26323,
-      "lon": 21.20732,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 9047256414,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Octo",
-      "lat": 44.22633,
-      "lon": 21.19828,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 9047256415,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.2188,
-      "lon": 21.21613,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 9047256416,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.19193,
-      "lon": 21.28076,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 9047307317,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.1727,
-      "lon": 21.30964,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 9895510248,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Srećko Petrol",
-      "lat": 44.42086,
-      "lon": 21.37464,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 9904159920,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 43.87276,
-      "lon": 21.39888,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 9919015768,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 43.96941,
-      "lon": 21.27111,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 9994782419,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.32066,
-      "lon": 21.08025,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 9995125971,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.44351,
-      "lon": 21.2139,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 11459213269,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.3598,
-      "lon": 21.21579,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 11626939089,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.23286,
-      "lon": 21.18624,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 11698563080,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Reisen petrol",
-      "lat": 44.12211,
-      "lon": 21.01482,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 11799539574,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Shell",
-      "lat": 44.02374,
-      "lon": 20.92822,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12087101077,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 43.85996,
-      "lon": 21.09641,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12148460329,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Gazprom",
-      "lat": 44.06321,
-      "lon": 21.20595,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12749907468,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Avia",
-      "lat": 43.94863,
-      "lon": 21.39245,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 12752740911,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Petrol",
-      "lat": 44.02117,
-      "lon": 20.93296,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 12752836005,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Jelić petrol",
-      "lat": 44.442,
-      "lon": 21.10872,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12765613406,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Mihajlović",
-      "lat": 44.14981,
-      "lon": 21.11113,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12765648763,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Mihajlović",
-      "lat": 43.93505,
-      "lon": 21.37304,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12770141310,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Miletić komerc",
-      "lat": 43.98315,
-      "lon": 21.27708,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 12791410650,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Shell",
-      "lat": 43.99586,
-      "lon": 21.26317,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12805730006,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.14841,
-      "lon": 21.0728,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12805835858,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 43.99404,
-      "lon": 21.26811,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12805869264,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.01659,
-      "lon": 21.34205,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12809990567,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "ButanGas",
-      "lat": 44.01473,
-      "lon": 20.93087,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12830491739,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "M Co petrol",
-      "lat": 43.93475,
-      "lon": 21.38553,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12840614648,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Alfa gas",
-      "lat": 43.97699,
-      "lon": 21.27034,
-      "fuels": [
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12847138318,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Octo",
-      "lat": 44.22903,
-      "lon": 21.176,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12847373339,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Morava gas",
-      "lat": 44.12546,
-      "lon": 21.3554,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12849507225,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Dragović petrol",
-      "lat": 44.38183,
-      "lon": 21.08419,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12849532469,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Srećko petrol",
-      "lat": 44.2704,
-      "lon": 21.37002,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 12849542604,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Dragović petrol",
-      "lat": 44.35075,
-      "lon": 21.08859,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12849554229,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "OMP petrol",
-      "lat": 44.29838,
-      "lon": 21.26177,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12878796113,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.03004,
-      "lon": 20.91332,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 13153048600,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Bugarin petrol",
-      "lat": 44.31958,
-      "lon": 21.07924,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 13153064466,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Bugarin petrol",
-      "lat": 44.17689,
-      "lon": 21.09067,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 13153064470,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Bugarin petrol",
-      "lat": 44.18977,
-      "lon": 21.09062,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 13153092942,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Bugarin petrol",
-      "lat": 44.23962,
-      "lon": 21.09506,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 13153107761,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "DTL Morava",
-      "lat": 44.17891,
-      "lon": 21.09137,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 13259593960,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "M petrol",
-      "lat": 43.98137,
-      "lon": 21.2726,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 13266994101,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.17215,
-      "lon": 21.08965,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 13267007201,
-      "corridor": "bg-nis",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.18438,
-      "lon": 21.09738,
-      "fuels": null,
-      "open24": null
-    },
-    {
       "id": 295872703,
       "corridor": "bg-nis",
       "country": "RS",
@@ -7907,6 +5675,34 @@
       "open24": null
     },
     {
+      "id": 1377845164,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "EKO",
+      "lat": 43.95465,
+      "lon": 21.36407,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 1377845172,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "MOL",
+      "lat": 43.9933,
+      "lon": 21.27368,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
       "id": 1377853951,
       "corridor": "bg-nis",
       "country": "RS",
@@ -7975,6 +5771,20 @@
       "open24": true
     },
     {
+      "id": 1915593732,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "EKO",
+      "lat": 43.95283,
+      "lon": 21.36644,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
       "id": 2109765221,
       "corridor": "bg-nis",
       "country": "RS",
@@ -7987,6 +5797,20 @@
         "tng"
       ],
       "open24": null
+    },
+    {
+      "id": 2118506010,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "OMV",
+      "lat": 43.96437,
+      "lon": 21.2785,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
     },
     {
       "id": 2118506026,
@@ -8055,6 +5879,33 @@
         "tng"
       ],
       "open24": null
+    },
+    {
+      "id": 3060051221,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Lukoil",
+      "lat": 43.91975,
+      "lon": 21.37419,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3080153467,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Mihajlović",
+      "lat": 43.94162,
+      "lon": 21.37356,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
     },
     {
       "id": 3293915724,
@@ -8277,6 +6128,20 @@
       "open24": null
     },
     {
+      "id": 5929450085,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "EKO",
+      "lat": 43.99311,
+      "lon": 21.25877,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
       "id": 6053538209,
       "corridor": "bg-nis",
       "country": "RS",
@@ -8288,6 +6153,16 @@
         "benzin"
       ],
       "open24": null
+    },
+    {
+      "id": 6135724385,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "CNG pumpa",
+      "lat": 44.00402,
+      "lon": 21.25807,
+      "fuels": null,
+      "open24": true
     },
     {
       "id": 6354482585,
@@ -8358,6 +6233,58 @@
       "open24": true
     },
     {
+      "id": 6805691588,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 43.98559,
+      "lon": 21.2507,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6805691590,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Shell",
+      "lat": 43.98269,
+      "lon": 21.26103,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6805691591,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Lukoil",
+      "lat": 43.97922,
+      "lon": 21.26734,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6805691595,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Miletić komerc",
+      "lat": 43.94047,
+      "lon": 21.36023,
+      "fuels": null,
+      "open24": true
+    },
+    {
       "id": 6805691688,
       "corridor": "bg-nis",
       "country": "RS",
@@ -8372,6 +6299,20 @@
       "open24": true
     },
     {
+      "id": 6805694589,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 43.93884,
+      "lon": 21.36567,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
       "id": 6805694595,
       "corridor": "bg-nis",
       "country": "RS",
@@ -8382,6 +6323,42 @@
         "dizel",
         "benzin",
         "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 6805694986,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "DM petrol",
+      "lat": 43.95391,
+      "lon": 21.31634,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6805694988,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Lukoil",
+      "lat": 43.9359,
+      "lon": 21.38791,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 6805694990,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "RM petrol",
+      "lat": 43.90264,
+      "lon": 21.37948,
+      "fuels": [
+        "dizel",
+        "benzin"
       ],
       "open24": true
     },
@@ -8525,12 +6502,39 @@
       "open24": null
     },
     {
+      "id": 9904159920,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 43.87276,
+      "lon": 21.39888,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
       "id": 9904164791,
       "corridor": "bg-nis",
       "country": "RS",
       "brand": "NIS Petrol",
       "lat": 43.4579,
       "lon": 21.09226,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 9919015768,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 43.96941,
+      "lon": 21.27111,
       "fuels": [
         "dizel",
         "benzin",
@@ -8608,6 +6612,20 @@
       "open24": true
     },
     {
+      "id": 12087101077,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Lukoil",
+      "lat": 43.85996,
+      "lon": 21.09641,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
       "id": 12180289413,
       "corridor": "bg-nis",
       "country": "RS",
@@ -8622,6 +6640,16 @@
       "open24": true
     },
     {
+      "id": 12749907468,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Avia",
+      "lat": 43.94863,
+      "lon": 21.39245,
+      "fuels": null,
+      "open24": true
+    },
+    {
       "id": 12749930932,
       "corridor": "bg-nis",
       "country": "RS",
@@ -8630,6 +6658,19 @@
       "lon": 21.13041,
       "fuels": null,
       "open24": true
+    },
+    {
+      "id": 12765648763,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Mihajlović",
+      "lat": 43.93505,
+      "lon": 21.37304,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
     },
     {
       "id": 12765708778,
@@ -8803,6 +6844,16 @@
       "open24": true
     },
     {
+      "id": 12770141310,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Miletić komerc",
+      "lat": 43.98315,
+      "lon": 21.27708,
+      "fuels": null,
+      "open24": null
+    },
+    {
       "id": 12770141328,
       "corridor": "bg-nis",
       "country": "RS",
@@ -8863,6 +6914,20 @@
         "tng"
       ],
       "open24": null
+    },
+    {
+      "id": 12791410650,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Shell",
+      "lat": 43.99586,
+      "lon": 21.26317,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
     },
     {
       "id": 12791459790,
@@ -8927,6 +6992,34 @@
       "brand": "EKO",
       "lat": 43.34154,
       "lon": 21.92779,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12805835858,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Knez Petrol",
+      "lat": 43.99404,
+      "lon": 21.26811,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12805869264,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Knez Petrol",
+      "lat": 44.01659,
+      "lon": 21.34205,
       "fuels": [
         "dizel",
         "benzin",
@@ -9243,6 +7336,19 @@
       "open24": null
     },
     {
+      "id": 12830491739,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "M Co petrol",
+      "lat": 43.93475,
+      "lon": 21.38553,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
       "id": 12830934849,
       "corridor": "bg-nis",
       "country": "RS",
@@ -9266,6 +7372,18 @@
       "fuels": [
         "dizel",
         "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12840614648,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "Alfa gas",
+      "lat": 43.97699,
+      "lon": 21.27034,
+      "fuels": [
         "tng"
       ],
       "open24": true
@@ -9415,6 +7533,20 @@
         "benzin"
       ],
       "open24": null
+    },
+    {
+      "id": 13259593960,
+      "corridor": "bg-nis",
+      "country": "RS",
+      "brand": "M petrol",
+      "lat": 43.98137,
+      "lon": 21.2726,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
     },
     {
       "id": 13926656986,
@@ -10684,22 +8816,12 @@
       "open24": null
     },
     {
-      "id": 422497065,
-      "corridor": "bg-cacak",
+      "id": 2129058280,
+      "corridor": "nis-gradina",
       "country": "RS",
-      "brand": "Инграп Омни",
-      "lat": 44.11341,
-      "lon": 19.99717,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 449543910,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.0181,
-      "lon": 20.46343,
+      "brand": "Blue Petrol",
+      "lat": 43.15424,
+      "lon": 22.57294,
       "fuels": [
         "dizel",
         "benzin",
@@ -10708,37 +8830,60 @@
       "open24": true
     },
     {
-      "id": 613502399,
-      "corridor": "bg-cacak",
+      "id": 2129058282,
+      "corridor": "nis-gradina",
       "country": "RS",
-      "brand": "Avia",
-      "lat": 44.03971,
-      "lon": 20.48366,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 693340878,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Evoil",
-      "lat": 43.8986,
-      "lon": 20.41955,
+      "brand": "Eurogas LPG",
+      "lat": 43.01154,
+      "lon": 22.7443,
       "fuels": [
         "dizel",
         "benzin",
-        "tng",
-        "struja"
+        "tng"
       ],
       "open24": true
     },
     {
-      "id": 833068783,
-      "corridor": "bg-cacak",
+      "id": 2318808613,
+      "corridor": "nis-gradina",
       "country": "RS",
-      "brand": "Lukoil",
-      "lat": 44.01022,
-      "lon": 20.20885,
+      "brand": "Олимп Гас",
+      "lat": 43.22268,
+      "lon": 22.36045,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 3607289830,
+      "corridor": "nis-gradina",
+      "country": "RS",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.07184,
+      "lon": 22.6732,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5833996974,
+      "corridor": "nis-gradina",
+      "country": "RS",
+      "brand": "Miletić komerc",
+      "lat": 43.17707,
+      "lon": 22.57918,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 5844340405,
+      "corridor": "nis-gradina",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 43.12701,
+      "lon": 22.61576,
       "fuels": [
         "dizel",
         "benzin"
@@ -10746,8 +8891,119 @@
       "open24": null
     },
     {
+      "id": 12772864480,
+      "corridor": "nis-gradina",
+      "country": "RS",
+      "brand": "Lukoil",
+      "lat": 43.15778,
+      "lon": 22.57997,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12772864481,
+      "corridor": "nis-gradina",
+      "country": "RS",
+      "brand": "Lukoil",
+      "lat": 43.1615,
+      "lon": 22.59107,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12791525609,
+      "corridor": "nis-gradina",
+      "country": "RS",
+      "brand": "EKO",
+      "lat": 43.17026,
+      "lon": 22.58528,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806344615,
+      "corridor": "nis-gradina",
+      "country": "RS",
+      "brand": "Knez Petrol",
+      "lat": 43.06515,
+      "lon": 22.41078,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12806350482,
+      "corridor": "nis-gradina",
+      "country": "RS",
+      "brand": "Knez Petrol",
+      "lat": 43.1411,
+      "lon": 22.60121,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12810160123,
+      "corridor": "nis-gradina",
+      "country": "RS",
+      "brand": "ButanGas",
+      "lat": 43.12891,
+      "lon": 22.61358,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12846876203,
+      "corridor": "nis-gradina",
+      "country": "RS",
+      "brand": "DMB petrol oil",
+      "lat": 43.15783,
+      "lon": 22.57814,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12851619108,
+      "corridor": "nis-gradina",
+      "country": "RS",
+      "brand": "Profit",
+      "lat": 43.06893,
+      "lon": 22.4108,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
       "id": 868065377,
-      "corridor": "bg-cacak",
+      "corridor": "cacak-gostun",
       "country": "RS",
       "brand": "Lukoil",
       "lat": 43.78744,
@@ -10760,7 +9016,7 @@
     },
     {
       "id": 979249924,
-      "corridor": "bg-cacak",
+      "corridor": "cacak-gostun",
       "country": "RS",
       "brand": "EKO",
       "lat": 43.87774,
@@ -10774,7 +9030,7 @@
     },
     {
       "id": 1387155380,
-      "corridor": "bg-cacak",
+      "corridor": "cacak-gostun",
       "country": "RS",
       "brand": "Pesak petrol",
       "lat": 43.90816,
@@ -10788,1247 +9044,11 @@
     },
     {
       "id": 1395132554,
-      "corridor": "bg-cacak",
+      "corridor": "cacak-gostun",
       "country": "RS",
       "brand": "Lukoil",
       "lat": 43.88365,
       "lon": 20.35705,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 1418702921,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Avia",
-      "lat": 43.92508,
-      "lon": 20.40994,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 1600481406,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.39136,
-      "lon": 20.2396,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 1600481421,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.39072,
-      "lon": 20.23979,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 2002019707,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Morava gas",
-      "lat": 43.86793,
-      "lon": 20.09881,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2002187404,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Lika",
-      "lat": 44.02682,
-      "lon": 20.46973,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 2002187715,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Lika",
-      "lat": 44.03215,
-      "lon": 20.47401,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2002189275,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 44.18859,
-      "lon": 20.33281,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 2002901141,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.22622,
-      "lon": 20.24154,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2002926254,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Morava gas",
-      "lat": 44.24952,
-      "lon": 20.28409,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2002951455,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Art Petrol",
-      "lat": 44.3142,
-      "lon": 20.23886,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 2002972848,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Auto Gas",
-      "lat": 44.38184,
-      "lon": 20.23213,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 2003062105,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.38123,
-      "lon": 20.25782,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2003081034,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Art Petrol",
-      "lat": 44.46724,
-      "lon": 20.27523,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 2003084904,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.51065,
-      "lon": 20.29438,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 2103326038,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "OMV",
-      "lat": 44.36549,
-      "lon": 20.19678,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2112672790,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 44.65531,
-      "lon": 20.20858,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2112672791,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.65315,
-      "lon": 20.18535,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2112672792,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.63962,
-      "lon": 20.18274,
-      "fuels": [
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 2119488118,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 43.876,
-      "lon": 20.36115,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 2598331681,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Art Petrol",
-      "lat": 44.7226,
-      "lon": 20.21615,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 2911991370,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Duda Invest",
-      "lat": 43.86346,
-      "lon": 20.13066,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 3071023412,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.37096,
-      "lon": 20.1676,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 3368630098,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.25468,
-      "lon": 20.09218,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 3545108250,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Dečani",
-      "lat": 43.76363,
-      "lon": 20.09511,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 3728962313,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Gazprom",
-      "lat": 43.91294,
-      "lon": 20.40832,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 3958908122,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Paramun",
-      "lat": 43.7643,
-      "lon": 20.09448,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 3978215197,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Devix",
-      "lat": 44.47264,
-      "lon": 20.28852,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 3978909343,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.46256,
-      "lon": 20.07738,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 3986423361,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 43.91337,
-      "lon": 20.40734,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 4112004799,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "OMV",
-      "lat": 43.89047,
-      "lon": 20.33401,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 4198923703,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 43.83302,
-      "lon": 20.59099,
-      "fuels": [
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 4239677290,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Dizel Punkt",
-      "lat": 44.03975,
-      "lon": 20.6122,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 4278015974,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.59982,
-      "lon": 20.33031,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 4554580239,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Art Petrol",
-      "lat": 44.28939,
-      "lon": 19.95174,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 4556135832,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "MG petrol",
-      "lat": 44.36509,
-      "lon": 20.14699,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 4744732789,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 44.24747,
-      "lon": 20.09576,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 4774409752,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 43.89015,
-      "lon": 20.34319,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 4950335494,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Pesak petrol",
-      "lat": 43.84804,
-      "lon": 20.0494,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 5159739531,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Avia",
-      "lat": 44.3695,
-      "lon": 20.30141,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 5231496821,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.13735,
-      "lon": 20.49292,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 6815757287,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.67883,
-      "lon": 20.30376,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 7074256893,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 43.86396,
-      "lon": 20.5415,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 7074256894,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 43.81371,
-      "lon": 20.61324,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 7256127191,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Evoil",
-      "lat": 44.30193,
-      "lon": 20.03499,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 7256183720,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 43.89582,
-      "lon": 20.35301,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 8197001408,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 43.88321,
-      "lon": 20.47575,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 8596781359,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 43.92452,
-      "lon": 20.32595,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 8596781366,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 43.91171,
-      "lon": 20.34002,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 8596904844,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Nepoznata pumpa",
-      "lat": 43.91302,
-      "lon": 20.64217,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 8607003798,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Gazprom",
-      "lat": 43.93512,
-      "lon": 20.4021,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 8607003799,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Gazprom",
-      "lat": 43.93728,
-      "lon": 20.39991,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 9063018977,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.59452,
-      "lon": 20.34982,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 9856178282,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Антовић Петрол",
-      "lat": 43.86758,
-      "lon": 20.12642,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 10011086891,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.46071,
-      "lon": 20.06924,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 10047197378,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.45885,
-      "lon": 20.07176,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 10085701044,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.65029,
-      "lon": 20.19325,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 10085774133,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NIS Petrol",
-      "lat": 44.01808,
-      "lon": 20.46354,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 10157029897,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 44.57062,
-      "lon": 20.30449,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 10902622447,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "NG Petrol",
-      "lat": 44.19397,
-      "lon": 20.59877,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 10963162725,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Shell",
-      "lat": 43.89733,
-      "lon": 20.3928,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 11488869092,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.40589,
-      "lon": 20.09361,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12102901858,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 43.85832,
-      "lon": 20.13616,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12434333757,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 44.03177,
-      "lon": 20.47457,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12442325423,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Lukoil",
-      "lat": 43.8474,
-      "lon": 20.04463,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12752695884,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Petrol",
-      "lat": 43.89388,
-      "lon": 20.35353,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 12755097801,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Euro Petrol",
-      "lat": 43.91098,
-      "lon": 20.40832,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12758157584,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "MBM petrol",
-      "lat": 44.45236,
-      "lon": 20.10515,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12758212692,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "MBM petrol",
-      "lat": 44.46821,
-      "lon": 20.07544,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12768163592,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Art Petrol",
-      "lat": 44.65246,
-      "lon": 20.21997,
-      "fuels": null,
-      "open24": true
-    },
-    {
-      "id": 12768163593,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Art Petrol",
-      "lat": 44.65528,
-      "lon": 20.21695,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 12768163594,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Art Petrol",
-      "lat": 44.66598,
-      "lon": 20.16372,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 12768163596,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Art Petrol",
-      "lat": 44.64605,
-      "lon": 20.12881,
-      "fuels": null,
-      "open24": null
-    },
-    {
-      "id": 12787654304,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 44.69164,
-      "lon": 20.31319,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12787654305,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 44.69119,
-      "lon": 20.3134,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12791335031,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "EKO",
-      "lat": 43.90274,
-      "lon": 20.36456,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12803927226,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.49593,
-      "lon": 20.04548,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12803963498,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.55767,
-      "lon": 20.14707,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12805813820,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 43.89119,
-      "lon": 20.38519,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12805817996,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 43.92502,
-      "lon": 20.32585,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12805837640,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Knez Petrol",
-      "lat": 44.00116,
-      "lon": 20.43909,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12810085571,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "ButanGas",
-      "lat": 44.50616,
-      "lon": 20.29211,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12831791875,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Spoint",
-      "lat": 43.88615,
-      "lon": 20.37225,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12832148774,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Spoint",
-      "lat": 43.81274,
-      "lon": 20.47508,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12840393732,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "TTS petrol",
-      "lat": 43.77402,
-      "lon": 20.23098,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12847189847,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "DMB petrol oil",
-      "lat": 44.40698,
-      "lon": 20.26413,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12847189964,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Neol Petrol",
-      "lat": 44.38669,
-      "lon": 20.25273,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12847400157,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Morava gas",
-      "lat": 44.24703,
-      "lon": 20.39655,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12847476680,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Trend petrol",
-      "lat": 44.63743,
-      "lon": 20.18229,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12851281006,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Steko petrol",
-      "lat": 44.24992,
-      "lon": 20.09336,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 12851391112,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Ljubojević petrol",
-      "lat": 43.83008,
-      "lon": 20.07001,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12851402651,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Gaga petrol",
-      "lat": 43.85744,
-      "lon": 20.02227,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12853589919,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "TRM petrol",
-      "lat": 43.76204,
-      "lon": 20.54539,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12853607941,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Ninex petrol",
-      "lat": 43.84233,
-      "lon": 20.4322,
-      "fuels": [
-        "dizel",
-        "benzin",
-        "tng"
-      ],
-      "open24": null
-    },
-    {
-      "id": 12877117342,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "MOL",
-      "lat": 44.40598,
-      "lon": 20.09593,
-      "fuels": [
-        "dizel",
-        "benzin"
-      ],
-      "open24": true
-    },
-    {
-      "id": 13649858273,
-      "corridor": "bg-cacak",
-      "country": "RS",
-      "brand": "Leonardo",
-      "lat": 43.87811,
-      "lon": 20.35467,
       "fuels": [
         "dizel",
         "benzin",
@@ -12089,12 +9109,48 @@
       "open24": true
     },
     {
+      "id": 2002019707,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Morava gas",
+      "lat": 43.86793,
+      "lon": 20.09881,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2119488118,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "MOL",
+      "lat": 43.876,
+      "lon": 20.36115,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
       "id": 2805900355,
       "corridor": "cacak-gostun",
       "country": "RS",
       "brand": "Nepoznata pumpa",
       "lat": 43.59949,
       "lon": 19.49534,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2911991370,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Duda Invest",
+      "lat": 43.86346,
+      "lon": 20.13066,
       "fuels": null,
       "open24": null
     },
@@ -12157,6 +9213,20 @@
       "open24": true
     },
     {
+      "id": 3545108250,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Dečani",
+      "lat": 43.76363,
+      "lon": 20.09511,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
       "id": 3731052840,
       "corridor": "cacak-gostun",
       "country": "RS",
@@ -12198,6 +9268,34 @@
       "open24": true
     },
     {
+      "id": 3958908122,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Paramun",
+      "lat": 43.7643,
+      "lon": 20.09448,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 4112004799,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "OMV",
+      "lat": 43.89047,
+      "lon": 20.33401,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
       "id": 4395744892,
       "corridor": "cacak-gostun",
       "country": "RS",
@@ -12215,6 +9313,19 @@
       "lat": 43.87176,
       "lon": 19.84586,
       "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 4774409752,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 43.89015,
+      "lon": 20.34319,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
       "open24": null
     },
     {
@@ -12238,6 +9349,19 @@
       "open24": null
     },
     {
+      "id": 4950335494,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Pesak petrol",
+      "lat": 43.84804,
+      "lon": 20.0494,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
       "id": 6778433476,
       "corridor": "cacak-gostun",
       "country": "RS",
@@ -12250,6 +9374,68 @@
         "tng"
       ],
       "open24": true
+    },
+    {
+      "id": 7256183720,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 43.89582,
+      "lon": 20.35301,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 8596781359,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.92452,
+      "lon": 20.32595,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 8596781366,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Nepoznata pumpa",
+      "lat": 43.91171,
+      "lon": 20.34002,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 8607003799,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Gazprom",
+      "lat": 43.93728,
+      "lon": 20.39991,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 9856178282,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Антовић Петрол",
+      "lat": 43.86758,
+      "lon": 20.12642,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
     },
     {
       "id": 9889781673,
@@ -12346,6 +9532,58 @@
       "open24": true
     },
     {
+      "id": 10963162725,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Shell",
+      "lat": 43.89733,
+      "lon": 20.3928,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12102901858,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Knez Petrol",
+      "lat": 43.85832,
+      "lon": 20.13616,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12442325423,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Lukoil",
+      "lat": 43.8474,
+      "lon": 20.04463,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12752695884,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Petrol",
+      "lat": 43.89388,
+      "lon": 20.35353,
+      "fuels": null,
+      "open24": true
+    },
+    {
       "id": 12754675525,
       "corridor": "cacak-gostun",
       "country": "RS",
@@ -12386,12 +9624,54 @@
       "open24": null
     },
     {
+      "id": 12791335031,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "EKO",
+      "lat": 43.90274,
+      "lon": 20.36456,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
       "id": 12805785266,
       "corridor": "cacak-gostun",
       "country": "RS",
       "brand": "Knez Petrol",
       "lat": 43.79124,
       "lon": 19.75887,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12805813820,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Knez Petrol",
+      "lat": 43.89119,
+      "lon": 20.38519,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12805817996,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Knez Petrol",
+      "lat": 43.92502,
+      "lon": 20.32585,
       "fuels": [
         "dizel",
         "benzin",
@@ -12414,6 +9694,20 @@
       "open24": true
     },
     {
+      "id": 12831791875,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Spoint",
+      "lat": 43.88615,
+      "lon": 20.37225,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
       "id": 12831870428,
       "corridor": "cacak-gostun",
       "country": "RS",
@@ -12428,12 +9722,54 @@
       "open24": null
     },
     {
+      "id": 12840393732,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "TTS petrol",
+      "lat": 43.77402,
+      "lon": 20.23098,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
       "id": 12851339876,
       "corridor": "cacak-gostun",
       "country": "RS",
       "brand": "Aras petrol",
       "lat": 43.88235,
       "lon": 19.94177,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12851391112,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Ljubojević petrol",
+      "lat": 43.83008,
+      "lon": 20.07001,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12851402651,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Gaga petrol",
+      "lat": 43.85744,
+      "lon": 20.02227,
       "fuels": [
         "dizel",
         "benzin",
@@ -12484,6 +9820,20 @@
       "open24": null
     },
     {
+      "id": 13649858273,
+      "corridor": "cacak-gostun",
+      "country": "RS",
+      "brand": "Leonardo",
+      "lat": 43.87811,
+      "lon": 20.35467,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
       "id": 13938096103,
       "corridor": "cacak-gostun",
       "country": "RS",
@@ -12506,6 +9856,20 @@
         "tng"
       ],
       "open24": true
+    },
+    {
+      "id": 1313020990,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Dragstes",
+      "lat": 44.84024,
+      "lon": 19.12463,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
     },
     {
       "id": 1319966526,
@@ -12535,6 +9899,32 @@
       "open24": null
     },
     {
+      "id": 1642125667,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Neskovic",
+      "lat": 44.78613,
+      "lon": 19.23812,
+      "fuels": [
+        "dizel",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 1750722443,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Naftachem petrol",
+      "lat": 44.97519,
+      "lon": 19.63756,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
       "id": 1840421958,
       "corridor": "bg-loznica",
       "country": "RS",
@@ -12555,6 +9945,96 @@
       "open24": null
     },
     {
+      "id": 1848366708,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nešković",
+      "lat": 44.78463,
+      "lon": 19.23756,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1848412303,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nešković",
+      "lat": 44.76641,
+      "lon": 19.21501,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 1848435941,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "4. април",
+      "lat": 44.7809,
+      "lon": 19.23312,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 1848447847,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Petrol",
+      "lat": 44.79089,
+      "lon": 19.24341,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2129103421,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "MOL",
+      "lat": 44.7633,
+      "lon": 19.6957,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2129103430,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Ekspres gas",
+      "lat": 44.99526,
+      "lon": 19.8301,
+      "fuels": [
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2205475735,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.76822,
+      "lon": 19.22703,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2318906092,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Lukoil",
+      "lat": 44.99133,
+      "lon": 19.57383,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
       "id": 2503368103,
       "corridor": "bg-loznica",
       "country": "RS",
@@ -12564,6 +10044,53 @@
       "fuels": [
         "dizel",
         "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2503368104,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 44.80928,
+      "lon": 19.75425,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2503368106,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Avia",
+      "lat": 44.88194,
+      "lon": 19.76298,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2503368110,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.89068,
+      "lon": 19.76432,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2503368126,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "MOL",
+      "lat": 44.93266,
+      "lon": 19.78285,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
       ],
       "open24": null
     },
@@ -12592,6 +10119,57 @@
       "open24": null
     },
     {
+      "id": 2565962760,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 44.97285,
+      "lon": 19.63759,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 2566065526,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "EKO",
+      "lat": 44.97442,
+      "lon": 19.62604,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 2584313064,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 44.75206,
+      "lon": 19.70692,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 2642669644,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "MOL",
+      "lat": 44.75076,
+      "lon": 19.70707,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
       "id": 2903372197,
       "corridor": "bg-loznica",
       "country": "RS",
@@ -12612,12 +10190,76 @@
       "open24": null
     },
     {
+      "id": 4987677430,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Mačva expres",
+      "lat": 44.76972,
+      "lon": 19.67486,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 4988018124,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Gazprom",
+      "lat": 44.75852,
+      "lon": 19.19733,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 5215032911,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Monaco",
+      "lat": 44.76381,
+      "lon": 19.18074,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5215032912,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Monaco",
+      "lat": 44.75882,
+      "lon": 19.1986,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5218311448,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Benzinska pumpa Braća Lazić",
+      "lat": 44.78056,
+      "lon": 19.10092,
+      "fuels": null,
+      "open24": null
+    },
+    {
       "id": 5757243458,
       "corridor": "bg-loznica",
       "country": "RS",
       "brand": "Пико",
       "lat": 44.72228,
       "lon": 19.70923,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 5764596880,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Pitt Stop",
+      "lat": 44.78748,
+      "lon": 19.38354,
       "fuels": null,
       "open24": null
     },
@@ -12632,6 +10274,46 @@
       "open24": null
     },
     {
+      "id": 6208209364,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Benzinska pumpa Nešković",
+      "lat": 44.77344,
+      "lon": 19.11755,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6208374724,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "MDrive",
+      "lat": 44.76891,
+      "lon": 19.15887,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6208461175,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 44.76264,
+      "lon": 19.20724,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6208461596,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Деспотовић",
+      "lat": 44.76104,
+      "lon": 19.20641,
+      "fuels": null,
+      "open24": null
+    },
+    {
       "id": 6209061620,
       "corridor": "bg-loznica",
       "country": "RS",
@@ -12642,12 +10324,46 @@
       "open24": null
     },
     {
+      "id": 6382944947,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "BP Intergaj",
+      "lat": 44.78586,
+      "lon": 19.27896,
+      "fuels": null,
+      "open24": null
+    },
+    {
       "id": 6385290644,
       "corridor": "bg-loznica",
       "country": "RS",
       "brand": "BP Euro",
       "lat": 44.73383,
       "lon": 19.17014,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 6973914558,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Dragstes",
+      "lat": 44.77972,
+      "lon": 19.31708,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 7925767959,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nešković",
+      "lat": 44.78021,
+      "lon": 19.30909,
       "fuels": null,
       "open24": null
     },
@@ -12664,6 +10380,123 @@
         "tng"
       ],
       "open24": true
+    },
+    {
+      "id": 9876444672,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nešković",
+      "lat": 44.76292,
+      "lon": 19.20798,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 9994924508,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 44.97125,
+      "lon": 19.61919,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 10210222121,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nešković",
+      "lat": 44.88941,
+      "lon": 19.33347,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 10210222122,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Trifković",
+      "lat": 44.89012,
+      "lon": 19.33356,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 10236280962,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Agrotehnika - PETROL",
+      "lat": 44.84768,
+      "lon": 19.30291,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 10236319764,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "NIS Petrol",
+      "lat": 44.83672,
+      "lon": 19.29576,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11049875001,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.78156,
+      "lon": 19.28737,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11049875002,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.7811,
+      "lon": 19.29413,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11049875004,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.77995,
+      "lon": 19.31635,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 11371432667,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Knez Petrol",
+      "lat": 44.77484,
+      "lon": 19.72461,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 11608437499,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.99609,
+      "lon": 19.81602,
+      "fuels": null,
+      "open24": null
     },
     {
       "id": 11830859413,
@@ -12693,6 +10526,146 @@
       "open24": null
     },
     {
+      "id": 12087101079,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Lukoil",
+      "lat": 44.82436,
+      "lon": 19.48259,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12714499615,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Petrol",
+      "lat": 44.92385,
+      "lon": 19.34239,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12714532909,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Поповић петрол",
+      "lat": 44.95278,
+      "lon": 19.37316,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12766586424,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Art Petrol",
+      "lat": 44.76126,
+      "lon": 19.68296,
+      "fuels": null,
+      "open24": true
+    },
+    {
+      "id": 12771910614,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Lukoil",
+      "lat": 44.76243,
+      "lon": 19.64014,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12787625470,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "EKO",
+      "lat": 44.76754,
+      "lon": 19.66303,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12802098539,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Knez Petrol",
+      "lat": 44.97146,
+      "lon": 19.6437,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12802105665,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Knez Petrol",
+      "lat": 44.89656,
+      "lon": 19.54446,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12803935630,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Knez Petrol",
+      "lat": 44.76329,
+      "lon": 19.67681,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 12810051188,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "ButanGas",
+      "lat": 44.97129,
+      "lon": 19.62619,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12830450348,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "MM Petrol",
+      "lat": 44.84063,
+      "lon": 19.50726,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
       "id": 12830552097,
       "corridor": "bg-loznica",
       "country": "RS",
@@ -12717,6 +10690,127 @@
         "dizel",
         "benzin"
       ],
+      "open24": null
+    },
+    {
+      "id": 12847347014,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Morava gas",
+      "lat": 44.86314,
+      "lon": 19.71611,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12847373222,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Morava gas",
+      "lat": 44.85189,
+      "lon": 19.46903,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 12847400158,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Morava gas",
+      "lat": 44.92636,
+      "lon": 19.54514,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12847401744,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Morava gas",
+      "lat": 44.78509,
+      "lon": 19.59632,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 12873499019,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "MOL",
+      "lat": 44.97999,
+      "lon": 19.59708,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": true
+    },
+    {
+      "id": 13305341421,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nepoznata pumpa",
+      "lat": 44.94567,
+      "lon": 19.44868,
+      "fuels": [
+        "dizel",
+        "benzin",
+        "tng"
+      ],
+      "open24": null
+    },
+    {
+      "id": 13624043323,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "MDI",
+      "lat": 44.76827,
+      "lon": 19.16176,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 13624133177,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Šišarka",
+      "lat": 44.7676,
+      "lon": 19.16557,
+      "fuels": [
+        "dizel",
+        "benzin"
+      ],
+      "open24": null
+    },
+    {
+      "id": 13720811206,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Nestro",
+      "lat": 44.76882,
+      "lon": 19.2255,
+      "fuels": null,
+      "open24": null
+    },
+    {
+      "id": 14123669488,
+      "corridor": "bg-loznica",
+      "country": "RS",
+      "brand": "Benzinska pumpa Intergaj",
+      "lat": 44.76237,
+      "lon": 19.201,
+      "fuels": null,
       "open24": null
     },
     {
