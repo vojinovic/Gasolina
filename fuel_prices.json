@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-18",
+  "checked_at": "2026-09-19",
   "countries": [
     {
       "name": "Serbia",
@@ -22,7 +22,8 @@
       "diesel_source": "nafta.hr",
       "petrol_source": "nafta.hr",
       "lpg_source": "nafta.hr",
-      "updated": "2026-09-18 15:46 UTC"
+      "updated": "2026-09-18 15:46 UTC",
+      "stale_since": "2026-09-19 11:42 UTC"
     },
     {
       "name": "Croatia",
@@ -41,7 +42,8 @@
         "local": 0.0,
         "eur": 0.0
       },
-      "updated": "2026-08-29 12:52 UTC"
+      "updated": "2026-08-29 12:52 UTC",
+      "stale_since": "2026-09-19 11:42 UTC"
     },
     {
       "name": "Bosnia and Herzegovina",
@@ -60,7 +62,8 @@
         "local": 1.38,
         "eur": 0.71
       },
-      "updated": "2026-09-18 15:46 UTC"
+      "updated": "2026-09-18 15:46 UTC",
+      "stale_since": "2026-09-19 11:42 UTC"
     },
     {
       "name": "Montenegro",
@@ -76,7 +79,8 @@
         "eur": 1.9
       },
       "lpg": null,
-      "updated": "2026-09-18 15:46 UTC"
+      "updated": "2026-09-18 15:46 UTC",
+      "stale_since": "2026-09-19 11:42 UTC"
     },
     {
       "name": "Slovenia",
@@ -95,7 +99,8 @@
         "local": 0.98,
         "eur": 0.98
       },
-      "updated": "2026-09-18 15:46 UTC"
+      "updated": "2026-09-18 15:46 UTC",
+      "stale_since": "2026-09-19 11:42 UTC"
     },
     {
       "name": "North Macedonia",
@@ -114,7 +119,8 @@
         "local": 47.0,
         "eur": 0.76
       },
-      "updated": "2026-09-18 15:46 UTC"
+      "updated": "2026-09-18 15:46 UTC",
+      "stale_since": "2026-09-19 11:42 UTC"
     },
     {
       "name": "Hungary",
@@ -133,7 +139,8 @@
         "local": 0.98,
         "eur": 0.98
       },
-      "updated": "2026-09-07 13:13 UTC"
+      "updated": "2026-09-07 13:13 UTC",
+      "stale_since": "2026-09-19 11:42 UTC"
     },
     {
       "name": "Bulgaria",
