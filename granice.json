@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-09-20T14:02:57+00:00",
+  "scraped_at": "2026-09-20T17:37:05+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 5,
+        "izlaz": 10,
         "ulaz": 5
       },
       "tt": {
-        "izlaz": 10,
-        "izlaz_kolona_m": 641,
-        "ulaz": 13,
-        "ulaz_kolona_m": 223
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "horgos": {
@@ -57,17 +57,17 @@
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
         "ulaz": 0,
-        "izlaz": 30
+        "izlaz": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 10
+        "izlaz": 5,
+        "ulaz": 15
       },
       "tt": {
-        "izlaz": 25,
-        "izlaz_kolona_m": 1381,
-        "ulaz": 1,
-        "ulaz_kolona_m": 363
+        "izlaz": 15,
+        "izlaz_kolona_m": 1221,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "kelebija": {
@@ -86,8 +86,8 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 15
+        "izlaz": 5,
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
@@ -112,10 +112,10 @@
         "ulaz": 30
       },
       "tt": {
-        "izlaz": 16,
-        "izlaz_kolona_m": 1210,
-        "ulaz": 11,
-        "ulaz_kolona_m": 1200
+        "izlaz": 3,
+        "izlaz_kolona_m": 563,
+        "ulaz": 8,
+        "ulaz_kolona_m": 493
       }
     },
     "presevo": {
@@ -135,7 +135,7 @@
         "opsto": 0
       },
       "ba": {
-        "izlaz": 15,
+        "izlaz": 5,
         "ulaz": 5
       },
       "tt": {
@@ -195,8 +195,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 180
+        "izlaz": 50,
+        "ulaz": 150
       }
     },
     "dojran": {
