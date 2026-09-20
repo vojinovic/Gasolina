@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-09-20T17:37:05+00:00",
+  "scraped_at": "2026-09-20T20:36:21+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -56,16 +56,16 @@
       "found": true,
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
-        "ulaz": 0,
+        "ulaz": 30,
         "izlaz": 0
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 15
+        "ulaz": 10
       },
       "tt": {
-        "izlaz": 15,
-        "izlaz_kolona_m": 1221,
+        "izlaz": 7,
+        "izlaz_kolona_m": 771,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -86,12 +86,12 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 5,
+        "izlaz": 15,
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
+        "izlaz": 2,
+        "izlaz_kolona_m": 206,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -109,13 +109,13 @@
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
         "izlaz": 30,
-        "ulaz": 30
+        "ulaz": 15
       },
       "tt": {
-        "izlaz": 3,
-        "izlaz_kolona_m": 563,
-        "ulaz": 8,
-        "ulaz_kolona_m": 493
+        "izlaz": 0,
+        "izlaz_kolona_m": 0,
+        "ulaz": 19,
+        "ulaz_kolona_m": 343
       }
     },
     "presevo": {
@@ -135,12 +135,12 @@
         "opsto": 0
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 5
+        "izlaz": 10,
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
-        "izlaz_kolona_m": 0,
+        "izlaz_kolona_m": 227,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -195,8 +195,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 50,
-        "ulaz": 150
+        "izlaz": 35,
+        "ulaz": 300
       }
     },
     "dojran": {
@@ -218,7 +218,7 @@
       },
       "ba": {
         "izlaz": 10,
-        "ulaz": 5
+        "ulaz": 15
       }
     }
   }
