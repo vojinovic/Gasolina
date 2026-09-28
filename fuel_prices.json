@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-26",
+  "checked_at": "2026-09-28",
   "countries": [
     {
       "name": "Serbia",
@@ -101,20 +101,20 @@
       "name": "North Macedonia",
       "flag": "🇲🇰",
       "currency": "MKD",
-      "fx_rate_eur": 61.6564,
+      "fx_rate_eur": 61.4907,
       "petrol95": {
-        "local": 100.5,
-        "eur": 1.63
-      },
-      "diesel": {
         "local": 99.0,
         "eur": 1.61
+      },
+      "diesel": {
+        "local": 104.5,
+        "eur": 1.7
       },
       "lpg": {
         "local": 47.0,
         "eur": 0.76
       },
-      "updated": "2026-09-21 13:33 UTC"
+      "updated": "2026-09-28 14:52 UTC"
     },
     {
       "name": "Hungary",
@@ -190,17 +190,17 @@
       "name": "Romania",
       "flag": "🇷🇴",
       "currency": "RON",
-      "fx_rate_eur": 5.2765,
+      "fx_rate_eur": 5.2785,
       "petrol95": {
         "local": 9.98,
         "eur": 1.891
       },
       "diesel": {
-        "local": 11.04,
+        "local": 11.05,
         "eur": 2.093
       },
       "lpg": null,
-      "updated": "2026-09-25 16:28 UTC"
+      "updated": "2026-09-28 14:53 UTC"
     },
     {
       "name": "Kosovo",
