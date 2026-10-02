@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-28",
+  "checked_at": "2026-10-02",
   "countries": [
     {
       "name": "Serbia",
@@ -49,18 +49,18 @@
       "currency": "BAM",
       "fx_rate_eur": 1.95583,
       "petrol95": {
-        "local": 3.34,
-        "eur": 1.71
+        "local": 3.39,
+        "eur": 1.73
       },
       "diesel": {
-        "local": 3.78,
-        "eur": 1.93
+        "local": 3.79,
+        "eur": 1.94
       },
       "lpg": {
-        "local": 1.4,
+        "local": 1.41,
         "eur": 0.72
       },
-      "updated": "2026-09-25 16:28 UTC"
+      "updated": "2026-10-02 17:24 UTC"
     },
     {
       "name": "Montenegro",
@@ -68,15 +68,15 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.72,
-        "eur": 1.72
+        "local": 1.75,
+        "eur": 1.75
       },
       "diesel": {
-        "local": 1.9,
-        "eur": 1.9
+        "local": 1.95,
+        "eur": 1.95
       },
       "lpg": null,
-      "updated": "2026-09-21 13:33 UTC"
+      "updated": "2026-10-02 17:24 UTC"
     },
     {
       "name": "Slovenia",
@@ -84,18 +84,18 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.75,
-        "eur": 1.75
+        "local": 1.76,
+        "eur": 1.76
       },
       "diesel": {
-        "local": 2.01,
-        "eur": 2.01
+        "local": 1.93,
+        "eur": 1.93
       },
       "lpg": {
         "local": 0.98,
         "eur": 0.98
       },
-      "updated": "2026-09-25 16:28 UTC"
+      "updated": "2026-10-02 17:24 UTC"
     },
     {
       "name": "North Macedonia",
@@ -122,18 +122,18 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.7,
-        "eur": 1.7
+        "local": 1.73,
+        "eur": 1.73
       },
       "diesel": {
-        "local": 1.92,
-        "eur": 1.92
+        "local": 1.93,
+        "eur": 1.93
       },
       "lpg": {
-        "local": 0.98,
-        "eur": 0.98
+        "local": 0.96,
+        "eur": 0.96
       },
-      "updated": "2026-09-21 13:33 UTC"
+      "updated": "2026-10-02 17:24 UTC"
     },
     {
       "name": "Bulgaria",
@@ -141,15 +141,15 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 1.663,
-        "eur": 1.663
+        "local": 1.675,
+        "eur": 1.675
       },
       "diesel": {
-        "local": 1.916,
-        "eur": 1.916
+        "local": 1.928,
+        "eur": 1.928
       },
       "lpg": null,
-      "updated": "2026-09-25 16:28 UTC"
+      "updated": "2026-10-02 17:24 UTC"
     },
     {
       "name": "Albania",
@@ -157,18 +157,18 @@
       "currency": "ALL",
       "fx_rate_eur": 100.0,
       "petrol95": {
-        "local": 195.0,
-        "eur": 1.95
+        "local": 193.0,
+        "eur": 1.93
       },
       "diesel": {
-        "local": 219.0,
-        "eur": 2.19
+        "local": 213.0,
+        "eur": 2.13
       },
       "lpg": {
         "local": 69.0,
         "eur": 0.69
       },
-      "updated": "2026-09-25 16:28 UTC"
+      "updated": "2026-10-02 17:24 UTC"
     },
     {
       "name": "Greece",
@@ -176,31 +176,31 @@
       "currency": "EUR",
       "fx_rate_eur": 1.0,
       "petrol95": {
-        "local": 2.197,
-        "eur": 2.197
+        "local": 2.205,
+        "eur": 2.205
       },
       "diesel": {
-        "local": 2.224,
-        "eur": 2.224
+        "local": 2.216,
+        "eur": 2.216
       },
       "lpg": null,
-      "updated": "2026-09-25 16:28 UTC"
+      "updated": "2026-10-02 17:24 UTC"
     },
     {
       "name": "Romania",
       "flag": "🇷🇴",
       "currency": "RON",
-      "fx_rate_eur": 5.2785,
+      "fx_rate_eur": 5.3488,
       "petrol95": {
-        "local": 9.98,
-        "eur": 1.891
+        "local": 10.15,
+        "eur": 1.897
       },
       "diesel": {
-        "local": 11.05,
-        "eur": 2.093
+        "local": 11.25,
+        "eur": 2.104
       },
       "lpg": null,
-      "updated": "2026-09-28 14:53 UTC"
+      "updated": "2026-10-02 17:24 UTC"
     },
     {
       "name": "Kosovo",
