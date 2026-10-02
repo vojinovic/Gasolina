@@ -15,14 +15,14 @@
         "eur": 2.01
       },
       "lpg": {
-        "local": 108.0,
+        "local": 108.4,
         "eur": 0.92
       },
       "price_source": "nafta.hr",
       "diesel_source": "nafta.hr",
       "petrol_source": "nafta.hr",
       "lpg_source": "nafta.hr",
-      "updated": "2026-09-25 16:28 UTC"
+      "updated": "2026-10-02 21:24 UTC"
     },
     {
       "name": "Croatia",
