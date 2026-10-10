@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-09",
+  "checked_at": "2026-10-10",
   "countries": [
     {
       "name": "Serbia",
@@ -49,18 +49,18 @@
       "currency": "BAM",
       "fx_rate_eur": 1.95583,
       "petrol95": {
-        "local": 3.35,
-        "eur": 1.71
+        "local": 3.4,
+        "eur": 1.74
       },
       "diesel": {
-        "local": 3.8,
-        "eur": 1.94
+        "local": 3.71,
+        "eur": 1.9
       },
       "lpg": {
-        "local": 1.39,
-        "eur": 0.71
+        "local": 1.41,
+        "eur": 0.72
       },
-      "updated": "2026-10-09 17:56 UTC"
+      "updated": "2026-10-10 13:08 UTC"
     },
     {
       "name": "Montenegro",
