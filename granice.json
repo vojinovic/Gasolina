@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-10-14T00:33:58+00:00",
+  "scraped_at": "2026-10-14T05:58:10+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 10,
-        "ulaz": 5
+        "izlaz": 5,
+        "ulaz": 15
       },
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
-        "ulaz": 0,
-        "ulaz_kolona_m": 0
+        "ulaz": 3,
+        "ulaz_kolona_m": 113
       }
     },
     "horgos": {
@@ -50,7 +50,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 120,
+        "izlaz": 360,
         "ulaz": 30
       },
       "found": true,
@@ -64,8 +64,8 @@
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 0,
-        "izlaz_kolona_m": 0,
+        "izlaz": 12,
+        "izlaz_kolona_m": 1984,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -76,7 +76,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 60,
+        "izlaz": 180,
         "ulaz": 30
       },
       "found": true,
@@ -86,7 +86,7 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 15,
+        "izlaz": 5,
         "ulaz": 15
       },
       "tt": {
@@ -102,7 +102,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 240,
+        "izlaz": 480,
         "ulaz": 30
       },
       "found": true,
@@ -113,7 +113,7 @@
       },
       "tt": {
         "izlaz": 0,
-        "izlaz_kolona_m": 255,
+        "izlaz_kolona_m": 250,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -136,7 +136,7 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 10
+        "ulaz": 15
       },
       "tt": {
         "izlaz": 0,
@@ -217,8 +217,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 15
+        "izlaz": 10,
+        "ulaz": 10
       }
     }
   }
