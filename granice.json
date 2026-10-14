@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-10-14T11:40:44+00:00",
+  "scraped_at": "2026-10-14T16:55:45+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -34,14 +34,14 @@
       "found": true,
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
-        "izlaz": 5,
+        "izlaz": 15,
         "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
-        "ulaz": 0,
-        "ulaz_kolona_m": 0
+        "ulaz": 3,
+        "ulaz_kolona_m": 258
       }
     },
     "horgos": {
@@ -57,7 +57,7 @@
       "amss_name": "HORGOŠ SRBIJA MAĐARSKA AP A1, E-75",
       "hu": {
         "ulaz": 30,
-        "izlaz": 0
+        "izlaz": 30
       },
       "ba": {
         "izlaz": 10,
@@ -65,7 +65,7 @@
       },
       "tt": {
         "izlaz": 4,
-        "izlaz_kolona_m": 377,
+        "izlaz_kolona_m": 1793,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -86,14 +86,14 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 5,
+        "izlaz": 10,
         "ulaz": 15
       },
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
-        "ulaz": 5,
-        "ulaz_kolona_m": 87
+        "ulaz": 4,
+        "ulaz_kolona_m": 189
       }
     },
     "batrovci": {
@@ -112,10 +112,10 @@
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 1,
-        "izlaz_kolona_m": 1197,
-        "ulaz": 0,
-        "ulaz_kolona_m": 0
+        "izlaz": 8,
+        "izlaz_kolona_m": 619,
+        "ulaz": 11,
+        "ulaz_kolona_m": 1201
       }
     },
     "presevo": {
@@ -136,7 +136,7 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 15
+        "ulaz": 5
       },
       "tt": {
         "izlaz": 0,
@@ -195,7 +195,7 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 10,
+        "izlaz": 15,
         "ulaz": 10
       }
     },
@@ -217,8 +217,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 15,
-        "ulaz": 15
+        "izlaz": 5,
+        "ulaz": 5
       }
     }
   }
