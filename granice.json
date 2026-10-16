@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-10-16T18:58:43+00:00",
+  "scraped_at": "2026-10-16T22:01:12+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -35,13 +35,13 @@
       "amss_name": "GRADINA (Dimitrovgrad Srbija Bugarska AP E80)",
       "ba": {
         "izlaz": 10,
-        "ulaz": 10
+        "ulaz": 5
       },
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
         "ulaz": 0,
-        "ulaz_kolona_m": 556
+        "ulaz_kolona_m": 0
       }
     },
     "horgos": {
@@ -64,10 +64,10 @@
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 2,
-        "izlaz_kolona_m": 862,
-        "ulaz": 14,
-        "ulaz_kolona_m": 1238
+        "izlaz": 6,
+        "izlaz_kolona_m": 1793,
+        "ulaz": 0,
+        "ulaz_kolona_m": 975
       }
     },
     "kelebija": {
@@ -86,7 +86,7 @@
         "izlaz": 0
       },
       "ba": {
-        "izlaz": 5,
+        "izlaz": 10,
         "ulaz": 10
       },
       "tt": {
@@ -105,14 +105,14 @@
       "found": true,
       "amss_name": "Batrovci - Kuzmin 1 - radovi na auto-putu",
       "ba": {
-        "izlaz": 90,
+        "izlaz": 30,
         "ulaz": 60
       },
       "tt": {
-        "izlaz": 4,
-        "izlaz_kolona_m": 1426,
+        "izlaz": 1,
+        "izlaz_kolona_m": 1252,
         "ulaz": 0,
-        "ulaz_kolona_m": 182
+        "ulaz_kolona_m": 0
       }
     },
     "presevo": {
@@ -132,7 +132,7 @@
         "opsto": 0
       },
       "ba": {
-        "izlaz": 10,
+        "izlaz": 15,
         "ulaz": 10
       },
       "tt": {
@@ -192,8 +192,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 5,
-        "ulaz": 5
+        "izlaz": 10,
+        "ulaz": 10
       }
     },
     "dojran": {
@@ -214,7 +214,7 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 5,
+        "izlaz": 15,
         "ulaz": 10
       }
     }
