@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-10-21T18:12:18+00:00",
+  "scraped_at": "2026-10-21T21:55:20+00:00",
   "source": "AMSS / Uprava granicne policije RS",
   "source_hu": "Magyar Rendorseg (police.hu) - madjarska strana",
   "source_mk": "AMSM (amsm.mk) - makedonska strana",
@@ -28,7 +28,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 30,
+        "izlaz": 60,
         "ulaz": 30
       },
       "found": true,
@@ -50,7 +50,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 30,
+        "izlaz": 300,
         "ulaz": 30
       },
       "found": true,
@@ -64,8 +64,8 @@
         "ulaz": 10
       },
       "tt": {
-        "izlaz": 5,
-        "izlaz_kolona_m": 813,
+        "izlaz": 8,
+        "izlaz_kolona_m": 771,
         "ulaz": 0,
         "ulaz_kolona_m": 0
       }
@@ -76,7 +76,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 30,
+        "izlaz": 240,
         "ulaz": 30
       },
       "found": true,
@@ -87,13 +87,13 @@
       },
       "ba": {
         "izlaz": 5,
-        "ulaz": 5
+        "ulaz": 10
       },
       "tt": {
         "izlaz": 0,
         "izlaz_kolona_m": 0,
         "ulaz": 0,
-        "ulaz_kolona_m": 0
+        "ulaz_kolona_m": 8
       }
     },
     "batrovci": {
@@ -102,20 +102,20 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 420,
+        "izlaz": 600,
         "ulaz": 30
       },
       "found": true,
       "amss_name": "BATROVCI sa Hrvatske strane GP BAJAKOVO Lipovac, na AP E70",
       "ba": {
         "izlaz": 10,
-        "ulaz": 10
+        "ulaz": 40
       },
       "tt": {
         "izlaz": 0,
-        "izlaz_kolona_m": 453,
-        "ulaz": 2,
-        "ulaz_kolona_m": 105
+        "izlaz_kolona_m": 601,
+        "ulaz": 0,
+        "ulaz_kolona_m": 0
       }
     },
     "presevo": {
@@ -135,7 +135,7 @@
         "opsto": 0
       },
       "ba": {
-        "izlaz": 10,
+        "izlaz": 5,
         "ulaz": 10
       },
       "tt": {
@@ -151,7 +151,7 @@
         "ulaz": 30
       },
       "teretna": {
-        "izlaz": 30,
+        "izlaz": 240,
         "ulaz": 30
       },
       "found": true,
@@ -217,8 +217,8 @@
         "ulaz_kolona_m": 0
       },
       "ba": {
-        "izlaz": 10,
-        "ulaz": 10
+        "izlaz": 5,
+        "ulaz": 5
       }
     }
   }
