@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-07",
+  "checked_at": "2026-11-09",
   "countries": [
     {
       "name": "Serbia",
@@ -22,7 +22,8 @@
       "diesel_source": "nafta.hr",
       "petrol_source": "nafta.hr",
       "lpg_source": "nafta.hr",
-      "updated": "2026-10-30 17:40 UTC"
+      "updated": "2026-10-30 17:40 UTC",
+      "stale_since": "2026-11-09 17:04 UTC"
     },
     {
       "name": "Croatia",
@@ -41,7 +42,8 @@
         "local": 0.0,
         "eur": 0.0
       },
-      "updated": "2026-09-21 13:33 UTC"
+      "updated": "2026-09-21 13:33 UTC",
+      "stale_since": "2026-11-09 17:04 UTC"
     },
     {
       "name": "Bosnia and Herzegovina",
@@ -60,7 +62,8 @@
         "local": 1.48,
         "eur": 0.76
       },
-      "updated": "2026-11-07 13:39 UTC"
+      "updated": "2026-11-07 13:39 UTC",
+      "stale_since": "2026-11-09 17:04 UTC"
     },
     {
       "name": "Montenegro",
@@ -76,7 +79,8 @@
         "eur": 1.97
       },
       "lpg": null,
-      "updated": "2026-11-06 18:51 UTC"
+      "updated": "2026-11-06 18:51 UTC",
+      "stale_since": "2026-11-09 17:04 UTC"
     },
     {
       "name": "Slovenia",
@@ -95,7 +99,8 @@
         "local": 1.03,
         "eur": 1.03
       },
-      "updated": "2026-11-06 18:51 UTC"
+      "updated": "2026-11-06 18:51 UTC",
+      "stale_since": "2026-11-09 17:04 UTC"
     },
     {
       "name": "North Macedonia",
@@ -114,7 +119,8 @@
         "local": 50.0,
         "eur": 0.81
       },
-      "updated": "2026-11-06 18:51 UTC"
+      "updated": "2026-11-06 18:51 UTC",
+      "stale_since": "2026-11-09 17:04 UTC"
     },
     {
       "name": "Hungary",
@@ -133,7 +139,8 @@
         "local": 1.11,
         "eur": 1.11
       },
-      "updated": "2026-11-07 13:39 UTC"
+      "updated": "2026-11-07 13:39 UTC",
+      "stale_since": "2026-11-09 17:04 UTC"
     },
     {
       "name": "Bulgaria",
@@ -190,17 +197,17 @@
       "name": "Romania",
       "flag": "🇷🇴",
       "currency": "RON",
-      "fx_rate_eur": 5.3403,
+      "fx_rate_eur": 5.343,
       "petrol95": {
         "local": 10.05,
         "eur": 1.881
       },
       "diesel": {
-        "local": 11.06,
+        "local": 11.07,
         "eur": 2.071
       },
       "lpg": null,
-      "updated": "2026-11-06 18:51 UTC"
+      "updated": "2026-11-09 17:04 UTC"
     },
     {
       "name": "Kosovo",
