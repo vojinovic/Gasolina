@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-21",
+  "checked_at": "2026-11-23",
   "countries": [
     {
       "name": "Serbia",
@@ -49,8 +49,8 @@
       "currency": "BAM",
       "fx_rate_eur": 1.95583,
       "petrol95": {
-        "local": 3.07,
-        "eur": 1.57
+        "local": 3.06,
+        "eur": 1.56
       },
       "diesel": {
         "local": 3.69,
@@ -60,7 +60,7 @@
         "local": 1.53,
         "eur": 0.78
       },
-      "updated": "2026-11-21 14:59 UTC"
+      "updated": "2026-11-23 18:55 UTC"
     },
     {
       "name": "Montenegro",
@@ -190,7 +190,7 @@
       "name": "Romania",
       "flag": "🇷🇴",
       "currency": "RON",
-      "fx_rate_eur": 5.3493,
+      "fx_rate_eur": 5.3483,
       "petrol95": {
         "local": 9.45,
         "eur": 1.766
@@ -200,7 +200,7 @@
         "eur": 2.004
       },
       "lpg": null,
-      "updated": "2026-11-20 19:35 UTC"
+      "updated": "2026-11-23 18:55 UTC"
     },
     {
       "name": "Kosovo",
